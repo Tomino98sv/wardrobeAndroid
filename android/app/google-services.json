@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "436983539328",
+    "firebase_url": "https://wardrobe-2324a.firebaseio.com",
+    "project_id": "wardrobe-2324a",
+    "storage_bucket": "wardrobe-2324a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:436983539328:android:7bd71543f89d056a",
+        "android_client_info": {
+          "package_name": "com.example.flutterapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "436983539328-mc94etduf3vjr56ugmcjnbi98upiaaef.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxHSzqUokUyQ_W98xFhZ1f4eivi0iD7vI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
