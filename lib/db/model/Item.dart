@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
@@ -14,7 +15,7 @@ void main() => runApp(MyNewItem());
 //
 //  Item(this.id, this.userId, this.name, this.size, this.length, this.color);
 //
-//  static String generateID() {
+//  public String generateID() {
 //    var random = new Random();
 //    String newID = random.toString();
 //    return newID;
@@ -42,73 +43,122 @@ class _MyNewItem extends State<MyNewItem> {
 
   var _sizes = ['34', '36', '38', '40', '42', '44'];
   var _currentItemSelected = '34';
+  var _length = ['Mini', 'Midi', 'Maxi', 'Oversize'];
+  var _currentLengthSelected = 'Midi';
 
   @override
 
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text('Add New Item'),
       ),
-      body: Container(
-        margin: EdgeInsets.all(20.0),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              onChanged: (String userInput) {
-                setState(() {
-                  name = userInput;
-                });
-              },
-            ),
-            Padding(
-              padding: EdgeInsets.all(30.0),
-              child:Text(
-                "Name: $name",
+      body: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.all(20.0),
+          child: Column(
+            children: <Widget>[
+              TextField(
+                onChanged: (String userInput) {
+                  setState(() {
+                    name = userInput;
+                  });
+                },
+              ),
+              Padding(
+                padding: EdgeInsets.all(30.0),
+                child:Text(
+                  "Name: $name",
+                  style: TextStyle(fontSize: 20.0),
+              )),
+              TextField(
+                onChanged: (String userInput) {
+                  setState(() {
+                    color = userInput;
+                  });
+                },
+              ),
+              Text(
+                "Color: $color",
                 style: TextStyle(fontSize: 20.0),
-            )),
-            TextField(
-              onSubmitted: (String userInput) {
-                id = userInput;
-              },
-            ),
-            Text(
-              "ID: $id",
-              style: TextStyle(fontSize: 20.0),
-            ),
-            TextField(
-              onChanged: (String userIn) {
-                size = userIn;
-              },
-            ),
-            DropdownButton<String>(
-              items: _sizes.map((String dropDownStringItem) {
-                return DropdownMenuItem<String>(
-                  value: dropDownStringItem,
-                  child: Text(dropDownStringItem),
-                );
-              }).toList(),
-
-              onChanged: (String newValueSelected){
-                //moj kod, co sa ma vykonat, poslat do databazy
-                setState(() {
-                  this. _currentItemSelected = newValueSelected;
-                });
-              },
+              ),
+              TextField(
+                onChanged: (String userIn) {
+                  size = userIn;
+                },
+              ),
+              DropdownButton<String>(
+                items: _sizes.map((String dropDownStringItem) {
+                  return DropdownMenuItem<String>(
+                    value: dropDownStringItem,
+                    child: Text(dropDownStringItem),
+                  );
+                }).toList(),
 
 
+                onChanged: (String newValueSelected){
+                  //moj kod, co sa ma vykonat, poslat do databazy
+                  setState(() {
+                    this. _currentItemSelected = newValueSelected;
+                  });
+                },
+                value: _currentItemSelected,
+              ),
+              Text(
+                "Size: $_currentItemSelected",
+                style: TextStyle(fontSize: 20.0),
+              ),
+              TextField(
+                onChanged: (String userIn) {
+                  length = userIn;
+                },
+              ),
+              DropdownButton<String>(
+                items: _length.map((String dropDownStringItem) {
+                  return DropdownMenuItem<String>(
+                    value: dropDownStringItem,
+                    child: Text(dropDownStringItem),
+                  );
+                }).toList(),
 
-              value: _currentItemSelected,
-            ),
-            Text(
-              "Size: $_currentItemSelected",
-              style: TextStyle(fontSize: 20.0),
-            )
 
-          ],
+                onChanged: (String newValueSelected){
+                  //moj kod, co sa ma vykonat, poslat do databazy
+                  setState(() {
+                    this. _currentLengthSelected = newValueSelected;
+                  });
+                },
+                value: _currentLengthSelected,
+              ),
+              Text(
+                "Length: $_currentLengthSelected",
+                style: TextStyle(fontSize: 20.0),
+              ),
+
+            ],
+          ),
         ),
       ),
+      floatingActionButton: new FloatingActionButton(
+          child: Icon(Icons.send),
+          onPressed: (){
+            Firestore.instance.runTransaction((transaction) async {
+              await transaction.set(Firestore.instance.collection("items").document(), {
+                'name' : name,
+                'color' : color,
+                'size': _currentItemSelected,
+                'length' : _currentLengthSelected,
+                'photo_url' : "",
+                'id' : "",
+                'userId' : ""
+              });
+            }
+            );
+
+
+          }),
     );
   }
 }

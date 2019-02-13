@@ -14,15 +14,9 @@ void main() {
 //      body: getListView(),
 //      body: DatabaseList(),
 //    body: MyAppSt(),
-//    body: ItemsList(),
-    body: MyNewItem(),
-      floatingActionButton: new FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: (){
-
-
-
-      }),
+    body: ItemsList(),
+//    body: HomePage(),
+//    body: MyNewItem(),
     )
   ));
 
