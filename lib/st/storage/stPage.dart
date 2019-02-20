@@ -48,28 +48,48 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
     });
   }
 
+  File sampleImage2;
+
+  //funkcia na pridanie obrazku z camery
+  Future getImage2() async{
+    var tempImage2 = await ImagePicker.pickImage(
+        source: ImageSource.camera
+    );
+    setState(() {
+      sampleImage2 = tempImage2;
+    });
+  }
+
   //dizajn
   @override
   Widget build(BuildContext context) {
     return Column(
         mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-
-          new Center(
+         new Center(
             child: sampleImage == null
                 ? Text('Select an Image')
                 : enableUpload(),
-          ),
-          Stack(
-              alignment: FractionalOffset.bottomRight,
-              children: <Widget>[
-                new FloatingActionButton(
-                  onPressed: getImage,
-                  tooltip: 'Add Image',
-                  child: new Icon(Icons.add),
-                ),
-              ]
-          ),
+         ),
+          new Column(
+            children: <Widget>[
+              new  FloatingActionButton(
+                onPressed: getImage,
+                tooltip: 'Add Image',
+                child: new Icon(Icons.add_photo_alternate),
+                backgroundColor: Colors.pink,
+                mini: true,
+              ),
+              new FloatingActionButton(
+                onPressed: getImage2,
+                tooltip: 'Add Image',
+                child: new Icon(Icons.add_a_photo),
+                backgroundColor: Colors.pink,
+                mini: true,
+              ),
+            ],
+          )
         ]
     );
   }
