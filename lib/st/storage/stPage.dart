@@ -1,15 +1,41 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:uuid/uuid.dart';
 
-class MyStoragePage extends StatefulWidget{
+class MyStoragePage2 extends StatefulWidget{
   @override
-  _MyStoragePageState createState() => new _MyStoragePageState();
+  _MyStoragePageState2 createState() => new _MyStoragePageState2();
 }
 
-class _MyStoragePageState extends State<MyStoragePage>{
+class _MyStoragePageState2 extends State<MyStoragePage2>{
+  String _path;
+
+
+  //upload funkcia
+  uploadFile(String filePath) async {
+    print('funckia uploadFile $filePath');
+    final ByteData bytes = await rootBundle.load(filePath);
+    final Directory tempFile = Directory.systemTemp; // filePath dame do docasneho pricinku
+    String extension = filePath.substring(filePath.length - 3); //vybratie poslednych 3 pismenok - urcenie pripony
+    final String fileName = "${Uuid().v4()}.$extension"; // vytvorenie mena obrazka .. uuid radom cisla,pismenka
+    final File imageFile = File('${tempFile.path}/$fileName'); //vytvorenie objektu-obrazka
+    imageFile.writeAsBytes(bytes.buffer.asInt8List(), mode: FileMode.write); //ci dobry access
+
+    //pridanie obrazka
+    final StorageReference ref = FirebaseStorage.instance.ref().child(fileName);
+    final StorageUploadTask task = ref.putFile(imageFile);
+    StorageTaskSnapshot taskSnapshot = await task.onComplete;
+    String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+    _path = downloadUrl.toString();
+
+    print(_path); // url cesta pre Klaud
+  }
+
+
   File sampleImage;
 
   //funkcia na pridanie obrazku z galerie
@@ -25,25 +51,34 @@ class _MyStoragePageState extends State<MyStoragePage>{
   //dizajn
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar:  new AppBar(
-        title: new Text('Your Wardrobe'),
-        centerTitle: true,
-      ),
-      body: new Center(
-        child: sampleImage == null ? Text('Select an Image'): enableUpload() ,
-      ),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: getImage,
-        tooltip: 'Add Image',
-        child: new Icon(Icons.add),
-      ),
+    return Column(
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+
+          new Center(
+            child: sampleImage == null
+                ? Text('Select an Image')
+                : enableUpload(),
+          ),
+          Stack(
+              alignment: FractionalOffset.bottomRight,
+              children: <Widget>[
+                new FloatingActionButton(
+                  onPressed: getImage,
+                  tooltip: 'Add Image',
+                  child: new Icon(Icons.add),
+                ),
+              ]
+          ),
+        ]
     );
   }
 
 
 
   Widget enableUpload() {
+    print('upload image');
+    String filePath = sampleImage.path;
     return Container(
       child: Column(
         children: <Widget>[
@@ -52,15 +87,12 @@ class _MyStoragePageState extends State<MyStoragePage>{
             elevation: 7.0,
             child: Text('Upload'),
             textColor: Colors.white,
-            color: Colors.cyan,
-            onPressed:() async {
-              final StorageReference firebaseStorageRef =
-                  FirebaseStorage.instance.ref().child('myimage.jpg');
-              final StorageUploadTask task =
-                  firebaseStorageRef.putFile(sampleImage);
-
+            color: Colors.pinkAccent,
+            onPressed: () {
+              uploadFile(filePath);
             },
-          )
+            //onPressed: uploadFile(filePath),
+          ),
         ],
       ),
     );
