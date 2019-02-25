@@ -14,7 +14,6 @@ class MyStoragePage2 extends StatefulWidget{
 class _MyStoragePageState2 extends State<MyStoragePage2>{
   String _path;
 
-
   //upload funkcia
   uploadFile(String filePath) async {
     print('funckia uploadFile $filePath');
@@ -36,9 +35,9 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
   }
 
 
-  File sampleImage;
 
   //funkcia na pridanie obrazku z galerie
+  File sampleImage;
   Future getImage() async{
     var tempImage = await ImagePicker.pickImage(
         source: ImageSource.gallery
@@ -48,9 +47,11 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
     });
   }
 
-  File sampleImage2;
+
+
 
   //funkcia na pridanie obrazku z camery
+  File sampleImage2;
   Future getImage2() async{
     var tempImage2 = await ImagePicker.pickImage(
         source: ImageSource.camera
@@ -60,6 +61,8 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
     });
   }
 
+
+
   //dizajn
   @override
   Widget build(BuildContext context) {
@@ -68,10 +71,15 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
          new Center(
-            child: sampleImage == null
+            child: sampleImage == null || sampleImage2 == null
                 ? Text('Select an Image')
                 : enableUpload(),
          ),
+//          new Center(
+//            child: sampleImage2 == null
+//                ? Text('Select an Image')
+//                : enableUpload2(),
+//          ),
           new Column(
             children: <Widget>[
               new  FloatingActionButton(
@@ -97,12 +105,34 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
 
 
   Widget enableUpload() {
-    print('upload image');
+    print('upload image from gallery');
     String filePath = sampleImage.path;
     return Container(
       child: Column(
         children: <Widget>[
           Image.file(sampleImage, height: 300.0, width: 300.0,),
+          RaisedButton(
+            elevation: 7.0,
+            child: Text('Upload'),
+            textColor: Colors.white,
+            color: Colors.pinkAccent,
+            onPressed: () {
+              uploadFile(filePath);
+            },
+            //onPressed: uploadFile(filePath),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget enableUpload2() {
+    print('upload image from camera');
+    String filePath = sampleImage2.path;
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Image.file(sampleImage2, height: 300.0, width: 300.0,),
           RaisedButton(
             elevation: 7.0,
             child: Text('Upload'),
