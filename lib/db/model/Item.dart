@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
-
+import 'package:flutter_app/st/storage/stPage.dart';
 
 void main() => runApp(MyNewItem());
 
@@ -25,12 +25,10 @@ void main() => runApp(MyNewItem());
 //}
 
 class MyNewItem extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() {
     return _MyNewItem();
   }
-
 }
 
 class _MyNewItem extends State<MyNewItem> {
@@ -46,20 +44,16 @@ class _MyNewItem extends State<MyNewItem> {
   var _length = ['Mini', 'Midi', 'Maxi', 'Oversize'];
   var _currentLengthSelected = 'Midi';
 
-  @override
 
+  @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-        title: Text('Add New Item'),
-      ),
-      body: SingleChildScrollView(
+    return SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(20.0),
           child: Column(
             children: <Widget>[
+              MyStoragePage2(),
               TextField(
                 onChanged: (String userInput) {
                   setState(() {
@@ -68,11 +62,11 @@ class _MyNewItem extends State<MyNewItem> {
                 },
               ),
               Padding(
-                padding: EdgeInsets.all(30.0),
-                child:Text(
-                  "Name: $name",
-                  style: TextStyle(fontSize: 20.0),
-              )),
+                  padding: EdgeInsets.all(30.0),
+                  child: Text(
+                    "Name: $name",
+                    style: TextStyle(fontSize: 20.0),
+                  )),
               TextField(
                 onChanged: (String userInput) {
                   setState(() {
@@ -96,12 +90,10 @@ class _MyNewItem extends State<MyNewItem> {
                     child: Text(dropDownStringItem),
                   );
                 }).toList(),
-
-
-                onChanged: (String newValueSelected){
+                onChanged: (String newValueSelected) {
                   //moj kod, co sa ma vykonat, poslat do databazy
                   setState(() {
-                    this. _currentItemSelected = newValueSelected;
+                    this._currentItemSelected = newValueSelected;
                   });
                 },
                 value: _currentItemSelected,
@@ -122,12 +114,10 @@ class _MyNewItem extends State<MyNewItem> {
                     child: Text(dropDownStringItem),
                   );
                 }).toList(),
-
-
-                onChanged: (String newValueSelected){
+                onChanged: (String newValueSelected) {
                   //moj kod, co sa ma vykonat, poslat do databazy
                   setState(() {
-                    this. _currentLengthSelected = newValueSelected;
+                    this._currentLengthSelected = newValueSelected;
                   });
                 },
                 value: _currentLengthSelected,
@@ -136,31 +126,46 @@ class _MyNewItem extends State<MyNewItem> {
                 "Length: $_currentLengthSelected",
                 style: TextStyle(fontSize: 20.0),
               ),
-
+              ListTile(
+                  title: new RaisedButton(
+                child: Text('Send'),
+                onPressed: () {
+                  Firestore.instance.runTransaction((transaction) async {
+                    await transaction.set(Firestore.instance.collection("items").document(), {
+                      'name': name,
+                      'color': color,
+                      'size': _currentItemSelected,
+                      'length': _currentLengthSelected,
+                      'photo_url': "", //tu treba dat _path od mimik
+                      'id': "",
+                      'userId': ""
+                    });
+                    debugPrint("poslal");
+                  });
+                },
+              ))
             ],
           ),
         ),
-      ),
-      floatingActionButton: new FloatingActionButton(
-          child: Icon(Icons.send),
-          onPressed: (){
-            Firestore.instance.runTransaction((transaction) async {
-              await transaction.set(Firestore.instance.collection("items").document(), {
-                'name' : name,
-                'color' : color,
-                'size': _currentItemSelected,
-                'length' : _currentLengthSelected,
-                'photo_url' : "",
-                'id' : "",
-                'userId' : ""
-              });
-            }
-            );
+      );
+//      floatingActionButton: new RaisedButton(
+//          child: Text('Send'),
+//          onPressed: (){
+//            Firestore.instance.runTransaction((transaction) async {
+//              await transaction.set(Firestore.instance.collection("items").document(), {
+//                'name' : name,
+//                'color' : color,
+//                'size': _currentItemSelected,
+//                'length' : _currentLengthSelected,
+//                'photo_url' : "", //tu treba dat _path od mimik
+//                'id' : "",
+//                'userId' : ""
+//              });
+//            }
+//            );
+//
+//
+//          }),
 
-
-          }),
-    );
   }
 }
-
-

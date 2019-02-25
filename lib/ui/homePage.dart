@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/Pages/welcome.dart';
 import 'package:flutter_app/st/storage/stPage.dart';
+import 'package:flutter_app/db/model/Item.dart';
+import 'package:flutter_app/db/FirestoreManager.dart';
 
 class HomePage extends StatefulWidget{
   @override
@@ -12,8 +14,10 @@ class _HomeState extends State<HomePage> {
 
   final _options =[
     WelcomePage(),
-    MyStoragePage2(),
-    Text('Index 2: Public'),
+//    MyStoragePage2(),
+    MyNewItem(),
+    ItemsList(),
+//    Text('Index 2: Public'),
 
   ];
 
