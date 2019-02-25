@@ -71,15 +71,15 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
          new Center(
-            child: sampleImage == null
+            child: sampleImage == null || sampleImage2 == null
                 ? Text('Select an Image')
                 : enableUpload(),
          ),
-          new Center(
-            child: sampleImage2 == null
-                ? Text('Select an Image')
-                : enableUpload2(),
-          ),
+//          new Center(
+//            child: sampleImage2 == null
+//                ? Text('Select an Image')
+//                : enableUpload2(),
+//          ),
           new Column(
             children: <Widget>[
               new  FloatingActionButton(
