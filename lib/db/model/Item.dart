@@ -44,15 +44,11 @@ class _MyNewItem extends State<MyNewItem> {
   var _length = ['Mini', 'Midi', 'Maxi', 'Oversize'];
   var _currentLengthSelected = 'Midi';
 
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-        title: Text('Add New Item'),
-      ),
-      body: SingleChildScrollView(
+    return SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(20.0),
           child: Column(
@@ -151,7 +147,7 @@ class _MyNewItem extends State<MyNewItem> {
             ],
           ),
         ),
-      ),
+      );
 //      floatingActionButton: new RaisedButton(
 //          child: Text('Send'),
 //          onPressed: (){
@@ -170,6 +166,6 @@ class _MyNewItem extends State<MyNewItem> {
 //
 //
 //          }),
-    );
+
   }
 }
