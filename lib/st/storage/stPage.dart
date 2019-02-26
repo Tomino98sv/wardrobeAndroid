@@ -7,6 +7,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:uuid/uuid.dart';
 
 class MyStoragePage2 extends StatefulWidget{
+
+  Function _function;
+
+  MyStoragePage2({@required Function function}) {
+    _function = function;
+  }
+
   @override
   _MyStoragePageState2 createState() => new _MyStoragePageState2();
 }
@@ -30,7 +37,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
     StorageTaskSnapshot taskSnapshot = await task.onComplete;
     String downloadUrl = await taskSnapshot.ref.getDownloadURL();
     _path = downloadUrl.toString();
-
+    widget._function(_path);
     print(_path); // url cesta pre Klaud
   }
 
@@ -71,9 +78,9 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
          new Center(
-            child: sampleImage == null || sampleImage2 == null
+            child: sampleImage == null && sampleImage2 == null
                 ? Text('Select an Image')
-                : enableUpload(),
+                : sampleImage != null ? enableUpload() : enableUpload2(),
          ),
 //          new Center(
 //            child: sampleImage2 == null
