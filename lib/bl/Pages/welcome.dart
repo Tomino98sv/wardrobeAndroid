@@ -10,11 +10,7 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('My firebase app'),
-      ),
-      body: Column(
+      return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget> [
@@ -28,8 +24,7 @@ class _WelcomePageState extends State<WelcomePage> {
             child: Text("Sign up"),
           ),
         ],
-      ),
-    );
+      );
   }
 
   void navigationToSignIn(){
