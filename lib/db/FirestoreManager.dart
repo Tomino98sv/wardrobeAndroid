@@ -65,16 +65,19 @@ class ItemsList extends StatelessWidget {
             return new ListView(
               children: snapshot.data.documents.map((DocumentSnapshot document) {
                 return new ListTile(
-                  leading: Image.network(
-                      document['photo_url'],
-                      height: 42,
-                      width: 42),
+                  leading: document['photo_url'] == null || document['photo_url'] == ""
+                      ? Icon(Icons.accessibility)
+                      : Image.network(
+                          document['photo_url'],
+                          height: 42,
+                          width: 42),
                   title: new Text(document['name']),
                   subtitle: new Text(document['color']),
                   trailing: Icon(Icons.accessibility),
                   onTap: () {
                     //tu napisem co sa stane, ked klikne user na item- prejde k detailom
                     debugPrint("Tapped");
+                    debugPrint(document['photo_url']);
                   },
                 );
               }).toList(),

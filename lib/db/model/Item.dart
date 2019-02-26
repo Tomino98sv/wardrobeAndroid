@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:flutter_app/st/storage/stPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() => runApp(MyNewItem());
 
@@ -38,12 +39,30 @@ class _MyNewItem extends State<MyNewItem> {
   String size = "34";
   String length = "";
   String color = "";
+  FirebaseUser user;
+
+
+  @override
+  void initState() {
+    super.initState();
+    initUser();
+  }
+
+  void initUser() async{
+    user = await FirebaseAuth.instance.currentUser();
+  }
 
   var _sizes = ['34', '36', '38', '40', '42', '44'];
   var _currentItemSelected = '34';
   var _length = ['Mini', 'Midi', 'Maxi', 'Oversize'];
   var _currentLengthSelected = 'Midi';
+  String _imgUrl = "";
 
+  void _setImgUrl(String url) {
+    setState(() {
+      _imgUrl = url;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +72,7 @@ class _MyNewItem extends State<MyNewItem> {
           margin: EdgeInsets.all(20.0),
           child: Column(
             children: <Widget>[
-              MyStoragePage2(),
+              MyStoragePage2(function: _setImgUrl),
               TextField(
                 onChanged: (String userInput) {
                   setState(() {
@@ -130,18 +149,36 @@ class _MyNewItem extends State<MyNewItem> {
                   title: new RaisedButton(
                 child: Text('Send'),
                 onPressed: () {
-                  Firestore.instance.runTransaction((transaction) async {
-                    await transaction.set(Firestore.instance.collection("items").document(), {
+                  if(user != null) {
+                    Firestore.instance.runTransaction((transaction) async {
+                        await transaction.set(
+                            Firestore.instance.collection("items").document(), {
+                                'name': name,
+                                'color': color,
+                                'size': _currentItemSelected,
+                                'length': _currentLengthSelected,
+                                'photo_url': _imgUrl, //tu treba dat _path od mimik
+                                'id': "",
+                                'userId': user.uid
+                              }
+                        );
+                    });
+                  }else {
+                    Firestore.instance.runTransaction((transaction) async {
+                      await transaction.set(
+                          Firestore.instance.collection("items").document(), {
                       'name': name,
                       'color': color,
                       'size': _currentItemSelected,
                       'length': _currentLengthSelected,
-                      'photo_url': "", //tu treba dat _path od mimik
+                      'photo_url': _imgUrl, //tu treba dat _path od mimik
                       'id': "",
                       'userId': ""
+                      });
+
+                      debugPrint("poslal");
                     });
-                    debugPrint("poslal");
-                  });
+                  }
                 },
               ))
             ],
