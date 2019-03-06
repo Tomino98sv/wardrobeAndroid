@@ -2,54 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/db/model/Item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() => runApp(DatabaseList());
-//void main() => runApp(getListView());
-
-class DatabaseList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final title = 'My dresses';
-
-    return MaterialApp(
-      title: title,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text(title),
-        ),
-        body: GridView.count(
-          // Create a grid with 2 columns. If you change the scrollDirection to
-          // horizontal, this would produce 2 rows.
-          crossAxisCount: 2,
-          // Generate 100 Widgets that display their index in the List
-          children: List.generate(1, (index) {
-            //tu treba dokoncit aby topekne ukazovalo vedla seba
-            return Center(
-              child: ItemsList(),
-            );
-          }),
-        ),
-      ),
-    );
-  }
-}
-
-Widget getListView(i) {
-  var listView = ListView(
-    children: <Widget>[
-      ListTile(
-        leading: Icon(Icons.redeem),
-        title: Text("Dress $i"),
-        subtitle: Text("Floral Dress"),
-        trailing: Icon(Icons.accessibility),
-        onTap: () {
-          debugPrint("Tapped $i");
-        },
-      )
-    ],
-  );
-
-  return listView;
-}
+void main() => runApp(ItemsList());
 
 class ItemsList extends StatelessWidget {
   @override
@@ -63,8 +16,9 @@ class ItemsList extends StatelessWidget {
           case ConnectionState.waiting: return new Text('Loading...');
           default:
             return new ListView(
+
               children: snapshot.data.documents.map((DocumentSnapshot document) {
-                return new ListTile(
+                return new ExpansionTile(
                   leading: document['photo_url'] == null || document['photo_url'] == ""
                       ? Icon(Icons.accessibility)
                       : Image.network(
@@ -72,18 +26,37 @@ class ItemsList extends StatelessWidget {
                           height: 42,
                           width: 42),
                   title: new Text(document['name']),
-                  subtitle: new Text(document['color']),
-                  trailing: Icon(Icons.accessibility),
-                  onTap: () {
-                    //tu napisem co sa stane, ked klikne user na item- prejde k detailom
-                    debugPrint("Tapped");
-                    debugPrint(document['photo_url']);
-                  },
+//                  subtitle: new Text(document['color']),
+                  children: <Widget>[
+                    new Text("Name: "+document['name']),
+                    new Text("Color: "+document['color']),
+                    new Text("Size: "+document['size']),
+                    new Text("Length: "+document['length']),
+                    new RaisedButton(
+                        child: Text("Edit"),
+                        color: Colors.pinkAccent,
+                        elevation: 4.0,
+                        onPressed: () {
+                          //zakomentovat kod, lebo pise exception
+                          Navigator.push(context, MaterialPageRoute(builder: (context){
+                            return MyNewItem();
+                          }));
+                          debugPrint("idem dalej");
+                        }),
+//                            () => modifyItem(document['name'],document['color'], document['size'], document['length'])),
+                  ],
                 );
               }).toList(),
+
             );
         }
       },
     );
   }
+  void modifyItem(name, color, size, length) {
+
+  }
 }
+
+
+
