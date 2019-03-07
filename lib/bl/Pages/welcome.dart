@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/signIn.dart';
 import 'package:flutter_app/bl/signUp.dart';
+import 'package:flutter_app/bl/auth.dart';
+
 
 class WelcomePage extends StatefulWidget {
   @override
@@ -22,7 +24,7 @@ class _WelcomePageState extends State<WelcomePage> {
           RaisedButton(
             onPressed: navigationToSignUp,
             child: Text("Sign up"),
-          ),
+          )
         ],
       );
   }
