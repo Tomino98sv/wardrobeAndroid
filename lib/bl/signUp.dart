@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/bl/signIn.dart';
-
+import 'package:flutter_app/bl/auth.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -46,7 +46,17 @@ class _SignUpState extends State<SignUpPage> {
             ),
             RaisedButton(
               onPressed: signUp,
-              child: Text('Sign up'),
+              child: Text("Sign Up"),
+              textColor: Colors.orange,
+            ),
+            RaisedButton(
+              onPressed: () =>authService.signOut(),
+              child: Text('Sign out from google'),
+            ),
+            RaisedButton(
+              onPressed: () => authService.googleSignIn(),
+              child: Text('Sign In with google'),
+              textColor: Colors.blueGrey,
             )
           ],
         ),
