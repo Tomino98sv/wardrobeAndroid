@@ -34,10 +34,10 @@ class ItemsList extends StatelessWidget {
                   title: new Text(item.name),
 //                  subtitle: new Text(document['color']),
                   children: <Widget>[
-                    new Text("Name: +${item.name}"),
-                    new Text("Color: +${item.color}"),
-                    new Text("Size: +${item.size}"),
-                    new Text("Length: +${item.length}"),
+                    new Text("Name: ${item.name}"),
+                    new Text("Color: ${item.color}"),
+                    new Text("Size: ${item.size}"),
+                    new Text("Length: ${item.length}"),
                     new RaisedButton(
                         child: Text("Edit"),
                         color: Colors.pinkAccent,
