@@ -21,22 +21,23 @@ class ItemsList extends StatelessWidget {
                   name: document['name'],
                   color: document['color'],
                   size: document['size'],
-                  length: document['length']
+                  length: document['length'],
+                  photoUrl: document['photo_url']
                 );
                 return new ExpansionTile(
-                  leading: document['photo_url'] == null || document['photo_url'] == ""
+                  leading: item.photoUrl == null || item.photoUrl == ""
                       ? Icon(Icons.accessibility)
                       : Image.network(
-                          document['photo_url'],
+                          item.photoUrl,
                           height: 42,
                           width: 42),
-                  title: new Text(document['name']),
+                  title: new Text(item.name),
 //                  subtitle: new Text(document['color']),
                   children: <Widget>[
-                    new Text("Name: "+item.name),
-                    new Text("Color: "+item.color),
-                    new Text("Size: "+item.size),
-                    new Text("Length: "+item.length),
+                    new Text("Name: ${item.name}"),
+                    new Text("Color: ${item.color}"),
+                    new Text("Size: ${item.size}"),
+                    new Text("Length: ${item.length}"),
                     new RaisedButton(
                         child: Text("Edit"),
                         color: Colors.pinkAccent,
@@ -81,8 +82,8 @@ class SecondRoute extends StatelessWidget {
               child: Text("Edit Photo"),
               color: Colors.pinkAccent,
               elevation: 4.0,
-              onPressed: () {
-                //kod ktory moze menit fotku (upload)
+              onPressed: (){
+                //kod
               },
             ),
             Text('Name: '),
@@ -105,7 +106,7 @@ class SecondRoute extends StatelessWidget {
                 //submit changes to database
                 Firestore.instance.collection('items').document('-LZeCfJfygxm7wZz2PAW') //upravit na ozajstne premenne
 //                    .updateData({"color": item['color'], "name": item['name']});
-                    .updateData({"color": "aaaaaaa"});
+                    .updateData({"size": "aaaaaaa"});
                 debugPrint("zmenil sooooooom");
                 Navigator.pop(context);
               },
