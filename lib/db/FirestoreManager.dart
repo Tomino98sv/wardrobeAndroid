@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/db/model/Item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 void main() => runApp(ItemsList());
 
@@ -25,31 +26,71 @@ class ItemsList extends StatelessWidget {
                   photoUrl: document['photo_url'],
                   id: document.documentID
                 );
-                return new ExpansionTile(
-                  leading: item.photoUrl == null || item.photoUrl == ""
-                      ? Icon(Icons.accessibility)
-                      : Image.network(
-                          item.photoUrl,
-                          height: 42,
-                          width: 42),
-                  title: new Text(item.name),
+                return Slidable(
+                  delegate: new SlidableDrawerDelegate(),
+                  actionExtentRatio: 0.25,
+                  child: new ExpansionTile(
+                      leading: item.photoUrl == null || item.photoUrl == ""
+                          ? Icon(Icons.accessibility)
+                          : Image.network(
+                              item.photoUrl,
+                              height: 42,
+                              width: 42),
+                      title: new Text(item.name),
 //                  subtitle: new Text(document['color']),
-                  children: <Widget>[
-                    new Text("Name: ${item.name}"),
-                    new Text("Color: ${item.color}"),
-                    new Text("Size: ${item.size}"),
-                    new Text("Length: ${item.length}"),
-                    new RaisedButton(
-                        child: Text("Edit"),
-                        color: Colors.pinkAccent,
-                        elevation: 4.0,
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context){
-                            return SecondRoute(item: item);
+                      children: <Widget>[
+                        new Text("Name: ${item.name}"),
+                        new Text("Color: ${item.color}"),
+                        new Text("Size: ${item.size}"),
+                        new Text("Length: ${item.length}"),
+                        new RaisedButton(
+                            child: Text("Edit"),
+                            color: Colors.pinkAccent,
+                            elevation: 4.0,
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context){
+                                return SecondRoute(item: item);
 //                            return SecondRoute(item: document); //tu je predchadzajuci kod
-                          }));
-                          debugPrint("idem dalej");
-                        }),
+                              }));
+                              debugPrint("idem dalej");
+                            }),
+                      ],
+                    ),
+                  secondaryActions: <Widget>[
+                    new IconSlideAction(
+                      icon: Icons.transfer_within_a_station,
+                      caption: 'Delete',
+                      color: Colors.red,
+                      onTap: () {
+                        debugPrint('klikol som');
+                        return showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Delete Item'),
+                              content: Text('Are you sure you want to delete this item?'),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text('Yes'),
+                                  onPressed: (){
+                                    Firestore.instance.collection('items').document(item.id).delete();
+                                    Navigator.pop(context);
+                                    debugPrint("vymazanee");
+                                  },
+                                ),
+                                FlatButton(
+                                  child: Text('Cancel'),
+                                  onPressed: (){
+                                    Navigator.pop(context);
+                                  },
+                                )
+                              ],
+                            );
+                          },
+                        );
+
+                      },
+                    ),
                   ],
                 );
               }).toList(),
