@@ -6,25 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 void main() => runApp(MyNewItem());
 
-//class Item {
-//  String id = generateID();
-//  String userId;
-//  String name;
-//  int size;
-//  String length;
-//  String color;
-//
-//  Item(this.id, this.userId, this.name, this.size, this.length, this.color);
-//
-//  public String generateID() {
-//    var random = new Random();
-//    String newID = random.toString();
-//    return newID;
-//  }
-//
-//
-//}
-
 class MyNewItem extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -53,7 +34,7 @@ class _MyNewItem extends State<MyNewItem> {
   }
 
   var _sizes = ['34', '36', '38', '40', '42', '44'];
-  var _currentItemSelected = '34';
+  var _currentItemSelected = '38';
   var _length = ['Mini', 'Midi', 'Maxi', 'Oversize'];
   var _currentLengthSelected = 'Midi';
   String _imgUrl = "";
@@ -110,7 +91,6 @@ class _MyNewItem extends State<MyNewItem> {
                   );
                 }).toList(),
                 onChanged: (String newValueSelected) {
-                  //moj kod, co sa ma vykonat, poslat do databazy
                   setState(() {
                     this._currentItemSelected = newValueSelected;
                   });
@@ -134,7 +114,6 @@ class _MyNewItem extends State<MyNewItem> {
                   );
                 }).toList(),
                 onChanged: (String newValueSelected) {
-                  //moj kod, co sa ma vykonat, poslat do databazy
                   setState(() {
                     this._currentLengthSelected = newValueSelected;
                   });
@@ -157,7 +136,7 @@ class _MyNewItem extends State<MyNewItem> {
                                 'color': color,
                                 'size': _currentItemSelected,
                                 'length': _currentLengthSelected,
-                                'photo_url': _imgUrl, //tu treba dat _path od mimik
+                                'photo_url': _imgUrl,
                                 'id': "",
                                 'userId': user.uid
                               }
@@ -171,7 +150,7 @@ class _MyNewItem extends State<MyNewItem> {
                       'color': color,
                       'size': _currentItemSelected,
                       'length': _currentLengthSelected,
-                      'photo_url': _imgUrl, //tu treba dat _path od mimik
+                      'photo_url': _imgUrl,
                       'id': "",
                       'userId': ""
                       });
@@ -185,24 +164,5 @@ class _MyNewItem extends State<MyNewItem> {
           ),
         ),
       );
-//      floatingActionButton: new RaisedButton(
-//          child: Text('Send'),
-//          onPressed: (){
-//            Firestore.instance.runTransaction((transaction) async {
-//              await transaction.set(Firestore.instance.collection("items").document(), {
-//                'name' : name,
-//                'color' : color,
-//                'size': _currentItemSelected,
-//                'length' : _currentLengthSelected,
-//                'photo_url' : "", //tu treba dat _path od mimik
-//                'id' : "",
-//                'userId' : ""
-//              });
-//            }
-//            );
-//
-//
-//          }),
-
   }
 }

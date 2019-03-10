@@ -45,7 +45,7 @@ class ItemsList extends StatelessWidget {
                         elevation: 4.0,
                         onPressed: () {
                           Navigator.push(context, MaterialPageRoute(builder: (context){
-                            return SecondRoute(item: document);
+                            return SecondRoute(item: item);
 //                            return SecondRoute(item: document); //tu je predchadzajuci kod
                           }));
                           debugPrint("idem dalej");
@@ -63,7 +63,7 @@ class ItemsList extends StatelessWidget {
 
 class SecondRoute extends StatefulWidget{
 
-  DocumentSnapshot item;
+  Item item;
   SecondRoute({@required this.item});
   _State createState() => new _State(item: item);
 
@@ -71,19 +71,34 @@ class SecondRoute extends StatefulWidget{
 
 class _State extends State<SecondRoute>{
 
-  DocumentSnapshot item;
+  Item item;
   _State({@required this.item});
 
-  String docName = "";
+  String docName = '';
+  String docColor = '';
+  String docSize = '';
+  String docLength = '';
 
-  void _onChanged(String value) {
-    setState(() => docName = 'Change: $value');
-  }\
-
-
-  void _onSubmit(String value) {
-    setState(() => docName = 'Submit: $value');
+  void _onChangedName(String value) {
+    setState(() => docName = '$value');
   }
+
+  void _onChangedColor(String value) {
+    setState(() => docColor = '$value');
+  }
+
+  void _onChangedSize(String value) {
+    setState(() => docSize = '$value');
+  }
+
+  void _onChangedLength(String value) {
+    setState(() => docLength = '$value');
+  }
+
+//
+//  void _onSubmit(String value) {
+//    setState(() => docName = 'Submit: $value');
+//  }
 
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -95,20 +110,53 @@ class _State extends State<SecondRoute>{
         child: new Center(
           child: new Column(
             children: <Widget>[
-              new Text(docName),
+              Image.network(
+                    item.photoUrl,
+                    height: 120,
+                    width: 120),
               new TextField(
-                decoration: new InputDecoration(labelText: 'Hello', hintText: 'Hint',
-                icon: new Icon(Icons.people)),
-                onChanged: _onChanged,
-                onSubmitted: _onSubmit,
+                decoration: new InputDecoration(labelText: item.name,
+                icon: new Icon(Icons.account_circle)),
+                onChanged: _onChangedName,
+              ),
+              new TextField(
+                decoration: new InputDecoration(labelText: item.color,
+                    icon: new Icon(Icons.color_lens)),
+                onChanged: _onChangedColor,
+              ),
+              new TextField(
+                decoration: new InputDecoration(labelText: item.size,
+                    icon: new Icon(Icons.aspect_ratio)),
+                onChanged: _onChangedSize,
+              ),
+              new TextField(
+                decoration: new InputDecoration(labelText: item.length,
+                    icon: new Icon(Icons.content_cut)),
+                onChanged: _onChangedLength,
               ),
               RaisedButton(
                 child: Text('Send'),
                 onPressed: () {
-                  Firestore.instance.collection('items').document(item.documentID) //upravit na ozajstne premenne
-//                    .updateData({"color": item['color'], "name": item['name']});
-                    .updateData({"name": docName});
-                debugPrint("zmenil sooooooom");
+                  if (docName != '') {
+                    Firestore.instance.collection('items').document(item.id)
+                        .updateData({"name": docName});
+                    debugPrint("zmenil som meno");
+                  }
+                  if (docColor != '') {
+                    Firestore.instance.collection('items').document(item.id)
+                        .updateData({"color": docColor});
+                    debugPrint("zmenil som farbu");
+                  }
+                  if (docSize != '') {
+                    Firestore.instance.collection('items').document(item.id)
+                        .updateData({"size": docSize});
+                    debugPrint("zmenil som velkost");
+                  }
+                  if (docLength != '') {
+                    Firestore.instance.collection('items').document(item.id)
+                        .updateData({"length": docLength});
+                    debugPrint("zmenil som dlzku");
+                  }
                 Navigator.pop(context);
                 },
               )
@@ -120,72 +168,6 @@ class _State extends State<SecondRoute>{
   }
 
 }
-
-
-//class SecondRoute extends StatelessWidget {
-//  DocumentSnapshot item;
-//
-//  SecondRoute({@required this.item});
-//  @override
-//  Widget build(BuildContext context) {
-//
-//    return Scaffold(
-//      appBar: AppBar(
-//        title: Text("Edit Item"),
-//      ),
-//
-//      body: Center(
-//        child: Column(
-//          children: <Widget>[
-//            Image.network(
-//                item['photo_url'],
-//                height: 120,
-//                width: 120),
-//            RaisedButton(
-//              child: Text("Edit Photo"),
-//              color: Colors.pinkAccent,
-//              elevation: 4.0,
-//              onPressed: (){
-//                //kod
-//              },
-//            ),
-//            Text('Name: '),
-//            TextField(
-//              decoration: InputDecoration.collapsed(hintText: item['name']),
-//              onChanged: (value) => {
-//                item['name'] : value
-//            },),
-//            TextFormField(decoration: InputDecoration.collapsed(
-//                hintText: item['name']),),
-//            Text('Color: '),
-//            TextFormField(decoration: InputDecoration.collapsed(
-//                hintText: item['color']),),
-//            Text('Size: '),
-//            TextFormField(decoration: InputDecoration.collapsed(
-//                hintText: item['size']),),
-//            Text('Length: '),
-//            TextFormField(decoration: InputDecoration.collapsed(
-//                hintText: item['length'],),),
-//            RaisedButton(
-//              child: Text('Submit'),
-//              color: Colors.pinkAccent,
-//              elevation: 4.0,
-//              onPressed: () {
-//                //submit changes to database
-//                Firestore.instance.collection('items').document(item.documentID) //upravit na ozajstne premenne
-////                    .updateData({"color": item['color'], "name": item['name']});
-//                    .updateData({"color": "bezova"});
-//                debugPrint("zmenil sooooooom");
-//                Navigator.pop(context);
-//              },
-//            )
-//          ],
-//        ),
-//      ),
-//    );
-//
-//  }
-//}
 
 class Item {
   var name;
