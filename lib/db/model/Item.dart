@@ -50,117 +50,133 @@ class _MyNewItem extends State<MyNewItem> {
     // TODO: implement build
     return SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.all(20.0),
-          child: Column(
-            children: <Widget>[
-              MyStoragePage2(function: _setImgUrl),
-              TextField(
-                onChanged: (String userInput) {
-                  setState(() {
-                    name = userInput;
-                  });
-                },
-              ),
-              Padding(
-                  padding: EdgeInsets.all(30.0),
-                  child: Text(
-                    "Name: $name",
-                    style: TextStyle(fontSize: 20.0),
-                  )),
-              TextField(
-                onChanged: (String userInput) {
-                  setState(() {
-                    color = userInput;
-                  });
-                },
-              ),
-              Text(
-                "Color: $color",
-                style: TextStyle(fontSize: 20.0),
-              ),
-              TextField(
-                onChanged: (String userIn) {
-                  size = userIn;
-                },
-              ),
-              DropdownButton<String>(
-                items: _sizes.map((String dropDownStringItem) {
-                  return DropdownMenuItem<String>(
-                    value: dropDownStringItem,
-                    child: Text(dropDownStringItem),
-                  );
-                }).toList(),
-                onChanged: (String newValueSelected) {
-                  setState(() {
-                    this._currentItemSelected = newValueSelected;
-                  });
-                },
-                value: _currentItemSelected,
-              ),
-              Text(
-                "Size: $_currentItemSelected",
-                style: TextStyle(fontSize: 20.0),
-              ),
-              TextField(
-                onChanged: (String userIn) {
-                  length = userIn;
-                },
-              ),
-              DropdownButton<String>(
-                items: _length.map((String dropDownStringItem) {
-                  return DropdownMenuItem<String>(
-                    value: dropDownStringItem,
-                    child: Text(dropDownStringItem),
-                  );
-                }).toList(),
-                onChanged: (String newValueSelected) {
-                  setState(() {
-                    this._currentLengthSelected = newValueSelected;
-                  });
-                },
-                value: _currentLengthSelected,
-              ),
-              Text(
-                "Length: $_currentLengthSelected",
-                style: TextStyle(fontSize: 20.0),
-              ),
-              ListTile(
-                  title: new RaisedButton(
-                child: Text('Send'),
-                onPressed: () {
-                  if(user != null) {
-                    Firestore.instance.runTransaction((transaction) async {
+          padding: EdgeInsets.all(32.0),
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                MyStoragePage2(function: _setImgUrl),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: TextField(
+                        decoration: new InputDecoration(labelText: 'Name',
+                            icon: new Icon(Icons.account_circle)),
+                        onChanged: (String userInput) {
+                          setState(() {
+                            name = userInput;
+                          });
+                        },
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: TextField(
+                        decoration: new InputDecoration(labelText: 'Color',
+                            icon: new Icon(Icons.color_lens)),
+                        onChanged: (String userInput) {
+                          setState(() {
+                            color = userInput;
+                          });
+                        },
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Icon(Icons.aspect_ratio),
+                    ),
+                    Expanded(
+                      child: Text('Size'),
+                    ),
+                    Expanded(
+                      child: DropdownButton<String>(
+                        items: _sizes.map((String dropDownStringItem) {
+                          return DropdownMenuItem<String>(
+                            value: dropDownStringItem,
+                            child: Text(dropDownStringItem),
+                          );
+                        }).toList(),
+                        onChanged: (String newValueSelected) {
+                          setState(() {
+                            this._currentItemSelected = newValueSelected;
+                            size = newValueSelected;
+                          });
+                        },
+                        value: _currentItemSelected,
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Icon(Icons.content_cut),
+                    ),
+                    Expanded(
+                      child: Text('Length'),
+                    ),
+                    Expanded(
+                      child: DropdownButton<String>(
+                        items: _length.map((String dropDownStringItem) {
+                          return DropdownMenuItem<String>(
+                            value: dropDownStringItem,
+                            child: Text(dropDownStringItem),
+                          );
+                        }).toList(),
+                        onChanged: (String newValueSelected) {
+                          setState(() {
+                            this._currentLengthSelected = newValueSelected;
+                            length = newValueSelected;
+                          });
+                        },
+                        value: _currentLengthSelected,
+                      ),
+                    )
+                  ],
+                ),
+                ListTile(
+                    title: new RaisedButton(
+                  child: Text('Send'),
+                  onPressed: () {
+                    if(user != null) {
+                      Firestore.instance.runTransaction((transaction) async {
+                          await transaction.set(
+                              Firestore.instance.collection("items").document(), {
+                                  'name': name,
+                                  'color': color,
+                                  'size': _currentItemSelected,
+                                  'length': _currentLengthSelected,
+                                  'photo_url': _imgUrl,
+                                  'id': "",
+                                  'userId': user.uid
+                                }
+                          );
+                      });
+                    }else {
+                      Firestore.instance.runTransaction((transaction) async {
                         await transaction.set(
                             Firestore.instance.collection("items").document(), {
-                                'name': name,
-                                'color': color,
-                                'size': _currentItemSelected,
-                                'length': _currentLengthSelected,
-                                'photo_url': _imgUrl,
-                                'id': "",
-                                'userId': user.uid
-                              }
-                        );
-                    });
-                  }else {
-                    Firestore.instance.runTransaction((transaction) async {
-                      await transaction.set(
-                          Firestore.instance.collection("items").document(), {
-                      'name': name,
-                      'color': color,
-                      'size': _currentItemSelected,
-                      'length': _currentLengthSelected,
-                      'photo_url': _imgUrl,
-                      'id': "",
-                      'userId': ""
-                      });
+                        'name': name,
+                        'color': color,
+                        'size': _currentItemSelected,
+                        'length': _currentLengthSelected,
+                        'photo_url': _imgUrl,
+                        'id': "",
+                        'userId': ""
+                        });
 
-                      debugPrint("poslal");
-                    });
-                  }
-                },
-              ))
-            ],
+                        debugPrint("poslal");
+                      });
+                    }
+                  },
+                ))
+              ],
+            ),
           ),
         ),
       );
