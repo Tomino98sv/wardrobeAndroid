@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/db/model/Item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 void main() => runApp(ItemsList());
 
 class ItemsList extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -209,6 +209,97 @@ class _State extends State<SecondRoute>{
       ),
     );
   }
+
+}
+class ItemsListSearch extends SearchDelegate<ItemsList>{
+  var items = Firestore.instance.collection('items').snapshots();
+
+  ItemsListSearch(this.items);
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+       icon: Icon(Icons.clear),
+        onPressed: (){
+         query ='';
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return
+      IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: (){
+          close(context, null);
+        },
+
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+        stream: items,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
+          if(!snapshot.hasData){
+            return Center(
+              child: Text("No  data"),
+            );
+          }
+          final results =
+          snapshot.data.documents.where((a) => a['name'].toLowerCase().contains(query));
+
+          return ListView(
+            children: results.map((DocumentSnapshot document) {
+              Item item = Item(
+                  name: document['name'],
+                  color: document['color'],
+                  size: document['size'],
+                  length: document['length'],
+                  photoUrl: document['photo_url'],
+                  id: document.documentID
+              );
+            },
+            ).toList()
+            ,);
+        }
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+        stream: items,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
+          if(!snapshot.hasData){
+            return Center(
+              child: Text("No  data"),
+            );
+          }
+          final results =
+          snapshot.data.documents.where((a) => a['name'].startsWith(query)).toList();
+          //a.documentID.toLowerCase().contains(query));
+          return ListView(
+            children: results
+                .map<ListTile>((a) => ListTile(
+              title: Text(a['name'],
+                style: Theme.of(context).textTheme.subhead.copyWith(
+                    fontSize: 12.0,
+                    color: Colors.pink,
+                )),
+              onTap: (){
+                close(context, a);
+              },
+          )).toList(),
+          );
+        },
+    );
+
+}
 
 }
 

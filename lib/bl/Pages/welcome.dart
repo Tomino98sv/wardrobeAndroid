@@ -19,11 +19,12 @@ class _WelcomePageState extends State<WelcomePage> {
           RaisedButton(
             onPressed: navigationToSignIn,
             child: Text("Sign in"),
-
+            textColor: Colors.white,
           ),
           RaisedButton(
             onPressed: navigationToSignUp,
             child: Text("Sign up"),
+            textColor: Colors.white,
           )
         ],
       );
