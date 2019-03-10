@@ -146,62 +146,64 @@ class _State extends State<SecondRoute>{
       appBar: new AppBar(
         title: new Text('Edit Item'),
       ),
-      body: new Container(
-        padding: new EdgeInsets.all(32.0),
-        child: new Center(
-          child: new Column(
-            children: <Widget>[
-              Image.network(
-                    item.photoUrl,
-                    height: 120,
-                    width: 120),
-              new TextField(
-                decoration: new InputDecoration(labelText: item.name,
-                icon: new Icon(Icons.account_circle)),
-                onChanged: _onChangedName,
-              ),
-              new TextField(
-                decoration: new InputDecoration(labelText: item.color,
-                    icon: new Icon(Icons.color_lens)),
-                onChanged: _onChangedColor,
-              ),
-              new TextField(
-                decoration: new InputDecoration(labelText: item.size,
-                    icon: new Icon(Icons.aspect_ratio)),
-                onChanged: _onChangedSize,
-              ),
-              new TextField(
-                decoration: new InputDecoration(labelText: item.length,
-                    icon: new Icon(Icons.content_cut)),
-                onChanged: _onChangedLength,
-              ),
-              RaisedButton(
-                child: Text('Send'),
-                onPressed: () {
-                  if (docName != '') {
-                    Firestore.instance.collection('items').document(item.id)
-                        .updateData({"name": docName});
-                    debugPrint("zmenil som meno");
-                  }
-                  if (docColor != '') {
-                    Firestore.instance.collection('items').document(item.id)
-                        .updateData({"color": docColor});
-                    debugPrint("zmenil som farbu");
-                  }
-                  if (docSize != '') {
-                    Firestore.instance.collection('items').document(item.id)
-                        .updateData({"size": docSize});
-                    debugPrint("zmenil som velkost");
-                  }
-                  if (docLength != '') {
-                    Firestore.instance.collection('items').document(item.id)
-                        .updateData({"length": docLength});
-                    debugPrint("zmenil som dlzku");
-                  }
-                Navigator.pop(context);
-                },
-              )
-            ],
+      body: SingleChildScrollView(
+        child: new Container(
+          padding: new EdgeInsets.all(32.0),
+          child: new Center(
+            child: new Column(
+              children: <Widget>[
+                Image.network(
+                      item.photoUrl,
+                      height: 120,
+                      width: 120),
+                new TextField(
+                  decoration: new InputDecoration(labelText: item.name,
+                  icon: new Icon(Icons.account_circle)),
+                  onChanged: _onChangedName,
+                ),
+                new TextField(
+                  decoration: new InputDecoration(labelText: item.color,
+                      icon: new Icon(Icons.color_lens)),
+                  onChanged: _onChangedColor,
+                ),
+                new TextField(
+                  decoration: new InputDecoration(labelText: item.size,
+                      icon: new Icon(Icons.aspect_ratio)),
+                  onChanged: _onChangedSize,
+                ),
+                new TextField(
+                  decoration: new InputDecoration(labelText: item.length,
+                      icon: new Icon(Icons.content_cut)),
+                  onChanged: _onChangedLength,
+                ),
+                RaisedButton(
+                  child: Text('Send'),
+                  onPressed: () {
+                    if (docName != '') {
+                      Firestore.instance.collection('items').document(item.id)
+                          .updateData({"name": docName});
+                      debugPrint("zmenil som meno");
+                    }
+                    if (docColor != '') {
+                      Firestore.instance.collection('items').document(item.id)
+                          .updateData({"color": docColor});
+                      debugPrint("zmenil som farbu");
+                    }
+                    if (docSize != '') {
+                      Firestore.instance.collection('items').document(item.id)
+                          .updateData({"size": docSize});
+                      debugPrint("zmenil som velkost");
+                    }
+                    if (docLength != '') {
+                      Firestore.instance.collection('items').document(item.id)
+                          .updateData({"length": docLength});
+                      debugPrint("zmenil som dlzku");
+                    }
+                  Navigator.pop(context);
+                  },
+                )
+              ],
+            ),
           ),
         ),
       ),
