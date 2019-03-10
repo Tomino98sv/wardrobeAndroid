@@ -35,28 +35,29 @@ class _SignUpState extends State<SignUpPage> {
             TextFormField(
               validator: (input){
                 if(input.length < 6){
-                  return 'Your password needs to be atleast 6 charakter';
+                  return 'Your password needs to be at least 6 characters';
                 }
               },
               onSaved: (input) => _password = input,
               decoration: InputDecoration(
-                  labelText: 'password'
+                  labelText: 'Password'
               ),
               obscureText: true,
             ),
             RaisedButton(
               onPressed: signUp,
-              child: Text("Sign Up"),
-              textColor: Colors.orange,
+              child: Text("Sign up"),
+              textColor: Colors.yellow[100],
             ),
             RaisedButton(
               onPressed: () =>authService.signOut(),
-              child: Text('Sign out from google'),
+              child: Text('Sign out from Google'),
+              textColor: Colors.yellow[100],
             ),
             RaisedButton(
               onPressed: () => authService.googleSignIn(),
-              child: Text('Sign In with google'),
-              textColor: Colors.blueGrey,
+              child: Text('Sign in with Google'),
+              textColor: Colors.yellow[100],
             )
           ],
         ),
