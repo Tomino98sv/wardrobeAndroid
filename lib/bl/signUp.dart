@@ -47,17 +47,17 @@ class _SignUpState extends State<SignUpPage> {
             RaisedButton(
               onPressed: signUp,
               child: Text("Sign up"),
-              textColor: Colors.yellow[100],
+              textColor: Colors.white,
             ),
             RaisedButton(
               onPressed: () =>authService.signOut(),
               child: Text('Sign out from Google'),
-              textColor: Colors.yellow[100],
+              textColor: Colors.white,
             ),
             RaisedButton(
               onPressed: () => authService.googleSignIn(),
               child: Text('Sign in with Google'),
-              textColor: Colors.yellow[100],
+              textColor: Colors.white,
             )
           ],
         ),
