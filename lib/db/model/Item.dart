@@ -60,7 +60,7 @@ class _MyNewItem extends State<MyNewItem> {
                     Expanded(
                       child: TextField(
                         decoration: new InputDecoration(labelText: 'Name',
-                            icon: new Icon(Icons.account_circle)),
+                            icon: new Icon(Icons.account_circle, color: Colors.brown[800])),
                         onChanged: (String userInput) {
                           setState(() {
                             name = userInput;
@@ -75,7 +75,7 @@ class _MyNewItem extends State<MyNewItem> {
                     Expanded(
                       child: TextField(
                         decoration: new InputDecoration(labelText: 'Color',
-                            icon: new Icon(Icons.color_lens)),
+                            icon: new Icon(Icons.color_lens, color: Colors.brown[800])),
                         onChanged: (String userInput) {
                           setState(() {
                             color = userInput;
@@ -88,7 +88,7 @@ class _MyNewItem extends State<MyNewItem> {
                 Row(
                   children: <Widget>[
                     Expanded(
-                      child: Icon(Icons.aspect_ratio),
+                      child: Icon(Icons.aspect_ratio, color: Colors.brown[800]),
                     ),
                     Expanded(
                       child: Text('Size'),
@@ -115,7 +115,7 @@ class _MyNewItem extends State<MyNewItem> {
                 Row(
                   children: <Widget>[
                     Expanded(
-                      child: Icon(Icons.content_cut),
+                      child: Icon(Icons.content_cut, color: Colors.brown[800]),
                     ),
                     Expanded(
                       child: Text('Length'),
@@ -142,6 +142,7 @@ class _MyNewItem extends State<MyNewItem> {
                 ListTile(
                     title: new RaisedButton(
                   child: Text('Send'),
+                  textColor: Colors.white,
                   onPressed: () {
                     if(user != null) {
                       Firestore.instance.runTransaction((transaction) async {
