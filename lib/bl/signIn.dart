@@ -44,19 +44,19 @@ class _LoginPageState extends State<LoginPage> {
               TextFormField(
                 validator: (input){
                   if(input.length < 6){
-                    return 'Your password needs to be atleast 6 charakter';
+                    return 'Your password needs to be at least 6 characters';
                   }
                 },
                 onSaved: (input) => _password = input,
                 decoration: InputDecoration(
-                    labelText: 'password'
+                    labelText: 'Password'
                 ),
                 obscureText: true,
               ),
               RaisedButton(
                 onPressed: signIn,
-                child: Text('Sign In'),
-                textColor: Colors.black,
+                child: Text('Sign in'),
+                textColor: Colors.yellow[100],
               )
             ],
           ),
