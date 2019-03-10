@@ -142,6 +142,7 @@ class _MyNewItem extends State<MyNewItem> {
                 ListTile(
                     title: new RaisedButton(
                   child: Text('Send'),
+                  textColor: Colors.white,
                   onPressed: () {
                     if(user != null) {
                       Firestore.instance.runTransaction((transaction) async {
