@@ -56,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
               RaisedButton(
                 onPressed: signIn,
                 child: Text('Sign in'),
-                textColor: Colors.yellow[100],
+                textColor: Colors.white,
               )
             ],
           ),
