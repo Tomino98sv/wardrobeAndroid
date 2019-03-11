@@ -291,9 +291,9 @@ class ItemsListSearch extends SearchDelegate<ItemsList>{
                     fontSize: 12.0,
                     color: Colors.pink,
                 )),
-//               onTap: (){
-//                 close(context, a);
-//               },
+//              onTap: (){
+//                close(context, a);
+//              },
           )).toList(),
           );
         },

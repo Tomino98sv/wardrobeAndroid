@@ -7,12 +7,12 @@ void main(){
         title: "Dress",
         home: HomePage(),
         theme: ThemeData(
-        primaryColor: Colors.brown[800],
-        scaffoldBackgroundColor: Colors.yellow[50],
-        buttonColor: Colors.brown[300],
-        fontFamily: 'Quicksand',
-        indicatorColor: Colors.blueGrey,
+          primaryColor: Colors.pink[800],
+          scaffoldBackgroundColor: Colors.pinkAccent[30],
+          buttonColor: Colors.brown[300],
+          fontFamily: 'Quicksand',
+          indicatorColor: Colors.blueGrey,
         )
-  )
+  ),
   );
 }
