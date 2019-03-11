@@ -290,7 +290,7 @@ class _State extends State<EditItem>{
                       debugPrint("zmenil som dlzku");
                     }
                   Navigator.pop(context);
-                  },
+                 },
                 )
               ],
             ),
@@ -381,11 +381,6 @@ class ItemsListSearch extends SearchDelegate<ItemsList>{
                     fontSize: 12.0,
                     color: Colors.pink,
                 )),
-<<<<<<< HEAD
-//              onTap: (){
-//                close(context, a);
-//              },
-=======
                onTap: (){
 //                 close(context, a);
                Navigator.push(context, MaterialPageRoute(builder: (context){
@@ -401,7 +396,6 @@ class ItemsListSearch extends SearchDelegate<ItemsList>{
                );
                }));
                },
->>>>>>> 26ca5ff0400a34d4baf4b0b7ab85b94686db6d62
           )).toList(),
           );
         },
