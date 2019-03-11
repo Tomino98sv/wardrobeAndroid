@@ -290,7 +290,7 @@ class _State extends State<EditItem>{
                       debugPrint("zmenil som dlzku");
                     }
                   Navigator.pop(context);
-                  },
+                 },
                 )
               ],
             ),
