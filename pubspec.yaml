@@ -62,13 +62,22 @@ flutter:
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
-   example:
-   fonts:
-     - family: Roboto
-       fonts:
-         - asset: assets/font/Roboto-Black.ttf
-         - asset: fonts/Roboto-BlackItalic.ttf
-         - asset: assests/font/Roboto-Bold.ttf
+#   example:
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/font/Roboto-Black.ttf
+        - asset: assets/font/Roboto-BlackItalic.ttf
+        - asset: assets/font/Roboto-Bold.ttf
+        - asset: assets/font/Roboto-BoldItalic.ttf
+        - asset: assets/font/Roboto-Italic.ttf
+        - asset: assets/font/Roboto-Light.ttf
+        - asset: assets/font/Roboto-LightItalic.ttf
+        - asset: assets/font/Roboto-Medium.ttf
+        - asset: assets/font/Roboto-MediumItalic.ttf
+        - asset: assets/font/Roboto-Regular.ttf
+        - asset: assets/font/Roboto-Thin.ttf
+        - asset: assets/font/Roboto-ThinItalic.ttf
 
   #
   # For details regarding fonts from package dependencies,
