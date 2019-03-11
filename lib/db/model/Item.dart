@@ -6,25 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 void main() => runApp(MyNewItem());
 
-//class Item {
-//  String id = generateID();
-//  String userId;
-//  String name;
-//  int size;
-//  String length;
-//  String color;
-//
-//  Item(this.id, this.userId, this.name, this.size, this.length, this.color);
-//
-//  public String generateID() {
-//    var random = new Random();
-//    String newID = random.toString();
-//    return newID;
-//  }
-//
-//
-//}
-
 class MyNewItem extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -53,7 +34,7 @@ class _MyNewItem extends State<MyNewItem> {
   }
 
   var _sizes = ['34', '36', '38', '40', '42', '44'];
-  var _currentItemSelected = '34';
+  var _currentItemSelected = '38';
   var _length = ['Mini', 'Midi', 'Maxi', 'Oversize'];
   var _currentLengthSelected = 'Midi';
   String _imgUrl = "";
@@ -69,140 +50,136 @@ class _MyNewItem extends State<MyNewItem> {
     // TODO: implement build
     return SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.all(20.0),
-          child: Column(
-            children: <Widget>[
-              MyStoragePage2(function: _setImgUrl),
-              TextField(
-                onChanged: (String userInput) {
-                  setState(() {
-                    name = userInput;
-                  });
-                },
-              ),
-              Padding(
-                  padding: EdgeInsets.all(30.0),
-                  child: Text(
-                    "Name: $name",
-                    style: TextStyle(fontSize: 20.0),
-                  )),
-              TextField(
-                onChanged: (String userInput) {
-                  setState(() {
-                    color = userInput;
-                  });
-                },
-              ),
-              Text(
-                "Color: $color",
-                style: TextStyle(fontSize: 20.0),
-              ),
-              TextField(
-                onChanged: (String userIn) {
-                  size = userIn;
-                },
-              ),
-              DropdownButton<String>(
-                items: _sizes.map((String dropDownStringItem) {
-                  return DropdownMenuItem<String>(
-                    value: dropDownStringItem,
-                    child: Text(dropDownStringItem),
-                  );
-                }).toList(),
-                onChanged: (String newValueSelected) {
-                  //moj kod, co sa ma vykonat, poslat do databazy
-                  setState(() {
-                    this._currentItemSelected = newValueSelected;
-                  });
-                },
-                value: _currentItemSelected,
-              ),
-              Text(
-                "Size: $_currentItemSelected",
-                style: TextStyle(fontSize: 20.0),
-              ),
-              TextField(
-                onChanged: (String userIn) {
-                  length = userIn;
-                },
-              ),
-              DropdownButton<String>(
-                items: _length.map((String dropDownStringItem) {
-                  return DropdownMenuItem<String>(
-                    value: dropDownStringItem,
-                    child: Text(dropDownStringItem),
-                  );
-                }).toList(),
-                onChanged: (String newValueSelected) {
-                  //moj kod, co sa ma vykonat, poslat do databazy
-                  setState(() {
-                    this._currentLengthSelected = newValueSelected;
-                  });
-                },
-                value: _currentLengthSelected,
-              ),
-              Text(
-                "Length: $_currentLengthSelected",
-                style: TextStyle(fontSize: 20.0),
-              ),
-              ListTile(
-                  title: new RaisedButton(
-                child: Text('Send'),
-                onPressed: () {
-                  if(user != null) {
-                    Firestore.instance.runTransaction((transaction) async {
+          padding: EdgeInsets.all(32.0),
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                MyStoragePage2(function: _setImgUrl),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: TextField(
+                        decoration: new InputDecoration(labelText: 'Name',
+                            icon: new Icon(Icons.account_circle, color: Colors.brown[800])),
+                        onChanged: (String userInput) {
+                          setState(() {
+                            name = userInput;
+                          });
+                        },
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: TextField(
+                        decoration: new InputDecoration(labelText: 'Color',
+                            icon: new Icon(Icons.color_lens, color: Colors.brown[800])),
+                        onChanged: (String userInput) {
+                          setState(() {
+                            color = userInput;
+                          });
+                        },
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Icon(Icons.aspect_ratio, color: Colors.brown[800]),
+                    ),
+                    Expanded(
+                      child: Text('Size'),
+                    ),
+                    Expanded(
+                      child: DropdownButton<String>(
+                        items: _sizes.map((String dropDownStringItem) {
+                          return DropdownMenuItem<String>(
+                            value: dropDownStringItem,
+                            child: Text(dropDownStringItem),
+                          );
+                        }).toList(),
+                        onChanged: (String newValueSelected) {
+                          setState(() {
+                            this._currentItemSelected = newValueSelected;
+                            size = newValueSelected;
+                          });
+                        },
+                        value: _currentItemSelected,
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Icon(Icons.content_cut, color: Colors.brown[800]),
+                    ),
+                    Expanded(
+                      child: Text('Length'),
+                    ),
+                    Expanded(
+                      child: DropdownButton<String>(
+                        items: _length.map((String dropDownStringItem) {
+                          return DropdownMenuItem<String>(
+                            value: dropDownStringItem,
+                            child: Text(dropDownStringItem),
+                          );
+                        }).toList(),
+                        onChanged: (String newValueSelected) {
+                          setState(() {
+                            this._currentLengthSelected = newValueSelected;
+                            length = newValueSelected;
+                          });
+                        },
+                        value: _currentLengthSelected,
+                      ),
+                    )
+                  ],
+                ),
+                ListTile(
+                    title: new RaisedButton(
+                  child: Text('Send'),
+                  textColor: Colors.white,
+                  onPressed: () {
+                    if(user != null) {
+                      Firestore.instance.runTransaction((transaction) async {
+                          await transaction.set(
+                              Firestore.instance.collection("items").document(), {
+                                  'name': name,
+                                  'color': color,
+                                  'size': _currentItemSelected,
+                                  'length': _currentLengthSelected,
+                                  'photo_url': _imgUrl,
+                                  'id': "",
+                                  'userId': user.uid
+                                }
+                          );
+                      });
+                    }else {
+                      Firestore.instance.runTransaction((transaction) async {
                         await transaction.set(
                             Firestore.instance.collection("items").document(), {
-                                'name': name,
-                                'color': color,
-                                'size': _currentItemSelected,
-                                'length': _currentLengthSelected,
-                                'photo_url': _imgUrl, //tu treba dat _path od mimik
-                                'id': "",
-                                'userId': user.uid
-                              }
-                        );
-                    });
-                  }else {
-                    Firestore.instance.runTransaction((transaction) async {
-                      await transaction.set(
-                          Firestore.instance.collection("items").document(), {
-                      'name': name,
-                      'color': color,
-                      'size': _currentItemSelected,
-                      'length': _currentLengthSelected,
-                      'photo_url': _imgUrl, //tu treba dat _path od mimik
-                      'id': "",
-                      'userId': ""
-                      });
+                        'name': name,
+                        'color': color,
+                        'size': _currentItemSelected,
+                        'length': _currentLengthSelected,
+                        'photo_url': _imgUrl,
+                        'id': "",
+                        'userId': ""
+                        });
 
-                      debugPrint("poslal");
-                    });
-                  }
-                },
-              ))
-            ],
+                        debugPrint("poslal");
+                      });
+                    }
+                  },
+                ))
+              ],
+            ),
           ),
         ),
       );
-//      floatingActionButton: new RaisedButton(
-//          child: Text('Send'),
-//          onPressed: (){
-//            Firestore.instance.runTransaction((transaction) async {
-//              await transaction.set(Firestore.instance.collection("items").document(), {
-//                'name' : name,
-//                'color' : color,
-//                'size': _currentItemSelected,
-//                'length' : _currentLengthSelected,
-//                'photo_url' : "", //tu treba dat _path od mimik
-//                'id' : "",
-//                'userId' : ""
-//              });
-//            }
-//            );
-//
-//
-//          }),
-
   }
 }
