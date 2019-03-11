@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/Pages/welcome.dart';
-import 'package:flutter_app/st/storage/stPage.dart';
 import 'package:flutter_app/db/model/Item.dart';
 import 'package:flutter_app/db/FirestoreManager.dart';
+
 
 class HomePage extends StatefulWidget{
   @override
@@ -33,6 +34,17 @@ class _HomeState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Wardrobe'),
+        actions: <Widget>[_page!=2? Container() :
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: (){
+              showSearch(
+                context: context,
+                delegate: ItemsListSearch(Firestore.instance.collection('items').snapshots()),
+              );
+            },
+          ),
+        ],
       ),
       body: Container(
         child: _options.elementAt(_page),
@@ -41,15 +53,15 @@ class _HomeState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: new Icon(Icons.person),
+            icon: new Icon(Icons.person, color: Colors.brown[800]),
             title: new Text('Me'),
           ),
           BottomNavigationBarItem(
-            icon: new Icon(Icons.mail),
+            icon: new Icon(Icons.mail, color: Colors.brown[800]),
             title: new Text('Share'),
           ),
           BottomNavigationBarItem(
-              icon: new Icon(Icons.ac_unit),
+              icon: new Icon(Icons.ac_unit, color: Colors.brown[800]),
               title: new Text('Public')
           )
         ],
