@@ -44,17 +44,37 @@ class ItemsList extends StatelessWidget {
                         new Text("Color: ${item.color}"),
                         new Text("Size: ${item.size}"),
                         new Text("Length: ${item.length}"),
-                        new RaisedButton(
-                            child: Text("Edit"),
-                            color: Colors.pinkAccent,
-                            elevation: 4.0,
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context){
-                                return EditItem(item: document);
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              child: new RaisedButton(
+                                  child: Text("Edit"),
+                                  color: Colors.pinkAccent,
+                                  elevation: 4.0,
+                                  onPressed: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                                      return EditItem(item: document);
 //                            return SecondRoute(item: document); //tu je predchadzajuci kod
-                              }));
-                              debugPrint("idem dalej");
-                            }),
+                                    }));
+                                    debugPrint("idem dalej");
+                                  }),padding: EdgeInsets.all(10.0),
+                            ),
+                            Container(
+                              child: new RaisedButton(
+                                child: Text('Borrow to...'),
+                                color: Colors.pinkAccent,
+                                elevation: 4.0,
+                                onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                                    return UserList();
+                                  }));
+                                  // kod s vyberom userov Navigator.push
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   secondaryActions: <Widget>[
@@ -103,6 +123,38 @@ class ItemsList extends StatelessWidget {
   }
 }
 
+class UserList extends StatelessWidget{
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('users').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError)
+          return new Text('Error: ${snapshot.error}');
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting: return new Text('Loading...');
+          default:
+            return Scaffold(
+              body: new ListView(
+               children: snapshot.data.documents.map((DocumentSnapshot document) {
+                 return ListTile(
+                   trailing: Icon(Icons.send),
+                   title: Text(document['name']),
+                   onTap: (){
+                     //kod ktory urci usra, ktoremu bolo pozicane
+                     Navigator.pop(context);
+                   },
+                 );
+              }).toList()
+              ),
+            );
+        }
+      }
+    );
+  }
+}
+
 //show details about item with option to edit
 class ShowDetails extends StatelessWidget{
 
@@ -111,6 +163,7 @@ class ShowDetails extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(item['name']),
@@ -124,7 +177,8 @@ class ShowDetails extends StatelessWidget{
                 Image.network(
                     item['photo_url'],
                     height: 120,
-                    width: 120),
+                    width: 120,
+                ),
                 Row(
                   children: <Widget>[
                     Expanded(

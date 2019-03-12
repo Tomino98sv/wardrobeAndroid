@@ -87,21 +87,27 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
 //                ? Text('Select an Image')
 //                : enableUpload2(),
 //          ),
-          new Column(
+          new Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              new  FloatingActionButton(
-                onPressed: getImage,
-                tooltip: 'Add Image',
-                child: new Icon(Icons.add_photo_alternate),
-                backgroundColor: Colors.pink,
-                mini: true,
+              Container(
+                child: new FloatingActionButton(
+                  onPressed: getImage,
+                  tooltip: 'Add Image',
+                  child: new Icon(Icons.add_photo_alternate),
+                  backgroundColor: Colors.pink,
+                  mini: true,
+                ),padding: EdgeInsets.all(15.0),
               ),
-              new FloatingActionButton(
-                onPressed: getImage2,
-                tooltip: 'Add Image',
-                child: new Icon(Icons.add_a_photo),
-                backgroundColor: Colors.pink,
-                mini: true,
+              Container(
+                child: new FloatingActionButton(
+                  onPressed: getImage2,
+                  tooltip: 'Add Image',
+                  child: new Icon(Icons.add_a_photo),
+                  backgroundColor: Colors.pink,
+                  mini: true,
+                ),padding: EdgeInsets.all(15.0)
               ),
             ],
           )

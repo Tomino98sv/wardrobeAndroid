@@ -6,7 +6,7 @@ void main(){
   runApp(
       MaterialApp(
         title: "Dress",
-        home: QuickBee(),
+        home: HomePage(),
         theme: ThemeData(
           primaryColor: Colors.grey[50],
 //          scaffoldBackgroundColor: Colors.pinkAccent[30],
