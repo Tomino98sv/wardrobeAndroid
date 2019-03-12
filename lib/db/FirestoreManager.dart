@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:zoomable_image/zoomable_image.dart';
+
 
 void main() => runApp(ItemsList());
 
@@ -174,11 +176,14 @@ class ShowDetails extends StatelessWidget{
           child: new Center(
             child: new Column(
               children: <Widget>[
+//                new Flexible(
+//                  child: new ZoomableImage(
                 Image.network(
                     item['photo_url'],
                     height: 120,
-                    width: 120,
-                ),
+                    width: 120
+//                    ,)
+                  ),
                 Row(
                   children: <Widget>[
                     Expanded(
@@ -432,8 +437,8 @@ class ItemsListSearch extends SearchDelegate<ItemsList>{
                 .map<ListTile>((a) => ListTile(
               title: Text(a['name'],
                 style: Theme.of(context).textTheme.subhead.copyWith(
-                    fontSize: 12.0,
-                    color: Colors.pink,
+                    fontSize: 16.0,
+                    color: Colors.black,
                 )),
                onTap: (){
 //                 close(context, a);
