@@ -8,12 +8,12 @@ void main(){
         title: "Dress",
         home: QuickBee(),
         theme: ThemeData(
-        primaryColor: Colors.brown[800],
-        scaffoldBackgroundColor: Colors.yellow[50],
-        buttonColor: Colors.brown[300],
-        fontFamily: 'Quicksand',
-        indicatorColor: Colors.blueGrey,
+          primaryColor: Colors.grey[50],
+//          scaffoldBackgroundColor: Colors.pinkAccent[30],
+          buttonColor: Colors.brown[300],
+          fontFamily: 'Quicksand',
+          indicatorColor: Colors.blueGrey,
         )
-  )
+  ),
   );
 }
