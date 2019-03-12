@@ -20,6 +20,7 @@ class _MyNewItem extends State<MyNewItem> {
   String size = "34";
   String length = "";
   String color = "";
+  FirebaseUser userLend;
   FirebaseUser user;
 
 
