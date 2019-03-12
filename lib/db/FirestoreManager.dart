@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 void main() => runApp(ItemsList());
 
+//scrolling list of items
 class ItemsList extends StatelessWidget {
 
   @override
@@ -43,17 +44,37 @@ class ItemsList extends StatelessWidget {
                         new Text("Color: ${item.color}"),
                         new Text("Size: ${item.size}"),
                         new Text("Length: ${item.length}"),
-                        new RaisedButton(
-                            child: Text("Edit"),
-                            color: Colors.pinkAccent,
-                            elevation: 4.0,
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context){
-                                return SecondRoute(item: item);
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              child: new RaisedButton(
+                                  child: Text("Edit"),
+                                  color: Colors.pinkAccent,
+                                  elevation: 4.0,
+                                  onPressed: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                                      return EditItem(item: document);
 //                            return SecondRoute(item: document); //tu je predchadzajuci kod
-                              }));
-                              debugPrint("idem dalej");
-                            }),
+                                    }));
+                                    debugPrint("idem dalej");
+                                  }),padding: EdgeInsets.all(10.0),
+                            ),
+                            Container(
+                              child: new RaisedButton(
+                                child: Text('Borrow to...'),
+                                color: Colors.pinkAccent,
+                                elevation: 4.0,
+                                onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                                    return UserList();
+                                  }));
+                                  // kod s vyberom userov Navigator.push
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   secondaryActions: <Widget>[
@@ -102,17 +123,140 @@ class ItemsList extends StatelessWidget {
   }
 }
 
-class SecondRoute extends StatefulWidget{
+class UserList extends StatelessWidget{
 
-  Item item;
-  SecondRoute({@required this.item});
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('users').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError)
+          return new Text('Error: ${snapshot.error}');
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting: return new Text('Loading...');
+          default:
+            return Scaffold(
+              body: new ListView(
+               children: snapshot.data.documents.map((DocumentSnapshot document) {
+                 return ListTile(
+                   trailing: Icon(Icons.send),
+                   title: Text(document['name']),
+                   onTap: (){
+                     //kod ktory urci usra, ktoremu bolo pozicane
+                     Navigator.pop(context);
+                   },
+                 );
+              }).toList()
+              ),
+            );
+        }
+      }
+    );
+  }
+}
+
+//show details about item with option to edit
+class ShowDetails extends StatelessWidget{
+
+  DocumentSnapshot item;
+  ShowDetails({@required this.item});
+
+  @override
+  Widget build(BuildContext context) {
+
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text(item['name']),
+      ),
+      body: SingleChildScrollView(
+        child: new Container(
+          padding: new EdgeInsets.all(32.0),
+          child: new Center(
+            child: new Column(
+              children: <Widget>[
+                Image.network(
+                    item['photo_url'],
+                    height: 120,
+                    width: 120,
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Icon(Icons.account_circle)
+                    ),
+                    Expanded(
+                      child: Text(item['name']),
+                    )
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Icon(Icons.color_lens),
+                    ),
+                    Expanded(
+                      child: Text(item['color']),
+                    )
+                  ],
+                ),
+                Row (
+                  children: <Widget>[
+                    Expanded(
+                      child: Icon(Icons.aspect_ratio),
+                    ),
+                    Expanded(
+                      child: Text(item['size']),
+                    )
+                  ],
+                ),
+                Row (
+                  children: <Widget>[
+                    Expanded(
+                      child: Icon(Icons.content_cut),
+                    ),
+                    Expanded(
+                      child: Text(item['length']),
+                    )
+                  ],
+                ),
+                RaisedButton(
+                  child: Text('Edit'),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+//                      return EditItem(item: new Item(
+//                        name: item['name'],
+//                        color: item['color'],
+//                         size: item['size'],
+//                         length: item['length'],
+//                         photoUrl: item['photo_url'],
+//                         id: item.documentID
+//                      ));
+                    return EditItem(item: item,);
+                    }));
+                  },
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
+//editing item screen
+class EditItem extends StatefulWidget{
+
+  DocumentSnapshot item;
+  EditItem({@required this.item});
   _State createState() => new _State(item: item);
 
 }
 
-class _State extends State<SecondRoute>{
+class _State extends State<EditItem>{
 
-  Item item;
+  DocumentSnapshot item;
   _State({@required this.item});
 
   String docName = '';
@@ -153,26 +297,26 @@ class _State extends State<SecondRoute>{
             child: new Column(
               children: <Widget>[
                 Image.network(
-                      item.photoUrl,
+                      item['photo_url'],
                       height: 120,
                       width: 120),
                 new TextField(
-                  decoration: new InputDecoration(labelText: item.name,
+                  decoration: new InputDecoration(labelText: item['name'],
                   icon: new Icon(Icons.account_circle)),
                   onChanged: _onChangedName,
                 ),
                 new TextField(
-                  decoration: new InputDecoration(labelText: item.color,
+                  decoration: new InputDecoration(labelText: item['color'],
                       icon: new Icon(Icons.color_lens)),
                   onChanged: _onChangedColor,
                 ),
                 new TextField(
-                  decoration: new InputDecoration(labelText: item.size,
+                  decoration: new InputDecoration(labelText: item['size'],
                       icon: new Icon(Icons.aspect_ratio)),
                   onChanged: _onChangedSize,
                 ),
                 new TextField(
-                  decoration: new InputDecoration(labelText: item.length,
+                  decoration: new InputDecoration(labelText: item['length'],
                       icon: new Icon(Icons.content_cut)),
                   onChanged: _onChangedLength,
                 ),
@@ -180,27 +324,27 @@ class _State extends State<SecondRoute>{
                   child: Text('Send'),
                   onPressed: () {
                     if (docName != '') {
-                      Firestore.instance.collection('items').document(item.id)
+                      Firestore.instance.collection('items').document(item.documentID)
                           .updateData({"name": docName});
                       debugPrint("zmenil som meno");
                     }
                     if (docColor != '') {
-                      Firestore.instance.collection('items').document(item.id)
+                      Firestore.instance.collection('items').document(item.documentID)
                           .updateData({"color": docColor});
                       debugPrint("zmenil som farbu");
                     }
                     if (docSize != '') {
-                      Firestore.instance.collection('items').document(item.id)
+                      Firestore.instance.collection('items').document(item.documentID)
                           .updateData({"size": docSize});
                       debugPrint("zmenil som velkost");
                     }
                     if (docLength != '') {
-                      Firestore.instance.collection('items').document(item.id)
+                      Firestore.instance.collection('items').document(item.documentID)
                           .updateData({"length": docLength});
                       debugPrint("zmenil som dlzku");
                     }
                   Navigator.pop(context);
-                  },
+                 },
                 )
               ],
             ),
@@ -291,9 +435,21 @@ class ItemsListSearch extends SearchDelegate<ItemsList>{
                     fontSize: 12.0,
                     color: Colors.pink,
                 )),
-//               onTap: (){
+               onTap: (){
 //                 close(context, a);
-//               },
+               Navigator.push(context, MaterialPageRoute(builder: (context){
+//                 return ShowDetails(item: Item(name: a['name'],
+//                   color: a['color'],
+//                   size: a['size'],
+//                   length: a['length'],
+//                   photoUrl: a['photo_url'],
+//                   id: a.documentID
+//                 ));
+               return ShowDetails(
+                 item: a,
+               );
+               }));
+               },
           )).toList(),
           );
         },

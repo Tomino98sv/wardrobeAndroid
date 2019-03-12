@@ -47,6 +47,8 @@ class AuthService {
     final FirebaseUser currentUser = await _auth.currentUser();
     assert(user.uid == currentUser.uid);
 
+    print("USER MAIL IS: "+user.email);
+    print("USER Name IS: "+user.displayName);
     return 'signInWithGoogle succeeded: $user';
   }
 
