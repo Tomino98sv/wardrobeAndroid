@@ -4,6 +4,7 @@ import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:flutter_advanced_networkimage/zoomable.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:zoomable_image/zoomable_image.dart';
 
 void main() => runApp(ItemsList());
 
@@ -34,6 +35,7 @@ class ItemsList extends StatelessWidget {
                   delegate: new SlidableDrawerDelegate(),
                   actionExtentRatio: 0.25,
                   child: new ExpansionTile(
+
                     leading: Container(
                       width: 46.0,
                       height: 46.0,
@@ -170,86 +172,112 @@ class UserList extends StatelessWidget {
   }
 }
 
-//show details about item with option to edit
-class ShowDetails extends StatelessWidget {
+class ShowDetails extends StatefulWidget {
   DocumentSnapshot item;
 
   ShowDetails({@required this.item});
 
+  _ShowDetails createState() => new _ShowDetails(item: item);
+}
+
+//show details about item with option to edit
+class _ShowDetails extends State<ShowDetails> {
+  DocumentSnapshot item;
+
+  _ShowDetails({@required this.item});
+
+  @override
+  void initState() {
+    super.initState();
+    debugPrint("XXX ini starte");
+    Firestore.instance
+        .collection('items')
+        .document(item.documentID)
+        .get()
+        .then((onValue) {
+      setState(() {
+        debugPrint("XXX firestore");
+        item = onValue;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(item['name']),
-      ),
-      body: SingleChildScrollView(
-        child: new Container(
-          padding: new EdgeInsets.all(32.0),
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                width: 200,
-                height: 200,
-                child: new ZoomableWidget(
-                    minScale: 0.3,
-                    maxScale: 2.0,
-                    // default factor is 1.0, use 0.0 to disable boundary
-                    panLimit: 0.1,
-                    child: TransitionToImage(
-                      image: AdvancedNetworkImage(
-                        item['photo_url'],
-                        useDiskCache: true,
-                        cacheRule:
-                            CacheRule(maxAge: const Duration(days: 7)),
-                      ),
-                      placeholder: CircularProgressIndicator(),
-                      duration: Duration(milliseconds: 300),
-                    )),
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(child: Icon(Icons.account_circle)),
-                  Expanded(
-                    child: Text(item['name']),
-                  )
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Icon(Icons.color_lens),
-                  ),
-                  Expanded(
-                    child: Text(item['color']),
-                  )
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Icon(Icons.aspect_ratio),
-                  ),
-                  Expanded(
-                    child: Text(item['size']),
-                  )
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Icon(Icons.content_cut),
-                  ),
-                  Expanded(
-                    child: Text(item['length']),
-                  )
-                ],
-              ),
-              RaisedButton(
-                child: Text('Edit'),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) {
+    debugPrint("XXX build");
+    return StreamBuilder<DocumentSnapshot>(
+        stream: Firestore.instance
+            .collection('items')
+            .document(item.documentID)
+            .get()
+            .asStream(),
+        //shows items from Firebase
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Scaffold(body: new Text('Loading...'));
+            default:
+              return new Scaffold(
+                appBar: new AppBar(
+                  title: new Text(snapshot.data['name']),
+                ),
+                body: SingleChildScrollView(
+                  child: new Container(
+                    padding: new EdgeInsets.all(32.0),
+                    child: new Center(
+                      child: new Column(
+                        children: <Widget>[
+//                new Flexible(
+//                  child: new ZoomableImage(
+                          Image.network(snapshot.data['photo_url'],
+                              height: 120, width: 120
+//                    ,)
+                              ),
+                          Row(
+                            children: <Widget>[
+                              Expanded(child: Icon(Icons.account_circle)),
+                              Expanded(
+                                child: Text(snapshot.data['name']),
+                              )
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Icon(Icons.color_lens),
+                              ),
+                              Expanded(
+                                child: Text(snapshot.data['color']),
+                              )
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Icon(Icons.aspect_ratio),
+                              ),
+                              Expanded(
+                                child: Text(snapshot.data['size']),
+                              )
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Icon(Icons.content_cut),
+                              ),
+                              Expanded(
+                                child: Text(snapshot.data['length']),
+                              )
+                            ],
+                          ),
+                          RaisedButton(
+                            child: Text('Edit'),
+                            onPressed: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
 //                      return EditItem(item: new Item(
 //                        name: item['name'],
 //                        color: item['color'],
@@ -258,17 +286,20 @@ class ShowDetails extends StatelessWidget {
 //                         photoUrl: item['photo_url'],
 //                         id: item.documentID
 //                      ));
-                    return EditItem(
-                      item: item,
-                    );
-                  }));
-                },
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+                                return EditItem(
+                                  item: snapshot.data,
+                                );
+                              }));
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+          }
+        });
   }
 }
 
