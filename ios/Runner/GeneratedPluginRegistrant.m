@@ -9,6 +9,7 @@
 #import <firebase_storage/FirebaseStoragePlugin.h>
 #import <google_sign_in/GoogleSignInPlugin.h>
 #import <image_picker/ImagePickerPlugin.h>
+#import <path_provider/PathProviderPlugin.h>
 
 @implementation GeneratedPluginRegistrant
 
@@ -19,6 +20,7 @@
   [FLTFirebaseStoragePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseStoragePlugin"]];
   [FLTGoogleSignInPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleSignInPlugin"]];
   [FLTImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImagePickerPlugin"]];
+  [FLTPathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPathProviderPlugin"]];
 }
 
 @end

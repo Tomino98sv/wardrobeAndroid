@@ -1,5 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:flutter_advanced_networkimage/transition.dart';
+import 'package:flutter_advanced_networkimage/zoomable.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:zoomable_image/zoomable_image.dart';
 
@@ -32,9 +35,22 @@ class ItemsList extends StatelessWidget {
                   delegate: new SlidableDrawerDelegate(),
                   actionExtentRatio: 0.25,
                   child: new ExpansionTile(
-                    leading: item.photoUrl == null || item.photoUrl == ""
-                        ? Icon(Icons.accessibility)
-                        : Image.network(item.photoUrl, height: 42, width: 42),
+
+                    leading: Container(
+                      width: 46.0,
+                      height: 46.0,
+                      child: item.photoUrl == null || item.photoUrl == ""
+                          ? Icon(Icons.accessibility)
+                          : TransitionToImage(
+                          image: AdvancedNetworkImage(
+                            item.photoUrl,
+                            useDiskCache: true,
+                            cacheRule:
+                            CacheRule(maxAge: const Duration(days: 7)),
+                          ),
+                          placeholder: CircularProgressIndicator(),
+                          duration: Duration(milliseconds: 300),),
+                    ),
                     title: new Text(item.name),
 //                  subtitle: new Text(document['color']),
                     children: <Widget>[
@@ -47,7 +63,7 @@ class ItemsList extends StatelessWidget {
                         children: <Widget>[
                           Container(
                             child: new RaisedButton(
-                                child: Text("Edit"),
+                                child: Text("Edit",style: TextStyle(color: Colors.white),),
                                 color: Colors.pinkAccent,
                                 elevation: 4.0,
                                 onPressed: () {
@@ -62,7 +78,7 @@ class ItemsList extends StatelessWidget {
                           ),
                           Container(
                             child: new RaisedButton(
-                              child: Text('Borrow to...'),
+                              child: Text('Borrow to...',style: TextStyle(color: Colors.white)),
                               color: Colors.pinkAccent,
                               elevation: 4.0,
                               onPressed: () {
@@ -338,7 +354,27 @@ class _State extends State<EditItem> {
           child: new Center(
             child: new Column(
               children: <Widget>[
-                Image.network(item['photo_url'], height: 120, width: 120),
+                Container(
+                  width: 200.0,
+                  height: 200.0,
+                  child: new ZoomableWidget(
+                      minScale: 1.0,
+                      maxScale: 2.0,
+                      // default factor is 1.0, use 0.0 to disable boundary
+                      panLimit: 0.0,
+                      bounceBackBoundary: true,
+
+                      child: TransitionToImage(
+                        image: AdvancedNetworkImage(
+                          item['photo_url'],
+                          useDiskCache: true,
+                          cacheRule:
+                          CacheRule(maxAge: const Duration(days: 7)),
+                        ),
+                        placeholder: CircularProgressIndicator(),
+                        duration: Duration(milliseconds: 300),
+                      )),
+                ),
                 new TextField(
                   decoration: new InputDecoration(
                       labelText: item['name'],
