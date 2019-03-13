@@ -1,11 +1,6 @@
-import 'dart:async';
-import 'auth.dart';
-
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/bl/Pages/Home.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
 
@@ -84,35 +79,3 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 }
-//
-//class UserProfile extends StatefulWidget{
-//  @override
-//  UserProfileState createState() => UserProfileState();
-//}
-
-//class UserProfileState extends State<UserProfile> {
-//  Map<String, dynamic> _profile;
-//  bool _loading = false;
-//
-//  @override
-//  void initState() {
-//    // TODO: implement initState
-//    super.initState();
-//    authService.profile
-//        .listen((state) => setState(() => _profile = state));
-//    authService.loading
-//        .listen((state) => setState(() => _loading = state));
-//  }
-//
-//  @override
-//  Widget build(BuildContext context){
-//    return Column(children: <Widget>[
-//      Container(
-//          padding: EdgeInsets.all(20),
-//          child: Text(_profile.toString())
-//      ),
-//      Text(_loading.toString())
-//    ],);
-//
-//  }
-//}
