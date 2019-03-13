@@ -48,12 +48,26 @@ class LoginPage extends StatefulWidget {
                     .signInWithEmailAndPassword(
                     email: _email, password: _password)
                     .then((FirebaseUser user){
+                      print(user.email);
+                      print(user.displayName);
+                      print(user.uid);
                       Navigator.of(context).pushReplacementNamed('/homepage');
                 })
                     .catchError((e){
                       print(e);
                 });
               },
+//                (){
+//                FirebaseAuth.instance
+//                    .signInWithEmailAndPassword(
+//                    email: _email, password: _password)
+//                    .then((FirebaseUser user){
+//                      Navigator.of(context).pushReplacementNamed('/homepage');
+//                })
+//                    .catchError((e){
+//                      print(e);
+//                });
+//              },
             ),
             SizedBox(height: 15.0),
             Text('Don\'t have an account?'),
@@ -73,4 +87,31 @@ class LoginPage extends StatefulWidget {
     );
   }
 
-  }
+  FirebaseUser user;
+  void signInMethod() async{
+
+        try{
+          FirebaseUser userC = await FirebaseAuth.instance
+              .signInWithEmailAndPassword(
+              email: _email, password: _password)
+              .then((FirebaseUser user){
+            Navigator.of(context).pushReplacementNamed('/homepage');
+          })
+              .catchError((e){
+            print(e);
+          });
+        }catch(e){
+          print(e);
+        }
+//        this.user=userC;
+//        print(userC.email);
+      }
+
+//  FirebaseUser get getFirUser {
+////    print("from getter "+user.email+" "+user.displayName+" "+user.uid);
+//    FirebaseUser user;
+//    return user;
+//  }
+
+    }
+

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/Pages/auth.dart';
-import 'package:flutter_app/bl/signIn.dart';
+import 'package:flutter_app/bl/nutused/signIn.dart';
 import 'package:flutter_app/bl/videjko/hisMain.dart';
 
 
