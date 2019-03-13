@@ -13,7 +13,7 @@ class HomePageLogin extends StatefulWidget {
     // TODO: implement build
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Dashboard'),
+        title: new Text('Flu**er'),
         centerTitle: true,
       ),
       body: Center(

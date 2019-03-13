@@ -3,21 +3,13 @@ import 'package:flutter_app/bl/Pages/auth.dart';
 import 'package:flutter_app/bl/signIn.dart';
 import 'package:flutter_app/bl/videjko/hisMain.dart';
 
-class QuickBee extends StatelessWidget {
 
+class QuickBee extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-
-    return MaterialApp(
-      title: 'Main Login Page',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Roboto'),
-      home: MyHomePage(),
-    );
-  }
+  _QuickBeeState createState() => _QuickBeeState();
 }
 
-class MyHomePage extends StatelessWidget{
+class _QuickBeeState extends State<QuickBee> {
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +25,8 @@ class MyHomePage extends StatelessWidget{
                   height: 60.0,
                   width: 60.0,
                   decoration: new BoxDecoration(
-                    borderRadius: new BorderRadius.circular(50.0),
-                    color: Color(0xFFFC6A7F)
+                      borderRadius: new BorderRadius.circular(50.0),
+                      color: Color(0xFFFC6A7F)
                   ),
                   child: new Icon(Icons.local_offer,color: Colors.white,),
                 )
@@ -44,9 +36,9 @@ class MyHomePage extends StatelessWidget{
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0,bottom: 80.0),
-                  child: new Text("Wardrobe",style: new TextStyle(fontSize: 30.0),
-                )
+                    padding: const EdgeInsets.only(top: 8.0,bottom: 80.0),
+                    child: new Text("Wardrobe",style: new TextStyle(fontSize: 30.0),
+                    )
                 )
               ],
             ),
@@ -54,25 +46,25 @@ class MyHomePage extends StatelessWidget{
               children: <Widget>[
                 Expanded(
                   child: Padding(
+                    padding: const EdgeInsets.only(left:20.0,right: 20.0,top: 10.0),
+                    child: new Container(
                       padding: const EdgeInsets.only(left:20.0,right: 20.0,top: 10.0),
-                      child: new Container(
-                        padding: const EdgeInsets.only(left:20.0,right: 20.0,top: 10.0),
-                        child:MaterialButton(
+                      child:MaterialButton(
 //                          onPressed: () => Navigator.of(context).pushReplacementNamed('/signup'),
-                          onPressed: () => new QuickBee(),
-                          child: SizedBox.expand(
+                        onPressed: navigationToSignInMail,
+                        child: SizedBox.expand(
 //                            width: double.infinity,
-                            child: new Text(
+                          child: new Text(
                             "Sign in With Email",
                             style: new TextStyle(fontSize: 22.0,color: Colors.white),
                           ),
 //                            textColor: Colors.white,
-                          ),
                         ),
-                        height: 60.0,
-                        alignment: Alignment.center,
-                        decoration: new BoxDecoration(color: Color(0xff00cc99),borderRadius: new BorderRadius.circular(18.0)),
                       ),
+                      height: 60.0,
+                      alignment: Alignment.center,
+                      decoration: new BoxDecoration(color: Color(0xff00cc99),borderRadius: new BorderRadius.circular(18.0)),
+                    ),
                   ),
                 ),
               ],
@@ -136,7 +128,11 @@ class MyHomePage extends StatelessWidget{
     debugPrint("hii world");
   }
 
+  void navigationToSignInMail(){
+    Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp(),fullscreenDialog: true));
+    debugPrint("ide to?");
+
+  }
+
 
 }
-
-
