@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget{
 class _HomeState extends State<HomePage> {
   int _page = 0;
 
+
   final _options =[
     WelcomePage(),
 //    MyStoragePage2(),
@@ -48,13 +49,13 @@ class _HomeState extends State<HomePage> {
       ),
       body: Container(
         child: _options.elementAt(_page),
-        decoration: new BoxDecoration(
-          image: new DecorationImage(
-            image: new AssetImage("assets/images/mramor.png"),
-            fit: BoxFit.cover,
-              colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.4), BlendMode.dstATop)
-          ),
-        ),
+//        decoration: new BoxDecoration(
+//          image: new DecorationImage(
+//            image: new AssetImage("assets/images/zlta.jpg"),
+//            fit: BoxFit.cover,
+//              colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.9), BlendMode.dstATop)
+//          ),
+//        ),
         //sirka, vyska, child do childu podmienku - uz netreba pravdepodobne
       ),
       bottomNavigationBar: BottomNavigationBar(
