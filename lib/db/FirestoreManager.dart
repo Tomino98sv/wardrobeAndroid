@@ -275,6 +275,7 @@ class _ShowDetails extends State<ShowDetails> {
                           ),
                           RaisedButton(
                             child: Text('Edit'),
+                            textColor: Colors.white,
                             onPressed: () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
@@ -378,29 +379,30 @@ class _State extends State<EditItem> {
                 new TextField(
                   decoration: new InputDecoration(
                       labelText: item['name'],
-                      icon: new Icon(Icons.account_circle)),
+                      icon: new Icon(Icons.account_circle, color: Colors.brown[800])),
                   onChanged: _onChangedName,
                 ),
                 new TextField(
                   decoration: new InputDecoration(
                       labelText: item['color'],
-                      icon: new Icon(Icons.color_lens)),
+                      icon: new Icon(Icons.color_lens, color: Colors.brown[800])),
                   onChanged: _onChangedColor,
                 ),
                 new TextField(
                   decoration: new InputDecoration(
                       labelText: item['size'],
-                      icon: new Icon(Icons.aspect_ratio)),
+                      icon: new Icon(Icons.aspect_ratio, color: Colors.brown[800])),
                   onChanged: _onChangedSize,
                 ),
                 new TextField(
                   decoration: new InputDecoration(
                       labelText: item['length'],
-                      icon: new Icon(Icons.content_cut)),
+                      icon: new Icon(Icons.content_cut, color: Colors.brown[800])),
                   onChanged: _onChangedLength,
                 ),
                 RaisedButton(
                   child: Text('Send'),
+                  textColor: Colors.white,
                   onPressed: () {
                     if (docName != '') {
                       Firestore.instance
