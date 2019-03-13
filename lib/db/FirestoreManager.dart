@@ -275,6 +275,7 @@ class _ShowDetails extends State<ShowDetails> {
                           ),
                           RaisedButton(
                             child: Text('Edit'),
+                            textColor: Colors.white,
                             onPressed: () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
