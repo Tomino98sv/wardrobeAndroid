@@ -1,11 +1,6 @@
-import 'dart:async';
-import 'auth.dart';
-
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/bl/Pages/Home.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
 
