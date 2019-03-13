@@ -10,6 +10,7 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   String _email;
   String _password;
+  String _name;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,14 @@ class _SignupPageState extends State<SignupPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              TextField(
+                decoration: InputDecoration(hintText: 'Username'),
+                onChanged: (value) {
+                  setState(() {
+                    _name = value;
+                  });
+                },
+              ),SizedBox(height: 15.0),
               TextField(
                 decoration: InputDecoration(hintText: 'Email'),
                 onChanged: (value) {
@@ -37,19 +46,7 @@ class _SignupPageState extends State<SignupPage> {
                   });
                 },
               ),
-              SizedBox(height: 20.0),
-              RaisedButton(
-                child: Text('Lgin'),
-                color: Colors.blue,
-                textColor: Colors.white,
-                elevation: 7.0,
-                onPressed: (){
-
-                },
-              ),
-              SizedBox(height: 15.0),
-              Text('Don\'t have an account?'),
-              SizedBox(height: 10.0),
+              SizedBox(height: 5.0),
               RaisedButton(
                 child: Text('Sign Up'),
                 color: Colors.blue,
@@ -61,7 +58,7 @@ class _SignupPageState extends State<SignupPage> {
                       email: _email,
                       password: _password)
                       .then((signedInUser){
-                      UserManagement().storeNewUser(signedInUser,context);
+                      UserManagement().storeNewUser(signedInUser,context,_name);
                   })
                       .catchError((e){
                         print(e);
