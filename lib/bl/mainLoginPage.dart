@@ -4,7 +4,6 @@ import 'package:flutter_app/bl/nutused/signIn.dart';
 import 'package:flutter_app/bl/videjko/hisMain.dart';
 import 'package:flutter_app/ui/homePage.dart';
 
-
 class QuickBee extends StatefulWidget {
   @override
   _QuickBeeState createState() => _QuickBeeState();
@@ -15,8 +14,6 @@ class _QuickBeeState extends State<QuickBee> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    var ctx = context;
-
     return new Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -46,33 +43,24 @@ class _QuickBeeState extends State<QuickBee> {
             new Row(
               children: <Widget>[
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 10.0, right: 5.0, top: 40.0, bottom: 20.0),
-                    child: new Container(
-                      padding: const EdgeInsets.only(
-                          left: 20.0, right: 20.0, top: 10.0, bottom: 1.0),
-                      child: MaterialButton(
+                  child: new Container(
+                    padding: const EdgeInsets.only(left:20.0,right: 20.0,top: 8.0,bottom: 8.0),
+                    margin: EdgeInsets.only(bottom: 16.0,top: 80.0, left: 10.0, right: 10.0),
+                    child:MaterialButton(
 //                          onPressed: () => Navigator.of(context).pushReplacementNamed('/signup'),
-                        onPressed: navigationToSignInMail,
-                        child: SizedBox.expand(
-//                            width: double.infinity,
-                          child: new Text(
-                              "Continue with email",
-                              style: new TextStyle(
-                                  fontSize: 22.0, color: Colors.white),
-                              textAlign: TextAlign.center
-                          ),
-//                            textColor: Colors.white,
-                        ),
+                      onPressed: navigationToSignInMail,
+                      child: new Text(
+                        "Continue with email",
+                        style: new TextStyle(fontSize: 22.0,color: Colors.white),
+                          textAlign: TextAlign.center
                       ),
-                      height: 60.0,
-                      alignment: Alignment.center,
-                      decoration: new BoxDecoration(
-                          color: Colors.white12,
-                          borderRadius: new BorderRadius.circular(30.0),
-                          border: Border.all(color: Colors.white)
-                      ),
+                    ),
+                    height: 60.0,
+                    alignment: Alignment.center,
+                    decoration: new BoxDecoration(
+                        color: Colors.white12,
+                        borderRadius: new BorderRadius.circular(30.0),
+                      border: Border.all(color: Colors.white)
                     ),
                   ),
                 ),
@@ -81,67 +69,55 @@ class _QuickBeeState extends State<QuickBee> {
             new Row(
               children: <Widget>[
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 10.0, right: 5.0, top: 10.0),
-                    child: new Container(
-                      padding: const EdgeInsets.only(
-                          left: 5.0, top: 12.0, right: 5.0, bottom: 12.0),
-                      height: 60.0,
-                      alignment: Alignment.center,
-                      decoration: new BoxDecoration(
-                          color: Colors.white12,
-                          borderRadius: new BorderRadius.circular(30.0),
-                          border: Border.all(color: Colors.white)
-                      ),
-                      child: MaterialButton(
-                        onPressed: print,
-                        child: SizedBox.expand(
-//                            width: double.infinity,
-                          child: new Text(
-                              "Continue with",
-                              style: new TextStyle(
-                                  fontSize: 15.0, color: Colors.white),
-                              textAlign: TextAlign.center
-                          ),
-//                            textColor: Colors.white,
+                  child: new Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10.0),
+                    height: 40.0,
+                    decoration: new BoxDecoration(
+                        color: Colors.white12,
+                        borderRadius: new BorderRadius.circular(30.0),
+                        border: Border.all(color: Colors.white)
+                    ),
+                    child: MaterialButton(
+                      onPressed: print,
+                      child: Center(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            new Text(
+                              "Continue with ",
+                              style: new TextStyle(fontSize: 15.0,color: Colors.white),
+                                textAlign: TextAlign.center
+                            ),
+                          Image.asset("assets/images/fb2.png",
+                          width: 24.0, height: 24.0,),
+                          ],
                         ),
                       ),
                     ),
                   ),
                 ),
                 Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 5.0, right: 10.0, top: 10.0),
-                    child: new Container(
-                      padding: const EdgeInsets.only(
-                          left: 5.0, top: 12.0, right: 5.0, bottom: 12.0),
-                      height: 60.0,
-                      alignment: Alignment.center,
-                      decoration: new BoxDecoration(
-                          color: Colors.white12,
-                          borderRadius: new BorderRadius.circular(30.0),
-                          border: Border.all(color: Colors.white)
-                      ),
-                      child: MaterialButton(
-                        onPressed: () async {
-                          await authService.googleSignIn();
-                          Navigator.push(context, new MaterialPageRoute(
-                              builder: (context) =>
-                              new HomePage())
-                          );
-                        },
-                        child: SizedBox.expand(
-//                            width: double.infinity,
-                          child: new Text(
-                            "Continue with ",
-                            style: new TextStyle(
-                                fontSize: 15.0, color: Colors.white),
-                            textAlign: TextAlign.center,
+                  child: new Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10.0),
+                    height: 40.0,
+                    alignment: Alignment.center,
+                    decoration: new BoxDecoration(
+                        color: Colors.white12,
+                        borderRadius: new BorderRadius.circular(30.0),
+                        border: Border.all(color: Colors.white)
+                    ),
+                    child: MaterialButton(
+                      onPressed: () => authService.googleSignIn(),
+                      child: Row(
+                        children: <Widget>[
+                          new Text(
+                            "Continue with  ",
+                            style: new TextStyle(fontSize: 15.0,color: Colors.white),
+                              textAlign: TextAlign.center,
                           ),
-//                            textColor: Colors.white,
-                        ),
+                          Image.asset("assets/images/google.png",
+                            width: 24.0, height: 24.0,),
+                        ],
                       ),
                     ),
                   ),
