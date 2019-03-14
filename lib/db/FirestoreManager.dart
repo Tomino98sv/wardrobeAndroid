@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
@@ -119,6 +120,8 @@ class ItemsList extends StatelessWidget {
                                         .collection('items')
                                         .document(item.id)
                                         .delete();
+//                                    StorageReference obr = FirebaseStorage.instance.getReferenceFromUrl(item.photoUrl);
+//                                    obr.delete();
                                     Navigator.pop(context);
                                     debugPrint("vymazanee");
                                   },
@@ -181,6 +184,7 @@ class UserList extends StatelessWidget {
   }
 }
 
+
 class ShowDetails extends StatefulWidget {
   DocumentSnapshot item;
 
@@ -234,7 +238,7 @@ class _ShowDetails extends State<ShowDetails> {
                 ),
                 body: SingleChildScrollView(
                   child: new Container(
-                    padding: new EdgeInsets.all(32.0),
+                   padding: new EdgeInsets.all(100.0),
                     child: new Center(
                       child: new Column(
                         children: <Widget>[
@@ -284,6 +288,7 @@ class _ShowDetails extends State<ShowDetails> {
                           ),
                           RaisedButton(
                             child: Text('Edit'),
+                            textColor: Colors.white,
                             onPressed: () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
@@ -387,29 +392,30 @@ class _State extends State<EditItem> {
                 new TextField(
                   decoration: new InputDecoration(
                       labelText: item['name'],
-                      icon: new Icon(Icons.account_circle)),
+                      icon: new Icon(Icons.account_circle, color: Colors.brown[800])),
                   onChanged: _onChangedName,
                 ),
                 new TextField(
                   decoration: new InputDecoration(
                       labelText: item['color'],
-                      icon: new Icon(Icons.color_lens)),
+                      icon: new Icon(Icons.color_lens, color: Colors.brown[800])),
                   onChanged: _onChangedColor,
                 ),
                 new TextField(
                   decoration: new InputDecoration(
                       labelText: item['size'],
-                      icon: new Icon(Icons.aspect_ratio)),
+                      icon: new Icon(Icons.aspect_ratio, color: Colors.brown[800])),
                   onChanged: _onChangedSize,
                 ),
                 new TextField(
                   decoration: new InputDecoration(
                       labelText: item['length'],
-                      icon: new Icon(Icons.content_cut)),
+                      icon: new Icon(Icons.content_cut, color: Colors.brown[800])),
                   onChanged: _onChangedLength,
                 ),
                 RaisedButton(
                   child: Text('Send'),
+                  textColor: Colors.white,
                   onPressed: () {
                     if (docName != '') {
                       Firestore.instance
@@ -451,6 +457,7 @@ class _State extends State<EditItem> {
   }
 }
 
+//searching bar
 class ItemsListSearch extends SearchDelegate<ItemsList> {
   var items = Firestore.instance.collection('items').snapshots();
 
