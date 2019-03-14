@@ -60,14 +60,8 @@ class LoginPage extends StatefulWidget {
                     .signInWithEmailAndPassword(
                     email: _email, password: _password)
                     .then((FirebaseUser user){
-                  Navigator.of(context).pushReplacementNamed('/homepage');
-
-                  print("USER NA POSLANIE");
-                  print(user.email);
-                  print(user.uid);
-
-                  return WelcomePage(user: user);
-                })
+                      Navigator.of(context).pushReplacementNamed('/homepage');
+                    })
                     .catchError((e){
                       print("NO LOGGING");
                       print(e);

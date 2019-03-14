@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/Pages/auth.dart';
 import 'package:flutter_app/bl/nutused/signIn.dart';
 import 'package:flutter_app/bl/videjko/hisMain.dart';
+import 'package:flutter_app/ui/homePage.dart';
 
 
 class QuickBee extends StatefulWidget {
@@ -14,6 +15,8 @@ class _QuickBeeState extends State<QuickBee> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    var ctx = context;
+
     return new Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -122,7 +125,13 @@ class _QuickBeeState extends State<QuickBee> {
                           border: Border.all(color: Colors.white)
                       ),
                       child: MaterialButton(
-                        onPressed: () => authService.googleSignIn(),
+                        onPressed: () async {
+                          await authService.googleSignIn();
+                          Navigator.push(context, new MaterialPageRoute(
+                              builder: (context) =>
+                              new HomePage())
+                          );
+                        },
                         child: SizedBox.expand(
 //                            width: double.infinity,
                           child: new Text(

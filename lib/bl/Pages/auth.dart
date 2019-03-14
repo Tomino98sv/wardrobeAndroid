@@ -49,7 +49,6 @@ class AuthService {
 
     final FirebaseUser currentUser = await _auth.currentUser();
     assert(user.uid == currentUser.uid);
-    welcomepageMethod(googleUser);
     return 'signInWithGoogle succeeded: $user';
   }
 
@@ -70,14 +69,6 @@ class AuthService {
 //    return user;
 //  }
 
-    welcomepageMethod(GoogleSignInAccount googleUser){
-
-      new WelcomePage.google(googleUser: googleUser);
-    }
-
-
-
-
   void updateUserData(FirebaseUser user) async {
   DocumentReference ref = _db.collection('users').document(user.uid);
 
@@ -91,8 +82,8 @@ class AuthService {
   }
 
   void signOut() {
-    _auth.signOut();
-    _googleSignIn.signOut();
+    _auth?.signOut();
+    _googleSignIn?.signOut();
   }
 
 }
