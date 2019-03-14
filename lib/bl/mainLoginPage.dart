@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/Pages/auth.dart';
 import 'package:flutter_app/bl/nutused/signIn.dart';
 import 'package:flutter_app/bl/videjko/hisMain.dart';
-
+import 'package:flutter_app/ui/homePage.dart';
 
 class QuickBee extends StatefulWidget {
   @override
@@ -18,7 +18,7 @@ class _QuickBeeState extends State<QuickBee> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            fit: BoxFit.cover,
+              fit: BoxFit.cover,
               image: AssetImage("assets/images/blackDresses.png")),
         ),
         child: Column(
@@ -28,7 +28,7 @@ class _QuickBeeState extends State<QuickBee> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Padding(
-                    padding: const EdgeInsets.only(top: 8.0,bottom: 80.0),
+                    padding: const EdgeInsets.only(top: 8.0, bottom: 80.0),
                     child: new Text("Wardrobe",
                       style: new TextStyle(
                         fontSize: 50.0,
@@ -131,15 +131,14 @@ class _QuickBeeState extends State<QuickBee> {
   }
 
 
-  void print(){
+  void print() {
     debugPrint("hii world");
   }
 
-  void navigationToSignInMail(){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => MyApp(),fullscreenDialog: true));
+  void navigationToSignInMail() {
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) => MyApp(), fullscreenDialog: true));
     debugPrint("ide to?");
-
   }
-
 
 }

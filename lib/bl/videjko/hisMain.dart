@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/bl/Pages/welcome.dart';
 import 'package:flutter_app/bl/mainLoginPage.dart';
 import 'package:flutter_app/ui/homePage.dart';
 
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         '/signup' : (BuildContext context)=> new SignupPage(),
         '/homepage':(BuildContext context) => new HomePage(),
         '/MainBee':(BuildContext context) => new QuickBee(),
+        '/welcome':(BuildContext context) => new WelcomePage(),
     },
     );
   }

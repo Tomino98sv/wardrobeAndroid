@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_app/bl/Pages/welcome.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
@@ -48,9 +49,6 @@ class AuthService {
 
     final FirebaseUser currentUser = await _auth.currentUser();
     assert(user.uid == currentUser.uid);
-
-    print("USER MAIL IS: "+user.email);
-    print("USER Name IS: "+user.displayName);
     return 'signInWithGoogle succeeded: $user';
   }
 
@@ -84,8 +82,8 @@ class AuthService {
   }
 
   void signOut() {
-    _auth.signOut();
-    _googleSignIn.signOut();
+    _auth?.signOut();
+    _googleSignIn?.signOut();
   }
 
 }
