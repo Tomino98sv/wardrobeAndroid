@@ -1,27 +1,33 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bl/nutused/signIn.dart';
-import 'package:flutter_app/bl/nutused/signUp.dart';
-import 'package:flutter_app/bl/Pages/auth.dart';
+import 'package:flutter_app/bl/mainLoginPage.dart';
 import 'package:flutter_app/bl/videjko/loginpage.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
 
 
 class WelcomePage extends StatefulWidget {
 
   @override
-  _WelcomePageState createState() => _WelcomePageState();
+  _WelcomePageState createState() {
+    return _WelcomePageState();
+  }
 }
 
 class _WelcomePageState extends State<WelcomePage> {
-//  var login = new LoginPage();
-////  var login = new _LoginPageState();
-//  FirebaseUser user;
-//  @override
-//  void initState() {
-//    super.initState();
-//    user =login;
-//  }
+
+  FirebaseUser user2;
+  GoogleSignInAccount googleUser;
+
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAuth.instance.currentUser().then((fUser) {
+      setState(() {
+        user2 = fUser;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +44,10 @@ class _WelcomePageState extends State<WelcomePage> {
                  onPressed: () {
                    FirebaseAuth
                        .instance.signOut().then((value){
-                     Navigator.of(context).pushReplacementNamed('/MainBee');
+                     Navigator.push(context, new MaterialPageRoute(
+                         builder: (context) =>
+                         new QuickBee())
+                     );
                    }).catchError((e){
                      print(e);
                    });
@@ -51,14 +60,17 @@ class _WelcomePageState extends State<WelcomePage> {
              mainAxisAlignment: MainAxisAlignment.start,
              children: <Widget>[
                new Text(
-                   ' EMAIIIILL',
-                   style: new TextStyle(fontSize: 25.0,color: Colors.orange)
+                 user2 == null ? "" : 'Email: ${user2.email}',
+                   style: new TextStyle(fontSize: 15.0,color: Colors.orange)
                ),
                new Text(
-                 'USEEEER',
-                   style: new TextStyle(fontSize: 25.0,color: Colors.orange)
+                 user2 == null ? "" : 'UID: ${user2.uid}',
+                   style: new TextStyle(fontSize: 15.0,color: Colors.orange)
                ),
-
+               new Text(
+                   user2 == null ? "" : 'Name: ${user2.displayName}',
+                   style: new TextStyle(fontSize: 15.0,color: Colors.orange)
+               ),
              ],
            ),
          )
@@ -67,6 +79,8 @@ class _WelcomePageState extends State<WelcomePage> {
 
    );
   }
+
+
 }
 
 //      child: new Center(
