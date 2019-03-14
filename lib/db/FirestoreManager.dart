@@ -228,7 +228,7 @@ class _ShowDetails extends State<ShowDetails> {
                 ),
                 body: SingleChildScrollView(
                   child: new Container(
-                    padding: new EdgeInsets.all(32.0),
+                   padding: new EdgeInsets.all(100.0),
                     child: new Center(
                       child: new Column(
                         children: <Widget>[
