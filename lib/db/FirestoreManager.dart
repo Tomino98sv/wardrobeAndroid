@@ -116,7 +116,8 @@ class ItemsList extends StatelessWidget {
                                         .collection('items')
                                         .document(item.id)
                                         .delete();
-                                    print(FirebaseStorage.instance.getReferenceFromUrl(item.photoUrl));
+//                                    StorageReference obr = FirebaseStorage.instance.getReferenceFromUrl(item.photoUrl);
+//                                    obr.delete();
                                     Navigator.pop(context);
                                     debugPrint("vymazanee");
                                   },

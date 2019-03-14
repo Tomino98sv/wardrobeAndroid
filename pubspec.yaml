@@ -60,8 +60,7 @@ flutter:
     - assets/images/gray.jpg
     - assets/images/zara.jpg
     - assets/images/mramor.png
-    - assets/images/wall.jpg
-    - assets/images/zlta.jpg
+    - assets/images/blackDresses.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

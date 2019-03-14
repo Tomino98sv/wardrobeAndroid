@@ -49,13 +49,6 @@ class _HomeState extends State<HomePage> {
       ),
       body: Container(
         child: _options.elementAt(_page),
-//        decoration: new BoxDecoration(
-//          image: new DecorationImage(
-//            image: new AssetImage("assets/images/zlta.jpg"),
-//            fit: BoxFit.cover,
-//              colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.9), BlendMode.dstATop)
-//          ),
-//        ),
         //sirka, vyska, child do childu podmienku - uz netreba pravdepodobne
       ),
       bottomNavigationBar: BottomNavigationBar(
