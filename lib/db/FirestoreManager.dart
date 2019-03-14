@@ -5,12 +5,10 @@ import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:flutter_advanced_networkimage/zoomable.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:zoomable_image/zoomable_image.dart';
+
 import 'userInfo.dart';
 
 void main() => runApp(ItemsList());
-
-
 
 //scrolling list of items
 class ItemsList extends StatelessWidget {
@@ -73,7 +71,10 @@ class ItemsList extends StatelessWidget {
                         children: <Widget>[
                           Container(
                             child: new RaisedButton(
-                                child: Text("Edit",style: TextStyle(color: Colors.white),),
+                                child: Text(
+                                  "Edit",
+                                  style: TextStyle(color: Colors.white),
+                                ),
                                 color: Colors.pinkAccent,
                                 elevation: 4.0,
                                 onPressed: () {
@@ -142,6 +143,7 @@ class ItemsList extends StatelessWidget {
                                         .delete();
 //                                    StorageReference obr = FirebaseStorage.instance.getReferenceFromUrl(item.photoUrl);
 //                                    obr.delete();
+                                    deleteFireBaseStorageItem(item.photoUrl);
                                     Navigator.pop(context);
                                     debugPrint("vymazanee");
                                   },
@@ -165,6 +167,20 @@ class ItemsList extends StatelessWidget {
         }
       },
     );
+  }
+
+  void deleteFireBaseStorageItem(String fileUrl) {
+    String filePath = fileUrl.replaceAll(
+        new RegExp(
+            r'https://firebasestorage.googleapis.com/v0/b/wardrobe-2324a.appspot.com/o/'),
+        '');
+    filePath = filePath.replaceAll(new RegExp(r'%2F'), '/');
+    filePath = filePath.replaceAll(new RegExp(r'(\?alt).*'), '');
+    StorageReference storageReferance = FirebaseStorage.instance.ref();
+    storageReferance
+        .child(filePath)
+        .delete()
+        .then((_) => print('Successfully deleted $filePath storage item'));
   }
 }
 
@@ -195,7 +211,8 @@ class UserList extends StatelessWidget {
                     title: Text(document['name']),
                     onTap: () {
                       //kod ktory urci usra, ktoremu bolo pozicane
-                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
                         return UserInfoList(userInfo: document, itemInfo: item);
                       }));
                     },
@@ -206,7 +223,6 @@ class UserList extends StatelessWidget {
         });
   }
 }
-
 
 class ShowDetails extends StatefulWidget {
   DocumentSnapshot item;
@@ -261,7 +277,7 @@ class _ShowDetails extends State<ShowDetails> {
                 ),
                 body: SingleChildScrollView(
                   child: new Container(
-                   padding: new EdgeInsets.all(100.0),
+                    padding: new EdgeInsets.all(100.0),
                     child: new Center(
                       child: new Column(
                         children: <Widget>[
@@ -400,13 +416,11 @@ class _State extends State<EditItem> {
                       // default factor is 1.0, use 0.0 to disable boundary
                       panLimit: 0.0,
                       bounceBackBoundary: true,
-
                       child: TransitionToImage(
                         image: AdvancedNetworkImage(
                           item['photo_url'],
                           useDiskCache: true,
-                          cacheRule:
-                          CacheRule(maxAge: const Duration(days: 7)),
+                          cacheRule: CacheRule(maxAge: const Duration(days: 7)),
                         ),
                         placeholder: CircularProgressIndicator(),
                         duration: Duration(milliseconds: 300),
@@ -415,25 +429,29 @@ class _State extends State<EditItem> {
                 new TextField(
                   decoration: new InputDecoration(
                       labelText: item['name'],
-                      icon: new Icon(Icons.account_circle, color: Colors.brown[800])),
+                      icon: new Icon(Icons.account_circle,
+                          color: Colors.brown[800])),
                   onChanged: _onChangedName,
                 ),
                 new TextField(
                   decoration: new InputDecoration(
                       labelText: item['color'],
-                      icon: new Icon(Icons.color_lens, color: Colors.brown[800])),
+                      icon:
+                          new Icon(Icons.color_lens, color: Colors.brown[800])),
                   onChanged: _onChangedColor,
                 ),
                 new TextField(
                   decoration: new InputDecoration(
                       labelText: item['size'],
-                      icon: new Icon(Icons.aspect_ratio, color: Colors.brown[800])),
+                      icon: new Icon(Icons.aspect_ratio,
+                          color: Colors.brown[800])),
                   onChanged: _onChangedSize,
                 ),
                 new TextField(
                   decoration: new InputDecoration(
                       labelText: item['length'],
-                      icon: new Icon(Icons.content_cut, color: Colors.brown[800])),
+                      icon: new Icon(Icons.content_cut,
+                          color: Colors.brown[800])),
                   onChanged: _onChangedLength,
                 ),
                 RaisedButton(
@@ -595,4 +613,5 @@ class Item {
   var borrowName = "";
 
   Item({this.name, this.color, this.size, this.length, this.photoUrl, this.id, this.userid, this.borrowedTo, this.borrowName});
+
 }
