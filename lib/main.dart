@@ -5,6 +5,7 @@ import 'package:flutter_app/ui/homePage.dart';
 void main(){
   runApp(
       MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: "Dress",
         home: HomePage(),
         theme: ThemeData(

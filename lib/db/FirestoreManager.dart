@@ -5,8 +5,11 @@ import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:flutter_advanced_networkimage/zoomable.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:zoomable_image/zoomable_image.dart';
+import 'userInfo.dart';
 
 void main() => runApp(ItemsList());
+
+
 
 //scrolling list of items
 class ItemsList extends StatelessWidget {
@@ -84,7 +87,7 @@ class ItemsList extends StatelessWidget {
                               onPressed: () {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return UserList();
+                                  return UserList(item: document);
                                 }));
                                 // kod s vyberom userov Navigator.push
                               },
@@ -143,6 +146,10 @@ class ItemsList extends StatelessWidget {
 }
 
 class UserList extends StatelessWidget {
+  DocumentSnapshot item;
+
+  UserList({@required this.item});
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -162,7 +169,9 @@ class UserList extends StatelessWidget {
                     title: Text(document['name']),
                     onTap: () {
                       //kod ktory urci usra, ktoremu bolo pozicane
-                      Navigator.pop(context);
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return UserInfoList(userInfo: document, itemInfo: item);
+                      }));
                     },
                   );
                 }).toList()),
@@ -551,6 +560,7 @@ class Item {
   var length;
   var photoUrl;
   var id;
+  var userid;
 
-  Item({this.name, this.color, this.size, this.length, this.photoUrl, this.id});
+  Item({this.name, this.color, this.size, this.length, this.photoUrl, this.id, this.userid});
 }
