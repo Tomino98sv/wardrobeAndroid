@@ -1,12 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:flutter_advanced_networkimage/zoomable.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:zoomable_image/zoomable_image.dart';
+import 'userInfo.dart';
 
 void main() => runApp(ItemsList());
+
+
 
 //scrolling list of items
 class ItemsList extends StatelessWidget {
@@ -84,7 +88,7 @@ class ItemsList extends StatelessWidget {
                               onPressed: () {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return UserList();
+                                  return UserList(item: document);
                                 }));
                                 // kod s vyberom userov Navigator.push
                               },
@@ -116,6 +120,8 @@ class ItemsList extends StatelessWidget {
                                         .collection('items')
                                         .document(item.id)
                                         .delete();
+//                                    StorageReference obr = FirebaseStorage.instance.getReferenceFromUrl(item.photoUrl);
+//                                    obr.delete();
                                     Navigator.pop(context);
                                     debugPrint("vymazanee");
                                   },
@@ -143,6 +149,10 @@ class ItemsList extends StatelessWidget {
 }
 
 class UserList extends StatelessWidget {
+  DocumentSnapshot item;
+
+  UserList({@required this.item});
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -162,7 +172,9 @@ class UserList extends StatelessWidget {
                     title: Text(document['name']),
                     onTap: () {
                       //kod ktory urci usra, ktoremu bolo pozicane
-                      Navigator.pop(context);
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return UserInfoList(userInfo: document, itemInfo: item);
+                      }));
                     },
                   );
                 }).toList()),
@@ -171,6 +183,7 @@ class UserList extends StatelessWidget {
         });
   }
 }
+
 
 class ShowDetails extends StatefulWidget {
   DocumentSnapshot item;
@@ -225,7 +238,7 @@ class _ShowDetails extends State<ShowDetails> {
                 ),
                 body: SingleChildScrollView(
                   child: new Container(
-                    padding: new EdgeInsets.all(32.0),
+                   padding: new EdgeInsets.all(100.0),
                     child: new Center(
                       child: new Column(
                         children: <Widget>[
@@ -444,6 +457,7 @@ class _State extends State<EditItem> {
   }
 }
 
+//searching bar
 class ItemsListSearch extends SearchDelegate<ItemsList> {
   var items = Firestore.instance.collection('items').snapshots();
 
@@ -553,6 +567,7 @@ class Item {
   var length;
   var photoUrl;
   var id;
+  var userid;
 
-  Item({this.name, this.color, this.size, this.length, this.photoUrl, this.id});
+  Item({this.name, this.color, this.size, this.length, this.photoUrl, this.id, this.userid});
 }
