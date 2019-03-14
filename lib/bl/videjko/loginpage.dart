@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_app/bl/Pages/welcome.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 
 class LoginPage extends StatefulWidget {
+
+//  Function _function;
+
+//  LoginPage({@required Function function}){
+//    _function = function;
+//  }
+
   @override
   _LoginPageState createState() => _LoginPageState();
   }
@@ -10,6 +19,9 @@ class LoginPage extends StatefulWidget {
   class _LoginPageState extends State<LoginPage> {
   String _email;
   String _password;
+  FirebaseUser user;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -48,26 +60,19 @@ class LoginPage extends StatefulWidget {
                     .signInWithEmailAndPassword(
                     email: _email, password: _password)
                     .then((FirebaseUser user){
-                      print(user.email);
-                      print(user.displayName);
-                      print(user.uid);
-                      Navigator.of(context).pushReplacementNamed('/homepage');
+                  Navigator.of(context).pushReplacementNamed('/homepage');
+
+                  print("USER NA POSLANIE");
+                  print(user.email);
+                  print(user.uid);
+
+                  return WelcomePage(user: user);
                 })
                     .catchError((e){
+                      print("NO LOGGING");
                       print(e);
                 });
               },
-//                (){
-//                FirebaseAuth.instance
-//                    .signInWithEmailAndPassword(
-//                    email: _email, password: _password)
-//                    .then((FirebaseUser user){
-//                      Navigator.of(context).pushReplacementNamed('/homepage');
-//                })
-//                    .catchError((e){
-//                      print(e);
-//                });
-//              },
             ),
             SizedBox(height: 15.0),
             Text('Don\'t have an account?'),
@@ -86,32 +91,5 @@ class LoginPage extends StatefulWidget {
       ),
     );
   }
-
-  FirebaseUser user;
-  void signInMethod() async{
-
-        try{
-          FirebaseUser userC = await FirebaseAuth.instance
-              .signInWithEmailAndPassword(
-              email: _email, password: _password)
-              .then((FirebaseUser user){
-            Navigator.of(context).pushReplacementNamed('/homepage');
-          })
-              .catchError((e){
-            print(e);
-          });
-        }catch(e){
-          print(e);
-        }
-//        this.user=userC;
-//        print(userC.email);
-      }
-
-//  FirebaseUser get getFirUser {
-////    print("from getter "+user.email+" "+user.displayName+" "+user.uid);
-//    FirebaseUser user;
-//    return user;
-//  }
-
-    }
+}
 

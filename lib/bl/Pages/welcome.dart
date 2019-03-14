@@ -1,27 +1,58 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/bl/nutused/signIn.dart';
-import 'package:flutter_app/bl/nutused/signUp.dart';
-import 'package:flutter_app/bl/Pages/auth.dart';
 import 'package:flutter_app/bl/videjko/loginpage.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
 
 
 class WelcomePage extends StatefulWidget {
 
+  FirebaseUser user;
+  GoogleSignInAccount googleUser;
+
+  WelcomePage({@required this.user});
+  WelcomePage.google({@required this.googleUser});
+
+
   @override
-  _WelcomePageState createState() => _WelcomePageState();
+  _WelcomePageState createState() {
+    print("DOLE SU DATA KTORE SA POSIELAJU DO WELCOMEPAGESTATE");
+    try{
+      print(user.uid);
+      print(user.email);
+    }catch(e){
+      print(user.uid);
+      print(user.email);
+      print("FAULT WITH EMAIL OR UID");
+      print(e);
+    }
+    return _WelcomePageState(user2: user);
+  }
+
+//  @override
+//  _WelcomePageState createState() {
+//    print("DOLE SU DATA KTORE SA POSIELAJU DO WELCOMEPAGESTATE");
+//    try{
+//      print("USER MAIL IS: "+user.email);
+//      print("USER Name IS: "+user.displayName);
+//    }catch(e){
+//      print("FAULT WITH EMAIL OR UID");
+//      print("USER MAIL IS: "+user.email);
+//      print("USER Name IS: "+user.displayName);
+//      print(e);
+//    }
+//    return _WelcomePageState(googleUser: googleUser);
+//  }
+
+
 }
 
 class _WelcomePageState extends State<WelcomePage> {
-//  var login = new LoginPage();
-////  var login = new _LoginPageState();
-//  FirebaseUser user;
-//  @override
-//  void initState() {
-//    super.initState();
-//    user =login;
-//  }
+
+  FirebaseUser user2;
+  final GoogleSignInAccount googleUser;
+
+  _WelcomePageState({@required this.user2,this.googleUser});
+
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +82,7 @@ class _WelcomePageState extends State<WelcomePage> {
              mainAxisAlignment: MainAxisAlignment.start,
              children: <Widget>[
                new Text(
-                   ' EMAIIIILL',
+                    "Email",
                    style: new TextStyle(fontSize: 25.0,color: Colors.orange)
                ),
                new Text(
@@ -67,6 +98,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
    );
   }
+
 }
 
 //      child: new Center(
