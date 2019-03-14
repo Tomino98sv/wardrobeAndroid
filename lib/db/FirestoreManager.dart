@@ -32,7 +32,9 @@ class ItemsList extends StatelessWidget {
                     size: document['size'],
                     length: document['length'],
                     photoUrl: document['photo_url'],
-                    id: document.documentID);
+                    id: document.documentID,
+                    borrowName: document['borrowName']
+                );
                 return Slidable(
                   delegate: new SlidableDrawerDelegate(),
                   actionExtentRatio: 0.25,
@@ -43,15 +45,16 @@ class ItemsList extends StatelessWidget {
                       child: item.photoUrl == null || item.photoUrl == ""
                           ? Icon(Icons.accessibility)
                           : TransitionToImage(
-                              image: AdvancedNetworkImage(
-                                item.photoUrl,
-                                useDiskCache: true,
-                                cacheRule:
-                                    CacheRule(maxAge: const Duration(days: 7)),
-                              ),
-                              placeholder: CircularProgressIndicator(),
-                              duration: Duration(milliseconds: 300),
-                            ),
+                          image: AdvancedNetworkImage(
+                            item.photoUrl,
+                            useDiskCache: true,
+                            cacheRule:
+                            CacheRule(maxAge: const Duration(days: 7)),
+                            fallbackAssetImage: 'assets/images/error_image.png',
+                            retryLimit: 0
+                          ),
+                          placeholder: CircularProgressIndicator(),
+                          duration: Duration(milliseconds: 300),),
                     ),
                     title: new Text(item.name),
 //                  subtitle: new Text(document['color']),
@@ -60,6 +63,9 @@ class ItemsList extends StatelessWidget {
                       new Text("Color: ${item.color}"),
                       new Text("Size: ${item.size}"),
                       new Text("Length: ${item.length}"),
+                      new Text(document['borrowedTo'] == ""  || document['borrowedTo'] == null ?
+                      '' :
+                      'Borrowed to : ${item.borrowName}'),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -83,15 +89,28 @@ class ItemsList extends StatelessWidget {
                           ),
                           Container(
                             child: new RaisedButton(
-                              child: Text('Borrow to...',
-                                  style: TextStyle(color: Colors.white)),
+                              child: Text(
+                                  document['borrowedTo'] == ""  || document['borrowedTo'] == null ?
+                                  'Borrow to...' :
+                                  'Return dress', style: TextStyle(color: Colors.white)),
                               color: Colors.pinkAccent,
                               elevation: 4.0,
                               onPressed: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return UserList(item: document);
-                                }));
+                                if (document['borrowedTo'] == ""  || document['borrowedTo'] == null) {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                        return UserList(item: document);
+                                      }));
+                                }
+                                else {
+                                  Firestore.instance.collection('users').where("uid", isEqualTo: document['borrowedTo']).snapshots().listen((user){
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                          return UserInfoList(userInfo: user.documents?.first, itemInfo: document);
+                                        }));
+                                  });
+                                  
+                                }
                                 // kod s vyberom userov Navigator.push
                               },
                             ),
@@ -181,6 +200,9 @@ class UserList extends StatelessWidget {
               return new Text('Loading...');
             default:
               return Scaffold(
+                appBar: AppBar(
+                  title: Text('Fashionistas'),
+                ),
                 body: new ListView(
                     children: snapshot.data.documents
                         .map((DocumentSnapshot document) {
@@ -587,13 +609,9 @@ class Item {
   var photoUrl;
   var id;
   var userid;
+  var borrowedTo = "";
+  var borrowName = "";
 
-  Item(
-      {this.name,
-      this.color,
-      this.size,
-      this.length,
-      this.photoUrl,
-      this.id,
-      this.userid});
+  Item({this.name, this.color, this.size, this.length, this.photoUrl, this.id, this.userid, this.borrowedTo, this.borrowName});
+
 }
