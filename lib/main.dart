@@ -10,8 +10,8 @@ void main(){
       MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "Dress",
-//        home: HomePage(),
-       home: QuickBee(),
+        home: HomePage(),
+//       home: QuickBee(),
         theme: ThemeData(
           primaryColor: Colors.pink[400],
           scaffoldBackgroundColor: Colors.grey[50],
