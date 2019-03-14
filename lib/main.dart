@@ -9,6 +9,7 @@ void main(){
   runApp(
       MaterialApp(
         title: "Dress",
+//        home: HomePage(),
         home: QuickBee(),
 //        theme: ThemeData(
 //          primaryColor: Colors.pink[400],

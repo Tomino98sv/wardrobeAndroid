@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:flutter_advanced_networkimage/zoomable.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:zoomable_image/zoomable_image.dart';
 
 void main() => runApp(ItemsList());
 
@@ -116,6 +116,8 @@ class ItemsList extends StatelessWidget {
                                         .collection('items')
                                         .document(item.id)
                                         .delete();
+//                                    StorageReference obr = FirebaseStorage.instance.getReferenceFromUrl(item.photoUrl);
+//                                    obr.delete();
                                     Navigator.pop(context);
                                     debugPrint("vymazanee");
                                   },
@@ -171,6 +173,7 @@ class UserList extends StatelessWidget {
         });
   }
 }
+
 
 class ShowDetails extends StatefulWidget {
   DocumentSnapshot item;
@@ -444,6 +447,7 @@ class _State extends State<EditItem> {
   }
 }
 
+//searching bar
 class ItemsListSearch extends SearchDelegate<ItemsList> {
   var items = Firestore.instance.collection('items').snapshots();
 
