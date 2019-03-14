@@ -31,8 +31,9 @@ class _QuickBeeState extends State<QuickBee> {
                     padding: const EdgeInsets.only(top: 8.0,bottom: 80.0),
                     child: new Text("Wardrobe",
                       style: new TextStyle(
-                        fontSize: 30.0,
+                        fontSize: 50.0,
                         color: Colors.white,
+                        fontFamily: 'Alyfe_Demo', //neberie
                       ),
                       textAlign: TextAlign.center,
                     )
@@ -80,13 +81,17 @@ class _QuickBeeState extends State<QuickBee> {
                       padding: const EdgeInsets.only(left:5.0,top:12.0,right:5.0,bottom:12.0),
                       height: 60.0,
                       alignment: Alignment.center,
-                      decoration: new BoxDecoration(color: Color(0xFF4364A1),borderRadius: new BorderRadius.circular(30.0)),
+                      decoration: new BoxDecoration(
+                          color: Colors.white12,
+                          borderRadius: new BorderRadius.circular(30.0),
+                          border: Border.all(color: Colors.white)
+                      ),
                       child: MaterialButton(
                         onPressed: print,
                         child: SizedBox.expand(
 //                            width: double.infinity,
                           child: new Text(
-                            "Continue with Facebook",
+                            "Continue with",
                             style: new TextStyle(fontSize: 15.0,color: Colors.white),
                               textAlign: TextAlign.center
                           ),
@@ -103,15 +108,19 @@ class _QuickBeeState extends State<QuickBee> {
                       padding: const EdgeInsets.only(left:5.0,top:12.0,right:5.0,bottom:12.0),
                       height: 60.0,
                       alignment: Alignment.center,
-                      decoration: new BoxDecoration(color: Color(0xFFDF5138),borderRadius: new BorderRadius.circular(30.0)),
+                      decoration: new BoxDecoration(
+                          color: Colors.white12,
+                          borderRadius: new BorderRadius.circular(30.0),
+                          border: Border.all(color: Colors.white)
+                      ),
                       child: MaterialButton(
                         onPressed: () => authService.googleSignIn(),
                         child: SizedBox.expand(
 //                            width: double.infinity,
                           child: new Text(
-                            "Continue with  Google",
+                            "Continue with ",
                             style: new TextStyle(fontSize: 15.0,color: Colors.white),
-                              textAlign: TextAlign.center
+                              textAlign: TextAlign.center,
                           ),
 //                            textColor: Colors.white,
                         ),

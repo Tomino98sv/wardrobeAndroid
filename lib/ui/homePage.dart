@@ -54,15 +54,15 @@ class _HomeState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: new Icon(Icons.person, color: Colors.brown[800]),
+            icon: new Icon(Icons.account_circle, color: Colors.grey[900]),
             title: new Text('Me'),
           ),
           BottomNavigationBarItem(
-            icon: new Icon(Icons.mail, color: Colors.brown[800]),
+            icon: new Icon(Icons.local_mall, color: Colors.grey[900]),
             title: new Text('Share'),
           ),
           BottomNavigationBarItem(
-              icon: new Icon(Icons.ac_unit, color: Colors.brown[800]),
+              icon: new Icon(Icons.style, color: Colors.grey[900]),
               title: new Text('Public')
           )
         ],
