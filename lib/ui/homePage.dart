@@ -49,27 +49,20 @@ class _HomeState extends State<HomePage> {
       ),
       body: Container(
         child: _options.elementAt(_page),
-//        decoration: new BoxDecoration(
-//          image: new DecorationImage(
-//            image: new AssetImage("assets/images/zlta.jpg"),
-//            fit: BoxFit.cover,
-//              colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.9), BlendMode.dstATop)
-//          ),
-//        ),
         //sirka, vyska, child do childu podmienku - uz netreba pravdepodobne
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: new Icon(Icons.person, color: Colors.brown[800]),
+            icon: new Icon(Icons.account_circle, color: Colors.grey[900]),
             title: new Text('Me'),
           ),
           BottomNavigationBarItem(
-            icon: new Icon(Icons.mail, color: Colors.brown[800]),
+            icon: new Icon(Icons.local_mall, color: Colors.grey[900]),
             title: new Text('Share'),
           ),
           BottomNavigationBarItem(
-              icon: new Icon(Icons.ac_unit, color: Colors.brown[800]),
+              icon: new Icon(Icons.style, color: Colors.grey[900]),
               title: new Text('Public')
           )
         ],
