@@ -107,7 +107,13 @@ class _QuickBeeState extends State<QuickBee> {
                         border: Border.all(color: Colors.white)
                     ),
                     child: MaterialButton(
-                      onPressed: () => authService.googleSignIn(),
+                      onPressed: () async {
+                        await authService.googleSignIn();
+                        Navigator.push(context, new MaterialPageRoute(
+                            builder: (context) =>
+                            new HomePage())
+                        );
+                      },
                       child: Row(
                         children: <Widget>[
                           new Text(
