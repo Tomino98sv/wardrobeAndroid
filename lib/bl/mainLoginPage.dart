@@ -6,6 +6,7 @@ import 'package:flutter_app/ui/homePage.dart';
 
 
 class QuickBee extends StatefulWidget {
+
   @override
   _QuickBeeState createState() => _QuickBeeState();
 }
@@ -15,7 +16,6 @@ class _QuickBeeState extends State<QuickBee> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    var ctx = context;
 
     return new Scaffold(
       body: Container(

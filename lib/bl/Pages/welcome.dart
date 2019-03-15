@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/mainLoginPage.dart';
 import 'package:flutter_app/bl/videjko/loginpage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 
 class WelcomePage extends StatefulWidget {
@@ -18,6 +19,7 @@ class _WelcomePageState extends State<WelcomePage> {
   FirebaseUser user2;
   GoogleSignInAccount googleUser;
 
+//  Firestore.instance.collection("items")
 
   @override
   void initState() {
