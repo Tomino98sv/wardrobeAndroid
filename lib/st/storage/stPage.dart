@@ -76,17 +76,13 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
     return Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
          new Center(
             child: sampleImage == null && sampleImage2 == null
                 ? Text('Select an Image')
                 : sampleImage != null ? enableUpload() : enableUpload2(),
          ),
-//          new Center(
-//            child: sampleImage2 == null
-//                ? Text('Select an Image')
-//                : enableUpload2(),
-//          ),
           new Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -122,17 +118,28 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
     String filePath = sampleImage.path;
     return Container(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Image.file(sampleImage, height: 300.0, width: 300.0,),
-          RaisedButton(
-            elevation: 7.0,
-            child: Text('Upload'),
-            textColor: Colors.white,
-            color: Colors.pinkAccent,
-            onPressed: () {
-              uploadFile(filePath);
-            },
-            //onPressed: uploadFile(filePath),
+          Container(
+            margin: EdgeInsets.only(top: 8.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30.0),
+              child: Material(
+                color: Colors.pink,
+                borderRadius: BorderRadius.circular(30.0),
+                child: InkWell(
+                  splashColor: Colors.pink[400],
+                  onTap:  () {uploadFile(filePath);},
+                  child: Container(
+                    width: 100.0,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text('Confirm',style: TextStyle(color: Colors.white),),
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -143,20 +150,22 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
     print('upload image from camera');
     String filePath = sampleImage2.path;
     return Container(
-      child: Column(
-        children: <Widget>[
-          Image.file(sampleImage2, height: 300.0, width: 300.0,),
-          RaisedButton(
-            elevation: 7.0,
-            child: Text('Upload'),
-            textColor: Colors.white,
-            color: Colors.pinkAccent,
-            onPressed: () {
-              uploadFile(filePath);
-            },
-            //onPressed: uploadFile(filePath),
-          ),
-        ],
+      child: InkWell(
+        onTap:  uploadFile(filePath),
+        child: Column(
+          children: <Widget>[
+            Image.file(sampleImage2, height: 300.0, width: 300.0,),
+            Container(
+              decoration: new BoxDecoration(
+                color: Colors.pink,
+                borderRadius: new BorderRadius.circular(30.0),
+              ),
+              alignment: Alignment.center,
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              child: Text('Confirm',style: TextStyle(color: Colors.white),),
+            ),
+          ],
+      ),
       ),
     );
   }

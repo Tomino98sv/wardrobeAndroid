@@ -59,10 +59,33 @@ class UserInfoList extends StatelessWidget{
                               ],
                             ),
                             RaisedButton(
-                              child: Text('Choose'),
+                              child: Text(
+                                 itemInfo.data['borrowedTo'] == ""  || itemInfo.data['borrowedTo'] == null ?
+                                  'Choose' : 'Return'),
                               onPressed: () {
-                                Navigator.pop(context);
-                                Navigator.pop(context);
+                                if (itemInfo.data['borrowedTo'] == ""  || itemInfo.data['borrowedTo'] == null) {
+                                  itemInfo.data['borrowedTo'] = userInfo.data['uid'];
+                                  itemInfo.data['borrowName'] = userInfo.data['name'];
+                                  Firestore.instance.collection('items')
+                                      .document(itemInfo.documentID)
+                                      .updateData({
+                                    "borrowedTo": itemInfo.data['borrowedTo'],
+                                    "borrowName": itemInfo.data['borrowName']
+                                  });
+                                  debugPrint(itemInfo.data['borrowedTo']);
+                                  debugPrint(itemInfo.data['borrowName']);
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                }
+                                else {
+                                  Firestore.instance.collection('items')
+                                      .document(itemInfo.documentID)
+                                      .updateData({
+                                    "borrowedTo": "",
+                                    "borrowName": ""
+                                  });
+                                  Navigator.pop(context);
+                                }
                               },
                             ),
                             Text('User\'s items: '),
@@ -106,83 +129,6 @@ class UserInfoList extends StatelessWidget{
                     ],
                   ),
             );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//            return new Scaffold(
-//              appBar: new AppBar(
-//                title: Text(itemUser['name']),
-//              ),
-//              body: SingleChildScrollView(
-//                child: new Container(
-//                  padding: EdgeInsets.all(32.0),
-//                  child: Center(
-//                    child: Column(
-//                      children: <Widget>[
-//    //                Image.network(item.data['photo'],
-//    //                  height: 150,
-//    //                  width: 150,
-//    //                ),
-//                        Row(
-//                          children: <Widget>[
-//                            Expanded(
-//                              child: Text('User Name: '),
-//                            ),
-//                            Expanded(
-//                              child: Text(itemUser.data['name']),
-//                            )
-//                          ],
-//                        ),
-//                        Row(
-//                          children: <Widget>[
-//                            Expanded(
-//                              child: Text('User email: '),
-//                            ),
-//                            Expanded(
-//                                child: Text(itemUser.data['email'])
-//                            )
-//                          ],
-//                        ),
-//                        Row(
-//                          children: <Widget>[
-//                            Text(item.data['name']),
-//                          ],
-//                        ),
-//                        RaisedButton(
-//                          child: Text('Choose'),
-//                          onPressed: () {
-//                            Navigator.pop(context);
-//                            Navigator.pop(context);
-//                          },
-//                        ),
-//                        Text('User\'s items: '),
-//                        ListView(
-//
-//                        )
-//
-//                      ],
-//                    ),
-//                  ),
-//                ),
-//              ),
-//            );
       }});
   }
 }
