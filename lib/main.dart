@@ -18,6 +18,7 @@ void main(){
 //        home: HomePage(),
       home: QuickBee(),
         theme: ThemeData(
+
           primaryColor: Colors.pink[400],
           scaffoldBackgroundColor: Colors.grey[50],
           accentColor: Colors.pink[400],

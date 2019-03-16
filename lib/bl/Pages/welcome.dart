@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:flutter_app/bl/mainLoginPage.dart';
-import 'package:flutter_app/bl/videjko/loginpage.dart';
+import 'package:flutter_app/db/FirestoreManager.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -33,52 +37,290 @@ class _WelcomePageState extends State<WelcomePage> {
 
   @override
   Widget build(BuildContext context) {
-   return SingleChildScrollView(
+   return StreamBuilder<QuerySnapshot>(
+//     stream: Firestore.instance.collection('items').where("userId", isEqualTo: user2.uid).snapshots(),
+     stream: Firestore.instance.collection('items').snapshots(),
+     builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+       if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+       switch (snapshot.connectionState) {
+         case ConnectionState.waiting:
+           return new Text ('Loading...');
+         default:
+       return Column(
+           children: <Widget>[
+             Container(
+               alignment: Alignment.topRight,
+               child: new OutlineButton(
+                     borderSide: BorderSide(
+                         color: Colors.red,style: BorderStyle.solid,width: 3.0),
+                     child: Text('Logout'),
+                     onPressed: () {
+                       FirebaseAuth
+                           .instance.signOut().then((value){
+                         Navigator.push(context, new MaterialPageRoute(
+                             builder: (context) =>
+                             new QuickBee())
+                         );
+                       }).catchError((e){
+                         print(e);
+                       });
+                     },
+                   ),
+             ),
+             Container(
+               alignment: Alignment.center,
+               child: new Column(
+                 mainAxisAlignment: MainAxisAlignment.start,
+                 children: <Widget>[
+                   new Text(
+                     user2 == null ? "nic" : 'Email: ${user2.email}',
+                       style: new TextStyle(fontSize: 15.0,color: Colors.orange)
+                   ),
+                   new Text(
+                     user2 == null ? "nic1" : 'UID: ${user2.uid}',
+                       style: new TextStyle(fontSize: 15.0,color: Colors.orange)
+                   ),
+                   new Text(
+                       user2 == null ? "nic2" : snapshot.data.documents[0]['name'],
+                       style: new TextStyle(fontSize: 15.0,color: Colors.orange)
+                   ),
+                   RaisedButton(
+                     onPressed: (){
+                       debugPrint(user2.displayName);
+                     },
+                   )
 
-     child: Column(
-       children: <Widget>[
-         Container(
-           alignment: Alignment.topRight,
-           child: new OutlineButton(
-                 borderSide: BorderSide(
-                     color: Colors.red,style: BorderStyle.solid,width: 3.0),
-                 child: Text('Logout'),
-                 onPressed: () {
-                   FirebaseAuth
-                       .instance.signOut().then((value){
-                     Navigator.push(context, new MaterialPageRoute(
-                         builder: (context) =>
-                         new QuickBee())
+
+
+
+                 ],
+               ),
+             ),
+             Center(
+               child: Text('My Items:'),
+             ),
+             Expanded(
+               child: Container(
+                 height: 200.0,
+                 child: ListView(
+                     children: snapshot.data.documents.map((DocumentSnapshot document) {
+                       if (document["userId"] == user2.uid && document['borrowedTo'] == "") {
+                         return Slidable(
+                           delegate: SlidableDrawerDelegate(),
+                           actionExtentRatio: 0.25,
+                           child: ExpansionTile(
+                             leading: Container(
+                                 width: 46.0,
+                                 height: 46.0,
+                                 child: document['photo_url'] == null ||
+                                     document['photo_url'] == ""
+                                     ? Icon(Icons.filter_vintage)
+                                     : TransitionToImage(
+                                   image: AdvancedNetworkImage(
+                                     document['photo_url'],
+                                     useDiskCache: true,
+                                     cacheRule:
+                                     CacheRule(maxAge: const Duration(days: 7)),
+                                   ),
+                                 )
+                             ),
+                             title: Text(document['name']),
+                             children: <Widget>[
+                               Text('Name: ${document['name']}'),
+                               Text('Color: ${document['color']}'),
+                               Text('Size: ${document['size']}'),
+                               Text('Length: ${document['length']}'),
+                               RaisedButton(
+                                 child: Text(
+                                     'Borrow to...',
+                                     style: TextStyle(color: Colors.white)),
+                                 color: Colors.pinkAccent,
+                                 elevation: 4.0,
+                                 onPressed: () {
+                                   Navigator.push(context,
+                                       MaterialPageRoute(builder: (context) {
+                                         return UserList(item: document);
+                                       }));
+                                   // kod s vyberom userov Navigator.push
+                                 },
+                               ),
+                             ],
+                           ),
+                         );
+                       }
+                       else {
+                         return Text('');
+                       }
+                     }).toList()
+                 ),
+               ),
+             ),
+             Center(
+               child: Text('Borrowed Items:'),
+             ),
+             Expanded(
+               child: Container(
+                 height: 200.0,
+                 child: ListView(
+                   children: snapshot.data.documents.map((DocumentSnapshot document) {
+                     if (document["userId"] == user2.uid && document['borrowedTo'] != ""){
+                     return Slidable(
+                       delegate: SlidableDrawerDelegate(),
+                       actionExtentRatio: 0.25,
+                       child: ExpansionTile(
+                         leading: Container(
+                             width: 46.0,
+                             height: 46.0,
+                             child: document['photo_url'] == null || document['photo_url'] == ""
+                                 ? Icon(Icons.filter_vintage)
+                                 : TransitionToImage(
+                               image: AdvancedNetworkImage(
+                                 document['photo_url'],
+                                 useDiskCache: true,
+                                 cacheRule:
+                                 CacheRule(maxAge: const Duration(days: 7)),
+                               ),
+                             )
+                         ),
+                         title: Text(document['name']),
+                         children: <Widget>[
+                           Text('Name: ${document['name']}'),
+                           Text('Color: ${document['color']}'),
+                           Text('Size: ${document['size']}'),
+                           Text('Length: ${document['length']}'),
+                           RaisedButton(
+                             child: Text(
+                                 'I got my dress back', style: TextStyle(color: Colors.white)),
+                             color: Colors.pinkAccent,
+                             elevation: 4.0,
+                             onPressed: () {
+                                 return showDialog(
+                                   context: context,
+                                   builder: (BuildContext context){
+                                     return AlertDialog(
+                                       title: Text('Get item'),
+                                       content: Text('Are you sure that user returned your item back to you?'),
+                                       actions: <Widget>[
+                                         FlatButton(
+                                           child: Text('Yes'),
+                                           onPressed: (){
+                                             Firestore.instance
+                                                 .collection('items')
+                                                 .document(document.documentID)
+                                                 .updateData({"borrowedTo": "", "borrowName": ""});
+                                             debugPrint("vratil sa mi item");
+                                             Navigator.pop(context);
+                                           },
+                                         ),
+                                         FlatButton(
+                                           child: Text('Cancel'),
+                                           onPressed: (){
+                                             Navigator.pop(context);
+                                           },
+                                         )
+                                       ],
+                                     );
+                                   }
+                                 );
+                               // kod s vyberom userov Navigator.push
+                             },
+                           ),
+                         ],
+                       ),
                      );
-                   }).catchError((e){
-                     print(e);
-                   });
-                 },
+                     }
+                     else {
+                       return Text('');
+                     }
+                   }).toList()
+                 ),
                ),
-         ),
-         Container(
-           alignment: Alignment.center,
-           child: new Column(
-             mainAxisAlignment: MainAxisAlignment.start,
-             children: <Widget>[
-               new Text(
-                 user2 == null ? "" : 'Email: ${user2.email}',
-                   style: new TextStyle(fontSize: 15.0,color: Colors.orange)
+             ),
+             Center(
+               child: Text('Items I borrowed:'),
+             ),
+             Expanded(
+               child: Container(
+                 height: 200.0,
+                 child: ListView(
+                     children: snapshot.data.documents.map((DocumentSnapshot document) {
+                       if (document["userId"] == user2.uid && document['borrowedTo'] == user2.uid){
+                         return Slidable(
+                           delegate: SlidableDrawerDelegate(),
+                           actionExtentRatio: 0.25,
+                           child: ExpansionTile(
+                             leading: Container(
+                                 width: 46.0,
+                                 height: 46.0,
+                                 child: document['photo_url'] == null || document['photo_url'] == ""
+                                     ? Icon(Icons.filter_vintage)
+                                     : TransitionToImage(
+                                   image: AdvancedNetworkImage(
+                                     document['photo_url'],
+                                     useDiskCache: true,
+                                     cacheRule:
+                                     CacheRule(maxAge: const Duration(days: 7)),
+                                   ),
+                                 )
+                             ),
+                             title: Text(document['name']),
+                             children: <Widget>[
+                               Text('Name: ${document['name']}'),
+                               Text('Color: ${document['color']}'),
+                               Text('Size: ${document['size']}'),
+                               Text('Length: ${document['length']}'),
+                               RaisedButton(
+                                 child: Text(
+                                     'Get back', style: TextStyle(color: Colors.white)),
+                                 color: Colors.pinkAccent,
+                                 elevation: 4.0,
+                                 onPressed: () {
+                                   return showDialog(
+                                       context: context,
+                                       builder: (BuildContext context){
+                                         return AlertDialog(
+                                           title: Text('Get item'),
+                                           content: Text('Are you sure that user returned your item back to you?'),
+                                           actions: <Widget>[
+                                             FlatButton(
+                                               child: Text('Yes'),
+                                               onPressed: (){
+                                                 Firestore.instance
+                                                     .collection('items')
+                                                     .document(document.documentID)
+                                                     .updateData({"borrowedTo": "", "borrowName": ""});
+                                                 debugPrint("vratil sa mi item");
+                                                 Navigator.pop(context);
+                                               },
+                                             ),
+                                             FlatButton(
+                                               child: Text('Cancel'),
+                                               onPressed: (){
+                                                 Navigator.pop(context);
+                                               },
+                                             )
+                                           ],
+                                         );
+                                       }
+                                   );
+                                   // kod s vyberom userov Navigator.push
+                                 },
+                               ),
+                             ],
+                           ),
+                         );
+                       }
+                       else {
+                         return Text('');
+                       }
+                     }).toList()
+                 ),
                ),
-               new Text(
-                 user2 == null ? "" : 'UID: ${user2.uid}',
-                   style: new TextStyle(fontSize: 15.0,color: Colors.orange)
-               ),
-               new Text(
-                   user2 == null ? "" : 'Name: ${user2.displayName}',
-                   style: new TextStyle(fontSize: 15.0,color: Colors.orange)
-               ),
-             ],
-           ),
-         )
-       ],
-     )
-
+             )
+           ],
+         );
+     }
+     }
    );
   }
 
