@@ -120,6 +120,7 @@ class _QuickBeeState extends State<QuickBee> {
                         children: <Widget>[
                           new Text(
                             "Continue with  ",
+
                             style: new TextStyle(fontSize: 15.0,color: Colors.white),
                               textAlign: TextAlign.center,
                           ),
