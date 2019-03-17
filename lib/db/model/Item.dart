@@ -32,7 +32,7 @@ class _MyNewItem extends State<MyNewItem> {
     user = await FirebaseAuth.instance.currentUser();
   }
 
-  var _sizes = ['34', '36', '38', '40', '42', '44'];
+  var _sizes = ['34', '36', '38', '40', '42', '44', '46', '48'];
   var _currentItemSelected = '38';
   var _length = ['Mini', 'Midi', 'Maxi', 'Oversize'];
   var _currentLengthSelected = 'Midi';

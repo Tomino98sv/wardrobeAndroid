@@ -56,24 +56,49 @@ class LoginPage extends StatefulWidget {
               obscureText: true,
             ),
             SizedBox(height: 20.0),
-            RaisedButton(
-              child: Text('Login'),
-              color: Colors.blue,
-              textColor: Colors.white,
-              elevation: 7.0,
-              onPressed: signInMethod,
+            Container(
+              margin: EdgeInsets.only(top: 8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30.0),
+                child: Material(
+                  color: Colors.pink,
+                  borderRadius: BorderRadius.circular(30.0),
+                  child: InkWell(
+                    splashColor: Colors.pink[400],
+                    onTap: signInMethod,
+                    child: Container(
+                      width: 100.0,
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text('Login',style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
             SizedBox(height: 15.0),
             Text('Don\'t have an account?'),
-            SizedBox(height: 10.0),
-            RaisedButton(
-              child: Text('Sign up'),
-              color: Colors.blue,
-              textColor: Colors.white,
-              elevation: 7.0,
-              onPressed: (){
-                Navigator.of(context).pushNamed('/signup');
-              },
+            Container(
+              margin: EdgeInsets.only(top: 8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30.0),
+                child: Material(
+                  color: Colors.pink,
+                  borderRadius: BorderRadius.circular(30.0),
+                    child: InkWell(
+                    splashColor: Colors.pink[400],
+                      onTap:  () {Navigator.of(context).pushNamed('/signup');},
+                        child: Container(
+                          width: 100.0,
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                          child: Text('Sign up',style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                    ),
+                ),
+              ),
             )
           ],
         ),
