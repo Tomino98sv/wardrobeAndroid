@@ -21,12 +21,13 @@ class LoginPage extends StatefulWidget {
   String _password;
   FirebaseUser user;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Scaffold(
+      key: _scaffoldKey,
       body: Form(
         key: _formKey,
       child: Container(
@@ -120,12 +121,25 @@ class LoginPage extends StatefulWidget {
           .catchError((e){
         print("NO LOGGING validation was passed but not loggin to firebaseAuth");
         print(e);
+        _showSnackBar();
       });
     }else{
       debugPrint("validation of sign in to firebaseAuth not pass");
     }
   }
 
+
+  _showSnackBar(){
+    final snackBar = new SnackBar(
+      content: new Text("Wrong password or non existing user or maybe you have no internet connection"),
+      duration: new Duration(seconds: 3),
+      backgroundColor: Colors.brown,
+      action: new SnackBarAction(label: 'OUKEY', onPressed: (){
+        print("pressed snackbar");
+      }),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
 
   bool validateEmail(String value) {
     Pattern pattern =r'^[a-zA-Z0-9\.\-\_]+\@[a-zA-Z0-9]+\.[a-zA-Z0-9]{2,}$';
