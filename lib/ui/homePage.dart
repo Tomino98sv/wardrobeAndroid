@@ -17,8 +17,9 @@ class _HomeState extends State<HomePage> {
   final _options =[
     WelcomePage(),
 //    MyStoragePage2(),
-    MyNewItem(),
     ItemsList(),
+    UserListHome(),
+//    MyNewItem(),  pre Kluad na floating buttonn
 //    Text('Index 2: Public'),
 
   ];
@@ -35,7 +36,7 @@ class _HomeState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Wardrobe'),
-        actions: <Widget>[_page!=2? Container() :
+        actions: <Widget>[_page!=1? Container() :
           IconButton(
             icon: Icon(Icons.search),
             onPressed: (){
@@ -54,16 +55,16 @@ class _HomeState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: new Icon(Icons.account_circle, color: Colors.grey[900]),
+            icon: new Icon(Icons.face, color: Colors.grey[900]),
             title: new Text('Me'),
           ),
           BottomNavigationBarItem(
-            icon: new Icon(Icons.local_mall, color: Colors.grey[900]),
-            title: new Text('Share'),
+            icon: new Icon(Icons.style, color: Colors.grey[900]),
+            title: new Text('Dresses'),
           ),
           BottomNavigationBarItem(
-              icon: new Icon(Icons.style, color: Colors.grey[900]),
-              title: new Text('Public')
+              icon: new Icon(Icons.account_circle, color: Colors.grey[900]),
+              title: new Text('Users')
           )
         ],
         currentIndex: _page,
