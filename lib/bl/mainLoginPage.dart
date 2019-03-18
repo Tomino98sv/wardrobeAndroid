@@ -35,7 +35,7 @@ class _QuickBeeState extends State<QuickBee> {
                       style: new TextStyle(
                         fontSize: 50.0,
                         color: Colors.white,
-                        fontFamily: 'Alyfe_Demo', //neberie
+                        fontFamily: 'Alyfe_Demo',
                       ),
                       textAlign: TextAlign.center,
                     )

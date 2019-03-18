@@ -67,53 +67,66 @@ class ItemsList extends StatelessWidget {
                       '' :
                       'Borrowed to : ${item.borrowName}'),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          Container(
-                            child: new RaisedButton(
-                                child: Text(
-                                  "Edit",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                color: Colors.pinkAccent,
-                                elevation: 4.0,
-                                onPressed: () {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return EditItem(item: document);
+                          Flexible(
+                            fit: FlexFit.tight,
+                            child: Container(
+                              child: InkWell(
+                                onTap: (){ Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                      return EditItem(item: document);
 //                            return SecondRoute(item: document); //tu je predchadzajuci kod
-                                  }));
-                                  debugPrint("idem dalej");
-                                }),
-                            padding: EdgeInsets.all(10.0),
-                          ),
-                          Container(
-                            child: new RaisedButton(
-                              child: Text(
-                                  document['borrowedTo'] == ""  || document['borrowedTo'] == null ?
-                                  'Borrow to...' :
-                                  'Return dress', style: TextStyle(color: Colors.white)),
-                              color: Colors.pinkAccent,
-                              elevation: 4.0,
-                              onPressed: () {
-                                if (document['borrowedTo'] == ""  || document['borrowedTo'] == null) {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                        return UserList(item: document);
                                       }));
-                                }
-                                else {
-                                  Firestore.instance.collection('users').where("uid", isEqualTo: document['borrowedTo']).snapshots().listen((user){
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                          return UserInfoList(userInfo: user.documents?.first, itemInfo: document);
-                                        }));
-                                  });
-                                  
-                                }
-                                // kod s vyberom userov Navigator.push
-                              },
+                                debugPrint("idem dalej");},
+                                child: Container(
+                                      decoration: new BoxDecoration(
+                                        color: Colors.pink,
+                                        borderRadius: new BorderRadius.circular(30.0),
+                                      ),
+                                  margin: EdgeInsets.all(10.0),
+                                  height: 40.0,
+                                  alignment: Alignment.center,
+                                      child: Text('Edit',style: TextStyle(color: Colors.white),),
+                                    ),
+                              ),
                             ),
+                          ),
+                          Flexible(
+                            fit: FlexFit.tight,
+                            child: Container(
+                            child: InkWell(
+                              onTap: (){ if (document['borrowedTo'] == ""  || document['borrowedTo'] == null) {
+                                 Navigator.push(context,
+                                 MaterialPageRoute(builder: (context) {return UserList(item: document);
+                                }));
+                                          }
+                                        else {
+                                          Firestore.instance.collection('users').where("uid", isEqualTo: document['borrowedTo']).snapshots().listen((user){
+                                            Navigator.push(context,
+                                             MaterialPageRoute(builder: (context) {
+                                                return UserInfoList(userInfo: user.documents?.first, itemInfo: document);
+                                              }));
+                                           });
+
+                                         }
+                                         // kod s vyberom userov Navigator.push},
+                              },
+                              child: Container(
+                                decoration: new BoxDecoration(
+                                  color: Colors.pink,
+                                  borderRadius: new BorderRadius.circular(30.0),
+                                ),
+                                margin: EdgeInsets.all(10.0),
+                                height: 40.0,
+                                alignment: Alignment.center,
+                                child: Text(document['borrowedTo'] == ""  || document['borrowedTo'] == null
+                                    ? 'Borrow to...'
+                                    : 'Return dress', style: TextStyle(color: Colors.white),),
+                              ),
+                            ),
+                          ),
                           ),
                         ],
                       ),
@@ -207,7 +220,7 @@ class UserList extends StatelessWidget {
                     children: snapshot.data.documents
                         .map((DocumentSnapshot document) {
                   return ListTile(
-                    trailing: Icon(Icons.send),
+                    trailing: Icon(Icons.send, color: Colors.pink,),
                     title: Text(document['name']),
                     onTap: () {
                       //kod ktory urci usra, ktoremu bolo pozicane
@@ -325,26 +338,25 @@ class _ShowDetails extends State<ShowDetails> {
                               )
                             ],
                           ),
-                          RaisedButton(
-                            child: Text('Edit'),
-                            textColor: Colors.white,
-                            onPressed: () {
-                              Navigator.push(context,
+                          Container(
+                            child: InkWell(
+                              onTap: (){ Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-//                      return EditItem(item: new Item(
-//                        name: item['name'],
-//                        color: item['color'],
-//                         size: item['size'],
-//                         length: item['length'],
-//                         photoUrl: item['photo_url'],
-//                         id: item.documentID
-//                      ));
-                                return EditItem(
-                                  item: snapshot.data,
-                                );
-                              }));
-                            },
-                          )
+                                    return EditItem(
+                                      item: snapshot.data,
+                                    );
+                                  }));},
+                              child: Container(
+                                decoration: new BoxDecoration(
+                                  color: Colors.pink,
+                                  borderRadius: new BorderRadius.circular(30.0),
+                                ),
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.symmetric(vertical: 8.0),
+                                child: Text('Edit',style: TextStyle(color: Colors.white),),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -454,41 +466,46 @@ class _State extends State<EditItem> {
                           color: Colors.brown[800])),
                   onChanged: _onChangedLength,
                 ),
-                RaisedButton(
-                  child: Text('Send'),
-                  textColor: Colors.white,
-                  onPressed: () {
-                    if (docName != '') {
-                      Firestore.instance
-                          .collection('items')
-                          .document(item.documentID)
-                          .updateData({"name": docName});
-                      debugPrint("zmenil som meno");
-                    }
-                    if (docColor != '') {
-                      Firestore.instance
-                          .collection('items')
-                          .document(item.documentID)
-                          .updateData({"color": docColor});
-                      debugPrint("zmenil som farbu");
-                    }
-                    if (docSize != '') {
-                      Firestore.instance
-                          .collection('items')
-                          .document(item.documentID)
-                          .updateData({"size": docSize});
-                      debugPrint("zmenil som velkost");
-                    }
-                    if (docLength != '') {
-                      Firestore.instance
-                          .collection('items')
-                          .document(item.documentID)
-                          .updateData({"length": docLength});
-                      debugPrint("zmenil som dlzku");
-                    }
-                    Navigator.pop(context);
-                  },
-                )
+                  Container(
+                    child: InkWell(
+                      onTap:() {  if (docName != '') {
+                  Firestore.instance
+                      .collection('items')
+                      .document(item.documentID)
+                      .updateData({"name": docName});
+                  debugPrint("zmenil som meno");
+                  }
+                      if (docColor != '') {
+          Firestore.instance
+              .collection('items')
+              .document(item.documentID)
+              .updateData({"color": docColor});
+          debugPrint("zmenil som farbu");
+          }
+              if (docSize != '') {
+        Firestore.instance
+            .collection('items')
+            .document(item.documentID)
+            .updateData({"size": docSize});
+        debugPrint("zmenil som velkost");
+        }
+            if (docLength != '') {
+      Firestore.instance
+          .collection('items')
+          .document(item.documentID)
+          .updateData({"length": docLength});
+      debugPrint("zmenil som dlzku");
+      }
+          Navigator.pop(context);},
+                      child: Container(
+                          decoration: new BoxDecoration(
+                            color: Colors.pink,
+                            borderRadius: new BorderRadius.circular(30.0),
+                          ),
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.symmetric(vertical: 8.0),
+                          child: Text('Send',style: TextStyle(color: Colors.white),),
+                ),),),
               ],
             ),
           ),
