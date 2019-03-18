@@ -36,7 +36,7 @@ class LoginPage extends StatefulWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextFormField(
-              decoration: InputDecoration(hintText: 'Email', icon: new Icon(Icons.email, color: Colors.brown[800])),
+              decoration: InputDecoration(hintText: 'Email', icon: new Icon(Icons.email, color: Colors.black)),
               validator: (input){
                 if(input.isEmpty){
                   return 'Please type an email';
@@ -47,7 +47,7 @@ class LoginPage extends StatefulWidget {
               onSaved: (input) => _email = input,
             ),SizedBox(height: 15.0),
             TextFormField(
-              decoration: InputDecoration(hintText: 'Password', icon: new Icon(Icons.text_fields, color: Colors.brown[800])),
+              decoration: InputDecoration(hintText: 'Password', icon: new Icon(Icons.text_fields, color: Colors.black)),
               validator: (input){
                 if(input.length < 6){
                   return 'Your password needs to be at least 6 characters';
@@ -133,7 +133,7 @@ class LoginPage extends StatefulWidget {
     final snackBar = new SnackBar(
       content: new Text("Wrong password or non existing user or maybe you have no internet connection"),
       duration: new Duration(seconds: 3),
-      backgroundColor: Colors.brown,
+      backgroundColor: Colors.black54,
       action: new SnackBarAction(label: 'OUKEY', onPressed: (){
         print("pressed snackbar");
       }),
