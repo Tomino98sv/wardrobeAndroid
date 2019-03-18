@@ -131,7 +131,7 @@ class LoginPage extends StatefulWidget {
 
   _showSnackBar(){
     final snackBar = new SnackBar(
-      content: new Text("Wrong password or non existing user or maybe you have no internet connection"),
+      content: new Text("Wrong password or non existing user"),
       duration: new Duration(seconds: 3),
       backgroundColor: Colors.brown,
       action: new SnackBarAction(label: 'OUKEY', onPressed: (){
