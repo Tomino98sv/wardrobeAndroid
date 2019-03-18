@@ -12,11 +12,13 @@ class _SignupPageState extends State<SignupPage> {
   String _password;
   String _name;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Scaffold(
+      key: _scaffoldKey,
       body: Form(
         key: _formKey,
         child: Center(
@@ -84,11 +86,24 @@ class _SignupPageState extends State<SignupPage> {
       })
           .catchError((e){
         print(e);
+        _showSnackBar();
       });
     }else{
       debugPrint("validation not pass");
     }
 
+  }
+
+  _showSnackBar(){
+    final snackBar = new SnackBar(
+      content: new Text("Email already used or no internet connection"),
+      duration: new Duration(seconds: 3),
+      backgroundColor: Colors.brown,
+      action: new SnackBarAction(label: 'OUKEY', onPressed: (){
+        print("pressed snackbar");
+      }),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
   bool validateEmail(String value) {
