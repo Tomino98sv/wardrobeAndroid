@@ -631,9 +631,7 @@ class Item {
 }
 
 class UserListHome extends StatelessWidget {
-  DocumentSnapshot item;
 
-  UserListHome({@required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -656,7 +654,7 @@ class UserListHome extends StatelessWidget {
                           //kod ktory urci usra, ktoremu bolo pozicane
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                                return UserInfoList2(userInfo: document, itemInfo: item);
+                                return UserInfoList2(userInfo: document);
                               }));
                         },
                       );
