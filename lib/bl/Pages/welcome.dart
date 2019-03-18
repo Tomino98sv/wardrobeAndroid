@@ -149,7 +149,7 @@ class _WelcomePageState extends State<WelcomePage> {
                          );
                        }
                        else {
-                         return Text('');
+                         return Container();
                        }
                      }).toList()
                  ),
@@ -230,7 +230,7 @@ class _WelcomePageState extends State<WelcomePage> {
                      );
                      }
                      else {
-                       return Text('');
+                       return Container();
                      }
                    }).toList()
                  ),
@@ -311,7 +311,7 @@ class _WelcomePageState extends State<WelcomePage> {
                          );
                        }
                        else {
-                         return Text('');
+                         return Container();
                        }
                      }).toList()
                  ),
