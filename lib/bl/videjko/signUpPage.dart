@@ -28,7 +28,7 @@ class _SignupPageState extends State<SignupPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               TextFormField(
-                decoration: InputDecoration(hintText: 'Username'),
+                decoration: InputDecoration(hintText: 'Username',icon: new Icon(Icons.person, color: Colors.brown[800])),
                 validator: (input){
                   if(input.isEmpty){
                     return 'Please type an username';
@@ -39,7 +39,7 @@ class _SignupPageState extends State<SignupPage> {
                 onSaved: (input) => _name = input,
               ),SizedBox(height: 15.0),
               TextFormField(
-                decoration: InputDecoration(hintText: 'Email'),
+                decoration: InputDecoration(hintText: 'Email', icon: new Icon(Icons.email, color: Colors.brown[800]))
                 validator: (input){
                 if(input.isEmpty){
                   return 'Please type an email';
@@ -50,7 +50,7 @@ class _SignupPageState extends State<SignupPage> {
                 onSaved: (input) => _email = input,
               ),SizedBox(height: 15.0),
               TextFormField(
-                decoration: InputDecoration(hintText: 'Password'),
+                decoration: InputDecoration(hintText: 'Password', icon: new Icon(Icons.text_fields, color: Colors.brown[800])),
                 validator: (input){
                 if(input.length < 6){
                   return 'Your password needs to be at least 6 characters';
