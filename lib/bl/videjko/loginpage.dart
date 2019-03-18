@@ -71,7 +71,7 @@ class LoginPage extends StatefulWidget {
                       width: 100.0,
                       alignment: Alignment.center,
                       padding: EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text('Login',style: TextStyle(color: Colors.white),
+                      child: Text('Log In',style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),

@@ -59,12 +59,26 @@ class _SignupPageState extends State<SignupPage> {
                 onSaved: (input) => _password = input,
               ),
               SizedBox(height: 5.0),
-              RaisedButton(
-                child: Text('Sign Up'),
-                color: Colors.blue,
-                textColor: Colors.white,
-                elevation: 7.0,
-                onPressed: signUpMethod,
+              Container(
+                margin: EdgeInsets.only(top: 8.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(30.0),
+                  child: Material(
+                    color: Colors.pink,
+                    borderRadius: BorderRadius.circular(30.0),
+                    child: InkWell(
+                      splashColor: Colors.pink[400],
+                      onTap: signUpMethod,
+                      child: Container(
+                        width: 100.0,
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text('Sign up',style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               )
             ],
           ),
@@ -117,3 +131,5 @@ class _SignupPageState extends State<SignupPage> {
 
   }
 }
+
+
