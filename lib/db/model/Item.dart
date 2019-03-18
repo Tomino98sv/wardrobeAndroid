@@ -173,6 +173,7 @@ class _MyNewItem extends State<MyNewItem> {
                                       'borrowName' : borrowName
                                     });
                               });
+                              Navigator.pop(context);
                               // tu bude navigatior pop!
                             } else {
                               Firestore.instance
