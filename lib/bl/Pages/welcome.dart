@@ -67,34 +67,23 @@ class _WelcomePageState extends State<WelcomePage> {
                      },
                    ),
              ),
-             Container(
-               alignment: Alignment.center,
-               child: new Column(
-                 mainAxisAlignment: MainAxisAlignment.start,
-                 children: <Widget>[
-                   new Text(
-                     user2 == null ? "nic" : 'Email: ${user2.email}',
-                       style: new TextStyle(fontSize: 15.0,color: Colors.orange)
-                   ),
-                   new Text(
-                     user2 == null ? "nic1" : 'UID: ${user2.uid}',
-                       style: new TextStyle(fontSize: 15.0,color: Colors.orange)
-                   ),
-                   new Text(
-                       user2 == null ? "nic2" : snapshot.data.documents[0]['name'],
-                       style: new TextStyle(fontSize: 15.0,color: Colors.orange)
-                   ),
-                   RaisedButton(
-                     onPressed: (){
-                       debugPrint(user2.displayName);
-                     },
-                   )
-
-
-
-
-                 ],
-               ),
+             StreamBuilder<QuerySnapshot>(
+               stream: Firestore.instance.collection('users').where('uid',isEqualTo: user2.uid).snapshots(),
+               builder: (context,snapshot){
+                 if(!snapshot.hasData) return Text("Loading data ... wait please");
+                 return Column(
+                   children: <Widget>[
+                     Text(
+                       snapshot.data.documents[0]['name'],
+                       style: new TextStyle(fontSize: 20.0,color: Colors.orange),
+                     ),
+                     Text(
+                       snapshot.data.documents[0]['email'],
+                       style: new TextStyle(fontSize: 15.0,color: Colors.orange),
+                     ),
+                   ],
+                 );
+               },
              ),
              Center(
                child: Text('My Items:'),
