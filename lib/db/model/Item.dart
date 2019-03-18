@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/st/storage/stPage.dart';
 
-void main() => runApp(MyNewItem());
+//void main() => runApp(MyNewItem());
 
 class MyNewItem extends StatefulWidget {
   @override
