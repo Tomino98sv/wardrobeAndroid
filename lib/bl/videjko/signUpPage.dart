@@ -39,7 +39,7 @@ class _SignupPageState extends State<SignupPage> {
                 onSaved: (input) => _name = input,
               ),SizedBox(height: 15.0),
               TextFormField(
-                decoration: InputDecoration(hintText: 'Email', icon: new Icon(Icons.email, color: Colors.brown[800]))
+                decoration: InputDecoration(hintText: 'Email', icon: new Icon(Icons.email, color: Colors.brown[800])),
                 validator: (input){
                 if(input.isEmpty){
                   return 'Please type an email';
