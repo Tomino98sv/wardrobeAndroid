@@ -67,6 +67,8 @@ class ItemsList extends StatelessWidget {
                       '' :
                       'Borrowed to : ${item.borrowName}'),
                       Row(
+
+
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
