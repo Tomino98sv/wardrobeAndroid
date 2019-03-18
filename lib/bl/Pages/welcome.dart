@@ -22,6 +22,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
   FirebaseUser user2;
   GoogleSignInAccount googleUser;
+  double _imageHeight = 248.0;
 
 //  Firestore.instance.collection("items")
 
@@ -34,6 +35,8 @@ class _WelcomePageState extends State<WelcomePage> {
       });
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -48,46 +51,74 @@ class _WelcomePageState extends State<WelcomePage> {
          default:
        return SingleChildScrollView(
          child: new Container(
-           padding: new EdgeInsets.all(32.0),
          child: new Center(
            child: new Column(
                children: <Widget>[
-                 Container(
-                   alignment: Alignment.topRight,
-                   child: new OutlineButton(
-                         borderSide: BorderSide(
-                             color: Colors.red,style: BorderStyle.solid,width: 3.0),
-                         child: Text('Logout'),
-                         onPressed: () {
-                           FirebaseAuth
-                               .instance.signOut().then((value){
-                             Navigator.push(context, new MaterialPageRoute(
-                                 builder: (context) =>
-                                 new QuickBee())
-                             );
-                           }).catchError((e){
-                             print(e);
-                           });
+                 new Stack(
+                   children: <Widget>[
+                     _buildIamge(),
+                     Container(
+                       margin: EdgeInsets.only(left: 250.0,top: 8.0,right: 2.0),
+                       child: ClipRRect(
+                         borderRadius: BorderRadius.circular(30.0),
+                         child: Material(
+                           color: Colors.pink,
+                           borderRadius: BorderRadius.circular(30.0),
+                           child: InkWell(
+                             splashColor: Colors.pink[400],
+                             onTap: () {
+                               FirebaseAuth
+                                   .instance.signOut().then((value){
+                                 Navigator.push(context, new MaterialPageRoute(
+                                     builder: (context) =>
+                                     new QuickBee())
+                                 );
+                               }).catchError((e){
+                                 print(e);
+                               });
+                             },
+                             child: Container(
+                               width: 100.0,
+                               alignment: Alignment.center,
+                               padding: EdgeInsets.symmetric(vertical: 8.0),
+                               child: Text('Log out',style: TextStyle(color: Colors.white),
+                               ),
+                             ),
+                           ),
+                         ),
+                       ),
+                     ),
+                     new Padding(
+                       padding: new EdgeInsets.only(left: 16.0, top: _imageHeight / 2.5),
+                       child: StreamBuilder<QuerySnapshot>(
+                         stream: Firestore.instance.collection('users').where('uid',isEqualTo: user2.uid).snapshots(),
+                         builder: (context,snapshot){
+                           if(!snapshot.hasData) return Text("Loading data ... wait please");
+                           return Column(
+                             children: <Widget>[
+                               Text(
+                                 snapshot.data.documents[0]['name'],
+                                 style: new TextStyle(
+                                     fontSize: 30.0,
+                                     color: Colors.black,
+                                     fontFamily: 'DancingScript-Bold', //neberie
+                                     fontWeight: FontWeight.w400
+                                 ),
+                               ),
+                               Text(
+                                 snapshot.data.documents[0]['email'],
+                                 style: new TextStyle(
+                                     fontSize: 15.0,
+                                     color: Colors.black,
+                                     fontWeight: FontWeight.w300
+                                 ),
+                               ),
+                             ],
+                           );
                          },
                        ),
-                 ),
-                 StreamBuilder<QuerySnapshot>(
-                   stream: Firestore.instance.collection('users').where('uid',isEqualTo: user2.uid).snapshots(),
-                   builder: (context,snapshot){
-                     if(!snapshot.hasData) return Text("Loading data ... wait please");
-                     return Column(
-                       children: <Widget>[
-                         Text(
-                           snapshot.data.documents[0]['name'],
-                           style: new TextStyle(fontSize: 20.0,color: Colors.orange),
-                         ),
-                         Text(
-                           snapshot.data.documents[0]['email'],
-                           style: new TextStyle(fontSize: 15.0,color: Colors.orange),
-                         ),
-                       ],
-                     );
-                   },
+                     ),
+                   ],
                  ),
                  Center(
                    child: Text('My Items:'),
@@ -314,8 +345,35 @@ class _WelcomePageState extends State<WelcomePage> {
    );
   }
 
+  Widget _buildIamge() {
+    return new ClipPath(
+      clipper: new DialogonalClipper(),
+      child: new Image.asset(
+      'assets/images/pinkB.jpg',
+      fit: BoxFit.fitHeight,
+      height: _imageHeight,
+    ),
+    );
+  }
 
 }
+
+class DialogonalClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = new Path();
+    path.lineTo(0.0, size.height - 60.0);
+    path.lineTo(size.width, size.height);
+    path.lineTo(size.width, 0.0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => true;
+}
+
+
 
 //      child: new Center(
 //       child: Container(

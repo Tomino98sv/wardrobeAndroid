@@ -96,6 +96,10 @@ flutter:
     - family: Alyfe_Demo
       fonts:
         - asset: assets/font/Alyfe_Demo.ttf
+    - family: Dancing Script
+      fonts:
+        - asset: assets/font/DancingScript-Bold.ttf
+        - asset: assets/font/DancingScript-Regular.ttf
 
   #
   # For details regarding fonts from package dependencies,
