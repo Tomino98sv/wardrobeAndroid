@@ -213,9 +213,6 @@ class UserList extends StatelessWidget {
               return new Text('Loading...');
             default:
               return Scaffold(
-                appBar: AppBar(
-                  title: Text('Fashionistas'),
-                ),
                 body: new ListView(
                     children: snapshot.data.documents
                         .map((DocumentSnapshot document) {
@@ -631,4 +628,41 @@ class Item {
 
   Item({this.name, this.color, this.size, this.length, this.photoUrl, this.id, this.userid, this.borrowedTo, this.borrowName});
 
+}
+
+class UserListHome extends StatelessWidget {
+  DocumentSnapshot item;
+
+  UserListHome({@required this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+        stream: Firestore.instance.collection('users').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return new Text('Loading...');
+            default:
+              return Scaffold(
+                body: new ListView(
+                    children: snapshot.data.documents
+                        .map((DocumentSnapshot document) {
+                      return ListTile(
+                        trailing: Icon(Icons.send, color: Colors.pink,),
+                        title: Text(document['name']),
+                        onTap: () {
+                          //kod ktory urci usra, ktoremu bolo pozicane
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                                return UserInfoList2(userInfo: document, itemInfo: item);
+                              }));
+                        },
+                      );
+                    }).toList()),
+              );
+          }
+        });
+  }
 }
