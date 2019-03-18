@@ -5,6 +5,7 @@ import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:flutter_app/bl/mainLoginPage.dart';
 import 'package:flutter_app/db/FirestoreManager.dart';
+import 'package:flutter_app/db/model/Item.dart';
 import 'package:flutter_app/db/userInfo.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -36,7 +37,6 @@ class _WelcomePageState extends State<WelcomePage> {
       });
     });
   }
-
 
 
   @override
@@ -417,6 +417,16 @@ class _WelcomePageState extends State<WelcomePage> {
                            return Container();
                          }
                        }).toList()
+                   ),
+                 ),
+                 Container(
+                   color: Colors.pinkAccent,
+                   child: FloatingActionButton(
+                     onPressed: (){
+                       Navigator.push(context, MaterialPageRoute(builder: (context) {
+                         return MyNewItem();
+                       }));
+                     },
                    ),
                  )
                ],
