@@ -505,7 +505,7 @@ class _WelcomePageState extends State<WelcomePage>
       child: new Image.asset(
         'assets/images/pinkB.jpg',
         fit: BoxFit.fitHeight,
-        height: _imageHeight,
+//        height: _imageHeight,
       ),
     );
   }
