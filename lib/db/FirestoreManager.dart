@@ -7,6 +7,7 @@ import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:flutter_advanced_networkimage/zoomable.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_app/bl/Pages/welcome.dart';
+import 'package:flutter_app/db/userInfo.dart';
 
 import 'userInfo.dart';
 
@@ -218,6 +219,7 @@ class ShowDetails extends StatefulWidget {
 //show details about item with option to edit
 class _ShowDetails extends State<ShowDetails> {
   DocumentSnapshot item;
+  double _imageHeight = 248.0;
 
   _ShowDetails({@required this.item});
 
@@ -264,21 +266,35 @@ class _ShowDetails extends State<ShowDetails> {
                     child: new Center(
                       child: new Column(
                         children: <Widget>[
+                          Stack(
+                            children: <Widget>[
+                              _buildIamge(),
+                              Padding(
+                                padding: new EdgeInsets.only(
+                                    left: 16.0, top: _imageHeight / 2.5),
+                                child: Column(
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        Expanded(child: Icon(Icons.account_circle)),
+                                        Expanded(child: Text('Name: '),),
+                                        Expanded(
+                                          child: Text(snapshot.data['name']),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
 //                new Flexible(
 //                  child: new ZoomableImage(
                           Image.network(snapshot.data['photo_url'],
                               height: 120, width: 120
 //                    ,)
                               ),
-                          Row(
-                            children: <Widget>[
-                              Expanded(child: Icon(Icons.account_circle)),
-                              Expanded(child: Text('Name: '),),
-                              Expanded(
-                                child: Text(snapshot.data['name']),
-                              )
-                            ],
-                          ),
+
                           Row(
                             children: <Widget>[
                               Expanded(
@@ -370,6 +386,33 @@ class _ShowDetails extends State<ShowDetails> {
           }
         });
   }
+
+  Widget _buildIamge() {
+    return new ClipPath(
+      clipper: new DialogonalClipper(),
+      child: new Image.asset(
+        'assets/images/pinkB.jpg',
+        fit: BoxFit.fitHeight,
+//        height: _imageHeight,
+      ),
+    );
+  }
+}
+
+
+class DialogonalClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = new Path();
+    path.lineTo(0.0, size.height - 60.0);
+    path.lineTo(size.width, size.height);
+    path.lineTo(size.width, 0.0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => true;
 }
 
 //editing item screen
@@ -536,15 +579,6 @@ class _State extends State<EditItem> {
                       ),
                     ),
                   ],
-                ),
-
-
-                new TextField(
-                  decoration: new InputDecoration(
-                      labelText: item['length'],
-                      icon: new Icon(Icons.content_cut,
-                          color: Colors.brown[800])),
-                  onChanged: _onChangedLength,
                 ),
                   Container(
                     child: InkWell(
