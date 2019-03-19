@@ -74,12 +74,13 @@ class _ItemsListState extends State<ItemsList> {
                             ? Icon(Icons.accessibility)
                             : TransitionToImage(
                           image: AdvancedNetworkImage(
-                              item.photoUrl,
-                              useDiskCache: true,
-                              cacheRule:
-                              CacheRule(maxAge: const Duration(days: 7)),
-                              fallbackAssetImage: 'assets/images/error_image.png',
-                              retryLimit: 0
+                            item.photoUrl,
+                            useDiskCache: true,
+                            timeoutDuration: Duration(seconds: 60),
+                            cacheRule:
+                            CacheRule(maxAge: const Duration(days: 7)),
+                            fallbackAssetImage: 'assets/images/error_image.png',
+                            retryLimit: 0
                           ),
                           placeholder: CircularProgressIndicator(),
                           duration: Duration(milliseconds: 300),),
@@ -183,6 +184,8 @@ class UserList extends StatelessWidget {
               return new Text('Loading...');
             default:
               return Scaffold(
+                  appBar: AppBar(
+                  title: Text("Fashonistats"),),
                 body: new ListView(
                     children: snapshot.data.documents
                         .map((DocumentSnapshot document) {
@@ -635,7 +638,6 @@ class Item {
 }
 
 class UserListHome extends StatelessWidget {
-
 
   @override
   Widget build(BuildContext context) {

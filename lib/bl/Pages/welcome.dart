@@ -60,29 +60,32 @@ class _WelcomePageState extends State<WelcomePage> {
                  new Stack(
                    children: <Widget>[
                      _buildIamge(),
-                     Container(
-                       margin: EdgeInsets.only(left: 250.0,top: 8.0,right: 5.0),
-                       child: ClipRRect(
-                         borderRadius: BorderRadius.circular(30.0),
-                         child: Material(
-                           color: Colors.pink,
+                     Align(
+                       alignment: Alignment.topRight,
+                       child: Container(
+                         margin: EdgeInsets.only(top: 24.0,right: 24.0),
+                         child: ClipRRect(
                            borderRadius: BorderRadius.circular(30.0),
-                           child: InkWell(
-                             splashColor: Colors.pink[400],
-                             onTap: () {
-                               FirebaseAuth
+                           child: Material(
+                             color: Colors.pink,
+                              shape:  _DiamondBorder(),
+                         //    borderRadius: BorderRadius.circular(30.0),
+                             child: InkWell(
+                               splashColor: Colors.pink[400],
+                               onTap: () {
+                                 FirebaseAuth
                                    .instance.signOut().then((value){
                                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
                                  builder: (context)=>QuickBee()), (Route<dynamic> route) => false);
                                }).catchError((e){
                                  print(e);
                                });
-                             },
-                             child: Container(
-                               width: 100.0,
-                               alignment: Alignment.center,
-                               padding: EdgeInsets.symmetric(vertical: 8.0),
-                               child: Text('Log out',style: TextStyle(color: Colors.white),
+                               },
+                               child: Container(
+                                 width: 100.0,
+                                 alignment: Alignment.center,
+                                 padding: EdgeInsets.symmetric(vertical: 30.0),
+                                 child: Icon(Icons.power_settings_new, color: Colors.white),
                                ),
                              ),
                            ),
@@ -120,13 +123,17 @@ class _WelcomePageState extends State<WelcomePage> {
                        ),
                      ),
                      Container(
-                       margin: EdgeInsets.only(left: 280.0,top: 160.0),
+                       margin: EdgeInsets.only(left: 313.0,top: 180.0),
                        child: FloatingActionButton(
                          child: Icon(Icons.add ),
                          shape: _DiamondBorder(),
                          onPressed: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) {
-                           MyNewItem();
+                           return Scaffold(
+                             body: Center(
+                               child: MyNewItem(),  //nefunguje
+                             ),
+                           );
                             }));
                          }
                        ),
@@ -292,6 +299,7 @@ class _WelcomePageState extends State<WelcomePage> {
                                  image: AdvancedNetworkImage(
                                    document['photo_url'],
                                    useDiskCache: true,
+                                   timeoutDuration: Duration(seconds: 60),
                                    cacheRule:
                                    CacheRule(maxAge: const Duration(days: 7)),
                                  ),
@@ -304,43 +312,57 @@ class _WelcomePageState extends State<WelcomePage> {
                              Text('Size: ${document['size']}'),
                              Text('Length: ${document['length']}'),
                              new Text('Borrowed to : ${document['borrowName']}'),
-                             RaisedButton(
-                               child: Text(
-                                   'I got my dress back', style: TextStyle(color: Colors.white)),
-                               color: Colors.pinkAccent,
-                               elevation: 4.0,
-                               onPressed: () {
-                                   return showDialog(
-                                     context: context,
-                                     builder: (BuildContext context){
-                                       return AlertDialog(
-                                         title: Text('Get item'),
-                                         content: Text('Are you sure that user returned your item back to you?'),
-                                         actions: <Widget>[
-                                           FlatButton(
-                                             child: Text('Yes'),
-                                             onPressed: (){
-                                               Firestore.instance
-                                                   .collection('items')
-                                                   .document(document.documentID)
-                                                   .updateData({"borrowedTo": "", "borrowName": ""});
-                                               debugPrint("vratil sa mi item");
-                                               Navigator.pop(context);
-                                             },
-                                           ),
-                                           FlatButton(
-                                             child: Text('Cancel'),
-                                             onPressed: (){
-                                               Navigator.pop(context);
-                                             },
-                                           )
-                                         ],
-                                       );
-                                     }
-                                   );
-                                 // kod s vyberom userov Navigator.push
-                               },
-                             ),
+                            new Container(
+                              margin: EdgeInsets.only(top: 10.0,bottom: 10.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(30.0),
+                                child: Material(
+                                  color: Colors.pink,
+                                  borderRadius: BorderRadius.circular(30.0),
+                                    child: InkWell(
+                                      splashColor: Colors.pink[400],
+                                      onTap: () {
+                                        return showDialog(context: context, builder: (BuildContext context){
+                                          return AlertDialog(
+                                            title: Text('Get item'),
+                                            content: Text('Are you sure that user returned your item back to you?'),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                child: Text('Yes'),
+                                                onPressed: (){
+                                                  Firestore.instance
+                                                  .collection('items')
+                                                  .document(document.documentID)
+                                                  .updateData({"borrowedTo": "", "borrowName": ""});
+                                                  debugPrint("vratil sa mi item");
+                                                  Navigator.pop(context);
+                                                },
+                                               ),
+                                              FlatButton(
+                                                child: Text('Cancel'),
+                                                onPressed: (){
+                                                  Navigator.pop(context);
+                                                 },
+                                              )
+                                             ],
+                                           );
+                                        }
+                                      ); // kod s vyberom userov Navigator.push
+                                    },
+                                    child: Container(
+                                      width: 200.0,
+                                      height: 40.0,
+                                      alignment: Alignment.center,
+                                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                      child: Text('I got my dress back', style: TextStyle(
+                                          color: Colors.white,
+                                      ),
+                                      ),
+                                    ),
+                                    ),
+                                ),
+                              ),
+                            )
                            ],
                          ),
                        );
@@ -352,7 +374,7 @@ class _WelcomePageState extends State<WelcomePage> {
                    ),
                  ),
                  Center(
-                   child: Text('Borrowed From:'),
+                   child: Text('Lend From:'),
                  ),
                  Container(
                    height: 200.0,
@@ -447,7 +469,7 @@ class _WelcomePageState extends State<WelcomePage> {
       child: new Image.asset(
       'assets/images/pinkB.jpg',
       fit: BoxFit.fitHeight,
-      height: _imageHeight,
+    //  height: _imageHeight,
     ),
     );
   }
@@ -515,4 +537,5 @@ class _DiamondBorder extends ShapeBorder {
     return null;
   }
 }
+
 
