@@ -59,7 +59,7 @@ class _WelcomePageState extends State<WelcomePage> {
                    children: <Widget>[
                      _buildIamge(),
                      Container(
-                       margin: EdgeInsets.only(left: 250.0,top: 8.0,right: 2.0),
+                       margin: EdgeInsets.only(left: 250.0,top: 8.0,right: 5.0),
                        child: ClipRRect(
                          borderRadius: BorderRadius.circular(30.0),
                          child: Material(
@@ -117,6 +117,18 @@ class _WelcomePageState extends State<WelcomePage> {
                              ],
                            );
                          },
+                       ),
+                     ),
+                     Container(
+                       margin: EdgeInsets.only(left: 280.0,top: 160.0),
+                       child: FloatingActionButton(
+                         child: Icon(Icons.add ),
+                         shape: _DiamondBorder(),
+                         onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                           MyNewItem();
+                            }));
+                         }
                        ),
                      ),
                    ],
@@ -419,16 +431,6 @@ class _WelcomePageState extends State<WelcomePage> {
                        }).toList()
                    ),
                  ),
-                 Container(
-                   color: Colors.pinkAccent,
-                   child: FloatingActionButton(
-                     onPressed: (){
-                       Navigator.push(context, MaterialPageRoute(builder: (context) {
-                         return MyNewItem();
-                       }));
-                     },
-                   ),
-                 )
                ],
              ),
          ),
@@ -479,5 +481,38 @@ class DialogonalClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => true;
+}
+
+class _DiamondBorder extends ShapeBorder {
+  const _DiamondBorder();
+
+  @override
+  EdgeInsetsGeometry get dimensions {
+    return const EdgeInsets.only();
+  }
+
+  @override
+  Path getInnerPath(Rect rect, { TextDirection textDirection }) {
+    return getOuterPath(rect, textDirection: textDirection);
+  }
+
+  @override
+  Path getOuterPath(Rect rect, { TextDirection textDirection }) {
+    return Path()
+      ..moveTo(rect.left + rect.width / 2.0, rect.top)
+      ..lineTo(rect.right, rect.top + rect.height / 2.0)
+      ..lineTo(rect.left + rect.width  / 2.0, rect.bottom)
+      ..lineTo(rect.left, rect.top + rect.height / 2.0)
+      ..close();
+  }
+
+  @override
+  void paint(Canvas canvas, Rect rect, { TextDirection textDirection }) {}
+
+  // This border doesn't support scaling.
+  @override
+  ShapeBorder scale(double t) {
+    return null;
+  }
 }
 
