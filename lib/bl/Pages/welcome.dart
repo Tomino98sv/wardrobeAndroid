@@ -56,16 +56,17 @@ class _WelcomePageState extends State<WelcomePage>
                   new Stack(
                     children: <Widget>[
                       _buildIamge(),
-                      Container(
-                        margin:
-                            EdgeInsets.only(left: 250.0, top: 8.0, right: 5.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(30.0),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                          margin: EdgeInsets.only(top: 24.0, right: 24.0),
                           child: Material(
                             color: Colors.pink,
-                            borderRadius: BorderRadius.circular(30.0),
+                            shape: _DiamondBorder(),
+                            //    borderRadius: BorderRadius.circular(30.0),
                             child: InkWell(
                               splashColor: Colors.pink[400],
+                              customBorder: _DiamondBorder(),
                               onTap: () {
                                 FirebaseAuth.instance.signOut().then((value) {
                                   Navigator.of(context).pushAndRemoveUntil(
@@ -77,13 +78,11 @@ class _WelcomePageState extends State<WelcomePage>
                                 });
                               },
                               child: Container(
-                                width: 100.0,
+                                width: 90.0,
                                 alignment: Alignment.center,
-                                padding: EdgeInsets.symmetric(vertical: 8.0),
-                                child: Text(
-                                  'Log out',
-                                  style: TextStyle(color: Colors.white),
-                                ),
+                                padding: EdgeInsets.symmetric(vertical: 30.0),
+                                child: Icon(Icons.power_settings_new,
+                                    color: Colors.white),
                               ),
                             ),
                           ),
@@ -325,47 +324,68 @@ class _WelcomePageState extends State<WelcomePage>
                               Text('Length: ${document['length']}'),
                               new Text(
                                   'Borrowed to : ${document['borrowName']}'),
-                              RaisedButton(
-                                child: Text('I got my dress back',
-                                    style: TextStyle(color: Colors.white)),
-                                color: Colors.pinkAccent,
-                                elevation: 4.0,
-                                onPressed: () {
-                                  return showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text('Get item'),
-                                          content: Text(
-                                              'Are you sure that user returned your item back to you?'),
-                                          actions: <Widget>[
-                                            FlatButton(
-                                              child: Text('Yes'),
-                                              onPressed: () {
-                                                Firestore.instance
-                                                    .collection('items')
-                                                    .document(
-                                                        document.documentID)
-                                                    .updateData({
-                                                  "borrowedTo": "",
-                                                  "borrowName": ""
-                                                });
-                                                debugPrint("vratil sa mi item");
-                                                Navigator.pop(context);
-                                              },
-                                            ),
-                                            FlatButton(
-                                              child: Text('Cancel'),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                            )
-                                          ],
-                                        );
-                                      });
-                                  // kod s vyberom userov Navigator.push
-                                },
-                              ),
+                              new Container(
+                                margin:
+                                    EdgeInsets.only(top: 10.0, bottom: 10.0),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                  child: Material(
+                                    color: Colors.pink,
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    child: InkWell(
+                                      splashColor: Colors.pink[400],
+                                      onTap: () {
+                                        return showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text('Get item'),
+                                                content: Text(
+                                                    'Are you sure that user returned your item back to you?'),
+                                                actions: <Widget>[
+                                                  FlatButton(
+                                                    child: Text('Yes'),
+                                                    onPressed: () {
+                                                      Firestore.instance
+                                                          .collection('items')
+                                                          .document(document
+                                                              .documentID)
+                                                          .updateData({
+                                                        "borrowedTo": "",
+                                                        "borrowName": ""
+                                                      });
+                                                      debugPrint(
+                                                          "vratil sa mi item");
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                  FlatButton(
+                                                    child: Text('Cancel'),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                  )
+                                                ],
+                                              );
+                                            }); // kod s vyberom userov Navigator.push
+                                      },
+                                      child: Container(
+                                        width: 200.0,
+                                        height: 40.0,
+                                        alignment: Alignment.center,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        child: Text(
+                                          'I got my dress back',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         );
@@ -402,47 +422,69 @@ class _WelcomePageState extends State<WelcomePage>
                               Text('Size: ${document['size']}'),
                               Text('Length: ${document['length']}'),
                               Text('Borrowed from: '),
-                              RaisedButton(
-                                child: Text('Return to user',
-                                    style: TextStyle(color: Colors.white)),
-                                color: Colors.pinkAccent,
-                                elevation: 4.0,
-                                onPressed: () {
-                                  return showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text('Return to '),
-                                          content: Text(
-                                              'Are you sure that user returned your item back to you?'),
-                                          actions: <Widget>[
-                                            FlatButton(
-                                              child: Text('Yes'),
-                                              onPressed: () {
-                                                Firestore.instance
-                                                    .collection('items')
-                                                    .document(
-                                                        document.documentID)
-                                                    .updateData({
-                                                  "borrowedTo": "",
-                                                  "borrowName": ""
-                                                });
-                                                debugPrint("vratil sa mi item");
-                                                Navigator.pop(context);
-                                              },
-                                            ),
-                                            FlatButton(
-                                              child: Text('Cancel'),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                            )
-                                          ],
-                                        );
-                                      });
-                                  // kod s vyberom userov Navigator.push
-                                },
-                              ),
+                              new Container(
+                                margin:
+                                    EdgeInsets.only(top: 10.0, bottom: 10.0),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                  child: Material(
+                                    color: Colors.pink,
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    child: InkWell(
+                                      splashColor: Colors.pink[400],
+                                      onTap: () {
+                                        return showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text('Return to '),
+                                                content: Text(
+                                                    'Are you sure that user returned your item back to you?'),
+                                                actions: <Widget>[
+                                                  FlatButton(
+                                                    child: Text('Yes'),
+                                                    onPressed: () {
+                                                      Firestore.instance
+                                                          .collection('items')
+                                                          .document(document
+                                                              .documentID)
+                                                          .updateData({
+                                                        "borrowedTo": "",
+                                                        "borrowName": ""
+                                                      });
+                                                      debugPrint(
+                                                          "vratil sa mi item");
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                  FlatButton(
+                                                    child: Text('Cancel'),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                  )
+                                                ],
+                                              );
+                                            });
+                                        // kod s vyberom userov Navigator.push
+                                      },
+                                      child: Container(
+                                        width: 170.0,
+                                        height: 40.0,
+                                        alignment: Alignment.center,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        child: Text(
+                                          'Return to user',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         );
