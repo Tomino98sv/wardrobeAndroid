@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/bl/Pages/welcome.dart';
+import 'package:flutter_app/bl/mainLoginPage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 
@@ -27,6 +28,17 @@ class LoginPage extends StatefulWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Scaffold(
+      appBar: new AppBar(
+        actions: <Widget>[
+          IconButton(
+          icon: new Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(
+                builder: (context)=>QuickBee()))
+      ),
+        ],
+        title: new Text("Login"),
+
+      ),
       key: _scaffoldKey,
       body: Form(
         key: _formKey,

@@ -18,6 +18,9 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Scaffold(
+        appBar: new AppBar(
+          title: new Text("Sign Up"),
+        ),
       key: _scaffoldKey,
       body: Form(
         key: _formKey,
