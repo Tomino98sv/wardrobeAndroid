@@ -8,7 +8,8 @@ class UserManagement {
       'uid':user.uid,
       'name':name,
     }).then((value){
-          Navigator.of(context).pop();
+      Navigator.of(context, rootNavigator: true).pop('dialog');
+      Navigator.of(context).pop();
           Navigator.of(context).pushReplacementNamed('/homepage');
     })
         .catchError((e){
