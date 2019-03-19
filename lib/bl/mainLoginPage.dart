@@ -111,10 +111,8 @@ class _QuickBeeState extends State<QuickBee> {
                     child: MaterialButton(
                       onPressed: () async {
                         await authService.googleSignIn();
-                        Navigator.push(context, new MaterialPageRoute(
-                            builder: (context) =>
-                            new HomePage())
-                        );
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                            builder: (context)=>HomePage()));
                       },
                       child: Row(
                         children: <Widget>[
