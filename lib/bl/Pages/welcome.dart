@@ -7,6 +7,7 @@ import 'package:flutter_app/bl/mainLoginPage.dart';
 import 'package:flutter_app/db/FirestoreManager.dart';
 import 'package:flutter_app/db/model/Item.dart';
 import 'package:flutter_app/db/userInfo.dart';
+import 'package:flutter_app/ui/homePage.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -21,6 +22,7 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
+
 
   FirebaseUser user2;
   GoogleSignInAccount googleUser;
@@ -70,10 +72,8 @@ class _WelcomePageState extends State<WelcomePage> {
                              onTap: () {
                                FirebaseAuth
                                    .instance.signOut().then((value){
-                                 Navigator.push(context, new MaterialPageRoute(
-                                     builder: (context) =>
-                                     new QuickBee())
-                                 );
+                                 Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                                 builder: (context)=>QuickBee()), (Route<dynamic> route) => false);
                                }).catchError((e){
                                  print(e);
                                });
