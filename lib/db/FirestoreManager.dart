@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:flutter_advanced_networkimage/zoomable.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_app/bl/Pages/welcome.dart';
 
 import 'userInfo.dart';
 
@@ -67,6 +69,8 @@ class ItemsList extends StatelessWidget {
                       '' :
                       'Borrowed to : ${item.borrowName}'),
                       Row(
+
+
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
@@ -76,7 +80,7 @@ class ItemsList extends StatelessWidget {
                               child: InkWell(
                                 onTap: (){ Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                      return EditItem(item: document);
+                                      return ShowDetails(item: document);
 //                            return SecondRoute(item: document); //tu je predchadzajuci kod
                                       }));
                                 debugPrint("idem dalej");},
@@ -88,7 +92,7 @@ class ItemsList extends StatelessWidget {
                                   margin: EdgeInsets.all(10.0),
                                   height: 40.0,
                                   alignment: Alignment.center,
-                                      child: Text('Edit',style: TextStyle(color: Colors.white),),
+                                      child: Text('Show Details',style: TextStyle(color: Colors.white),),
                                     ),
                               ),
                             ),
@@ -97,21 +101,14 @@ class ItemsList extends StatelessWidget {
                             fit: FlexFit.tight,
                             child: Container(
                             child: InkWell(
-                              onTap: (){ if (document['borrowedTo'] == ""  || document['borrowedTo'] == null) {
-                                 Navigator.push(context,
-                                 MaterialPageRoute(builder: (context) {return UserList(item: document);
-                                }));
-                                          }
-                                        else {
-                                          Firestore.instance.collection('users').where("uid", isEqualTo: document['borrowedTo']).snapshots().listen((user){
-                                            Navigator.push(context,
-                                             MaterialPageRoute(builder: (context) {
-                                                return UserInfoList(userInfo: user.documents?.first, itemInfo: document);
-                                              }));
-                                           });
-
-                                         }
-                                         // kod s vyberom userov Navigator.push},
+                              onTap: (){
+                                Firestore.instance.collection('users').where("uid", isEqualTo: document['userId']).snapshots().listen((user){
+                                  debugPrint(document['userId']);
+                                  Navigator.push(context,
+                                   MaterialPageRoute(builder: (context) {
+                                      return UserInfoList2(userInfo: user.documents?.first);
+                                    }));
+                                 });// kod s vyberom userov Navigator.push},
                               },
                               child: Container(
                                 decoration: new BoxDecoration(
@@ -121,9 +118,7 @@ class ItemsList extends StatelessWidget {
                                 margin: EdgeInsets.all(10.0),
                                 height: 40.0,
                                 alignment: Alignment.center,
-                                child: Text(document['borrowedTo'] == ""  || document['borrowedTo'] == null
-                                    ? 'Borrow to...'
-                                    : 'Return dress', style: TextStyle(color: Colors.white),),
+                                child: Text('Owner Details', style: TextStyle(color: Colors.white),),
                               ),
                             ),
                           ),
@@ -132,68 +127,12 @@ class ItemsList extends StatelessWidget {
                       ),
                     ],
                   ),
-                  secondaryActions: <Widget>[
-                    new IconSlideAction(
-                      icon: Icons.transfer_within_a_station,
-                      caption: 'Delete',
-                      color: Colors.red,
-                      onTap: () {
-                        debugPrint('klikol som');
-                        return showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Delete Item'),
-                              content: Text(
-                                  'Are you sure you want to delete this item?'),
-                              actions: <Widget>[
-                                FlatButton(
-                                  child: Text('Yes'),
-                                  onPressed: () {
-                                    Firestore.instance
-                                        .collection('items')
-                                        .document(item.id)
-                                        .delete();
-//                                    StorageReference obr = FirebaseStorage.instance.getReferenceFromUrl(item.photoUrl);
-//                                    obr.delete();
-                                    deleteFireBaseStorageItem(item.photoUrl);
-                                    Navigator.pop(context);
-                                    debugPrint("vymazanee");
-                                  },
-                                ),
-                                FlatButton(
-                                  child: Text('Cancel'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                )
-                              ],
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ],
                 );
               }).toList(),
             );
         }
       },
     );
-  }
-
-  void deleteFireBaseStorageItem(String fileUrl) {
-    String filePath = fileUrl.replaceAll(
-        new RegExp(
-            r'https://firebasestorage.googleapis.com/v0/b/wardrobe-2324a.appspot.com/o/'),
-        '');
-    filePath = filePath.replaceAll(new RegExp(r'%2F'), '/');
-    filePath = filePath.replaceAll(new RegExp(r'(\?alt).*'), '');
-    StorageReference storageReferance = FirebaseStorage.instance.ref();
-    storageReferance
-        .child(filePath)
-        .delete()
-        .then((_) => print('Successfully deleted $filePath storage item'));
   }
 }
 
@@ -213,9 +152,6 @@ class UserList extends StatelessWidget {
               return new Text('Loading...');
             default:
               return Scaffold(
-                appBar: AppBar(
-                  title: Text('Fashionistas'),
-                ),
                 body: new ListView(
                     children: snapshot.data.documents
                         .map((DocumentSnapshot document) {
@@ -290,7 +226,7 @@ class _ShowDetails extends State<ShowDetails> {
                 ),
                 body: SingleChildScrollView(
                   child: new Container(
-                    padding: new EdgeInsets.all(100.0),
+                    padding: new EdgeInsets.all(20.0),
                     child: new Center(
                       child: new Column(
                         children: <Widget>[
@@ -303,6 +239,7 @@ class _ShowDetails extends State<ShowDetails> {
                           Row(
                             children: <Widget>[
                               Expanded(child: Icon(Icons.account_circle)),
+                              Expanded(child: Text('Name: '),),
                               Expanded(
                                 child: Text(snapshot.data['name']),
                               )
@@ -313,6 +250,7 @@ class _ShowDetails extends State<ShowDetails> {
                               Expanded(
                                 child: Icon(Icons.color_lens),
                               ),
+                              Expanded(child: Text('Color: '),),
                               Expanded(
                                 child: Text(snapshot.data['color']),
                               )
@@ -323,6 +261,7 @@ class _ShowDetails extends State<ShowDetails> {
                               Expanded(
                                 child: Icon(Icons.aspect_ratio),
                               ),
+                              Expanded(child: Text('Size:'),),
                               Expanded(
                                 child: Text(snapshot.data['size']),
                               )
@@ -333,30 +272,61 @@ class _ShowDetails extends State<ShowDetails> {
                               Expanded(
                                 child: Icon(Icons.content_cut),
                               ),
+                              Expanded(child: Text('Length:'),),
                               Expanded(
                                 child: Text(snapshot.data['length']),
                               )
                             ],
                           ),
-                          Container(
-                            child: InkWell(
-                              onTap: (){ Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                    return EditItem(
-                                      item: snapshot.data,
-                                    );
-                                  }));},
-                              child: Container(
-                                decoration: new BoxDecoration(
-                                  color: Colors.pink,
-                                  borderRadius: new BorderRadius.circular(30.0),
-                                ),
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.symmetric(vertical: 8.0),
-                                child: Text('Edit',style: TextStyle(color: Colors.white),),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Icon(Icons.card_giftcard),
                               ),
-                            ),
+                              Expanded(child: Text('Borrowed To?'),),
+                              Expanded(
+                                child: Text(snapshot.data['borrowName'] != "" ?
+                                snapshot.data['borrowName'] :
+                                    '-'
+                                ),
+                              )
+                            ],
                           ),
+//                          Row(
+//                            children: <Widget>[
+//                              Expanded(
+//                                child: Icon(Icons.person_pin_circle),
+//                              ),
+//                              Expanded(
+//                                child: Text(snapshot.data['']), //ak sa zisti userove meno
+//                              )
+//                            ],
+//                          )
+
+
+
+
+
+//kod na upravopovanie itemu, ktory asi netreba
+//                          Container(
+//                            child: InkWell(
+//                              onTap: (){ Navigator.push(context,
+//                                  MaterialPageRoute(builder: (context) {
+//                                    return EditItem(
+//                                      item: snapshot.data,
+//                                    );
+//                                  }));},
+//                              child: Container(
+//                                decoration: new BoxDecoration(
+//                                  color: Colors.pink,
+//                                  borderRadius: new BorderRadius.circular(30.0),
+//                                ),
+//                                alignment: Alignment.center,
+//                                padding: EdgeInsets.symmetric(vertical: 8.0),
+//                                child: Text('Edit',style: TextStyle(color: Colors.white),),
+//                              ),
+//                            ),
+//                          ),
                         ],
                       ),
                     ),
@@ -631,4 +601,39 @@ class Item {
 
   Item({this.name, this.color, this.size, this.length, this.photoUrl, this.id, this.userid, this.borrowedTo, this.borrowName});
 
+}
+
+class UserListHome extends StatelessWidget {
+
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+        stream: Firestore.instance.collection('users').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return new Text('Loading...');
+            default:
+              return Scaffold(
+                body: new ListView(
+                    children: snapshot.data.documents
+                        .map((DocumentSnapshot document) {
+                      return ListTile(
+                        trailing: Icon(Icons.send, color: Colors.pink,),
+                        title: Text(document['name']),
+                        onTap: () {
+                          //kod ktory urci usra, ktoremu bolo pozicane
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                                return UserInfoList2(userInfo: document);
+                              }));
+                        },
+                      );
+                    }).toList()),
+              );
+          }
+        });
+  }
 }

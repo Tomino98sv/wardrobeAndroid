@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/st/storage/stPage.dart';
 
-void main() => runApp(MyNewItem());
+//void main() => runApp(MyNewItem());
 
 class MyNewItem extends StatefulWidget {
   @override
@@ -19,6 +19,8 @@ class _MyNewItem extends State<MyNewItem> {
   String size = "34";
   String length = "";
   String color = "";
+  String borrowedTo = "";
+  String borrowName = "";
   FirebaseUser userLend;
   FirebaseUser user;
 
@@ -166,9 +168,13 @@ class _MyNewItem extends State<MyNewItem> {
                                       'length': _currentLengthSelected,
                                       'photo_url': _imgUrl,
                                       'id': "",
-                                      'userId': user.uid
+                                      'userId': user.uid,
+                                      'borrowedTo' : borrowedTo,
+                                      'borrowName' : borrowName
                                     });
                               });
+                              Navigator.pop(context);
+                              // tu bude navigatior pop!
                             } else {
                               Firestore.instance
                                   .runTransaction((transaction) async {
