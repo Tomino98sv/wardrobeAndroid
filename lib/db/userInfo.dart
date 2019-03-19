@@ -8,6 +8,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 class UserInfoList extends StatelessWidget{
   DocumentSnapshot userInfo;
   DocumentSnapshot itemInfo;
+  double _imageHeight = 248.0;
 
   UserInfoList({@required this.userInfo, this.itemInfo});
 
@@ -25,113 +26,229 @@ class UserInfoList extends StatelessWidget{
               appBar: AppBar(
                 title: Text(userInfo['name']),
               ),
-                 body: Column(
-                   mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
+                 body: new Center(
+                   child: Column(
+                      children: <Widget>[
 //              Image.network(userInfo['photo'],
 //    //                  height: 150,
 //    //                  width: 150,
 //                    ),
-                            Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: Text('User Name: '),
-                                ),
-                                Expanded(
-                                  child: Text(userInfo.data['name']),
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: Text('User email: '),
-                                ),
-                                Expanded(
-                                    child: Text(userInfo.data['email'])
-                                )
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Text(itemInfo.data['name']),
-                              ],
-                            ),
-                            RaisedButton(
-                              child: Text(
-                                 itemInfo.data['borrowedTo'] == ""  || itemInfo.data['borrowedTo'] == null ?
-                                  'Choose' : 'Return'),
-                              onPressed: () {
-                                if (itemInfo.data['borrowedTo'] == ""  || itemInfo.data['borrowedTo'] == null) {
-                                  itemInfo.data['borrowedTo'] = userInfo.data['uid'];
-                                  itemInfo.data['borrowName'] = userInfo.data['name'];
-                                  Firestore.instance.collection('items')
-                                      .document(itemInfo.documentID)
-                                      .updateData({
-                                    "borrowedTo": itemInfo.data['borrowedTo'],
-                                    "borrowName": itemInfo.data['borrowName']
-                                  });
-                                  debugPrint(itemInfo.data['borrowedTo']);
-                                  debugPrint(itemInfo.data['borrowName']);
-                                  Navigator.pop(context);
-                                  Navigator.pop(context);
-                                }
-                                else {
-                                  Firestore.instance.collection('items')
-                                      .document(itemInfo.documentID)
-                                      .updateData({
-                                    "borrowedTo": "",
-                                    "borrowName": ""
-                                  });
-                                  Navigator.pop(context);
-                                }
-                              },
-                            ),
-                            Text('User\'s items: '),
-                      Expanded(
-                        child: Container(
-                          height: 200.0,
-                          child: ListView(
-                              children:
+                        new Stack(
+                          children: <Widget>[
+                            _buildIamge(),
+                            new Padding(
+                              padding: new EdgeInsets.only(left: 16.0, top: _imageHeight / 3.5),
+                              child: Column(
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      Text(
+                                        "User name: ",
+                                        style: new TextStyle(
+                                          //  fontSize: 30.0,
+                                            color: Colors.black,
+                                            fontFamily: 'DancingScript-Bold', //neberie
+                                            fontWeight: FontWeight.w400
+                                        ),
+                                      ),
+                                      Padding(padding: EdgeInsets.only(right: 10.0),),
+                                      Text(
+                                        userInfo.data['name'],
+                                        style: new TextStyle(
+                                            fontSize: 20.0,
+                                            color: Colors.black,
+                                            fontFamily: 'DancingScript-Bold', //neberie
+                                            fontWeight: FontWeight.w400
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Text(
+                                        "User email: ",
+                                        textAlign: TextAlign.left,
+                                        style: new TextStyle(
+                                          //  fontSize: 30.0,
+                                            color: Colors.black,
+                                            fontFamily: 'DancingScript-Bold', //neberie
+                                            fontWeight: FontWeight.w400
+                                        ),
+                                      ),
+                                      Padding(padding: EdgeInsets.only(right: 10.0),),
+                                      Text(
+                                        userInfo.data['email'],
+                                        textAlign: TextAlign.left,
+                                        style: new TextStyle(
+                                            fontSize: 15.0,
+                                            color: Colors.black,
+                                            fontFamily: 'DancingScript-Bold', //neberie
+                                            fontWeight: FontWeight.w400
+                                        ),
+                                      ),]
+                                  ),
+                                      Row(
+                                        children: <Widget>[
+                                          Text(
+                                            "Item: ",
+                                            textAlign: TextAlign.left,
+                                            style: new TextStyle(
+                                              //  fontSize: 30.0,
+                                                color: Colors.black,
+                                                fontFamily: 'DancingScript-Bold', //neberie
+                                                fontWeight: FontWeight.w400
+                                            ),
+                                          ),
+                                          Padding(padding: EdgeInsets.only(right: 10.0),),
+                                          Text(
+                                            itemInfo.data['name'],
+                                            textAlign: TextAlign.left,
+                                            style: new TextStyle(
+                                                fontSize: 15.0,
+                                                color: Colors.black,
+                                                fontFamily: 'DancingScript-Bold', //neberie
+                                                fontWeight: FontWeight.w400
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 270.0,top: 30.0,right: 20.0),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                      child: Material(
+                                        color: Colors.pink,
+                                        shape:  _DiamondBorder(),
+                                    child: InkWell(
+                                      onTap: (){
+                                        if (itemInfo.data['borrowedTo'] == ""  || itemInfo.data['borrowedTo'] == null) {
+                                          itemInfo.data['borrowedTo'] = userInfo.data['uid'];
+                                          itemInfo.data['borrowName'] = userInfo.data['name'];
+                                          Firestore.instance.collection('items')
+                                              .document(itemInfo.documentID)
+                                              .updateData({
+                                            "borrowedTo": itemInfo.data['borrowedTo'],
+                                            "borrowName": itemInfo.data['borrowName']
+                                          });
+                                          debugPrint(itemInfo.data['borrowedTo']);
+                                          debugPrint(itemInfo.data['borrowName']);
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
+                                        }
+                                        else {
+                                          Firestore.instance.collection('items')
+                                              .document(itemInfo.documentID)
+                                              .updateData({
+                                            "borrowedTo": "",
+                                            "borrowName": ""
+                                          });
+                                          Navigator.pop(context);
+                                        }
+                                      },
+                                      child: Container(
+                                        height: 90.0,
+                                        alignment: Alignment.center,
+                                        padding: EdgeInsets.symmetric(vertical: 30.0),
+                                        child: Text(
+                                            itemInfo.data['borrowedTo'] == ""  || itemInfo.data['borrowedTo'] == null ?
+                                            'Choose' : 'Return',style: TextStyle(color: Colors.white),),
+                                    ),
+                                  ),),),)
+                                    ],
+                                  ),),
+                                ],
+                              ),
+                        Text('User\'s items: '),
+                        Expanded(
+                          child: Container(
+                            height: 200.0,
+                            child: ListView(
+                                children:
                                 snapshot.data.documents.map((DocumentSnapshot document){
                                   return Slidable(
-                                        delegate: SlidableDrawerDelegate(),
-                                        actionExtentRatio: 0.25,
-                                          child: ExpansionTile(
-                                            leading: Container(
-                                              width: 46.0,
-                                              height: 46.0,
-                                              child: document['photo_url'] == null || document['photo_url'] == ""
-                                                ? Icon(Icons.filter_vintage)
-                                                  : TransitionToImage(
-                                                image: AdvancedNetworkImage(
-                                                  document['photo_url'],
-                                                  useDiskCache: true,
-                                                  cacheRule:
-                                                  CacheRule(maxAge: const Duration(days: 7)),
-                                                ),
-                                              )
+                                    delegate: SlidableDrawerDelegate(),
+                                    actionExtentRatio: 0.25,
+                                    child: ExpansionTile(
+                                      leading: Container(
+                                          width: 46.0,
+                                          height: 46.0,
+                                          child: document['photo_url'] == null || document['photo_url'] == ""
+                                              ? Icon(Icons.cancel)
+                                              : TransitionToImage(
+                                            image: AdvancedNetworkImage(
+                                              document['photo_url'],
+                                              useDiskCache: true,
+                                              cacheRule:
+                                              CacheRule(maxAge: const Duration(days: 7)),
                                             ),
-                                              title: Text(document['name']),
-                                            children: <Widget>[
-                                              Text('Name: ${document['name']}'),
-                                              Text('Color: ${document['color']}'),
-                                              Text('Size: ${document['size']}'),
-                                              Text('Length: ${document['length']}'),
-                                            ],
-                                          ),
-                                      );
+                                          )
+                                      ),
+                                      title: Text(document['name']),
+                                      children: <Widget>[
+                                        Text('Name: ${document['name']}'),
+                                        Text('Color: ${document['color']}'),
+                                        Text('Size: ${document['size']}'),
+                                        Text('Length: ${document['length']}'),
+                                      ],
+                                    ),
+                                  );
                                 }).toList()
                             ),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                          ],
+                        ),
+                 ),
             );
       }});
   }
+  Widget _buildIamge() {
+    return new ClipPath(
+      clipper: new DialogonalClipper(),
+      child: new Image.asset(
+        'assets/images/pinkB.jpg',
+        fit: BoxFit.fitWidth,
+//        height: _imageHeight,
+      ),
+    );
+  }
+
+
 }
+class _DiamondBorder extends ShapeBorder {
+  const _DiamondBorder();
+
+  @override
+  EdgeInsetsGeometry get dimensions {
+    return const EdgeInsets.only();
+  }
+
+  @override
+  Path getInnerPath(Rect rect, { TextDirection textDirection }) {
+    return getOuterPath(rect, textDirection: textDirection);
+  }
+
+  @override
+  Path getOuterPath(Rect rect, { TextDirection textDirection }) {
+    return Path()
+      ..moveTo(rect.left + rect.width / 2.0, rect.top)
+      ..lineTo(rect.right, rect.top + rect.height / 2.0)
+      ..lineTo(rect.left + rect.width  / 2.0, rect.bottom)
+      ..lineTo(rect.left, rect.top + rect.height / 2.0)
+      ..close();
+  }
+
+  @override
+  void paint(Canvas canvas, Rect rect, { TextDirection textDirection }) {}
+
+  // This border doesn't support scaling.
+  @override
+  ShapeBorder scale(double t) {
+    return null;
+  }
+}
+
+
 
 class UserInfoList2 extends StatelessWidget{
   DocumentSnapshot userInfo;
@@ -179,7 +296,7 @@ class UserInfoList2 extends StatelessWidget{
                                        Text(
                                            userInfo.data['name'],
                                            style: new TextStyle(
-                                             fontSize: 30.0,
+                                             fontSize: 20.0,
                                                color: Colors.black,
                                                fontFamily: 'DancingScript-Bold', //neberie
                                                fontWeight: FontWeight.w400
@@ -204,7 +321,7 @@ class UserInfoList2 extends StatelessWidget{
                                            userInfo.data['email'],
                                            textAlign: TextAlign.left,
                                            style: new TextStyle(
-                                                 fontSize: 20.0,
+                                                 fontSize: 15.0,
                                                color: Colors.black,
                                                fontFamily: 'DancingScript-Bold', //neberie
                                                fontWeight: FontWeight.w400
@@ -219,7 +336,7 @@ class UserInfoList2 extends StatelessWidget{
                      ),
                      Text('User\'s items: '),
                      Container(
-                       height: 300.0,
+                       height: 250,
                          child: ListView(
                              children:
                              snapshot.data.documents.map((DocumentSnapshot document){
@@ -231,7 +348,7 @@ class UserInfoList2 extends StatelessWidget{
                                        width: 46.0,
                                        height: 46.0,
                                        child: document['photo_url'] == null || document['photo_url'] == ""
-                                           ? Icon(Icons.filter_vintage)
+                                           ? Icon(Icons.verified_user)
                                            : TransitionToImage(
                                          image: AdvancedNetworkImage(
                                            document['photo_url'],
@@ -263,8 +380,8 @@ class UserInfoList2 extends StatelessWidget{
       clipper: new DialogonalClipper(),
       child: new Image.asset(
         'assets/images/pinkB.jpg',
-        fit: BoxFit.fitHeight,
-        height: _imageHeight,
+        fit: BoxFit.fitWidth,
+//        height: _imageHeight,
       ),
     );
   }
@@ -288,13 +405,4 @@ class DialogonalClipper extends CustomClipper<Path> {
 }
 
 
-//Row(
-//children: <Widget>[
-//Expanded(
-//child: Text('User email: '),
-//),
-//Expanded(
-//child: Text(userInfo.data['email'])
-//)
-//],
-//),
+

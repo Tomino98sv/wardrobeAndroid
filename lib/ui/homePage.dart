@@ -34,6 +34,7 @@ class _HomeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Wardrobe'),
         actions: <Widget>[_page!=1? Container() :
