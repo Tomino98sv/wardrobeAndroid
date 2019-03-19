@@ -89,6 +89,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
             children: <Widget>[
               Container(
                 child: new FloatingActionButton(
+                  heroTag: "btnGallery",
                   onPressed: getImage,
                   tooltip: 'Add Image',
                   child: new Icon(Icons.add_photo_alternate),
@@ -98,6 +99,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
               ),
               Container(
                 child: new FloatingActionButton(
+                  heroTag: "btnCamera",
                   onPressed: getImage2,
                   tooltip: 'Add Image',
                   child: new Icon(Icons.add_a_photo),
@@ -150,22 +152,31 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
     print('upload image from camera');
     String filePath = sampleImage2.path;
     return Container(
-      child: InkWell(
-        onTap:  uploadFile(filePath),
-        child: Column(
-          children: <Widget>[
-            Image.file(sampleImage2, height: 300.0, width: 300.0,),
-            Container(
-              decoration: new BoxDecoration(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Image.file(sampleImage2, height: 300.0, width: 300.0,),
+          Container(
+            margin: EdgeInsets.only(top: 8.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30.0),
+              child: Material(
                 color: Colors.pink,
-                borderRadius: new BorderRadius.circular(30.0),
+                borderRadius: BorderRadius.circular(30.0),
+                child: InkWell(
+                  splashColor: Colors.pink[400],
+                  onTap:  () {uploadFile(filePath);},
+                  child: Container(
+                    width: 100.0,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text('Confirm',style: TextStyle(color: Colors.white),),
+                  ),
+                ),
               ),
-              alignment: Alignment.center,
-              padding: EdgeInsets.symmetric(vertical: 8.0),
-              child: Text('Confirm',style: TextStyle(color: Colors.white),),
             ),
-          ],
-      ),
+          ),
+        ],
       ),
     );
   }
