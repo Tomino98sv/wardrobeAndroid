@@ -350,7 +350,12 @@ class EditItem extends StatefulWidget {
 class _State extends State<EditItem> {
   DocumentSnapshot item;
 
-  _State({@required this.item});
+  _State({@required this.item}) {
+    docName = item['name'];
+    docColor = item['color'];
+    docSize = item['size'];
+    docLength = item['length'];
+  }
 
   String docName = '';
   String docColor = '';
@@ -377,6 +382,15 @@ class _State extends State<EditItem> {
 //  void _onSubmit(String value) {
 //    setState(() => docName = 'Submit: $value');
 //  }
+
+  var _sizes = ['34', '36', '38', '40', '42', '44', '46', '48'];
+  var _currentItemSelected = '38';
+  var _length = ['Mini', 'Midi', 'Maxi', 'Oversize'];
+  var _currentLengthSelected = 'Midi';
+
+
+
+
 
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -422,13 +436,75 @@ class _State extends State<EditItem> {
                           new Icon(Icons.color_lens, color: Colors.brown[800])),
                   onChanged: _onChangedColor,
                 ),
-                new TextField(
-                  decoration: new InputDecoration(
-                      labelText: item['size'],
-                      icon: new Icon(Icons.aspect_ratio,
-                          color: Colors.brown[800])),
-                  onChanged: _onChangedSize,
+
+
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Icon(Icons.aspect_ratio,
+                    color: Colors.brown[800]),
+                    ),
+                    Expanded(
+                      child: Text(
+                        'Size:'
+                      ),
+                    ),
+                    Expanded(
+                      child: DropdownButton(
+                          items: _sizes.map((String dropDownStringItem){
+                            return DropdownMenuItem<String>(
+                              value: dropDownStringItem,
+                              child: Text(dropDownStringItem),
+                            );
+                          }).toList(),
+                          onChanged: (String newValueSelected) {
+                            setState(() {
+                              this._currentItemSelected = newValueSelected;
+                              docSize = newValueSelected;
+                            });
+                            _onChangedSize(docSize);
+                          },
+                        //value: _currentItemSelected,
+                       value: _currentItemSelected == item['size'].toString() ? item['size'].toString() : docSize
+                      ),
+                    )
+                  ],
                 ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Icon(Icons.content_cut,
+                          color: Colors.brown[800]),
+                    ),
+                    Expanded(
+                      child: Text(
+                          'Length:'
+                      ),
+                    ),
+                    Expanded(
+                      child: DropdownButton(
+                        items: _length.map((String dropDownStringItem) {
+                          return DropdownMenuItem<String>(
+                            value: dropDownStringItem,
+                            child: Text(dropDownStringItem),
+                          );
+                        }).toList(),
+                        onChanged: (String newValueSelected) {
+                          setState(() {
+                            this._currentLengthSelected = newValueSelected;
+                            docLength = newValueSelected;
+                          });
+                          _onChangedLength(docLength);
+                        },
+                        value: _currentLengthSelected == item['length'].toString() ? item['length'].toString() : docLength
+//                        value: item['length'].toString(),
+//                      value: _currentLengthSelected,
+                      ),
+                    ),
+                  ],
+                ),
+
+
                 new TextField(
                   decoration: new InputDecoration(
                       labelText: item['length'],
