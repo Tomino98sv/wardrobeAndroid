@@ -18,6 +18,9 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Scaffold(
+        appBar: new AppBar(
+          title: new Text("Sign Up"),
+        ),
       key: _scaffoldKey,
       body: Form(
         key: _formKey,
@@ -32,7 +35,7 @@ class _SignupPageState extends State<SignupPage> {
                 validator: (input){
                   if(input.isEmpty){
                     return 'Please type an username';
-                  }else if(input.length < 2){
+                  }else if(input.length < 2  && input.length > 10){
                     return 'Username must have at least 2 chars';
                   }
                 },
@@ -68,7 +71,9 @@ class _SignupPageState extends State<SignupPage> {
                     borderRadius: BorderRadius.circular(30.0),
                     child: InkWell(
                       splashColor: Colors.pink[400],
-                      onTap: signUpMethod,
+                      onTap: () {
+                        signUpMethod(context) ;
+                      },
                       child: Container(
                         width: 100.0,
                         alignment: Alignment.center,
@@ -88,14 +93,26 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  void signUpMethod() {
+  void signUpMethod(BuildContext context) {
 
     if(_formKey.currentState.validate()){
       _formKey.currentState.save();
+
+      showDialog(context: context, barrierDismissible: false,builder: (BuildContext context) {
+        return Center(
+          child: Container(
+            width: 48.0,
+            height: 48.0,
+            child: CircularProgressIndicator(backgroundColor: Colors.pink,),
+          ),
+        );
+      });
+
       FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: _email,
           password: _password)
           .then((signedInUser){
+
         UserManagement().storeNewUser(signedInUser,context,_name);
       })
           .catchError((e){
@@ -110,7 +127,7 @@ class _SignupPageState extends State<SignupPage> {
 
   _showSnackBar(){
     final snackBar = new SnackBar(
-      content: new Text("Email already used or no internet connection"),
+      content: new Text("Email already used"),
       duration: new Duration(seconds: 3),
       backgroundColor: Colors.black54,
       action: new SnackBarAction(label: 'OUKEY', onPressed: (){

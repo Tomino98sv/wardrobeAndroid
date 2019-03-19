@@ -77,7 +77,7 @@ class _QuickBeeState extends State<QuickBee> {
                     decoration: new BoxDecoration(
                         color: Colors.white12,
                         borderRadius: new BorderRadius.circular(30.0),
-                        border: Border.all(color: Colors.white)
+                        border: Border.all(color: Colors.black)
                     ),
                     child: MaterialButton(
                       onPressed: print,
@@ -87,7 +87,7 @@ class _QuickBeeState extends State<QuickBee> {
                           children: <Widget>[
                             new Text(
                               "Continue with ",
-                              style: new TextStyle(fontSize: 15.0,color: Colors.white),
+                              style: new TextStyle(fontSize: 15.0,color: Colors.black),
                                 textAlign: TextAlign.center
                             ),
                           Image.asset("assets/images/fb2.png",
@@ -106,22 +106,20 @@ class _QuickBeeState extends State<QuickBee> {
                     decoration: new BoxDecoration(
                         color: Colors.white12,
                         borderRadius: new BorderRadius.circular(30.0),
-                        border: Border.all(color: Colors.white)
+                        border: Border.all(color: Colors.black)
                     ),
                     child: MaterialButton(
                       onPressed: () async {
                         await authService.googleSignIn();
-                        Navigator.push(context, new MaterialPageRoute(
-                            builder: (context) =>
-                            new HomePage())
-                        );
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                            builder: (context)=>HomePage()));
                       },
                       child: Row(
                         children: <Widget>[
                           new Text(
                             "Continue with  ",
 
-                            style: new TextStyle(fontSize: 15.0,color: Colors.white),
+                            style: new TextStyle(fontSize: 15.0,color: Colors.black),
                               textAlign: TextAlign.center,
                           ),
                           Image.asset("assets/images/google.png",
