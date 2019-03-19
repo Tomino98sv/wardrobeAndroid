@@ -49,165 +49,170 @@ class _MyNewItem extends State<MyNewItem> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.all(32.0),
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              MyStoragePage2(function: _setImgUrl),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: TextField(
-                      decoration: new InputDecoration(
-                          labelText: 'Name',
-                          icon: new Icon(Icons.account_circle,
-                              color: Colors.brown[800])),
-                      onChanged: (String userInput) {
-                        setState(() {
-                          name = userInput;
-                        });
-                      },
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Create New Item"),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(32.0),
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                MyStoragePage2(function: _setImgUrl),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: TextField(
+                        decoration: new InputDecoration(
+                            labelText: 'Name',
+                            icon: new Icon(Icons.account_circle,
+                                color: Colors.brown[800])),
+                        onChanged: (String userInput) {
+                          setState(() {
+                            name = userInput;
+                          });
+                        },
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: TextField(
+                        decoration: new InputDecoration(
+                            labelText: 'Color',
+                            icon: new Icon(Icons.color_lens,
+                                color: Colors.brown[800])),
+                        onChanged: (String userInput) {
+                          setState(() {
+                            color = userInput;
+                          });
+                        },
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Icon(Icons.aspect_ratio, color: Colors.brown[800]),
                     ),
-                  )
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: TextField(
-                      decoration: new InputDecoration(
-                          labelText: 'Color',
-                          icon: new Icon(Icons.color_lens,
-                              color: Colors.brown[800])),
-                      onChanged: (String userInput) {
-                        setState(() {
-                          color = userInput;
-                        });
-                      },
+                    Expanded(
+                      child: Text('Size'),
                     ),
-                  )
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Icon(Icons.aspect_ratio, color: Colors.brown[800]),
-                  ),
-                  Expanded(
-                    child: Text('Size'),
-                  ),
-                  Expanded(
-                    child: DropdownButton<String>(
-                      items: _sizes.map((String dropDownStringItem) {
-                        return DropdownMenuItem<String>(
-                          value: dropDownStringItem,
-                          child: Text(dropDownStringItem),
-                        );
-                      }).toList(),
-                      onChanged: (String newValueSelected) {
-                        setState(() {
-                          this._currentItemSelected = newValueSelected;
-                          size = newValueSelected;
-                        });
-                      },
-                      value: _currentItemSelected,
+                    Expanded(
+                      child: DropdownButton<String>(
+                        items: _sizes.map((String dropDownStringItem) {
+                          return DropdownMenuItem<String>(
+                            value: dropDownStringItem,
+                            child: Text(dropDownStringItem),
+                          );
+                        }).toList(),
+                        onChanged: (String newValueSelected) {
+                          setState(() {
+                            this._currentItemSelected = newValueSelected;
+                            size = newValueSelected;
+                          });
+                        },
+                        value: _currentItemSelected,
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Icon(Icons.content_cut, color: Colors.brown[800]),
                     ),
-                  )
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Icon(Icons.content_cut, color: Colors.brown[800]),
-                  ),
-                  Expanded(
-                    child: Text('Length'),
-                  ),
-                  Expanded(
-                    child: DropdownButton<String>(
-                      items: _length.map((String dropDownStringItem) {
-                        return DropdownMenuItem<String>(
-                          value: dropDownStringItem,
-                          child: Text(dropDownStringItem),
-                        );
-                      }).toList(),
-                      onChanged: (String newValueSelected) {
-                        setState(() {
-                          this._currentLengthSelected = newValueSelected;
-                          length = newValueSelected;
-                        });
-                      },
-                      value: _currentLengthSelected,
+                    Expanded(
+                      child: Text('Length'),
                     ),
-                  )
-                ],
-              ),
-              ListTile(
-                  title: ClipRRect(
-                    borderRadius: BorderRadius.circular(30.0),
-                    child: Material(
-                      color: Colors.pink,
+                    Expanded(
+                      child: DropdownButton<String>(
+                        items: _length.map((String dropDownStringItem) {
+                          return DropdownMenuItem<String>(
+                            value: dropDownStringItem,
+                            child: Text(dropDownStringItem),
+                          );
+                        }).toList(),
+                        onChanged: (String newValueSelected) {
+                          setState(() {
+                            this._currentLengthSelected = newValueSelected;
+                            length = newValueSelected;
+                          });
+                        },
+                        value: _currentLengthSelected,
+                      ),
+                    )
+                  ],
+                ),
+                ListTile(
+                    title: ClipRRect(
                       borderRadius: BorderRadius.circular(30.0),
-                      child: InkWell(
-                          splashColor: Colors.pink[400],
-                          onTap: () {
-                            print("tapped");
-                            if (user != null) {
-                              Firestore.instance
-                                  .runTransaction((transaction) async {
-                                await transaction.set(
-                                    Firestore.instance
-                                        .collection("items")
-                                        .document(),
-                                    {
-                                      'name': name,
-                                      'color': color,
-                                      'size': _currentItemSelected,
-                                      'length': _currentLengthSelected,
-                                      'photo_url': _imgUrl,
-                                      'id': "",
-                                      'userId': user.uid,
-                                      'borrowedTo' : borrowedTo,
-                                      'borrowName' : borrowName
-                                    });
-                              });
-                              Navigator.pop(context);
-                              // tu bude navigatior pop!
-                            } else {
-                              Firestore.instance
-                                  .runTransaction((transaction) async {
-                                await transaction.set(
-                                    Firestore.instance
-                                        .collection("items")
-                                        .document(),
-                                    {
-                                      'name': name,
-                                      'color': color,
-                                      'size': _currentItemSelected,
-                                      'length': _currentLengthSelected,
-                                      'photo_url': _imgUrl,
-                                      'id': "",
-                                      'userId': ""
-                                    });
+                      child: Material(
+                        color: Colors.pink,
+                        borderRadius: BorderRadius.circular(30.0),
+                        child: InkWell(
+                            splashColor: Colors.pink[400],
+                            onTap: () {
+                              print("tapped");
+                              if (user != null) {
+                                Firestore.instance
+                                    .runTransaction((transaction) async {
+                                  await transaction.set(
+                                      Firestore.instance
+                                          .collection("items")
+                                          .document(),
+                                      {
+                                        'name': name,
+                                        'color': color,
+                                        'size': _currentItemSelected,
+                                        'length': _currentLengthSelected,
+                                        'photo_url': _imgUrl,
+                                        'id': "",
+                                        'userId': user.uid,
+                                        'borrowedTo' : borrowedTo,
+                                        'borrowName' : borrowName
+                                      });
+                                });
+                                Navigator.pop(context);
+                                // tu bude navigatior pop!
+                              } else {
+                                Firestore.instance
+                                    .runTransaction((transaction) async {
+                                  await transaction.set(
+                                      Firestore.instance
+                                          .collection("items")
+                                          .document(),
+                                      {
+                                        'name': name,
+                                        'color': color,
+                                        'size': _currentItemSelected,
+                                        'length': _currentLengthSelected,
+                                        'photo_url': _imgUrl,
+                                        'id': "",
+                                        'userId': ""
+                                      });
 
-                                debugPrint("poslal");
-                              });
-                            }
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.symmetric(vertical: 8.0),
-                            child: Text(
-                              'Send',
-                              style: TextStyle(color: Colors.white),
+                                  debugPrint("poslal");
+                                });
+                              }
+                            },
+                            child: Container(
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.symmetric(vertical: 8.0),
+                              child: Text(
+                                'Send',
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ),
                           ),
-                        ),
-                    ),
-                  ))
-            ],
+                      ),
+                    ))
+              ],
+            ),
           ),
         ),
       ),
