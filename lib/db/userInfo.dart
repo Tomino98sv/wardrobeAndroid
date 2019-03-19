@@ -173,7 +173,7 @@ class UserInfoList extends StatelessWidget{
                                           width: 46.0,
                                           height: 46.0,
                                           child: document['photo_url'] == null || document['photo_url'] == ""
-                                              ? Icon(Icons.cancel)
+                                              ? Icon(Icons.broken_image)
                                               : TransitionToImage(
                                             image: AdvancedNetworkImage(
                                               document['photo_url'],
@@ -278,7 +278,7 @@ class UserInfoList2 extends StatelessWidget{
                        children: <Widget>[
                          _buildIamge(),
                          new Padding(
-                           padding: new EdgeInsets.only(left: 16.0, top: _imageHeight / 3.5),
+                           padding: new EdgeInsets.only(left: 16.0, top: _imageHeight / 2.5),
                            child: Column(
                                  children: <Widget>[
                                    Row(
@@ -348,7 +348,7 @@ class UserInfoList2 extends StatelessWidget{
                                        width: 46.0,
                                        height: 46.0,
                                        child: document['photo_url'] == null || document['photo_url'] == ""
-                                           ? Icon(Icons.verified_user)
+                                           ? Icon(Icons.broken_image)
                                            : TransitionToImage(
                                          image: AdvancedNetworkImage(
                                            document['photo_url'],

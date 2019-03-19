@@ -123,7 +123,7 @@ class _WelcomePageState extends State<WelcomePage>
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 280.0, top: 160.0),
+                        margin: EdgeInsets.only(left: 313.0, top: 180.0),
                         child: FloatingActionButton(
                             heroTag: "btnWelcome",
                             child: Icon(Icons.add),
@@ -160,7 +160,7 @@ class _WelcomePageState extends State<WelcomePage>
                                 height: 46.0,
                                 child: document['photo_url'] == null ||
                                         document['photo_url'] == ""
-                                    ? Icon(Icons.filter_vintage)
+                                    ? Icon(Icons.broken_image)
                                     : TransitionToImage(
                                         image: AdvancedNetworkImage(
                                           document['photo_url'],
@@ -307,7 +307,7 @@ class _WelcomePageState extends State<WelcomePage>
                                 height: 46.0,
                                 child: document['photo_url'] == null ||
                                         document['photo_url'] == ""
-                                    ? Icon(Icons.filter_vintage)
+                                    ? Icon(Icons.broken_image)
                                     : TransitionToImage(
                                         image: AdvancedNetworkImage(
                                           document['photo_url'],
@@ -406,7 +406,7 @@ class _WelcomePageState extends State<WelcomePage>
                                 height: 46.0,
                                 child: document['photo_url'] == null ||
                                         document['photo_url'] == ""
-                                    ? Icon(Icons.filter_vintage)
+                                    ? Icon(Icons.broken_image)
                                     : TransitionToImage(
                                         image: AdvancedNetworkImage(
                                           document['photo_url'],
@@ -504,8 +504,8 @@ class _WelcomePageState extends State<WelcomePage>
       clipper: new DialogonalClipper(),
       child: new Image.asset(
         'assets/images/pinkB.jpg',
-        fit: BoxFit.fitHeight,
-//        height: _imageHeight,
+        fit: BoxFit.fitWidth,
+   //     height: _imageHeight,
       ),
     );
   }
