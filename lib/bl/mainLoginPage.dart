@@ -53,7 +53,7 @@ class _QuickBeeState extends State<QuickBee> {
                       onPressed: navigationToSignInMail,
                       child: new Text(
                         "Continue with email",
-                        style: new TextStyle(fontSize: 22.0,color: Colors.white),
+                        style: new TextStyle(fontSize: 22.0,color: Colors.black),
                           textAlign: TextAlign.center
                       ),
                     ),
@@ -62,7 +62,7 @@ class _QuickBeeState extends State<QuickBee> {
                     decoration: new BoxDecoration(
                         color: Colors.white12,
                         borderRadius: new BorderRadius.circular(30.0),
-                      border: Border.all(color: Colors.white)
+                      border: Border.all(color: Colors.black)
                     ),
                   ),
                 ),
@@ -77,7 +77,7 @@ class _QuickBeeState extends State<QuickBee> {
                     decoration: new BoxDecoration(
                         color: Colors.white12,
                         borderRadius: new BorderRadius.circular(30.0),
-                        border: Border.all(color: Colors.white)
+                        border: Border.all(color: Colors.black)
                     ),
                     child: MaterialButton(
                       onPressed: print,
@@ -87,7 +87,7 @@ class _QuickBeeState extends State<QuickBee> {
                           children: <Widget>[
                             new Text(
                               "Continue with ",
-                              style: new TextStyle(fontSize: 15.0,color: Colors.white),
+                              style: new TextStyle(fontSize: 15.0,color: Colors.black),
                                 textAlign: TextAlign.center
                             ),
                           Image.asset("assets/images/fb2.png",
@@ -106,7 +106,7 @@ class _QuickBeeState extends State<QuickBee> {
                     decoration: new BoxDecoration(
                         color: Colors.white12,
                         borderRadius: new BorderRadius.circular(30.0),
-                        border: Border.all(color: Colors.white)
+                        border: Border.all(color: Colors.black)
                     ),
                     child: MaterialButton(
                       onPressed: () async {
@@ -121,7 +121,7 @@ class _QuickBeeState extends State<QuickBee> {
                           new Text(
                             "Continue with  ",
 
-                            style: new TextStyle(fontSize: 15.0,color: Colors.white),
+                            style: new TextStyle(fontSize: 15.0,color: Colors.black),
                               textAlign: TextAlign.center,
                           ),
                           Image.asset("assets/images/google.png",
