@@ -32,7 +32,7 @@ class _SignupPageState extends State<SignupPage> {
                 validator: (input){
                   if(input.isEmpty){
                     return 'Please type an username';
-                  }else if(input.length < 2){
+                  }else if(input.length < 2  && input.length > 10){
                     return 'Username must have at least 2 chars';
                   }
                 },
@@ -110,7 +110,7 @@ class _SignupPageState extends State<SignupPage> {
 
   _showSnackBar(){
     final snackBar = new SnackBar(
-      content: new Text("Email already used or no internet connection"),
+      content: new Text("Email already used"),
       duration: new Duration(seconds: 3),
       backgroundColor: Colors.black54,
       action: new SnackBarAction(label: 'OUKEY', onPressed: (){
