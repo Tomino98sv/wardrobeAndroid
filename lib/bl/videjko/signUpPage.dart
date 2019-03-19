@@ -71,7 +71,9 @@ class _SignupPageState extends State<SignupPage> {
                     borderRadius: BorderRadius.circular(30.0),
                     child: InkWell(
                       splashColor: Colors.pink[400],
-                      onTap: signUpMethod,
+                      onTap: () {
+                        signUpMethod(context) ;
+                      },
                       child: Container(
                         width: 100.0,
                         alignment: Alignment.center,
@@ -91,14 +93,26 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  void signUpMethod() {
+  void signUpMethod(BuildContext context) {
 
     if(_formKey.currentState.validate()){
       _formKey.currentState.save();
+
+      showDialog(context: context, barrierDismissible: false,builder: (BuildContext context) {
+        return Center(
+          child: Container(
+            width: 48.0,
+            height: 48.0,
+            child: CircularProgressIndicator(backgroundColor: Colors.pink,),
+          ),
+        );
+      });
+
       FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: _email,
           password: _password)
           .then((signedInUser){
+
         UserManagement().storeNewUser(signedInUser,context,_name);
       })
           .catchError((e){
