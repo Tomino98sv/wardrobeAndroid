@@ -72,7 +72,7 @@ class _ItemsListState extends State<ItemsList> {
                         width: 46.0,
                         height: 46.0,
                         child: item.photoUrl == null || item.photoUrl == ""
-                            ? Icon(Icons.accessibility)
+                            ? Icon(Icons.broken_image)
                             : TransitionToImage(
                           image: AdvancedNetworkImage(
                             item.photoUrl,
@@ -80,7 +80,7 @@ class _ItemsListState extends State<ItemsList> {
                             timeoutDuration: Duration(seconds: 60),
                             cacheRule:
                             CacheRule(maxAge: const Duration(days: 7)),
-                            fallbackAssetImage: 'assets/images/error_image.png',
+                            fallbackAssetImage: 'assets/images/image_error.png',
                             retryLimit: 0
                           ),
                           placeholder: CircularProgressIndicator(),
@@ -262,7 +262,7 @@ class _ShowDetails extends State<ShowDetails> {
                 ),
                 body: SingleChildScrollView(
                   child: new Container(
-                    padding: new EdgeInsets.all(20.0),
+//                    padding: new EdgeInsets.all(20.0),
                     child: new Center(
                       child: new Column(
                         children: <Widget>[
@@ -271,15 +271,30 @@ class _ShowDetails extends State<ShowDetails> {
                               _buildIamge(),
                               Padding(
                                 padding: new EdgeInsets.only(
-                                    left: 16.0, top: _imageHeight / 2.5),
+                                    left: 16.0, top: _imageHeight / 4.0),
                                 child: Column(
                                   children: <Widget>[
                                     Row(
                                       children: <Widget>[
-                                        Expanded(child: Icon(Icons.account_circle)),
                                         Expanded(child: Text('Name: '),),
                                         Expanded(
                                           child: Text(snapshot.data['name']),
+                                        ),
+                                        Container(
+                                          width: 150.0,
+                                          height: 150.0,
+                                          child: TransitionToImage(
+                                            image: AdvancedNetworkImage(
+                                              snapshot.data['photo_url'],
+                                              useDiskCache: true,
+                                              timeoutDuration: Duration(seconds: 7),
+                                              cacheRule: CacheRule(
+                                                  maxAge: const Duration(days: 7)),
+//                                              fallbackAssetImage: 'assets/images/error_image.png',
+                                            fallbackAssetImage: 'assets/images/image_error.png',
+                                              retryLimit: 0
+                                            ),
+                                          ),
                                         )
                                       ],
                                     ),
