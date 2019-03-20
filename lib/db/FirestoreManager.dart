@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:flutter_advanced_networkimage/zoomable.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:flutter_app/bl/Pages/welcome.dart';
 import 'package:flutter_app/db/userInfo.dart';
 
 import 'userInfo.dart';

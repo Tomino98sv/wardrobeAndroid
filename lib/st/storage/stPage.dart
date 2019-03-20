@@ -59,10 +59,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
       }
     });
     StorageTaskSnapshot taskSnapshot = await task.onComplete;
-    String downloadUrl = await taskSnapshot.ref.getDownloadURL().catchError((){
-      Navigator.of(context, rootNavigator: true).pop('dialog');
-      widget._function("");
-    });
+    String downloadUrl = await taskSnapshot.ref.getDownloadURL();
     _path = downloadUrl.toString();
     widget._function(_path);
     print(_path); // url cesta pre Klaud
