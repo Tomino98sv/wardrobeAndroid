@@ -523,7 +523,7 @@ class _WelcomePageState extends State<WelcomePage>
   void deleteFireBaseStorageItem(String fileUrl) {
     String filePath = fileUrl.replaceAll(
         new RegExp(
-            r'https://firebasestorage.googleapis.com/v0/b/wardrobe-2324a.appspot.com/o/'),
+            r'https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/'),
         '');
     filePath = filePath.replaceAll(new RegExp(r'%2F'), '/');
     filePath = filePath.replaceAll(new RegExp(r'(\?alt).*'), '');
