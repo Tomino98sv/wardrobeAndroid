@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_app/bl/Pages/welcome.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
@@ -14,6 +15,7 @@ class AuthService {
   //Map<String, String> fruits = Map();
   //fruits["apple"] = "red";
   //fruits["banana"] = "yellow";
+
   Observable<Map<String, dynamic>> profile; //custom user data in Firestore
   PublishSubject loading = PublishSubject();
 
@@ -30,8 +32,7 @@ class AuthService {
     });
   }
 
-  Future<String> googleSignIn() async {
-
+  Future <FirebaseUser> googleSignIn() async {
     signOut();
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
@@ -48,13 +49,9 @@ class AuthService {
 
     final FirebaseUser currentUser = await _auth.currentUser();
     assert(user.uid == currentUser.uid);
-
-    print("USER MAIL IS: "+user.email);
-    print("USER Name IS: "+user.displayName);
-    return 'signInWithGoogle succeeded: $user';
+    storeNewUser(currentUser);
+    return currentUser;
   }
-
-
 //  Future<FirebaseUser> googleSignIn() async {
 //    loading.add(true);
 //    GoogleSignInAccount googleUser = await _googleSignIn.signIn();
@@ -71,22 +68,22 @@ class AuthService {
 //    return user;
 //  }
 
-  void updateUserData(FirebaseUser user) async {
-  DocumentReference ref = _db.collection('users').document(user.uid);
-
-  return ref.setData({
-    'uid': user.uid,
-    'email': user.email,
-    'photoURL': user.photoUrl,
-    'displayName': user.displayName,
-    'lastSeen': DateTime.now()
-  }, merge: true);
-  }
 
   void signOut() {
-    _auth.signOut();
-    _googleSignIn.signOut();
+    _auth?.signOut();
+    _googleSignIn?.signOut();
   }
+
+  void storeNewUser(FirebaseUser user) async {
+    DocumentReference ref = _db.collection('users').document(user.uid);
+  //merge true cize ak uz existuje taky dokument v firestore tak nevytvori novy rovnaky
+    return ref.setData({
+        'email': user.email,
+        'name':user.displayName,
+        'uid': user.uid,
+    }, merge: true);
+  }
+
 
 }
 

@@ -27,7 +27,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   cloud_firestore: 0.9.0
-  firebase_storage: ^2.0.0
+  firebase_storage: ^2.1.0
   image_picker: ^0.5.0
   uuid: 2.0.0
   rxdart: ^0.21.0
@@ -60,8 +60,12 @@ flutter:
     - assets/images/gray.jpg
     - assets/images/zara.jpg
     - assets/images/mramor.png
-    - assets/images/wall.jpg
-    - assets/images/zlta.jpg
+    - assets/images/blackDresses.png
+    - assets/images/error_image.png
+    - assets/images/fb.png
+    - assets/images/fb2.png
+    - assets/images/google.png
+    - assets/images/image_error.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -90,6 +94,13 @@ flutter:
         - asset: assets/font/Roboto-Regular.ttf
         - asset: assets/font/Roboto-Thin.ttf
         - asset: assets/font/Roboto-ThinItalic.ttf
+    - family: Alyfe_Demo
+      fonts:
+        - asset: assets/font/Alyfe_Demo.ttf
+    - family: Dancing Script
+      fonts:
+        - asset: assets/font/DancingScript-Bold.ttf
+        - asset: assets/font/DancingScript-Regular.ttf
 
   #
   # For details regarding fonts from package dependencies,

@@ -9,6 +9,13 @@ import 'package:uuid/uuid.dart';
 class MyStoragePage2 extends StatefulWidget{
 
   Function _function;
+   bool _uploadLoad=false;
+
+  bool get uploadLoad => _uploadLoad;
+
+  set uploadLoad(bool value) {
+    _uploadLoad = value;
+  }
 
   MyStoragePage2({@required Function function}) {
     _function = function;
@@ -21,8 +28,19 @@ class MyStoragePage2 extends StatefulWidget{
 class _MyStoragePageState2 extends State<MyStoragePage2>{
   String _path;
 
-  //upload funkcia
-  uploadFile(String filePath) async {
+  uploadFile(String filePath, BuildContext context) async {
+
+    showDialog(context: context, barrierDismissible: false,builder: (BuildContext context) {
+      return Center(
+        child: Container(
+          width: 48.0,
+          height: 48.0,
+          child: CircularProgressIndicator(backgroundColor: Colors.pink,),
+        ),
+      );
+    });
+
+
     print('funckia uploadFile $filePath');
     final ByteData bytes = await rootBundle.load(filePath);
     final Directory tempFile = Directory.systemTemp; // filePath dame do docasneho pricinku
@@ -34,11 +52,19 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
     //pridanie obrazka
     final StorageReference ref = FirebaseStorage.instance.ref().child(fileName);
     final StorageUploadTask task = ref.putFile(imageFile);
+    task.events.listen((event){
+      if(event.type == StorageTaskEventType.failure) {
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+        widget._function("");
+      }
+    });
     StorageTaskSnapshot taskSnapshot = await task.onComplete;
     String downloadUrl = await taskSnapshot.ref.getDownloadURL();
     _path = downloadUrl.toString();
     widget._function(_path);
     print(_path); // url cesta pre Klaud
+    Navigator.of(context, rootNavigator: true).pop('dialog');
+
   }
 
 
@@ -51,10 +77,9 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
     );
     setState(() {
       sampleImage = tempImage;
+      widget.uploadLoad=true;
     });
   }
-
-
 
 
   //funkcia na pridanie obrazku z camery
@@ -65,10 +90,9 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
     );
     setState(() {
       sampleImage2 = tempImage2;
+      widget.uploadLoad=true;
     });
   }
-
-
 
   //dizajn
   @override
@@ -76,23 +100,20 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
     return Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
          new Center(
             child: sampleImage == null && sampleImage2 == null
                 ? Text('Select an Image')
                 : sampleImage != null ? enableUpload() : enableUpload2(),
          ),
-//          new Center(
-//            child: sampleImage2 == null
-//                ? Text('Select an Image')
-//                : enableUpload2(),
-//          ),
           new Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
                 child: new FloatingActionButton(
+                  heroTag: "btnGallery",
                   onPressed: getImage,
                   tooltip: 'Add Image',
                   child: new Icon(Icons.add_photo_alternate),
@@ -102,6 +123,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
               ),
               Container(
                 child: new FloatingActionButton(
+                  heroTag: "btnCamera",
                   onPressed: getImage2,
                   tooltip: 'Add Image',
                   child: new Icon(Icons.add_a_photo),
@@ -118,21 +140,33 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
 
 
   Widget enableUpload() {
+
     print('upload image from gallery');
     String filePath = sampleImage.path;
     return Container(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Image.file(sampleImage, height: 300.0, width: 300.0,),
-          RaisedButton(
-            elevation: 7.0,
-            child: Text('Upload'),
-            textColor: Colors.white,
-            color: Colors.pinkAccent,
-            onPressed: () {
-              uploadFile(filePath);
-            },
-            //onPressed: uploadFile(filePath),
+          Container(
+            margin: EdgeInsets.only(top: 8.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30.0),
+              child: Material(
+                color: Colors.pink,
+                borderRadius: BorderRadius.circular(30.0),
+                child: InkWell(
+                  splashColor: Colors.pink[400],
+                  onTap:  () {uploadFile(filePath, context);},
+                  child: Container(
+                    width: 100.0,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text('Confirm',style: TextStyle(color: Colors.white),),
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -144,17 +178,28 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
     String filePath = sampleImage2.path;
     return Container(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Image.file(sampleImage2, height: 300.0, width: 300.0,),
-          RaisedButton(
-            elevation: 7.0,
-            child: Text('Upload'),
-            textColor: Colors.white,
-            color: Colors.pinkAccent,
-            onPressed: () {
-              uploadFile(filePath);
-            },
-            //onPressed: uploadFile(filePath),
+          Container(
+            margin: EdgeInsets.only(top: 8.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30.0),
+              child: Material(
+                color: Colors.pink,
+                borderRadius: BorderRadius.circular(30.0),
+                child: InkWell(
+                  splashColor: Colors.pink[400],
+                  onTap:  () {uploadFile(filePath, context);},
+                  child: Container(
+                    width: 100.0,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text('Confirm',style: TextStyle(color: Colors.white),),
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),
