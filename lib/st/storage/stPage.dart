@@ -9,6 +9,13 @@ import 'package:uuid/uuid.dart';
 class MyStoragePage2 extends StatefulWidget{
 
   Function _function;
+   bool _uploadLoad=false;
+
+  bool get uploadLoad => _uploadLoad;
+
+  set uploadLoad(bool value) {
+    _uploadLoad = value;
+  }
 
   MyStoragePage2({@required Function function}) {
     _function = function;
@@ -21,7 +28,6 @@ class MyStoragePage2 extends StatefulWidget{
 class _MyStoragePageState2 extends State<MyStoragePage2>{
   String _path;
 
-  //upload funkcia
   uploadFile(String filePath, BuildContext context) async {
 
     showDialog(context: context, barrierDismissible: false,builder: (BuildContext context) {
@@ -46,8 +52,17 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
     //pridanie obrazka
     final StorageReference ref = FirebaseStorage.instance.ref().child(fileName);
     final StorageUploadTask task = ref.putFile(imageFile);
+    task.events.listen((event){
+      if(event.type == StorageTaskEventType.failure) {
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+        widget._function("");
+      }
+    });
     StorageTaskSnapshot taskSnapshot = await task.onComplete;
-    String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+    String downloadUrl = await taskSnapshot.ref.getDownloadURL().catchError((){
+      Navigator.of(context, rootNavigator: true).pop('dialog');
+      widget._function("");
+    });
     _path = downloadUrl.toString();
     widget._function(_path);
     print(_path); // url cesta pre Klaud
@@ -65,10 +80,9 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
     );
     setState(() {
       sampleImage = tempImage;
+      widget.uploadLoad=true;
     });
   }
-
-
 
 
   //funkcia na pridanie obrazku z camery
@@ -79,10 +93,9 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
     );
     setState(() {
       sampleImage2 = tempImage2;
+      widget.uploadLoad=true;
     });
   }
-
-
 
   //dizajn
   @override
@@ -130,6 +143,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
 
 
   Widget enableUpload() {
+
     print('upload image from gallery');
     String filePath = sampleImage.path;
     return Container(
