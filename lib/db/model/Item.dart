@@ -24,10 +24,13 @@ class _MyNewItem extends State<MyNewItem> {
   FirebaseUser userLend;
   FirebaseUser user;
 
+  var stPage;
+
   @override
   void initState() {
     super.initState();
     initUser();
+    stPage = MyStoragePage2(function: _setImgUrl);
   }
 
   void initUser() async {
@@ -41,15 +44,21 @@ class _MyNewItem extends State<MyNewItem> {
   String _imgUrl = "";
 
   void _setImgUrl(String url) {
-    setState(() {
-      _imgUrl = url;
-    });
+    if (url.isEmpty) {
+      _showSnackBar("Upload failed");
+    } else
+      setState(() {
+        _imgUrl = url;
+      });
   }
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text("Create New Item"),
       ),
@@ -59,7 +68,7 @@ class _MyNewItem extends State<MyNewItem> {
           child: Center(
             child: Column(
               children: <Widget>[
-                MyStoragePage2(function: _setImgUrl),
+                stPage,
                 Row(
                   children: <Widget>[
                     Expanded(
@@ -150,72 +159,95 @@ class _MyNewItem extends State<MyNewItem> {
                 ),
                 ListTile(
                     title: ClipRRect(
-                      borderRadius: BorderRadius.circular(30.0),
-                      child: Material(
-                        color: Colors.pink,
-                        borderRadius: BorderRadius.circular(30.0),
-                        child: InkWell(
-                            splashColor: Colors.pink[400],
-                            onTap: () {
-                              print("tapped");
-                              if (user != null) {
-                                Firestore.instance
-                                    .runTransaction((transaction) async {
-                                  await transaction.set(
-                                      Firestore.instance
-                                          .collection("items")
-                                          .document(),
-                                      {
-                                        'name': name,
-                                        'color': color,
-                                        'size': _currentItemSelected,
-                                        'length': _currentLengthSelected,
-                                        'photo_url': _imgUrl,
-                                        'id': "",
-                                        'userId': user.uid,
-                                        'borrowedTo' : borrowedTo,
-                                        'borrowName' : borrowName
-                                      });
-                                });
-                                Navigator.pop(context);
-                                // tu bude navigatior pop!
-                              } else {
-                                Firestore.instance
-                                    .runTransaction((transaction) async {
-                                  await transaction.set(
-                                      Firestore.instance
-                                          .collection("items")
-                                          .document(),
-                                      {
-                                        'name': name,
-                                        'color': color,
-                                        'size': _currentItemSelected,
-                                        'length': _currentLengthSelected,
-                                        'photo_url': _imgUrl,
-                                        'id': "",
-                                        'userId': ""
-                                      });
+                  borderRadius: BorderRadius.circular(30.0),
+                  child: Material(
+                    color: Colors.pink,
+                    borderRadius: BorderRadius.circular(30.0),
+                    child: InkWell(
+                      splashColor: Colors.pink[400],
+                      onTap: () {
+                        if (_imgUrl != "" && stPage.uploadLoad) {
+                          print("tapped");
+                          if (user != null) {
+                            Firestore.instance
+                                .runTransaction((transaction) async {
+                              await transaction.set(
+                                  Firestore.instance
+                                      .collection("items")
+                                      .document(),
+                                  {
+                                    'name': name,
+                                    'color': color,
+                                    'size': _currentItemSelected,
+                                    'length': _currentLengthSelected,
+                                    'photo_url': _imgUrl,
+                                    'id': "",
+                                    'userId': user.uid,
+                                    'borrowedTo': borrowedTo,
+                                    'borrowName': borrowName
+                                  });
+                            });
+                            Navigator.pop(context);
+                            // tu bude navigatior pop!
+                          } else {
+                            Firestore.instance
+                                .runTransaction((transaction) async {
+                              await transaction.set(
+                                  Firestore.instance
+                                      .collection("items")
+                                      .document(),
+                                  {
+                                    'name': name,
+                                    'color': color,
+                                    'size': _currentItemSelected,
+                                    'length': _currentLengthSelected,
+                                    'photo_url': _imgUrl,
+                                    'id': "",
+                                    'userId': ""
+                                  });
 
-                                  debugPrint("poslal");
-                                });
-                              }
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.symmetric(vertical: 8.0),
-                              child: Text(
-                                'Send',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
+                              debugPrint("poslal");
+                            });
+                          }
+                        }
+                        if (_imgUrl == "" && stPage.uploadLoad) {
+                          _showSnackBar("First confirme picture");
+                        }
+                        if (stPage.uploadLoad == false) {
+                          _showSnackBar(
+                              "Choose picture source between camera and galery");
+                        }
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(
+                          'Send',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
-                    ))
+                    ),
+                  ),
+                ))
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  _showSnackBar(String str) {
+    final snackBar = new SnackBar(
+      content: new Text(str),
+      duration: new Duration(seconds: 3),
+      backgroundColor: Colors.black54,
+      action: new SnackBarAction(
+          label: 'OUKEY',
+          onPressed: () {
+            print("pressed snackbar");
+          }),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 }
