@@ -397,7 +397,7 @@ class _WelcomePageState extends State<WelcomePage>
                         children: snapshot.data.documents
                             .map((DocumentSnapshot document) {
                       if (document['borrowedTo'] == user2.uid) {
-                        return Slidable(
+                 return Slidable(
                           delegate: SlidableDrawerDelegate(),
                           actionExtentRatio: 0.25,
                           child: ExpansionTile(
@@ -421,7 +421,16 @@ class _WelcomePageState extends State<WelcomePage>
                               Text('Color: ${document['color']}'),
                               Text('Size: ${document['size']}'),
                               Text('Length: ${document['length']}'),
-                              Text('Borrowed from: '),
+
+                              StreamBuilder<QuerySnapshot>(
+                                stream:  Firestore.instance
+                                    .collection('users')
+                                    .where('uid', isEqualTo: document['userId'])
+                                    .snapshots(),
+                                builder: (context, snapshot) {
+                                  return Text('Borrowed from: ${snapshot.data.documents[0]['name']}',);
+                                },
+                              ),
                               new Container(
                                 margin:
                                     EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -506,6 +515,7 @@ class _WelcomePageState extends State<WelcomePage>
         'assets/images/pinkB.jpg',
         fit: BoxFit.fitWidth,
    //     height: _imageHeight,
+
       ),
     );
   }

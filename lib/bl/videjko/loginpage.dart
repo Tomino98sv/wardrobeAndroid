@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/bl/Pages/welcome.dart';
@@ -21,6 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   FirebaseUser user;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
 
   @override
   Widget build(BuildContext context) {
@@ -130,30 +132,33 @@ class _LoginPageState extends State<LoginPage> {
 
   void signInMethod(BuildContext context) async {
     if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
-      showDialog(context: context, barrierDismissible: false,builder: (BuildContext context) {
-        return Center(
-          child: Container(
-            width: 48.0,
-            height: 48.0,
-            child: CircularProgressIndicator(backgroundColor: Colors.pink,),
-          ),
-        );
-      });
-      FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: _email, password: _password)
-          .then((FirebaseUser user) {
-        Navigator.of(context, rootNavigator: true).pop('dialog');
-        Navigator.of(context).pushReplacementNamed('/homepage');
-      }).catchError((e) {
-        print(
-            "NO LOGGING validation was passed but not loggin to firebaseAuth");
-        print(e);
-        _showSnackBar("Server problem");
-      });
+
+        _formKey.currentState.save();
+        showDialog(context: context, barrierDismissible: false,builder: (BuildContext context) {
+          return Center(
+            child: Container(
+              width: 48.0,
+              height: 48.0,
+              child: CircularProgressIndicator(backgroundColor: Colors.pink,),
+            ),
+          );
+        });
+        FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: _email, password: _password)
+            .then((FirebaseUser user) {
+          Navigator.of(context, rootNavigator: true).pop('dialog');
+          Navigator.of(context).pushReplacementNamed('/homepage');
+        }).catchError((e) {
+          print(
+              "NO LOGGING validation was passed but not loggin to firebaseAuth");
+          print(e);
+          Navigator.of(context, rootNavigator: true).pop('dialog');
+          _showSnackBar("Non existing mail or wrong password");
+        });
+
     } else {
       debugPrint("validation of sign in to firebaseAuth not pass");
-      _showSnackBar("Wrong email or password");
+      _showSnackBar("Data not passed throught form validation");
     }
   }
 
@@ -180,4 +185,5 @@ class _LoginPageState extends State<LoginPage> {
       return false;
     }
   }
+
 }
