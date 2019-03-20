@@ -117,17 +117,19 @@ class _SignupPageState extends State<SignupPage> {
       })
           .catchError((e){
         print(e);
-        _showSnackBar();
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+        _showSnackBar("Email already used or problem with internet connection");
       });
     }else{
       debugPrint("validation not pass");
+      _showSnackBar("Data not passed throught form validation");
     }
 
   }
 
-  _showSnackBar(){
+  _showSnackBar(String st){
     final snackBar = new SnackBar(
-      content: new Text("Email already used"),
+      content: new Text(st),
       duration: new Duration(seconds: 3),
       backgroundColor: Colors.black54,
       action: new SnackBarAction(label: 'OUKEY', onPressed: (){
