@@ -52,7 +52,7 @@ class _QuickBeeState extends State<QuickBee> {
 //                          onPressed: () => Navigator.of(context).pushReplacementNamed('/signup'),
                       onPressed: navigationToSignInMail,
                       child: new Text(
-                        "Continue with email",
+                        " Continue     with email",
                         style: new TextStyle(fontSize: 22.0,color: Colors.white),
                           textAlign: TextAlign.center
                       ),
@@ -111,10 +111,8 @@ class _QuickBeeState extends State<QuickBee> {
                     child: MaterialButton(
                       onPressed: () async {
                         await authService.googleSignIn();
-                        Navigator.push(context, new MaterialPageRoute(
-                            builder: (context) =>
-                            new HomePage())
-                        );
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                            builder: (context)=>HomePage()));
                       },
                       child: Row(
                         children: <Widget>[

@@ -18,6 +18,9 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return new Scaffold(
+        appBar: new AppBar(
+          title: new Text("Sign Up"),
+        ),
       key: _scaffoldKey,
       body: Form(
         key: _formKey,
@@ -28,18 +31,18 @@ class _SignupPageState extends State<SignupPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               TextFormField(
-                decoration: InputDecoration(hintText: 'Username',icon: new Icon(Icons.person, color: Colors.brown[800])),
+                decoration: InputDecoration(hintText: 'Username',icon: new Icon(Icons.person, color: Colors.black)),
                 validator: (input){
                   if(input.isEmpty){
                     return 'Please type an username';
-                  }else if(input.length < 2){
+                  }else if(input.length < 2  && input.length > 10){
                     return 'Username must have at least 2 chars';
                   }
                 },
                 onSaved: (input) => _name = input,
               ),SizedBox(height: 15.0),
               TextFormField(
-                decoration: InputDecoration(hintText: 'Email', icon: new Icon(Icons.email, color: Colors.brown[800])),
+                decoration: InputDecoration(hintText: 'Email', icon: new Icon(Icons.email, color: Colors.black)),
                 validator: (input){
                 if(input.isEmpty){
                   return 'Please type an email';
@@ -50,7 +53,7 @@ class _SignupPageState extends State<SignupPage> {
                 onSaved: (input) => _email = input,
               ),SizedBox(height: 15.0),
               TextFormField(
-                decoration: InputDecoration(hintText: 'Password', icon: new Icon(Icons.text_fields, color: Colors.brown[800])),
+                decoration: InputDecoration(hintText: 'Password', icon: new Icon(Icons.text_fields, color: Colors.black)),
                 validator: (input){
                 if(input.length < 6){
                   return 'Your password needs to be at least 6 characters';
@@ -68,7 +71,9 @@ class _SignupPageState extends State<SignupPage> {
                     borderRadius: BorderRadius.circular(30.0),
                     child: InkWell(
                       splashColor: Colors.pink[400],
-                      onTap: signUpMethod,
+                      onTap: () {
+                        signUpMethod(context) ;
+                      },
                       child: Container(
                         width: 100.0,
                         alignment: Alignment.center,
@@ -88,31 +93,45 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  void signUpMethod() {
+  void signUpMethod(BuildContext context) {
 
     if(_formKey.currentState.validate()){
       _formKey.currentState.save();
+
+      showDialog(context: context, barrierDismissible: false,builder: (BuildContext context) {
+        return Center(
+          child: Container(
+            width: 48.0,
+            height: 48.0,
+            child: CircularProgressIndicator(backgroundColor: Colors.pink,),
+          ),
+        );
+      });
+
       FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: _email,
           password: _password)
           .then((signedInUser){
+
         UserManagement().storeNewUser(signedInUser,context,_name);
       })
           .catchError((e){
         print(e);
-        _showSnackBar();
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+        _showSnackBar("Email already used or problem with internet connection");
       });
     }else{
       debugPrint("validation not pass");
+      _showSnackBar("Data not passed throught form validation");
     }
 
   }
 
-  _showSnackBar(){
+  _showSnackBar(String st){
     final snackBar = new SnackBar(
-      content: new Text("Email already used or no internet connection"),
+      content: new Text(st),
       duration: new Duration(seconds: 3),
-      backgroundColor: Colors.brown,
+      backgroundColor: Colors.black54,
       action: new SnackBarAction(label: 'OUKEY', onPressed: (){
         print("pressed snackbar");
       }),
