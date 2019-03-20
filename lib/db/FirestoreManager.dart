@@ -97,8 +97,6 @@ class _ItemsListState extends State<ItemsList> {
                         '' :
                         'Borrowed to : ${item.borrowName}'),
                         Row(
-
-
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
@@ -271,18 +269,32 @@ class _ShowDetails extends State<ShowDetails> {
                               _buildIamge(),
                               Padding(
                                 padding: new EdgeInsets.only(
-                                    left: 16.0, top: _imageHeight / 4.0),
+                                    left: 16.0, top: _imageHeight / 7.5),
                                 child: Column(
                                   children: <Widget>[
                                     Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: <Widget>[
-                                        Expanded(child: Text('Name: '),),
-                                        Expanded(
-                                          child: Text(snapshot.data['name']),
-                                        ),
+//                                        Icon(Icons.account_circle),
+//                                        Padding(padding: EdgeInsets.only(right: 10.0),),
+//                                        Text('Name: ',
+//                                          style: new TextStyle(
+//                                            color: Colors.black,
+//                                            fontFamily: 'DancingScript-Bold', //neberie
+//                                            fontWeight: FontWeight.w400
+//                                        ),),
+//                                        Padding(padding: EdgeInsets.only(right: 10.0),),
+//                                        Text(snapshot.data['name'],
+//                                          style: new TextStyle(
+//                                            fontSize: 20.0,
+//                                            color: Colors.black,
+//                                            fontFamily: 'DancingScript-Bold', //neberie
+//                                            fontWeight: FontWeight.w400
+//                                        ),),
+//                                        Padding(padding: EdgeInsets.only(right: 10.0),),
                                         Container(
-                                          width: 150.0,
-                                          height: 150.0,
+                                          width: 200.0,
+                                          height: 200.0,
                                           child: TransitionToImage(
                                             image: AdvancedNetworkImage(
                                               snapshot.data['photo_url'],
@@ -303,56 +315,128 @@ class _ShowDetails extends State<ShowDetails> {
                               )
                             ],
                           ),
-//                new Flexible(
-//                  child: new ZoomableImage(
-                          Image.network(snapshot.data['photo_url'],
-                              height: 120, width: 120
-//                    ,)
-                              ),
-
+//                          Row(
+//                            children: <Widget>[
+//                              Padding(padding: EdgeInsets.only(top: 20.0),),
+//                            Expanded(child: Icon(Icons.account_circle)),
+//                            Expanded(
+//                              child: Text('Name: ',
+//                                style: new TextStyle(
+//                                    color: Colors.black,
+//                                    fontFamily: 'DancingScript-Bold', //neberie
+//                                    fontWeight: FontWeight.w400
+//                                ),),
+//                            ),
+//                            Expanded(
+//                                child: Text(snapshot.data['name'],
+//                              style: new TextStyle(
+//                                  fontSize: 20.0,
+//                                  color: Colors.black,
+//                                  fontFamily: 'DancingScript-Bold', //neberie
+//                                  fontWeight: FontWeight.w400
+//                              ),),)
+//                            ]
+//                          ),
+                          Padding(padding: EdgeInsets.only(top: 50.0),),
                           Row(
                             children: <Widget>[
                               Expanded(
                                 child: Icon(Icons.color_lens),
                               ),
-                              Expanded(child: Text('Color: '),),
                               Expanded(
-                                child: Text(snapshot.data['color']),
+                                child: Text('Color: ',
+                                  style: new TextStyle(
+                                  fontSize: 20.0,
+                                  color: Colors.black,
+                                  fontFamily: 'DancingScript-Bold', //neberie
+                                  fontWeight: FontWeight.w400
+                              ),),),
+                              Expanded(
+                                child: Text(snapshot.data['color'],
+                                    style: new TextStyle(
+                                        fontSize: 20.0,
+                                        color: Colors.black,
+                                        fontFamily: 'DancingScript-Bold', //neberie
+                                        fontWeight: FontWeight.w400
+                                    )),
                               )
                             ],
                           ),
+                          Padding(padding: EdgeInsets.only(bottom: 10.0),),
                           Row(
                             children: <Widget>[
                               Expanded(
                                 child: Icon(Icons.aspect_ratio),
                               ),
-                              Expanded(child: Text('Size:'),),
                               Expanded(
-                                child: Text(snapshot.data['size']),
+                                child: Text('Size:',
+                                    style: new TextStyle(
+                                        fontSize: 20.0,
+                                        color: Colors.black,
+                                        fontFamily: 'DancingScript-Bold', //neberie
+                                        fontWeight: FontWeight.w400
+                                    )),),
+                              Expanded(
+                                child: Text(snapshot.data['size'],
+                                    style: new TextStyle(
+                                        fontSize: 20.0,
+                                        color: Colors.black,
+                                        fontFamily: 'DancingScript-Bold', //neberie
+                                        fontWeight: FontWeight.w400
+                                    )),
                               )
                             ],
                           ),
+                          Padding(padding: EdgeInsets.only(bottom: 10.0),),
                           Row(
                             children: <Widget>[
                               Expanded(
                                 child: Icon(Icons.content_cut),
                               ),
-                              Expanded(child: Text('Length:'),),
                               Expanded(
-                                child: Text(snapshot.data['length']),
+                                child: Text('Length:',
+                                    style: new TextStyle(
+                                    fontSize: 20.0,
+                                    color: Colors.black,
+                                    fontFamily: 'DancingScript-Bold', //neberie
+                                    fontWeight: FontWeight.w400
+                                )),),
+                              Expanded(
+                                child: Text(
+                                    snapshot.data['length'],
+                                    style: new TextStyle(
+                                        fontSize: 20.0,
+                                        color: Colors.black,
+                                        fontFamily: 'DancingScript-Bold', //neberie
+                                        fontWeight: FontWeight.w400
+                                    )),
                               )
                             ],
                           ),
+                          Padding(padding: EdgeInsets.only(bottom: 10.0),),
                           Row(
                             children: <Widget>[
                               Expanded(
                                 child: Icon(Icons.card_giftcard),
                               ),
-                              Expanded(child: Text('Borrowed To?'),),
+                              Expanded(
+                                child: Text('Borrowed To?',
+                                    style: new TextStyle(
+                                    fontSize: 20.0,
+                                    color: Colors.black,
+                                    fontFamily: 'DancingScript-Bold', //neberie
+                                    fontWeight: FontWeight.w400
+                                )),),
                               Expanded(
                                 child: Text(snapshot.data['borrowName'] != "" ?
                                 snapshot.data['borrowName'] :
-                                    '-'
+                                    '-',
+                                    style: new TextStyle(
+                                        fontSize: 20.0,
+                                        color: Colors.black,
+                                        fontFamily: 'DancingScript-Bold', //neberie
+                                        fontWeight: FontWeight.w400
+                                    )
                                 ),
                               )
                             ],
@@ -407,7 +491,7 @@ class _ShowDetails extends State<ShowDetails> {
       clipper: new DialogonalClipper(),
       child: new Image.asset(
         'assets/images/pinkB.jpg',
-        fit: BoxFit.fitHeight,
+        fit: BoxFit.fitWidth,
 //        height: _imageHeight,
       ),
     );
