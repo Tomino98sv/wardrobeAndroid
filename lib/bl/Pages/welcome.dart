@@ -446,9 +446,9 @@ class _WelcomePageState extends State<WelcomePage>
                                             context: context,
                                             builder: (BuildContext context) {
                                               return AlertDialog(
-                                                title: Text('Return to '),
+                                                title: Text('Return back'),
                                                 content: Text(
-                                                    'Are you sure that user returned your item back to you?'),
+                                                    'Are you sure that you returned your item back to the owner?'),
                                                 actions: <Widget>[
                                                   FlatButton(
                                                     child: Text('Yes'),
