@@ -22,7 +22,19 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
   String _path;
 
   //upload funkcia
-  uploadFile(String filePath) async {
+  uploadFile(String filePath, BuildContext context) async {
+
+    showDialog(context: context, barrierDismissible: false,builder: (BuildContext context) {
+      return Center(
+        child: Container(
+          width: 48.0,
+          height: 48.0,
+          child: CircularProgressIndicator(backgroundColor: Colors.pink,),
+        ),
+      );
+    });
+
+
     print('funckia uploadFile $filePath');
     final ByteData bytes = await rootBundle.load(filePath);
     final Directory tempFile = Directory.systemTemp; // filePath dame do docasneho pricinku
@@ -39,6 +51,8 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
     _path = downloadUrl.toString();
     widget._function(_path);
     print(_path); // url cesta pre Klaud
+    Navigator.of(context, rootNavigator: true).pop('dialog');
+
   }
 
 
@@ -132,7 +146,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
                 borderRadius: BorderRadius.circular(30.0),
                 child: InkWell(
                   splashColor: Colors.pink[400],
-                  onTap:  () {uploadFile(filePath);},
+                  onTap:  () {uploadFile(filePath, context);},
                   child: Container(
                     width: 100.0,
                     alignment: Alignment.center,
@@ -165,7 +179,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
                 borderRadius: BorderRadius.circular(30.0),
                 child: InkWell(
                   splashColor: Colors.pink[400],
-                  onTap:  () {uploadFile(filePath);},
+                  onTap:  () {uploadFile(filePath, context);},
                   child: Container(
                     width: 100.0,
                     alignment: Alignment.center,
