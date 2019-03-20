@@ -165,8 +165,11 @@ class _WelcomePageState extends State<WelcomePage>
                                         image: AdvancedNetworkImage(
                                           document['photo_url'],
                                           useDiskCache: true,
+                                          timeoutDuration: Duration(seconds: 7),
                                           cacheRule: CacheRule(
                                               maxAge: const Duration(days: 7)),
+                                          fallbackAssetImage: 'assets/images/image_error.png',
+                                          retryLimit: 0
                                         ),
                                       )),
                             title: Text(document['name']),
@@ -312,8 +315,11 @@ class _WelcomePageState extends State<WelcomePage>
                                         image: AdvancedNetworkImage(
                                           document['photo_url'],
                                           useDiskCache: true,
+                                          timeoutDuration: Duration(seconds: 7),
                                           cacheRule: CacheRule(
                                               maxAge: const Duration(days: 7)),
+                                            fallbackAssetImage: 'assets/images/image_error.png',
+                                            retryLimit: 0
                                         ),
                                       )),
                             title: Text(document['name']),
@@ -411,8 +417,11 @@ class _WelcomePageState extends State<WelcomePage>
                                         image: AdvancedNetworkImage(
                                           document['photo_url'],
                                           useDiskCache: true,
+                                          timeoutDuration: Duration(seconds: 7),
                                           cacheRule: CacheRule(
                                               maxAge: const Duration(days: 7)),
+                                            fallbackAssetImage: 'assets/images/image_error.png',
+                                            retryLimit: 0
                                         ),
                                       )),
                             title: Text(document['name']),
