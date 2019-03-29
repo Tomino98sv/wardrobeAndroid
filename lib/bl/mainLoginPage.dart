@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/Pages/auth.dart';
 import 'package:flutter_app/bl/nutused/signIn.dart';
@@ -11,6 +12,32 @@ class QuickBee extends StatefulWidget {
 }
 
 class _QuickBeeState extends State<QuickBee> {
+
+  FirebaseUser user;
+
+  @override
+  void initState() {
+    super.initState();
+
+    FirebaseAuth auth = FirebaseAuth.instance;
+    if (auth.currentUser() != null && FirebaseUser != null) {
+      debugPrint("already sign in");
+      FirebaseAuth.instance.currentUser().then((fuser){
+        //setState je cisto pre info nepotrebne pre funkcionalitu
+        setState(() {
+          user = fuser;
+          debugPrint(user.email);
+        });
+        Navigator.push(context,  MaterialPageRoute(builder: (BuildContext context) => new HomePage()));
+      });
+
+    } else {
+      debugPrint("continue to login");
+    }
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +166,7 @@ class _QuickBeeState extends State<QuickBee> {
 
 
   void print() {
-    debugPrint("hii world");
+    debugPrint("nic sa nedeje");
   }
 
   void navigationToSignInMail() {
