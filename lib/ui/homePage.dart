@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/Pages/welcome.dart';
+import 'package:flutter_app/bl/mainLoginPage.dart';
 import 'package:flutter_app/db/model/Item.dart';
 import 'package:flutter_app/db/FirestoreManager.dart';
 
@@ -37,7 +39,8 @@ class _HomeState extends State<HomePage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Wardrobe'),
-        actions: <Widget>[_page!=1? Container() :
+        actions: <Widget>[
+          _page!=1? Container() :
           IconButton(
             icon: Icon(Icons.search),
             onPressed: (){
@@ -46,6 +49,19 @@ class _HomeState extends State<HomePage> {
                 delegate: ItemsListSearch(Firestore.instance.collection('items').snapshots()),
               );
             },
+          ),
+          _page!=0? Container() :
+          PopupMenuButton<String>(
+            onSelected: choiceAction,
+            offset: Offset(0, 100),
+            itemBuilder: (BuildContext context){
+              return Constants.choices.map((String choice){
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            }
           ),
         ],
       ),
@@ -72,5 +88,20 @@ class _HomeState extends State<HomePage> {
         onTap: onPageChanged,
       ),
     );
+  }
+
+  void choiceAction(String choice){
+    if(choice == Constants.Settings){
+      print("Settings  .. treba dorobit");
+    }else if (choice == Constants.LogOut){
+      FirebaseAuth.instance.signOut().then((value) {
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) => QuickBee()),
+                (Route<dynamic> route) => false);
+      }).catchError((e) {
+        print(e);
+      });
+    }
   }
 }
