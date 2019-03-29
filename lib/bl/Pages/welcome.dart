@@ -23,7 +23,7 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State<WelcomePage>
     with TickerProviderStateMixin {
   FirebaseUser user2;
-  GoogleSignInAccount googleUser;
+//  GoogleSignInAccount googleUser;
   double _imageHeight = 248.0;
   TabController _tabController;
 
