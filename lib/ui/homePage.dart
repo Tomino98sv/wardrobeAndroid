@@ -35,7 +35,14 @@ class _HomeState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+        onWillPop: (){
+          Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                          builder: (context) => HomePage()),
+                                      (Route<dynamic> route) => false);
+        },
+        child: Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Wardrobe'),
@@ -86,7 +93,8 @@ class _HomeState extends State<HomePage> {
         ],
         currentIndex: _page,
         onTap: onPageChanged,
-      ),
+        ),
+        ),
     );
   }
 
