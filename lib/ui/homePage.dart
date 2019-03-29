@@ -38,6 +38,8 @@ class _HomeState extends State<HomePage> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: (){
+          debugPrint("TUUUUUUUUUUUUUUU WILLPOPSCOPE");
+
 //          Navigator.of(context).pushAndRemoveUntil(
 //                                      MaterialPageRoute(
 //                                          builder: (context) => HomePage()),
@@ -118,6 +120,8 @@ class _HomeState extends State<HomePage> {
   }
 
   confirm(BuildContext context, String title, String description){
+    debugPrint("TUUUUUUUUUUUUUUU ALERTDIALOG");
+
     return showDialog(
         context: context,
         barrierDismissible: false,
@@ -147,9 +151,12 @@ class _HomeState extends State<HomePage> {
   }
 
   signOut(){
+    debugPrint("TUUUUUUUUUUUUUUU SIGN OUT");
     GoogleSignIn _googleSignIn;
     _googleSignIn?.signOut();
     FirebaseAuth.instance.signOut().then((value) {
+      Navigator.of(context, rootNavigator: true).pop('dialog');
+
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
               builder: (context) => QuickBee()),
