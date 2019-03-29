@@ -56,38 +56,38 @@ class _WelcomePageState extends State<WelcomePage>
                   new Stack(
                     children: <Widget>[
                       _buildIamge(),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: Container(
-                          margin: EdgeInsets.only(top: 24.0, right: 24.0),
-                          child: Material(
-                            color: Colors.pink,
-                            shape: _DiamondBorder(),
-                            //    borderRadius: BorderRadius.circular(30.0),
-                            child: InkWell(
-                              splashColor: Colors.pink[400],
-                              customBorder: _DiamondBorder(),
-                              onTap: () {
-                                FirebaseAuth.instance.signOut().then((value) {
-                                  Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                          builder: (context) => QuickBee()),
-                                      (Route<dynamic> route) => false);
-                                }).catchError((e) {
-                                  print(e);
-                                });
-                              },
-                              child: Container(
-                                width: 90.0,
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.symmetric(vertical: 30.0),
-                                child: Icon(Icons.power_settings_new,
-                                    color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+//                      Align(
+//                        alignment: Alignment.topRight,
+//                        child: Container(
+//                          margin: EdgeInsets.only(top: 24.0, right: 24.0),
+//                          child: Material(
+//                            color: Colors.pink,
+//                            shape: _DiamondBorder(),
+//                            //    borderRadius: BorderRadius.circular(30.0),
+//                            child: InkWell(
+//                              splashColor: Colors.pink[400],
+//                              customBorder: _DiamondBorder(),
+//                              onTap: () {
+//                                FirebaseAuth.instance.signOut().then((value) {
+//                                  Navigator.of(context).pushAndRemoveUntil(
+//                                      MaterialPageRoute(
+//                                          builder: (context) => QuickBee()),
+//                                      (Route<dynamic> route) => false);
+//                                }).catchError((e) {
+//                                  print(e);
+//                                });
+//                              },
+//                              child: Container(
+//                                width: 90.0,
+//                                alignment: Alignment.center,
+//                                padding: EdgeInsets.symmetric(vertical: 30.0),
+//                                child: Icon(Icons.power_settings_new,
+//                                    color: Colors.white),
+//                              ),
+//                            ),
+//                          ),
+//                        ),
+//                      ),
                       new Padding(
                         padding: new EdgeInsets.only(
                             left: 16.0, top: _imageHeight / 2.5),
@@ -123,7 +123,7 @@ class _WelcomePageState extends State<WelcomePage>
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 313.0, top: 180.0),
+                        margin: EdgeInsets.only(left: 303.0, top: 180.0),
                         child: FloatingActionButton(
                             heroTag: "btnWelcome",
                             child: Icon(Icons.add),
@@ -590,4 +590,15 @@ class _DiamondBorder extends ShapeBorder {
   ShapeBorder scale(double t) {
     return null;
   }
+
+}
+
+class Constants {
+  static const String Settings = "Settings";
+  static const String LogOut = "Logout";
+
+  static const List<String> choices = <String>[
+    Settings,
+    LogOut
+  ];
 }
