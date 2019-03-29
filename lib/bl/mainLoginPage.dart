@@ -168,8 +168,8 @@ class _QuickBeeState extends State<QuickBee> {
   }
 
   void navigationToSignInMail() {
-    Navigator.push(context, MaterialPageRoute(
-        builder: (context) => MyApp(), fullscreenDialog: true));
+    Navigator.pushReplacement(context, MaterialPageRoute(
+        builder: (context) => MyApp()));
     debugPrint("ide to?");
   }
 
