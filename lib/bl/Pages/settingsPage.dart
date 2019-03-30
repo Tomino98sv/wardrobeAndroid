@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/bl/Pages/profilePics.dart';
 
 class SettingsPage extends StatefulWidget{
   @override
@@ -42,6 +43,31 @@ class _SettingsPageState extends State<SettingsPage>{
                 ),
               ],
           ),
+            Container(
+              height: 30.0,
+              width: 150.0,
+              child: Material(
+                borderRadius: BorderRadius.circular(20.0),
+                shadowColor: Colors.orange,
+                color: Colors.red,
+                elevation: 7.0,
+                child: FlatButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SelectProfilePicPage()));
+                  },
+                  child: Center(
+                    child: Text(
+                        "ChangeProfilePics",
+                        style: new TextStyle(
+                            fontSize: 12.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400
+                        )
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       )
