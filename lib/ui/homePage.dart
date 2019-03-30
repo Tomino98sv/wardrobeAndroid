@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/bl/Pages/settingsPage.dart';
 import 'package:flutter_app/bl/Pages/welcome.dart';
 import 'package:flutter_app/bl/mainLoginPage.dart';
 import 'package:flutter_app/db/model/Item.dart';
@@ -117,7 +118,8 @@ class _HomeState extends State<HomePage> {
     GoogleSignIn _googleSignIn;
     _googleSignIn?.signOut();
     if(choice == Constants.Settings){
-      print("Settings  .. treba dorobit");
+      Navigator.push(context, MaterialPageRoute(
+          builder: (context)=>SettingsPage()));
     }else if (choice == Constants.LogOut){
       FirebaseAuth.instance.signOut().then((value) {
         Navigator.of(context).pushAndRemoveUntil(
