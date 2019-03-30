@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
+import 'package:flutter_app/bl/Pages/profilePics.dart';
 import 'package:flutter_app/bl/Pages/wardrobeTabbar.dart';
 import 'package:flutter_app/bl/mainLoginPage.dart';
+import 'package:flutter_app/bl/videjko/services/usermanagment.dart';
 import 'package:flutter_app/db/FirestoreManager.dart';
 import 'package:flutter_app/db/model/Item.dart';
 import 'package:flutter_app/db/userInfo.dart';
@@ -12,6 +16,7 @@ import 'package:flutter_app/ui/homePage.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 class WelcomePage extends StatefulWidget {
   @override
@@ -22,12 +27,12 @@ class WelcomePage extends StatefulWidget {
 
 class _WelcomePageState extends State<WelcomePage>
     with TickerProviderStateMixin {
+
   FirebaseUser user2;
-//  GoogleSignInAccount googleUser;
   double _imageHeight = 248.0;
   TabController _tabController;
+  String profileUrlImg="";
 
-//  Firestore.instance.collection("items")
 
   @override
   void initState() {
@@ -35,10 +40,19 @@ class _WelcomePageState extends State<WelcomePage>
     FirebaseAuth.instance.currentUser().then((fUser) {
       setState(() {
         user2 = fUser;
+        Stream<QuerySnapshot> snapshot = Firestore.instance
+            .collection('users')
+            .where('uid', isEqualTo: user2.uid)
+            .snapshots();
+
+        snapshot.listen((QuerySnapshot data){
+          profileUrlImg = data.documents[0]['photoUrl'];
+        });
       });
     });
     _tabController = new TabController(length: 3, vsync: this);
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -101,6 +115,22 @@ class _WelcomePageState extends State<WelcomePage>
                               return Text("Loading data ... wait please");
                             return Column(
                               children: <Widget>[
+                                //SKUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUSKAMOJA SKUSKA je PROFILE
+                                Container(
+                                  width: 100.0,
+                                  height: 100.0,
+                                  decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      image: DecorationImage(
+                                          image: NetworkImage(profileUrlImg),
+                                          fit: BoxFit.cover),
+                                      borderRadius: BorderRadius.all(Radius.circular(75.0)),
+                                      boxShadow: [
+                                        BoxShadow(blurRadius: 7.0, color: Colors.black)
+                                      ]
+                                  ),
+                                ),
+                                //SKUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUSKAMOJA SKUSKA je PROFILE
                                 Text(
                                   snapshot.data.documents[0]['name'],
                                   style: new TextStyle(
@@ -117,6 +147,33 @@ class _WelcomePageState extends State<WelcomePage>
                                       color: Colors.black,
                                       fontWeight: FontWeight.w300),
                                 ),
+                                //SKUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUSKAMOJA SKUSKA TLACIDLA NA NAVIGACIU DO ZMENY PICTURE
+                                Container(
+                                  height: 30.0,
+                                  width: 120.0,
+                                  child: Material(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                    shadowColor: Colors.orange,
+                                    color: Colors.red,
+                                    elevation: 7.0,
+                                    child: FlatButton(
+                                      onPressed: () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => SelectProfilePicPage()));
+                                      },
+                                      child: Center(
+                                        child: Text(
+                                          "ProfilePics",
+                                          style: new TextStyle(
+                                            fontSize: 15.0,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w400
+                                          )
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                //SKUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUSKAMOJA SKUSKA TLACIDLA NA NAVIGACIU DO ZMENY PICTURE
                               ],
                             );
                           },
