@@ -5,6 +5,8 @@ import 'package:flutter_app/bl/Pages/welcome.dart';
 import 'package:flutter_app/bl/mainLoginPage.dart';
 import 'package:flutter_app/db/model/Item.dart';
 import 'package:flutter_app/db/FirestoreManager.dart';
+import 'package:flutter_app/deals/dealsHome.dart';
+import 'package:flutter_app/notif/notifications.dart';
 
 
 class HomePage extends StatefulWidget{
@@ -20,7 +22,9 @@ class _HomeState extends State<HomePage> {
     WelcomePage(),
 //    MyStoragePage2(),
     ItemsList(),
-    UserListHome(),
+    NotificationsPage(),
+    DealsPage(),
+    UserListHome()
 //    MyNewItem(),  pre Kluad na floating buttonn
 //    Text('Index 2: Public'),
 
@@ -78,6 +82,14 @@ class _HomeState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: new Icon(Icons.style, color: Colors.grey[900]),
             title: new Text('Dresses'),
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.notifications, color: Colors.grey[900]),
+            title: new Text('Alerts'),
+          ),
+          BottomNavigationBarItem(
+            icon: new Icon(Icons.shopping_cart, color: Colors.grey[900]),
+            title: new Text('Deals'),
           ),
           BottomNavigationBarItem(
               icon: new Icon(Icons.account_circle, color: Colors.grey[900]),
