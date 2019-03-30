@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:flutter_advanced_networkimage/zoomable.dart';
+import 'package:flutter_app/db/getItem.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_app/db/userInfo.dart';
 
@@ -104,7 +105,7 @@ class _ItemsListState extends State<ItemsList> {
                                 child: InkWell(
                                   onTap: (){ Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
-                                        return ShowDetails(item: document);
+                                        return ShowDetails(item: document, user: userCurrent,);
 //                            return SecondRoute(item: document); //tu je predchadzajuci kod
                                       }));
                                   debugPrint("idem dalej");},
@@ -116,7 +117,7 @@ class _ItemsListState extends State<ItemsList> {
                                     margin: EdgeInsets.all(10.0),
                                     height: 40.0,
                                     alignment: Alignment.center,
-                                    child: Text('Show Details',style: TextStyle(color: Colors.white),),
+                                    child: Text('GET dress',style: TextStyle(color: Colors.white),),
                                   ),
                                 ),
                               ),
@@ -204,297 +205,7 @@ class UserList extends StatelessWidget {
   }
 }
 
-class ShowDetails extends StatefulWidget {
-  DocumentSnapshot item;
 
-  ShowDetails({@required this.item});
-
-  _ShowDetails createState() => new _ShowDetails(item: item);
-}
-
-//show details about item with option to edit
-class _ShowDetails extends State<ShowDetails> {
-  DocumentSnapshot item;
-  double _imageHeight = 248.0;
-
-  _ShowDetails({@required this.item});
-
-  @override
-  void initState() {
-    super.initState();
-    debugPrint("XXX ini starte");
-    Firestore.instance
-        .collection('items')
-        .document(item.documentID)
-        .get()
-        .then((onValue) {
-      setState(() {
-        debugPrint("XXX firestore");
-        item = onValue;
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    debugPrint("XXX build");
-    return StreamBuilder<DocumentSnapshot>(
-        stream: Firestore.instance
-            .collection('items')
-            .document(item.documentID)
-            .get()
-            .asStream(),
-        //shows items from Firebase
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Scaffold(body: new Text('Loading...'));
-            default:
-              return new Scaffold(
-                appBar: new AppBar(
-                  title: new Text(snapshot.data['name']),
-                ),
-                body: SingleChildScrollView(
-                  child: new Container(
-//                    padding: new EdgeInsets.all(20.0),
-                    child: new Center(
-                      child: new Column(
-                        children: <Widget>[
-                          Stack(
-                            children: <Widget>[
-                              _buildIamge(),
-                              Padding(
-                                padding: new EdgeInsets.only(
-                                    left: 16.0, top: _imageHeight / 7.5),
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: <Widget>[
-//                                        Icon(Icons.account_circle),
-//                                        Padding(padding: EdgeInsets.only(right: 10.0),),
-//                                        Text('Name: ',
-//                                          style: new TextStyle(
-//                                            color: Colors.black,
-//                                            fontFamily: 'DancingScript-Bold', //neberie
-//                                            fontWeight: FontWeight.w400
-//                                        ),),
-//                                        Padding(padding: EdgeInsets.only(right: 10.0),),
-//                                        Text(snapshot.data['name'],
-//                                          style: new TextStyle(
-//                                            fontSize: 20.0,
-//                                            color: Colors.black,
-//                                            fontFamily: 'DancingScript-Bold', //neberie
-//                                            fontWeight: FontWeight.w400
-//                                        ),),
-//                                        Padding(padding: EdgeInsets.only(right: 10.0),),
-                                        Container(
-                                          width: 200.0,
-                                          height: 200.0,
-                                          child: TransitionToImage(
-                                            image: AdvancedNetworkImage(
-                                              snapshot.data['photo_url'],
-                                              useDiskCache: true,
-                                              timeoutDuration: Duration(seconds: 7),
-                                              cacheRule: CacheRule(
-                                                  maxAge: const Duration(days: 7)),
-//                                              fallbackAssetImage: 'assets/images/error_image.png',
-                                            fallbackAssetImage: 'assets/images/image_error.png',
-                                              retryLimit: 0
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-//                          Row(
-//                            children: <Widget>[
-//                              Padding(padding: EdgeInsets.only(top: 20.0),),
-//                            Expanded(child: Icon(Icons.account_circle)),
-//                            Expanded(
-//                              child: Text('Name: ',
-//                                style: new TextStyle(
-//                                    color: Colors.black,
-//                                    fontFamily: 'DancingScript-Bold', //neberie
-//                                    fontWeight: FontWeight.w400
-//                                ),),
-//                            ),
-//                            Expanded(
-//                                child: Text(snapshot.data['name'],
-//                              style: new TextStyle(
-//                                  fontSize: 20.0,
-//                                  color: Colors.black,
-//                                  fontFamily: 'DancingScript-Bold', //neberie
-//                                  fontWeight: FontWeight.w400
-//                              ),),)
-//                            ]
-//                          ),
-                          Padding(padding: EdgeInsets.only(top: 50.0),),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Icon(Icons.color_lens),
-                              ),
-                              Expanded(
-                                child: Text('Color: ',
-                                  style: new TextStyle(
-                                  fontSize: 20.0,
-                                  color: Colors.black,
-                                  fontFamily: 'DancingScript-Bold', //neberie
-                                  fontWeight: FontWeight.w400
-                              ),),),
-                              Expanded(
-                                child: Text(snapshot.data['color'],
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )),
-                              )
-                            ],
-                          ),
-                          Padding(padding: EdgeInsets.only(bottom: 10.0),),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Icon(Icons.aspect_ratio),
-                              ),
-                              Expanded(
-                                child: Text('Size:',
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )),),
-                              Expanded(
-                                child: Text(snapshot.data['size'],
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )),
-                              )
-                            ],
-                          ),
-                          Padding(padding: EdgeInsets.only(bottom: 10.0),),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Icon(Icons.content_cut),
-                              ),
-                              Expanded(
-                                child: Text('Length:',
-                                    style: new TextStyle(
-                                    fontSize: 20.0,
-                                    color: Colors.black,
-                                    fontFamily: 'DancingScript-Bold', //neberie
-                                    fontWeight: FontWeight.w400
-                                )),),
-                              Expanded(
-                                child: Text(
-                                    snapshot.data['length'],
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )),
-                              )
-                            ],
-                          ),
-                          Padding(padding: EdgeInsets.only(bottom: 10.0),),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Icon(Icons.card_giftcard),
-                              ),
-                              Expanded(
-                                child: Text('Borrowed To?',
-                                    style: new TextStyle(
-                                    fontSize: 20.0,
-                                    color: Colors.black,
-                                    fontFamily: 'DancingScript-Bold', //neberie
-                                    fontWeight: FontWeight.w400
-                                )),),
-                              Expanded(
-                                child: Text(snapshot.data['borrowName'] != "" ?
-                                snapshot.data['borrowName'] :
-                                    '-',
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )
-                                ),
-                              )
-                            ],
-                          ),
-//                          Row(
-//                            children: <Widget>[
-//                              Expanded(
-//                                child: Icon(Icons.person_pin_circle),
-//                              ),
-//                              Expanded(
-//                                child: Text(snapshot.data['']), //ak sa zisti userove meno
-//                              )
-//                            ],
-//                          )
-
-
-
-
-
-//kod na upravopovanie itemu, ktory asi netreba
-//                          Container(
-//                            child: InkWell(
-//                              onTap: (){ Navigator.push(context,
-//                                  MaterialPageRoute(builder: (context) {
-//                                    return EditItem(
-//                                      item: snapshot.data,
-//                                    );
-//                                  }));},
-//                              child: Container(
-//                                decoration: new BoxDecoration(
-//                                  color: Colors.pink,
-//                                  borderRadius: new BorderRadius.circular(30.0),
-//                                ),
-//                                alignment: Alignment.center,
-//                                padding: EdgeInsets.symmetric(vertical: 8.0),
-//                                child: Text('Edit',style: TextStyle(color: Colors.white),),
-//                              ),
-//                            ),
-//                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              );
-          }
-        });
-  }
-
-  Widget _buildIamge() {
-    return new ClipPath(
-      clipper: new DialogonalClipper(),
-      child: new Image.asset(
-        'assets/images/pinkB.jpg',
-        fit: BoxFit.fitWidth,
-//        height: _imageHeight,
-      ),
-    );
-  }
-}
 
 
 class DialogonalClipper extends CustomClipper<Path> {
@@ -839,8 +550,10 @@ class Item {
   var userid;
   var borrowedTo = "";
   var borrowName = "";
+  var request = "";
+  
 
-  Item({this.name, this.color, this.size, this.length, this.photoUrl, this.id, this.userid, this.borrowedTo, this.borrowName});
+  Item({this.name, this.color, this.size, this.length, this.photoUrl, this.id, this.userid, this.borrowedTo, this.borrowName, this.request});
 
 }
 
