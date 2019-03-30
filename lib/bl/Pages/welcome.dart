@@ -147,33 +147,6 @@ class _WelcomePageState extends State<WelcomePage>
                                       color: Colors.black,
                                       fontWeight: FontWeight.w300),
                                 ),
-                                //SKUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUSKAMOJA SKUSKA TLACIDLA NA NAVIGACIU DO ZMENY PICTURE
-                                Container(
-                                  height: 30.0,
-                                  width: 120.0,
-                                  child: Material(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                    shadowColor: Colors.orange,
-                                    color: Colors.red,
-                                    elevation: 7.0,
-                                    child: FlatButton(
-                                      onPressed: () {
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => SelectProfilePicPage()));
-                                      },
-                                      child: Center(
-                                        child: Text(
-                                          "ProfilePics",
-                                          style: new TextStyle(
-                                            fontSize: 15.0,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w400
-                                          )
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                //SKUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUSKAMOJA SKUSKA TLACIDLA NA NAVIGACIU DO ZMENY PICTURE
                               ],
                             );
                           },
