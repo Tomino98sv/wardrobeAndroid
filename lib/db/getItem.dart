@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
+import 'package:flutter_advanced_networkimage/zoomable.dart';
 import 'package:flutter_app/bl/Pages/welcome.dart';
 
 class ShowDetails extends StatefulWidget {
@@ -97,16 +98,25 @@ class _ShowDetails extends State<ShowDetails> {
                                         Container(
                                           width: 200.0,
                                           height: 200.0,
-                                          child: TransitionToImage(
-                                            image: AdvancedNetworkImage(
-                                                snapshot.data['photo_url'],
-                                                useDiskCache: true,
-                                                timeoutDuration: Duration(seconds: 7),
-                                                cacheRule: CacheRule(
-                                                    maxAge: const Duration(days: 7)),
+                                          child: ZoomableWidget(
+                                            minScale: 1.0,
+                                            maxScale: 2.0,
+                                            // default factor is 1.0, use 0.0 to disable boundary
+                                            panLimit: 0.0,
+                                            bounceBackBoundary: true,
+                                            child: TransitionToImage(
+                                              image: AdvancedNetworkImage(
+                                                  snapshot.data['photo_url'],
+                                                  useDiskCache: true,
+                                                  timeoutDuration: Duration(seconds: 7),
+                                                  cacheRule: CacheRule(
+                                                      maxAge: const Duration(days: 7)),
 //                                              fallbackAssetImage: 'assets/images/error_image.png',
-                                                fallbackAssetImage: 'assets/images/image_error.png',
-                                                retryLimit: 0
+                                                  fallbackAssetImage: 'assets/images/image_error.png',
+                                                  retryLimit: 0
+                                              ),
+                                              placeholder: CircularProgressIndicator(),
+                                              duration: Duration(milliseconds: 300),
                                             ),
                                           ),
                                         )
@@ -448,3 +458,4 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
   return null;
 
 }
+

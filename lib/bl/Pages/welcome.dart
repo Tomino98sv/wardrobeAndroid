@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
+import 'package:flutter_advanced_networkimage/zoomable.dart';
 import 'package:flutter_app/bl/Pages/profilePics.dart';
 import 'package:flutter_app/bl/Pages/wardrobeTabbar.dart';
 import 'package:flutter_app/bl/mainLoginPage.dart';
@@ -104,7 +105,7 @@ class _WelcomePageState extends State<WelcomePage>
 //                      ),
                       new Padding(
                         padding: new EdgeInsets.only(
-                            left: 16.0, top: _imageHeight / 2.5),
+                            left: 16.0, top: _imageHeight / 5.0),
                         child: StreamBuilder<QuerySnapshot>(
                           stream: Firestore.instance
                               .collection('users')
@@ -191,8 +192,14 @@ class _WelcomePageState extends State<WelcomePage>
                                 child: document['photo_url'] == null ||
                                         document['photo_url'] == ""
                                     ? Icon(Icons.broken_image)
-                                    : TransitionToImage(
-                                        image: AdvancedNetworkImage(
+                                    : ZoomableWidget(
+                                    minScale: 1.0,
+                                    maxScale: 2.0,
+                                    // default factor is 1.0, use 0.0 to disable boundary
+                                    panLimit: 0.0,
+                                    bounceBackBoundary: true,
+                                    child: TransitionToImage(
+                                      image: AdvancedNetworkImage(
                                           document['photo_url'],
                                           useDiskCache: true,
                                           timeoutDuration: Duration(seconds: 7),
@@ -200,8 +207,10 @@ class _WelcomePageState extends State<WelcomePage>
                                               maxAge: const Duration(days: 7)),
                                           fallbackAssetImage: 'assets/images/image_error.png',
                                           retryLimit: 0
-                                        ),
-                                      )),
+                                      ),
+                                    )
+                                )
+                                ),
                             title: Text(document['name']),
                             children: <Widget>[
                               Text('Name: ${document['name']}'),
@@ -328,7 +337,7 @@ class _WelcomePageState extends State<WelcomePage>
                     }).toList()),
                     ListView(
                         children: snapshot.data.documents
-                            .map((DocumentSnapshot document) {
+                            .map((DocumentSnapshot document)  {
                       if (document["userId"] == user2.uid &&
                           document['borrowedTo'] != "") {
                         return Slidable(
@@ -341,17 +350,25 @@ class _WelcomePageState extends State<WelcomePage>
                                 child: document['photo_url'] == null ||
                                         document['photo_url'] == ""
                                     ? Icon(Icons.broken_image)
-                                    : TransitionToImage(
-                                        image: AdvancedNetworkImage(
+                                    : ZoomableWidget(
+                                    minScale: 1.0,
+                                    maxScale: 2.0,
+                                    // default factor is 1.0, use 0.0 to disable boundary
+                                    panLimit: 0.0,
+                                    bounceBackBoundary: true,
+                                    child: TransitionToImage(
+                                      image: AdvancedNetworkImage(
                                           document['photo_url'],
                                           useDiskCache: true,
                                           timeoutDuration: Duration(seconds: 7),
                                           cacheRule: CacheRule(
                                               maxAge: const Duration(days: 7)),
-                                            fallbackAssetImage: 'assets/images/image_error.png',
-                                            retryLimit: 0
-                                        ),
-                                      )),
+                                          fallbackAssetImage: 'assets/images/image_error.png',
+                                          retryLimit: 0
+                                      ),
+                                    )
+                                )
+                                ),
                             title: Text(document['name']),
                             children: <Widget>[
                               Text('Name: ${document['name']}'),
@@ -443,17 +460,24 @@ class _WelcomePageState extends State<WelcomePage>
                                 child: document['photo_url'] == null ||
                                         document['photo_url'] == ""
                                     ? Icon(Icons.broken_image)
-                                    : TransitionToImage(
-                                        image: AdvancedNetworkImage(
+                                    : ZoomableWidget(
+                                    minScale: 1.0,
+                                    maxScale: 2.0,
+                                    // default factor is 1.0, use 0.0 to disable boundary
+                                    panLimit: 0.0,
+                                    bounceBackBoundary: true,
+                                    child: TransitionToImage(
+                                      image: AdvancedNetworkImage(
                                           document['photo_url'],
                                           useDiskCache: true,
                                           timeoutDuration: Duration(seconds: 7),
                                           cacheRule: CacheRule(
                                               maxAge: const Duration(days: 7)),
-                                            fallbackAssetImage: 'assets/images/image_error.png',
-                                            retryLimit: 0
-                                        ),
-                                      )),
+                                          fallbackAssetImage: 'assets/images/image_error.png',
+                                          retryLimit: 0
+                                      ),
+                                    )
+                               )),
                             title: Text(document['name']),
                             children: <Widget>[
                               Text('Name: ${document['name']}'),
