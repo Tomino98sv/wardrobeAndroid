@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/videjko/services/usermanagment.dart';
@@ -17,6 +18,8 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
 
   File newProfilePic;
   UserManagement userManagement = new UserManagement();
+//  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
 
   Future getImage() async {
     var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -26,24 +29,42 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
   }
 
   uploadImage() async {
-    var randomno = Random(25);
+
+    showDialog(context: context, barrierDismissible: false,builder: (BuildContext context) {
+      return Center(
+        child: Container(
+          width: 48.0,
+          height: 48.0,
+          child: CircularProgressIndicator(backgroundColor: Colors.pink,),
+        ),
+      );
+    });
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
     final StorageReference firebaseStorageRef = FirebaseStorage.instance
         .ref()
         .child(
-        'profilepics/${randomno.nextInt(5000).toString()}.jpg');
+        '${user.email}/${user.email}_profilePicture.jpg');
     StorageUploadTask task = firebaseStorageRef.putFile(newProfilePic);
     task.events.listen((event){
       if(event.type == StorageTaskEventType.failure){
         print("DO riti nieco sa posralo");
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+//        _showSnackBar("Kamarade ziadna nova profilovka nebude");
       }
     });
 
     StorageTaskSnapshot taskSnapshot = await task.onComplete;
     String downloadUrl = await taskSnapshot.ref.getDownloadURL().then((value){
       userManagement.updateProfilePic(value.toString()).then((val){
+
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+//      _showSnackBar("Profile picture successfully changed");
         Navigator.pop(context);
       });
     });
+
+
+
   }
 
 
@@ -54,6 +75,7 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
       appBar: AppBar(
         title: Text("Profile Picture"),
       ),
+//      key: _scaffoldKey,
       body: newProfilePic == null ? getChooseButton() : getUploadButton(),
     );
   }
@@ -109,5 +131,21 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
       ),
     );
   }
+
+
+//  _showSnackBar(String str) {
+//    final snackBar = new SnackBar(
+//      content: new Text(str),
+//      duration: new Duration(seconds: 3),
+//      backgroundColor: Colors.black54,
+//      action: new SnackBarAction(
+//          label: 'OUKEY',
+//          onPressed: () {
+//            print("pressed snackbar");
+//          }),
+//    );
+//    _scaffoldKey.currentState.showSnackBar(snackBar);
+//
+//  }
 
 }
