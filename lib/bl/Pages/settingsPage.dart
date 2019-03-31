@@ -48,8 +48,8 @@ class _SettingsPageState extends State<SettingsPage>{
               width: 150.0,
               child: Material(
                 borderRadius: BorderRadius.circular(20.0),
-                shadowColor: Colors.orange,
-                color: Colors.red,
+                shadowColor: Colors.pinkAccent,
+                color: Colors.pink,
                 elevation: 7.0,
                 child: FlatButton(
                   onPressed: () {
