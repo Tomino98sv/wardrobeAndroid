@@ -2,7 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/Pages/auth.dart';
 import 'package:flutter_app/bl/nutused/signIn.dart';
-import 'package:flutter_app/bl/videjko/hisMain.dart';
+import 'package:flutter_app/bl/nutused/hisMain.dart';
+import 'package:flutter_app/bl/videjko/loginpage.dart';
 import 'package:flutter_app/ui/homePage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -13,9 +14,6 @@ class QuickBee extends StatefulWidget {
 }
 
 class _QuickBeeState extends State<QuickBee> {
-
-
-
 
   @override
   void initState() {
@@ -168,8 +166,8 @@ class _QuickBeeState extends State<QuickBee> {
   }
 
   void navigationToSignInMail() {
-    Navigator.pushReplacement(context, MaterialPageRoute(
-        builder: (context) => MyApp()));
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) => LoginPage()));
     debugPrint("ide to?");
   }
 
