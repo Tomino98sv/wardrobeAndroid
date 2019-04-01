@@ -44,4 +44,29 @@ class UserManagement {
       });
   }
 
+  Future updateSecondImage(secondUrl) async{
+
+    item.photoUrl = secondUrl;
+
+    await FirebaseAuth.instance.currentUser().then((user){
+      Firestore.instance
+          .collection('/items')
+          .where('photo_url',isEqualTo: item.photoUrl)
+          .getDocuments()
+          .then((docs){
+        Firestore.instance
+            .document('/items/${docs.documents[0].documentID}')
+            .updateData({'photo_url': secondUrl}).then((val){
+          print("Updated");
+        }).catchError((e){
+          print(e);
+        });
+      }).catchError((e){
+        print(e);
+      });
+    }).catchError((e){
+      print(e);
+    });
+  }
+
 }
