@@ -121,7 +121,7 @@ class _WelcomePageState extends State<WelcomePage>
                                   width: 100.0,
                                   height: 100.0,
                                   decoration: BoxDecoration(
-                                      color: Colors.red,
+                                      color: Colors.pink,
                                       image: DecorationImage(
                                           image: NetworkImage(profileUrlImg),
                                           fit: BoxFit.cover),
@@ -308,12 +308,9 @@ class _WelcomePageState extends State<WelcomePage>
                                                 .collection('items')
                                                 .document(document.documentID)
                                                 .delete();
-//                                    StorageReference obr = FirebaseStorage.instance.getReferenceFromUrl(item.photoUrl);
-//                                    obr.delete();
                                             Navigator.pop(context);
                                             deleteFireBaseStorageItem(
                                                 document['photoUrl']);
-
                                             debugPrint("vymazanee");
                                           },
                                         ),

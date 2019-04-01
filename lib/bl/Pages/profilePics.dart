@@ -86,8 +86,8 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
       width: 120.0,
       child: Material(
         borderRadius: BorderRadius.circular(20.0),
-        shadowColor: Colors.orange,
-        color: Colors.red,
+        shadowColor: Colors.pinkAccent,
+        color: Colors.pink,
         elevation: 7.0,
         child: FlatButton(
           onPressed: getImage,
@@ -112,8 +112,8 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
       width: 120.0,
       child: Material(
         borderRadius: BorderRadius.circular(20.0),
-        shadowColor: Colors.orange,
-        color: Colors.red,
+        shadowColor: Colors.pinkAccent,
+        color: Colors.pink,
         elevation: 7.0,
         child: FlatButton(
           onPressed: uploadImage,
