@@ -30,12 +30,6 @@ class _LoginPageState extends State<LoginPage> {
     // TODO: implement build
     return new Scaffold(
         appBar: new AppBar(
-          actions: <Widget>[
-            IconButton(
-                icon: new Icon(Icons.arrow_back),
-                onPressed: () => Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => QuickBee()))),
-          ],
           title: new Text("Login"),
         ),
         key: _scaffoldKey,

@@ -72,18 +72,25 @@ class _ItemsListState extends State<ItemsList> {
                         height: 46.0,
                         child: item.photoUrl == null || item.photoUrl == ""
                             ? Icon(Icons.broken_image)
-                            : TransitionToImage(
-                          image: AdvancedNetworkImage(
-                            item.photoUrl,
-                            useDiskCache: true,
-                            timeoutDuration: Duration(seconds: 60),
-                            cacheRule:
-                            CacheRule(maxAge: const Duration(days: 7)),
-                            fallbackAssetImage: 'assets/images/image_error.png',
-                            retryLimit: 0
-                          ),
-                          placeholder: CircularProgressIndicator(),
-                          duration: Duration(milliseconds: 300),),
+                            : ZoomableWidget(
+                            minScale: 1.0,
+                            maxScale: 2.0,
+                            // default factor is 1.0, use 0.0 to disable boundary
+                            panLimit: 0.0,
+                            bounceBackBoundary: true,
+                            child: TransitionToImage(
+                              image: AdvancedNetworkImage(
+                                  item.photoUrl,
+                                  useDiskCache: true,
+                                  timeoutDuration: Duration(seconds: 60),
+                                  cacheRule:
+                                  CacheRule(maxAge: const Duration(days: 7)),
+                                  fallbackAssetImage: 'assets/images/image_error.png',
+                                  retryLimit: 0
+                              ),
+                              placeholder: CircularProgressIndicator(),
+                              duration: Duration(milliseconds: 300),)
+                        ),
                       ),
                       title: new Text(item.name),
 //                  subtitle: new Text(document['color']),
