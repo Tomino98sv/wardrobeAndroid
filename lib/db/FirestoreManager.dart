@@ -255,7 +255,7 @@ class _State extends State<EditItem> {
   String docColor = '';
   String docSize = '';
   String docLength = '';
- // String docImage = '';
+
 
   void _onChangedName(String value) {
     setState(() => docName = '$value');
@@ -318,7 +318,7 @@ class _State extends State<EditItem> {
                         duration: Duration(milliseconds: 300),
                       )),
                 ),
-          //      changeImageItem(),
+                changeImageItem(item: item),
                 new TextField(
                   decoration: new InputDecoration(
                       labelText: item['name'],
@@ -427,6 +427,7 @@ class _State extends State<EditItem> {
           .document(item.documentID)
           .updateData({"length": docLength});
       debugPrint("zmenil som dlzku");
+
       }
           Navigator.pop(context);},
                       child: Container(

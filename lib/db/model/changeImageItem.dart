@@ -4,8 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app/db/FirestoreManager.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
 
 class changeImageItem extends StatefulWidget{
   DocumentSnapshot item;
@@ -20,85 +22,118 @@ class changeImageItem extends StatefulWidget{
 class _changeImageItemState extends State<changeImageItem>{
 
   DocumentSnapshot item;
- // Firestore.instance.collecton('/items').document(item.documentID)
   File itemImage;
-//  Item itemURL = item['photo_url'];
+  String docImage = "";
+  String _path;
+  String filePath;
 
   _changeImageItemState({@required this.item}) {
        docImage = item['photo_url'];
+       debugPrint(docImage);
   }
 
-  String docImage = '';
+
 
   //vytvorenie image
   Future getImage() async {
     var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       itemImage = tempImage;
-      print("vybralo obrazok");
+      debugPrint(itemImage.path);
+      filePath = itemImage.path;
     });
+    uploadSecondImage(filePath, context);
   }
 
 
-//  @override
-//  Widget build(BuildContext context) {
-//    return Column(
-//        mainAxisSize: MainAxisSize.max,
-//        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//        crossAxisAlignment: CrossAxisAlignment.center,
-//        children: <Widget>[
-//          new Center(
-//            child: docImage != null ? uploadSecondImage(): Container(),
-//          ),
-//          new Row(
-//            crossAxisAlignment: CrossAxisAlignment.center,
-//            mainAxisAlignment: MainAxisAlignment.center,
-//            children: <Widget>[
-//              Container(
-//                child: RaisedButton(
-//                    onPressed: getImage,
-//                    child: Text('Change image',style: TextStyle(color: Colors.white),),
-//                ),
-//                  padding: EdgeInsets.all(15.0)
-//              ),
-//            ],
-//          )
-//        ]
-//    );
-//  }
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          new Center(
+      //      child: docImage != null ? uploadImage(): Container(),
+          ),
+          new Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                child: RaisedButton(
+                    onPressed: getImage,
+                    child: Text('Change image',style: TextStyle(color: Colors.white),),
+                ),
+                  padding: EdgeInsets.all(15.0),
+              ),
+            ],
+          )
+        ]
+    );
+  }
 
-  uploadSecondImage() async {
-    showDialog(context: context, barrierDismissible: false,builder: (BuildContext context) {
-      return Center(
-        child: Container(
-          width: 48.0,
-          height: 48.0,
-          child: CircularProgressIndicator(backgroundColor: Colors.pink,),
-        ),
-      );
-    });
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    final StorageReference firebaseStorageRef = FirebaseStorage.instance
-        .ref()
-        .child(
-        '${user.email}/${user.email}_profilePicture.jpg');
-    StorageUploadTask task = firebaseStorageRef.putFile(itemImage);
+  uploadSecondImage(String filePath, BuildContext context) async {
+    showDialog(context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Center(
+            child: Container(
+              width: 48.0,
+              height: 48.0,
+              child: CircularProgressIndicator(backgroundColor: Colors.pink,),
+            ),
+          );
+        });
+
+    print('funckia uploadFile $filePath');
+    final ByteData bytes = await rootBundle.load(filePath);
+    final Directory tempFile = Directory.systemTemp; // filePath dame do docasneho pricinku
+    String extension = filePath.substring(filePath.length - 3); //vybratie poslednych 3 pismenok - urcenie pripony
+    final String fileName = "${Uuid().v4()}.$extension"; // vytvorenie mena obrazka .. uuid radom cisla,pismenka
+    final File imageFile = File('${tempFile.path}/$fileName'); //vytvorenie objektu-obrazka
+    imageFile.writeAsBytes(bytes.buffer.asInt8List(), mode: FileMode.write); //ci dobry access
+
+    //pridanie obrazka
+    final StorageReference ref = FirebaseStorage.instance.ref().child(fileName);
+    final StorageUploadTask task = ref.putFile(imageFile);
     task.events.listen((event){
-      if(event.type == StorageTaskEventType.failure){
-        print("DO riti nieco sa posralo");
+      if(event.type == StorageTaskEventType.failure) {
         Navigator.of(context, rootNavigator: true).pop('dialog');
-//        _showSnackBar("Kamarade ziadna nova profilovka nebude");
+        //widget._function("");
       }
     });
-
     StorageTaskSnapshot taskSnapshot = await task.onComplete;
-    String downloadUrl = await taskSnapshot.ref.getDownloadURL().then((value){
-      userManagement.updateSecondImage(value.toString()).then((val){
+    String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+    _path = downloadUrl.toString();
+    //widget._function(_path);
+    print(_path); // url cesta pre Klaud
+    Navigator.of(context, rootNavigator: true).pop('dialog');
 
-        Navigator.of(context, rootNavigator: true).pop('dialog');
-//      _showSnackBar("Profile picture successfully changed");
-        Navigator.pop(context);
-      });
-    });
+
+    //zmazanie starej url
+    deleteFireBaseStorageItem(docImage);
+    debugPrint("vymazanee");
+
+    //namiesto starej url sa ma dat nova
+    Firestore.instance.collection('items').document(item.documentID).updateData({"photo_url": _path});
+    debugPrint("zmenil sa obrazok");
+
+  }
+
+
+  void deleteFireBaseStorageItem(String fileUrl) {
+    String filePath = fileUrl.replaceAll(
+        new RegExp(
+            r'https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/'),
+        '');
+    filePath = filePath.replaceAll(new RegExp(r'%2F'), '/');
+    filePath = filePath.replaceAll(new RegExp(r'(\?alt).*'), '');
+    StorageReference storageReferance = FirebaseStorage.instance.ref();
+    storageReferance
+        .child(filePath)
+        .delete()
+        .then((_) => print('Successfully deleted $filePath storage item'));
   }
 }
+
