@@ -76,7 +76,7 @@ class _MyNewItem extends State<MyNewItem> {
                         decoration: new InputDecoration(
                             labelText: 'Name',
                             icon: new Icon(Icons.account_circle,
-                                color: Colors.brown[800])),
+                                color: Colors.black)),
                         onChanged: (String userInput) {
                           setState(() {
                             name = userInput;
@@ -93,7 +93,7 @@ class _MyNewItem extends State<MyNewItem> {
                         decoration: new InputDecoration(
                             labelText: 'Color',
                             icon: new Icon(Icons.color_lens,
-                                color: Colors.brown[800])),
+                                color: Colors.black)),
                         onChanged: (String userInput) {
                           setState(() {
                             color = userInput;
@@ -106,7 +106,7 @@ class _MyNewItem extends State<MyNewItem> {
                 Row(
                   children: <Widget>[
                     Expanded(
-                      child: Icon(Icons.aspect_ratio, color: Colors.brown[800]),
+                      child: Icon(Icons.aspect_ratio, color: Colors.black),
                     ),
                     Expanded(
                       child: Text('Size'),
@@ -133,7 +133,7 @@ class _MyNewItem extends State<MyNewItem> {
                 Row(
                   children: <Widget>[
                     Expanded(
-                      child: Icon(Icons.content_cut, color: Colors.brown[800]),
+                      child: Icon(Icons.content_cut, color: Colors.black),
                     ),
                     Expanded(
                       child: Text('Length'),
