@@ -585,6 +585,10 @@ class UserListHome extends StatelessWidget {
                           children: snapshot.data.documents
                               .map((DocumentSnapshot document) {
                             return ListTile(
+                              leading: Image.network(
+                                  document['photoUrl'],
+                              height: 42.0,
+                                  width: 42.0,),
                               trailing: Icon(Icons.send, color: Colors.pink,),
                               title: Text(document['name']),
                               onTap: () {
@@ -601,28 +605,4 @@ class UserListHome extends StatelessWidget {
         });
   }
 
-//  new Container(
-//  width: 46.0,
-//  height: 46.0,
-//  child: document['photoUrl'] == null ||
-//  document['photoUrl'] == ""
-//  ? Icon(Icons.broken_image)
-//      : ZoomableWidget(
-//  minScale: 1.0,
-//  maxScale: 2.0,
-//  // default factor is 1.0, use 0.0 to disable boundary
-//  panLimit: 0.0,
-//  bounceBackBoundary: true,
-//  child: TransitionToImage(
-//  image: AdvancedNetworkImage(
-//  document['photoUrl'],
-//  useDiskCache: true,
-//  timeoutDuration: Duration(seconds: 7),
-//  cacheRule: CacheRule(
-//  maxAge: const Duration(days: 7)),
-//  fallbackAssetImage: 'assets/images/image_error.png',
-//  retryLimit: 0
-//  ),
-//  )
-//  )),
 }
