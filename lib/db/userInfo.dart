@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
@@ -8,10 +9,12 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 class UserInfoList extends StatelessWidget{
   DocumentSnapshot userInfo;
   DocumentSnapshot itemInfo;
-  double _imageHeight = 248.0;
+  double _imageHeight = 500.0;
 
   UserInfoList({@required this.userInfo, this.itemInfo});
 
+
+// ten list, ktory sa zobrazi ked si vyberiem borrow item
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -29,17 +32,27 @@ class UserInfoList extends StatelessWidget{
                  body: new Center(
                    child: Column(
                       children: <Widget>[
-//              Image.network(userInfo['photo'],
-//    //                  height: 150,
-//    //                  width: 150,
-//                    ),
                         new Stack(
                           children: <Widget>[
                             _buildIamge(),
                             new Padding(
-                              padding: new EdgeInsets.only(left: 16.0, top: _imageHeight / 3.5),
+                              padding: new EdgeInsets.only(left: 16.0, top: _imageHeight / 20),
                               child: Column(
                                 children: <Widget>[
+                                  Container(
+                                    width: 100.0,
+                                    height: 100.0,
+                                    decoration: BoxDecoration(
+                                        color: Colors.pink,
+                                        image: DecorationImage(
+                                            image: NetworkImage(userInfo.data['photoUrl']),
+                                            fit: BoxFit.cover),
+                                        borderRadius: BorderRadius.all(Radius.circular(75.0)),
+                                        boxShadow: [
+                                          BoxShadow(blurRadius: 7.0, color: Colors.black)
+                                        ]
+                                    ),
+                                  ),
                                   Row(
                                     children: <Widget>[
                                       Text(
@@ -113,7 +126,7 @@ class UserInfoList extends StatelessWidget{
                                         ],
                                       ),
                                   Container(
-                                    margin: EdgeInsets.only(left: 270.0,top: 30.0,right: 20.0),
+                                    margin: EdgeInsets.only(left: 270.0,right: 20.0),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(30.0),
                                       child: Material(
@@ -249,10 +262,10 @@ class _DiamondBorder extends ShapeBorder {
 }
 
 
-
+// list userov (5.screen) a owner details
 class UserInfoList2 extends StatelessWidget{
   DocumentSnapshot userInfo;
-  double _imageHeight = 248.0;
+  double _imageHeight = 500.0;
 
   UserInfoList2({@required this.userInfo});
 
@@ -278,9 +291,23 @@ class UserInfoList2 extends StatelessWidget{
                        children: <Widget>[
                          _buildIamge(),
                          new Padding(
-                           padding: new EdgeInsets.only(left: 16.0, top: _imageHeight / 2.5),
+                           padding: new EdgeInsets.only(left: 16.0, top: _imageHeight / 10),
                            child: Column(
                                  children: <Widget>[
+                                   Container(
+                                     width: 100.0,
+                                     height: 100.0,
+                                     decoration: BoxDecoration(
+                                         color: Colors.pink,
+                                         image: DecorationImage(
+                                             image: NetworkImage(userInfo.data['photoUrl']),
+                                             fit: BoxFit.cover),
+                                         borderRadius: BorderRadius.all(Radius.circular(75.0)),
+                                         boxShadow: [
+                                           BoxShadow(blurRadius: 7.0, color: Colors.black)
+                                         ]
+                                     ),
+                                   ),
                                    Row(
                                      children: <Widget>[
                                        Text(
