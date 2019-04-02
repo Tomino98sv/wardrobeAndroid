@@ -582,22 +582,47 @@ class UserListHome extends StatelessWidget {
             default:
               return Scaffold(
                 body: new ListView(
-                    children: snapshot.data.documents
-                        .map((DocumentSnapshot document) {
-                      return ListTile(
-                        trailing: Icon(Icons.send, color: Colors.pink,),
-                        title: Text(document['name']),
-                        onTap: () {
-                          //kod ktory urci usra, ktoremu bolo pozicane
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                                return UserInfoList2(userInfo: document);
-                              }));
-                        },
-                      );
-                    }).toList()),
+                          children: snapshot.data.documents
+                              .map((DocumentSnapshot document) {
+                            return ListTile(
+                              trailing: Icon(Icons.send, color: Colors.pink,),
+                              title: Text(document['name']),
+                              onTap: () {
+                                //kod ktory urci usra, ktoremu bolo pozicane
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                      return UserInfoList2(userInfo: document);
+                                    }));
+                              },
+                            );
+                          }).toList()),
               );
           }
         });
   }
+
+//  new Container(
+//  width: 46.0,
+//  height: 46.0,
+//  child: document['photoUrl'] == null ||
+//  document['photoUrl'] == ""
+//  ? Icon(Icons.broken_image)
+//      : ZoomableWidget(
+//  minScale: 1.0,
+//  maxScale: 2.0,
+//  // default factor is 1.0, use 0.0 to disable boundary
+//  panLimit: 0.0,
+//  bounceBackBoundary: true,
+//  child: TransitionToImage(
+//  image: AdvancedNetworkImage(
+//  document['photoUrl'],
+//  useDiskCache: true,
+//  timeoutDuration: Duration(seconds: 7),
+//  cacheRule: CacheRule(
+//  maxAge: const Duration(days: 7)),
+//  fallbackAssetImage: 'assets/images/image_error.png',
+//  retryLimit: 0
+//  ),
+//  )
+//  )),
 }
