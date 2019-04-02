@@ -339,9 +339,9 @@ class _ShowDetails extends State<ShowDetails> {
     if(snapshot.data['borrowName'] == "" || snapshot.data['borrowName'] == null) {
       switch (snapshot.data['request']) {
         case (""):
-          return "Ask to Borrow";break;
+          return "Ask to Borrow1";break;
         case ("borrow"):
-          return "Ask to Borrow"; break;
+          return "Ask to Borrow2"; break;
         case ("sell"):
           return "Buy dress"; break;
         case ("giveaway"):
@@ -397,7 +397,8 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                   await transaction.set(Firestore.instance.collection("requestBorrow").document(), {
                     'applicant': user.uid,
                     'respondent': item.data['userId'],
-                    'itemID': item.documentID
+                    'itemID': item.documentID,
+                    'itemName': item.data['name'],
                   });
                 });
                 debugPrint(user.uid);
@@ -433,7 +434,8 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                   await transaction.set(Firestore.instance.collection("requestBorrow").document(), {
                     'applicant': user.uid,
                     'respondent': item.data['userId'],
-                    'itemID': item.documentID
+                    'itemID': item.documentID,
+                    'itemName': item.data['name'],
                   });
                 });
                 debugPrint(user.uid);
