@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
+import 'package:flutter_advanced_networkimage/zoomable.dart';
+import 'package:flutter_app/bl/Pages/profilePics.dart';
 import 'package:flutter_app/bl/Pages/wardrobeTabbar.dart';
 import 'package:flutter_app/bl/mainLoginPage.dart';
+import 'package:flutter_app/bl/videjko/services/usermanagment.dart';
 import 'package:flutter_app/db/FirestoreManager.dart';
 import 'package:flutter_app/db/model/Item.dart';
 import 'package:flutter_app/db/userInfo.dart';
@@ -12,6 +17,7 @@ import 'package:flutter_app/ui/homePage.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 class WelcomePage extends StatefulWidget {
   @override
@@ -22,12 +28,12 @@ class WelcomePage extends StatefulWidget {
 
 class _WelcomePageState extends State<WelcomePage>
     with TickerProviderStateMixin {
+
   FirebaseUser user2;
-  GoogleSignInAccount googleUser;
   double _imageHeight = 248.0;
   TabController _tabController;
+  String profileUrlImg="";
 
-//  Firestore.instance.collection("items")
 
   @override
   void initState() {
@@ -35,10 +41,19 @@ class _WelcomePageState extends State<WelcomePage>
     FirebaseAuth.instance.currentUser().then((fUser) {
       setState(() {
         user2 = fUser;
+        Stream<QuerySnapshot> snapshot = Firestore.instance
+            .collection('users')
+            .where('uid', isEqualTo: user2.uid)
+            .snapshots();
+
+        snapshot.listen((QuerySnapshot data){
+          profileUrlImg = data.documents[0]['photoUrl'];
+        });
       });
     });
     _tabController = new TabController(length: 3, vsync: this);
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -56,41 +71,41 @@ class _WelcomePageState extends State<WelcomePage>
                   new Stack(
                     children: <Widget>[
                       _buildIamge(),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: Container(
-                          margin: EdgeInsets.only(top: 24.0, right: 24.0),
-                          child: Material(
-                            color: Colors.pink,
-                            shape: _DiamondBorder(),
-                            //    borderRadius: BorderRadius.circular(30.0),
-                            child: InkWell(
-                              splashColor: Colors.pink[400],
-                              customBorder: _DiamondBorder(),
-                              onTap: () {
-                                FirebaseAuth.instance.signOut().then((value) {
-                                  Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                          builder: (context) => QuickBee()),
-                                      (Route<dynamic> route) => false);
-                                }).catchError((e) {
-                                  print(e);
-                                });
-                              },
-                              child: Container(
-                                width: 90.0,
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.symmetric(vertical: 30.0),
-                                child: Icon(Icons.power_settings_new,
-                                    color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+//                      Align(
+//                        alignment: Alignment.topRight,
+//                        child: Container(
+//                          margin: EdgeInsets.only(top: 24.0, right: 24.0),
+//                          child: Material(
+//                            color: Colors.pink,
+//                            shape: _DiamondBorder(),
+//                            //    borderRadius: BorderRadius.circular(30.0),
+//                            child: InkWell(
+//                              splashColor: Colors.pink[400],
+//                              customBorder: _DiamondBorder(),
+//                              onTap: () {
+//                                FirebaseAuth.instance.signOut().then((value) {
+//                                  Navigator.of(context).pushAndRemoveUntil(
+//                                      MaterialPageRoute(
+//                                          builder: (context) => QuickBee()),
+//                                      (Route<dynamic> route) => false);
+//                                }).catchError((e) {
+//                                  print(e);
+//                                });
+//                              },
+//                              child: Container(
+//                                width: 90.0,
+//                                alignment: Alignment.center,
+//                                padding: EdgeInsets.symmetric(vertical: 30.0),
+//                                child: Icon(Icons.power_settings_new,
+//                                    color: Colors.white),
+//                              ),
+//                            ),
+//                          ),
+//                        ),
+//                      ),
                       new Padding(
                         padding: new EdgeInsets.only(
-                            left: 16.0, top: _imageHeight / 2.5),
+                            left: 16.0, top: _imageHeight / 5.0),
                         child: StreamBuilder<QuerySnapshot>(
                           stream: Firestore.instance
                               .collection('users')
@@ -101,6 +116,22 @@ class _WelcomePageState extends State<WelcomePage>
                               return Text("Loading data ... wait please");
                             return Column(
                               children: <Widget>[
+                                //SKUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUSKAMOJA SKUSKA je PROFILE
+                                Container(
+                                  width: 100.0,
+                                  height: 100.0,
+                                  decoration: BoxDecoration(
+                                      color: Colors.pink,
+                                      image: DecorationImage(
+                                          image: NetworkImage(profileUrlImg),
+                                          fit: BoxFit.cover),
+                                      borderRadius: BorderRadius.all(Radius.circular(75.0)),
+                                      boxShadow: [
+                                        BoxShadow(blurRadius: 7.0, color: Colors.black)
+                                      ]
+                                  ),
+                                ),
+                                //SKUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUSKAMOJA SKUSKA je PROFILE
                                 Text(
                                   snapshot.data.documents[0]['name'],
                                   style: new TextStyle(
@@ -123,7 +154,7 @@ class _WelcomePageState extends State<WelcomePage>
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(left: 313.0, top: 180.0),
+                        margin: EdgeInsets.only(left: 303.0, top: 180.0),
                         child: FloatingActionButton(
                             heroTag: "btnWelcome",
                             child: Icon(Icons.add),
@@ -161,8 +192,14 @@ class _WelcomePageState extends State<WelcomePage>
                                 child: document['photo_url'] == null ||
                                         document['photo_url'] == ""
                                     ? Icon(Icons.broken_image)
-                                    : TransitionToImage(
-                                        image: AdvancedNetworkImage(
+                                    : ZoomableWidget(
+                                    minScale: 1.0,
+                                    maxScale: 2.0,
+                                    // default factor is 1.0, use 0.0 to disable boundary
+                                    panLimit: 0.0,
+                                    bounceBackBoundary: true,
+                                    child: TransitionToImage(
+                                      image: AdvancedNetworkImage(
                                           document['photo_url'],
                                           useDiskCache: true,
                                           timeoutDuration: Duration(seconds: 7),
@@ -170,8 +207,10 @@ class _WelcomePageState extends State<WelcomePage>
                                               maxAge: const Duration(days: 7)),
                                           fallbackAssetImage: 'assets/images/image_error.png',
                                           retryLimit: 0
-                                        ),
-                                      )),
+                                      ),
+                                    )
+                                )
+                                ),
                             title: Text(document['name']),
                             children: <Widget>[
                               Text('Name: ${document['name']}'),
@@ -269,12 +308,9 @@ class _WelcomePageState extends State<WelcomePage>
                                                 .collection('items')
                                                 .document(document.documentID)
                                                 .delete();
-//                                    StorageReference obr = FirebaseStorage.instance.getReferenceFromUrl(item.photoUrl);
-//                                    obr.delete();
                                             Navigator.pop(context);
                                             deleteFireBaseStorageItem(
                                                 document['photoUrl']);
-
                                             debugPrint("vymazanee");
                                           },
                                         ),
@@ -298,7 +334,7 @@ class _WelcomePageState extends State<WelcomePage>
                     }).toList()),
                     ListView(
                         children: snapshot.data.documents
-                            .map((DocumentSnapshot document) {
+                            .map((DocumentSnapshot document)  {
                       if (document["userId"] == user2.uid &&
                           document['borrowedTo'] != "") {
                         return Slidable(
@@ -311,17 +347,25 @@ class _WelcomePageState extends State<WelcomePage>
                                 child: document['photo_url'] == null ||
                                         document['photo_url'] == ""
                                     ? Icon(Icons.broken_image)
-                                    : TransitionToImage(
-                                        image: AdvancedNetworkImage(
+                                    : ZoomableWidget(
+                                    minScale: 1.0,
+                                    maxScale: 2.0,
+                                    // default factor is 1.0, use 0.0 to disable boundary
+                                    panLimit: 0.0,
+                                    bounceBackBoundary: true,
+                                    child: TransitionToImage(
+                                      image: AdvancedNetworkImage(
                                           document['photo_url'],
                                           useDiskCache: true,
                                           timeoutDuration: Duration(seconds: 7),
                                           cacheRule: CacheRule(
                                               maxAge: const Duration(days: 7)),
-                                            fallbackAssetImage: 'assets/images/image_error.png',
-                                            retryLimit: 0
-                                        ),
-                                      )),
+                                          fallbackAssetImage: 'assets/images/image_error.png',
+                                          retryLimit: 0
+                                      ),
+                                    )
+                                )
+                                ),
                             title: Text(document['name']),
                             children: <Widget>[
                               Text('Name: ${document['name']}'),
@@ -413,17 +457,24 @@ class _WelcomePageState extends State<WelcomePage>
                                 child: document['photo_url'] == null ||
                                         document['photo_url'] == ""
                                     ? Icon(Icons.broken_image)
-                                    : TransitionToImage(
-                                        image: AdvancedNetworkImage(
+                                    : ZoomableWidget(
+                                    minScale: 1.0,
+                                    maxScale: 2.0,
+                                    // default factor is 1.0, use 0.0 to disable boundary
+                                    panLimit: 0.0,
+                                    bounceBackBoundary: true,
+                                    child: TransitionToImage(
+                                      image: AdvancedNetworkImage(
                                           document['photo_url'],
                                           useDiskCache: true,
                                           timeoutDuration: Duration(seconds: 7),
                                           cacheRule: CacheRule(
                                               maxAge: const Duration(days: 7)),
-                                            fallbackAssetImage: 'assets/images/image_error.png',
-                                            retryLimit: 0
-                                        ),
-                                      )),
+                                          fallbackAssetImage: 'assets/images/image_error.png',
+                                          retryLimit: 0
+                                      ),
+                                    )
+                               )),
                             title: Text(document['name']),
                             children: <Widget>[
                               Text('Name: ${document['name']}'),
@@ -590,4 +641,15 @@ class _DiamondBorder extends ShapeBorder {
   ShapeBorder scale(double t) {
     return null;
   }
+
+}
+
+class Constants {
+  static const String Settings = "Settings";
+  static const String LogOut = "Logout";
+
+  static const List<String> choices = <String>[
+    Settings,
+    LogOut
+  ];
 }

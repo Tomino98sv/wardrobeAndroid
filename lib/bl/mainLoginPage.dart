@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/Pages/auth.dart';
 import 'package:flutter_app/bl/nutused/signIn.dart';
-import 'package:flutter_app/bl/videjko/hisMain.dart';
+import 'package:flutter_app/bl/nutused/hisMain.dart';
+import 'package:flutter_app/bl/videjko/loginpage.dart';
 import 'package:flutter_app/ui/homePage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class QuickBee extends StatefulWidget {
 
@@ -11,6 +14,26 @@ class QuickBee extends StatefulWidget {
 }
 
 class _QuickBeeState extends State<QuickBee> {
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseAuth.instance.currentUser().then((fuser){
+        if (fuser.email != null && fuser.uid != null) {
+          debugPrint("already sign in");
+          debugPrint(fuser.email);
+          debugPrint(fuser.uid);
+          Navigator.push(context,  MaterialPageRoute(builder: (BuildContext context) => new HomePage()));
+
+        } else {
+          debugPrint("continue to login");
+        }
+    }).catchError((e) {
+    });
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -139,12 +162,12 @@ class _QuickBeeState extends State<QuickBee> {
 
 
   void print() {
-    debugPrint("hii world");
+    debugPrint("nic sa nedeje");
   }
 
   void navigationToSignInMail() {
     Navigator.push(context, MaterialPageRoute(
-        builder: (context) => MyApp(), fullscreenDialog: true));
+        builder: (context) => LoginPage()));
     debugPrint("ide to?");
   }
 

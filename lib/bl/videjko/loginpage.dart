@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/bl/Pages/welcome.dart';
 import 'package:flutter_app/bl/mainLoginPage.dart';
+import 'package:flutter_app/ui/homePage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
@@ -29,12 +30,6 @@ class _LoginPageState extends State<LoginPage> {
     // TODO: implement build
     return new Scaffold(
         appBar: new AppBar(
-          actions: <Widget>[
-            IconButton(
-                icon: new Icon(Icons.arrow_back),
-                onPressed: () => Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => QuickBee()))),
-          ],
           title: new Text("Login"),
         ),
         key: _scaffoldKey,
@@ -147,7 +142,10 @@ class _LoginPageState extends State<LoginPage> {
             .signInWithEmailAndPassword(email: _email, password: _password)
             .then((FirebaseUser user) {
           Navigator.of(context, rootNavigator: true).pop('dialog');
-          Navigator.of(context).pushReplacementNamed('/homepage');
+          Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                          builder: (context) => HomePage()),
+                                      (Route<dynamic> route) => false);
         }).catchError((e) {
           print(
               "NO LOGGING validation was passed but not loggin to firebaseAuth");
