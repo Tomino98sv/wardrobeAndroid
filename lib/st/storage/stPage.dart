@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -50,6 +51,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
     imageFile.writeAsBytes(bytes.buffer.asInt8List(), mode: FileMode.write); //ci dobry access
 
     //pridanie obrazka
+    new Image(image: new CachedNetworkImageProvider(filePath));
     final StorageReference ref = FirebaseStorage.instance.ref().child(fileName);
     final StorageUploadTask task = ref.putFile(imageFile);
     task.events.listen((event){
@@ -73,7 +75,9 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
   File sampleImage;
   Future getImage() async{
     var tempImage = await ImagePicker.pickImage(
-        source: ImageSource.gallery
+        source: ImageSource.gallery,
+        maxHeight: 500,
+        maxWidth: 500
     );
     setState(() {
       sampleImage = tempImage;
@@ -86,7 +90,9 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
   File sampleImage2;
   Future getImage2() async{
     var tempImage2 = await ImagePicker.pickImage(
-        source: ImageSource.camera
+        source: ImageSource.camera,
+        maxHeight: 500,
+        maxWidth: 500
     );
     setState(() {
       sampleImage2 = tempImage2;
