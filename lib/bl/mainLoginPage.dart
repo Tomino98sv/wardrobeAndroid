@@ -23,7 +23,7 @@ class _QuickBeeState extends State<QuickBee> {
           debugPrint("already sign in");
           debugPrint(fuser.email);
           debugPrint(fuser.uid);
-          Navigator.push(context,  MaterialPageRoute(builder: (BuildContext context) => new HomePage()));
+          Navigator.pushReplacement(context,  MaterialPageRoute(builder: (BuildContext context) => new HomePage()));
 
         } else {
           debugPrint("continue to login");
