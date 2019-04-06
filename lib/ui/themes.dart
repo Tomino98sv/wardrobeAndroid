@@ -14,6 +14,7 @@ class ThemeBloc {
   final Sink<DemoTheme> selectedTheme;
 
   factory ThemeBloc() {
+    // ignore: close_sinks
     final selectedTheme = PublishSubject<DemoTheme>();
     final themeDataStream = selectedTheme
         .distinct()
@@ -27,9 +28,12 @@ class ThemeBloc {
     return DemoTheme(
         'initial',
         ThemeData(
-          brightness: Brightness.light,
-          accentColor: Colors.brown,
-          primaryColor: Colors.green,
+  primaryColor: Colors.pink[400],
+  scaffoldBackgroundColor: Colors.grey[50],
+  accentColor: Colors.pink[400],
+  buttonColor: Colors.pink,
+  fontFamily: 'Quicksand',
+  indicatorColor: Colors.blueGrey,
         ));
   }
 }

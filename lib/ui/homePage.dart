@@ -13,10 +13,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class HomePage extends StatefulWidget{
 
-  final ThemeBloc themeBloc;
-
-  HomePage({Key key, this.themeBloc}) : super(key: key);
-
   @override
   State<StatefulWidget> createState()  => _HomeState();
 }
@@ -124,8 +120,8 @@ class _HomeState extends State<HomePage> {
     GoogleSignIn _googleSignIn;
     _googleSignIn?.signOut();
     if(choice == Constants.Settings){
-      Navigator.push(context, MaterialPageRoute(
-          builder: (context)=>SettingsPage(themeBloc: widget.themeBloc)));
+      Navigator.of(context).push( MaterialPageRoute(
+          builder: (context)=>SettingsPage()));
     }else if (choice == Constants.LogOut){
       FirebaseAuth.instance.signOut().then((value) {
         Navigator.of(context).pushAndRemoveUntil(
