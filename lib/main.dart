@@ -6,6 +6,7 @@ import 'package:flutter_app/bl/mainLoginPage.dart';
 import 'package:flutter_app/bl/nutused/hisMain.dart';
 import 'package:flutter_app/bl/videjko/signUpPage.dart';
 import 'package:flutter_app/ui/homePage.dart';
+import 'package:flutter_app/ui/themes.dart';
 
 final ThemeData pinkTheme = new ThemeData(
   primaryColor: Colors.pink[400],
@@ -39,21 +40,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Dress",
+    final ThemeBloc themeBloc = ThemeBloc();
+    return StreamBuilder<ThemeData>(
+      initialData: themeBloc.initialTheme().data,
+      stream: themeBloc.themeDataStream,
+      builder: (BuildContext context, AsyncSnapshot<ThemeData> snapshot) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: "Dress",
 //        home: HomePage(),
-      home: QuickBee(),
-      theme: pinkTheme,
-      routes: <String,WidgetBuilder>{
-      '/landingpage' : (BuildContext context)=> new MyApp(),
-      '/signup' : (BuildContext context)=> new SignupPage(),
-      '/homepage':(BuildContext context) => new HomePage(),
-      '/MainBee':(BuildContext context) => new QuickBee(),
-      '/welcome':(BuildContext context) => new WelcomePage(),
-    },
-    );
-  }
-
+          home: QuickBee(themeBloc: themeBloc),
+          theme: pinkTheme,
+          routes: <String, WidgetBuilder>{
+            '/landingpage': (BuildContext context) => new MyApp(),
+            '/signup': (BuildContext context) => new SignupPage(),
+            '/homepage': (BuildContext context) => new HomePage(),
+            '/MainBee': (BuildContext context) => new QuickBee(),
+            '/welcome': (BuildContext context) => new WelcomePage(),
+                },
+             );
+          }
+       );
+    }
 }
+
+
