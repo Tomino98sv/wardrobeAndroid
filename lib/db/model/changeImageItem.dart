@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -36,7 +37,10 @@ class _changeImageItemState extends State<changeImageItem>{
 
   //vytvorenie image
   Future getImage() async {
-    var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var tempImage = await ImagePicker.pickImage(
+        source: ImageSource.gallery,
+        maxHeight: 500,
+        maxWidth: 500);
     setState(() {
       itemImage = tempImage;
       debugPrint(itemImage.path);
@@ -95,6 +99,7 @@ class _changeImageItemState extends State<changeImageItem>{
     imageFile.writeAsBytes(bytes.buffer.asInt8List(), mode: FileMode.write); //ci dobry access
 
     //pridanie obrazka
+    new Image(image: new CachedNetworkImageProvider(filePath));
     final StorageReference ref = FirebaseStorage.instance.ref().child(fileName);
     final StorageUploadTask task = ref.putFile(imageFile);
     task.events.listen((event){
@@ -107,6 +112,7 @@ class _changeImageItemState extends State<changeImageItem>{
     String downloadUrl = await taskSnapshot.ref.getDownloadURL();
     _path = downloadUrl.toString();
     //widget._function(_path);
+    
     print(_path); // url cesta pre Klaud
     Navigator.of(context, rootNavigator: true).pop('dialog');
 

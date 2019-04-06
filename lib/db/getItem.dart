@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -104,20 +105,24 @@ class _ShowDetails extends State<ShowDetails> {
                                             // default factor is 1.0, use 0.0 to disable boundary
                                             panLimit: 0.0,
                                             bounceBackBoundary: true,
-                                            child: TransitionToImage(
-                                              image: AdvancedNetworkImage(
-                                                  snapshot.data['photo_url'],
-                                                  useDiskCache: true,
-                                                  timeoutDuration: Duration(seconds: 7),
-                                                  cacheRule: CacheRule(
-                                                      maxAge: const Duration(days: 7)),
-//                                              fallbackAssetImage: 'assets/images/error_image.png',
-                                                  fallbackAssetImage: 'assets/images/image_error.png',
-                                                  retryLimit: 0
-                                              ),
-                                              placeholder: CircularProgressIndicator(),
-                                              duration: Duration(milliseconds: 300),
+                                            child:  CachedNetworkImage(
+                                              imageUrl: snapshot.data['photo_url'],
+                                              placeholder: (context, imageUrl) => CircularProgressIndicator(),
                                             ),
+//                                            child: TransitionToImage(
+//                                              image: AdvancedNetworkImage(
+//                                                  snapshot.data['photo_url'],
+//                                                  useDiskCache: true,
+//                                                  timeoutDuration: Duration(seconds: 7),
+//                                                  cacheRule: CacheRule(
+//                                                      maxAge: const Duration(days: 7)),
+////                                              fallbackAssetImage: 'assets/images/error_image.png',
+//                                                  fallbackAssetImage: 'assets/images/image_error.png',
+//                                                  retryLimit: 0
+//                                              ),
+//                                              placeholder: CircularProgressIndicator(),
+//                                              duration: Duration(milliseconds: 300),
+//                                            ),
                                           ),
                                         )
                                       ],
