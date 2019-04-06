@@ -8,9 +8,15 @@ import 'package:flutter_app/db/model/Item.dart';
 import 'package:flutter_app/db/FirestoreManager.dart';
 import 'package:flutter_app/deals/dealsHome.dart';
 import 'package:flutter_app/notif/notifications.dart';
+import 'package:flutter_app/ui/themes.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class HomePage extends StatefulWidget{
+
+  final ThemeBloc themeBloc;
+
+  HomePage({Key key, this.themeBloc}) : super(key: key);
+
   @override
   State<StatefulWidget> createState()  => _HomeState();
 }
@@ -119,7 +125,7 @@ class _HomeState extends State<HomePage> {
     _googleSignIn?.signOut();
     if(choice == Constants.Settings){
       Navigator.push(context, MaterialPageRoute(
-          builder: (context)=>SettingsPage()));
+          builder: (context)=>SettingsPage(themeBloc: widget.themeBloc)));
     }else if (choice == Constants.LogOut){
       FirebaseAuth.instance.signOut().then((value) {
         Navigator.of(context).pushAndRemoveUntil(

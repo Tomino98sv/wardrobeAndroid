@@ -5,9 +5,14 @@ import 'package:flutter_app/bl/nutused/signIn.dart';
 import 'package:flutter_app/bl/nutused/hisMain.dart';
 import 'package:flutter_app/bl/videjko/loginpage.dart';
 import 'package:flutter_app/ui/homePage.dart';
+import 'package:flutter_app/ui/themes.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class QuickBee extends StatefulWidget {
+
+  final ThemeBloc themeBloc;
+
+  QuickBee({Key key, this.themeBloc}) : super(key: key);
 
   @override
   _QuickBeeState createState() => _QuickBeeState();
@@ -135,7 +140,7 @@ class _QuickBeeState extends State<QuickBee> {
                       onPressed: () async {
                         await authService.googleSignIn();
                         Navigator.pushReplacement(context, MaterialPageRoute(
-                            builder: (context)=>HomePage()));
+                            builder: (context)=>HomePage(themeBloc: widget.themeBloc)));
                       },
                       child: Row(
                         children: <Widget>[
