@@ -596,6 +596,8 @@ class UserListHome extends StatelessWidget {
                             return ListTile(
                               leading:  CachedNetworkImage(
                                 imageUrl: document['photoUrl'],
+                                height: 42.0,
+                                width: 42.0,
                                 placeholder: (context, imageUrl) => CircularProgressIndicator(),
                               ),
 //                              leading: Image.network(
