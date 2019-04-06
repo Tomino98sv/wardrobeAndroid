@@ -81,6 +81,7 @@ class AuthService {
         'email': user.email,
         'name':user.displayName,
         'uid': user.uid,
+        'photoUrl': user.photoUrl,
     }, merge: true);
   }
 
