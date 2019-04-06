@@ -113,7 +113,7 @@ class _SignupPageState extends State<SignupPage> {
           password: _password)
           .then((signedInUser){
 
-        UserManagement().storeNewUser(signedInUser,context,_name);
+        UserManagement().storeNewUser(signedInUser,context,_name,"https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/man.jpg?alt=media&token=fa648400-a6b8-4568-a52b-8903d1339a7b");
       })
           .catchError((e){
         print(e);
