@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/Pages/profilePics.dart';
+import 'package:flutter_app/main.dart';
+import 'package:flutter_app/ui/themes.dart';
 
 class SettingsPage extends StatefulWidget{
   @override
@@ -16,6 +18,7 @@ class _SettingsPageState extends State<SettingsPage>{
 
   @override
   Widget build(BuildContext context) {
+    final ThemeSwitcher inheritedThemeSwitcher = ThemeSwitcher.of(context);
     return new Scaffold(
       appBar: new AppBar(
         title: Text(
@@ -28,12 +31,27 @@ class _SettingsPageState extends State<SettingsPage>{
             Row(
               children: <Widget>[
                 new Text("Changing color of app"),
-                new Switch(
-                    value: click,
-                    onChanged: (bool valueOfClick) => changingColor(valueOfClick),
+                 Padding(
+                   padding: const EdgeInsets.only(left: 8.0),
+                   child: new RaisedButton(
+                onPressed: () =>
+                      inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildPinkTheme()),
+                child: Text(
+                    'Pink theme',
                 ),
-              ],
-            ),
+              ),
+                 ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: RaisedButton(
+                  onPressed: () =>
+                      inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildBlueTheme()),
+                  child: Text(
+                    'Blue theme',
+                  ),
+                ),
+              ),
+             ],),
              Row(
               children: <Widget>[
                 new Text("Turn on the notifications"),
@@ -72,19 +90,46 @@ class _SettingsPageState extends State<SettingsPage>{
         ),
       )
     );
+
   }
 
-  void changingColor(bool valueOfClick){
-    setState(() {
-      if(valueOfClick){
-        click = false;
-        valueOfClick = false;
-      } else {
-        click = true;
-        valueOfClick = true;
-      }
-    });
+    DemoTheme _buildPinkTheme() {
+    return DemoTheme(
+        'light',
+        new ThemeData(
+        primaryColor: Colors.pink[400],
+        scaffoldBackgroundColor: Colors.grey[50],
+        accentColor: Colors.pink[400],
+        buttonColor: Colors.pink,
+        fontFamily: 'Quicksand',
+        indicatorColor: Colors.blueGrey,
+    ));
   }
+
+  DemoTheme _buildBlueTheme() {
+    return DemoTheme(
+        'dark',
+        new ThemeData(
+          primaryColor: Colors.blue[400],
+          scaffoldBackgroundColor: Colors.grey[50],
+          accentColor: Colors.blueAccent[400],
+          buttonColor: Colors.blue,
+          fontFamily: 'Quicksand',
+          indicatorColor: Colors.blueGrey,
+        ));
+  }
+
+//  void changingColor(bool valueOfClick){
+//    setState(() {
+//      if(valueOfClick){
+//        click = false;
+//        valueOfClick = false;
+//      } else {
+//        click = true;
+//        valueOfClick =true;
+//      }
+//    });
+//  }
 
   void setNotifications(bool valueOfNote){
     setState(() {
