@@ -5,8 +5,11 @@ import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:flutter_advanced_networkimage/zoomable.dart';
 import 'package:flutter_app/db/getItem.dart';
+import 'package:flutter_app/db/model/changeImageItem.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_app/db/userInfo.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
 
 import 'userInfo.dart';
 
@@ -78,18 +81,21 @@ class _ItemsListState extends State<ItemsList> {
                             // default factor is 1.0, use 0.0 to disable boundary
                             panLimit: 0.0,
                             bounceBackBoundary: true,
-                            child: TransitionToImage(
-                              image: AdvancedNetworkImage(
-                                  item.photoUrl,
-                                  useDiskCache: true,
-                                  timeoutDuration: Duration(seconds: 60),
-                                  cacheRule:
-                                  CacheRule(maxAge: const Duration(days: 7)),
-                                  fallbackAssetImage: 'assets/images/image_error.png',
-                                  retryLimit: 0
-                              ),
-                              placeholder: CircularProgressIndicator(),
-                              duration: Duration(milliseconds: 300),)
+                            child: CachedNetworkImage(
+                              imageUrl: item.photoUrl,
+                              placeholder: (context, imageUrl) => CircularProgressIndicator(),
+                            ),
+//                              image: AdvancedNetworkImage(
+//                                  item.photoUrl,
+//                                  useDiskCache: true,
+//                                  timeoutDuration: Duration(seconds: 60),
+//                                  cacheRule:
+//                                  CacheRule(maxAge: const Duration(days: 7)),
+//                                  fallbackAssetImage: 'assets/images/image_error.png',
+//                                  retryLimit: 0
+//                              ),
+//                              placeholder: CircularProgressIndicator(),
+//                              duration: Duration(milliseconds: 300),)
                         ),
                       ),
                       title: new Text(item.name),
@@ -247,12 +253,14 @@ class _State extends State<EditItem> {
     docColor = item['color'];
     docSize = item['size'];
     docLength = item['length'];
+ //   docImage = item['photo_url'];
   }
 
   String docName = '';
   String docColor = '';
   String docSize = '';
   String docLength = '';
+
 
   void _onChangedName(String value) {
     setState(() => docName = '$value');
@@ -269,6 +277,7 @@ class _State extends State<EditItem> {
   void _onChangedLength(String value) {
     setState(() => docLength = '$value');
   }
+
 
 //
 //  void _onSubmit(String value) {
@@ -304,37 +313,40 @@ class _State extends State<EditItem> {
                       // default factor is 1.0, use 0.0 to disable boundary
                       panLimit: 0.0,
                       bounceBackBoundary: true,
-                      child: TransitionToImage(
-                        image: AdvancedNetworkImage(
-                          item['photo_url'],
-                          useDiskCache: true,
-                          cacheRule: CacheRule(maxAge: const Duration(days: 7)),
-                        ),
-                        placeholder: CircularProgressIndicator(),
-                        duration: Duration(milliseconds: 300),
-                      )),
-                ),
+                      child: CachedNetworkImage(
+                        imageUrl: item['photo_url'],
+                        placeholder: (context, imageUrl) => CircularProgressIndicator(),
+                      ),
+//                      child: TransitionToImage(
+//                        image: AdvancedNetworkImage(
+//                          item['photo_url'],
+//                          useDiskCache: true,
+//                          cacheRule: CacheRule(maxAge: const Duration(days: 7)),
+//                        ),
+//                        placeholder: CircularProgressIndicator(),
+//                        duration: Duration(milliseconds: 300),
+//                      )),
+                ),),
+                changeImageItem(item: item),
                 new TextField(
                   decoration: new InputDecoration(
                       labelText: item['name'],
                       icon: new Icon(Icons.account_circle,
-                          color: Colors.brown[800])),
+                          color: Colors.black)),
                   onChanged: _onChangedName,
                 ),
                 new TextField(
                   decoration: new InputDecoration(
                       labelText: item['color'],
                       icon:
-                          new Icon(Icons.color_lens, color: Colors.brown[800])),
+                          new Icon(Icons.color_lens, color: Colors.black)),
                   onChanged: _onChangedColor,
                 ),
-
-
                 Row(
                   children: <Widget>[
                     Expanded(
                       child: Icon(Icons.aspect_ratio,
-                    color: Colors.brown[800]),
+                    color: Colors.black),
                     ),
                     Expanded(
                       child: Text(
@@ -366,7 +378,7 @@ class _State extends State<EditItem> {
                   children: <Widget>[
                     Expanded(
                       child: Icon(Icons.content_cut,
-                          color: Colors.brown[800]),
+                          color: Colors.black),
                     ),
                     Expanded(
                       child: Text(
@@ -424,6 +436,7 @@ class _State extends State<EditItem> {
           .document(item.documentID)
           .updateData({"length": docLength});
       debugPrint("zmenil som dlzku");
+
       }
           Navigator.pop(context);},
                       child: Container(
@@ -578,22 +591,31 @@ class UserListHome extends StatelessWidget {
             default:
               return Scaffold(
                 body: new ListView(
-                    children: snapshot.data.documents
-                        .map((DocumentSnapshot document) {
-                      return ListTile(
-                        trailing: Icon(Icons.send, color: Colors.pink,),
-                        title: Text(document['name']),
-                        onTap: () {
-                          //kod ktory urci usra, ktoremu bolo pozicane
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                                return UserInfoList2(userInfo: document);
-                              }));
-                        },
-                      );
-                    }).toList()),
+                          children: snapshot.data.documents
+                              .map((DocumentSnapshot document) {
+                            return ListTile(
+                              leading:  CachedNetworkImage(
+                                imageUrl: document['photoUrl'],
+                                placeholder: (context, imageUrl) => CircularProgressIndicator(),
+                              ),
+//                              leading: Image.network(
+//                                  document['photoUrl'],
+//                              height: 42.0,
+//                                  width: 42.0,),
+                              trailing: Icon(Icons.send, color: Colors.pink,),
+                              title: Text(document['name']),
+                              onTap: () {
+                                //kod ktory urci usra, ktoremu bolo pozicane
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                      return UserInfoList2(userInfo: document);
+                                    }));
+                              },
+                            );
+                          }).toList()),
               );
           }
         });
   }
+
 }

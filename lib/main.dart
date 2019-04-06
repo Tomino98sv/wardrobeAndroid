@@ -16,6 +16,8 @@ final ThemeData pinkTheme = new ThemeData(
   indicatorColor: Colors.blueGrey,
 );
 
+//COMMIT PRE NOVU GITHUB HRACKU
+
 final ThemeData darkTheme = new ThemeData(
   primaryColor: Colors.brown[400],
   scaffoldBackgroundColor: Colors.grey[50],

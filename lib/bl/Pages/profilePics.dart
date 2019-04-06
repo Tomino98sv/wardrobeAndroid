@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,11 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
 
 
   Future getImage() async {
-    var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var tempImage = await ImagePicker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 500,
+        maxHeight: 500
+    );
     setState(() {
       newProfilePic = tempImage;
     });
@@ -86,8 +91,8 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
       width: 120.0,
       child: Material(
         borderRadius: BorderRadius.circular(20.0),
-        shadowColor: Colors.orange,
-        color: Colors.red,
+        shadowColor: Colors.pinkAccent,
+        color: Colors.pink,
         elevation: 7.0,
         child: FlatButton(
           onPressed: getImage,
@@ -112,8 +117,8 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
       width: 120.0,
       child: Material(
         borderRadius: BorderRadius.circular(20.0),
-        shadowColor: Colors.orange,
-        color: Colors.red,
+        shadowColor: Colors.pinkAccent,
+        color: Colors.pink,
         elevation: 7.0,
         child: FlatButton(
           onPressed: uploadImage,
