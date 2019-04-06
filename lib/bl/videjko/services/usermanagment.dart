@@ -3,12 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 
 class UserManagement {
-  storeNewUser(user,context,String name){
+  storeNewUser(user,context,String name, String url){
     Firestore.instance.collection('/users').add({
       'email':user.email,
       'uid':user.uid,
       'name':name,
-      'photoUrl': "https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/55b9552d-78b1-421f-b11a-3e89bfbd7b5e.jpg?alt=media&token=b61fd432-4049-47fd-ba97-44d90c37b9d7",
+      'photoUrl': url,
     }).then((value){
       Navigator.of(context, rootNavigator: true).pop('dialog');
       Navigator.of(context).pop();

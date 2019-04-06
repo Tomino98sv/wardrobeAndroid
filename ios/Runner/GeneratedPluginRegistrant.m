@@ -10,6 +10,7 @@
 #import <google_sign_in/GoogleSignInPlugin.h>
 #import <image_picker/ImagePickerPlugin.h>
 #import <path_provider/PathProviderPlugin.h>
+#import <sqflite/SqflitePlugin.h>
 
 @implementation GeneratedPluginRegistrant
 
@@ -21,6 +22,7 @@
   [FLTGoogleSignInPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleSignInPlugin"]];
   [FLTImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImagePickerPlugin"]];
   [FLTPathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPathProviderPlugin"]];
+  [SqflitePlugin registerWithRegistrar:[registry registrarForPlugin:@"SqflitePlugin"]];
 }
 
 @end
