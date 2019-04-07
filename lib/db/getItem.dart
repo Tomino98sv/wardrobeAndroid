@@ -10,10 +10,11 @@ import 'package:flutter_app/bl/Pages/welcome.dart';
 class ShowDetails extends StatefulWidget {
   DocumentSnapshot item;
   FirebaseUser user;
+  var userName;
 
-  ShowDetails({@required this.item, @required this.user});
+  ShowDetails({@required this.item, @required this.user, @required this.userName});
 
-  _ShowDetails createState() => new _ShowDetails(item: item, user: user);
+  _ShowDetails createState() => new _ShowDetails(item: item, user: user, userName: userName);
 }
 
 //show details about item with option to edit
@@ -22,8 +23,9 @@ class _ShowDetails extends State<ShowDetails> {
   double _imageHeight = 248.0;
   FirebaseUser user;
   int requestButton;
+  var userName;
 
-  _ShowDetails({@required this.item, @required this.user});
+  _ShowDetails({@required this.item, @required this.user, @required this.userName});
 
   @override
   void initState() {
@@ -276,7 +278,7 @@ class _ShowDetails extends State<ShowDetails> {
                                     ),
                                     onPressed: (){
                                       seeButtonText(snapshot.data);
-                                      giveBuySellBorrow(context, snapshot.data, user);
+                                      giveBuySellBorrow(context, snapshot.data, user, userName);
                                     }),
                               )
                             ],
@@ -384,7 +386,7 @@ class _ShowDetails extends State<ShowDetails> {
   }
 }
 
-Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, FirebaseUser user) {
+Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, FirebaseUser user, String userName) {
 
 
   if (item.data['borrowName']=="" && item.data['request'] != "borrow"){
@@ -404,12 +406,14 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                     'respondent': item.data['userId'],
                     'itemID': item.documentID,
                     'itemName': item.data['name'],
+                    'applicantName': userName
                   });
                 });
                 debugPrint(user.uid);
                 Firestore.instance.collection('items').document(item.documentID)
                     .updateData({"request": "borrow"});
                 debugPrint("updatol som items request");
+//                debugPrint(user.displayName);
                 Navigator.pop(context);
               },
             ),
@@ -441,12 +445,14 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                     'respondent': item.data['userId'],
                     'itemID': item.documentID,
                     'itemName': item.data['name'],
+                    'applicantName': userName
                   });
                 });
                 debugPrint(user.uid);
                 Firestore.instance.collection('items').document(item.documentID)
                     .updateData({"request": "borrow"});
                 debugPrint("updatol som items request");
+//                debugPrint(user.displayName);
                 Navigator.pop(context);
               },
             ),

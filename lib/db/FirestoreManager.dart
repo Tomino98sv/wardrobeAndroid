@@ -28,6 +28,7 @@ class _ItemsListState extends State<ItemsList> {
   
   
   FirebaseUser userCurrent;
+  var userName;
 
   @override
   void initState() {
@@ -35,6 +36,13 @@ class _ItemsListState extends State<ItemsList> {
     FirebaseAuth.instance.currentUser().then((fUser) {
       setState(() {
         userCurrent = fUser;
+        Stream<QuerySnapshot> snapshot = Firestore.instance
+            .collection('users')
+            .where('uid', isEqualTo: userCurrent.uid)
+            .snapshots();
+        snapshot.listen((QuerySnapshot data){
+          userName = data.documents[0]['name'];
+        });
       });
     });
   }
@@ -118,7 +126,7 @@ class _ItemsListState extends State<ItemsList> {
                                 child: InkWell(
                                   onTap: (){ Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
-                                        return ShowDetails(item: document, user: userCurrent,);
+                                        return ShowDetails(item: document, user: userCurrent, userName: userName);
 //                            return SecondRoute(item: document); //tu je predchadzajuci kod
                                       }));
                                   debugPrint("idem dalej");},
