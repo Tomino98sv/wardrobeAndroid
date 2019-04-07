@@ -161,10 +161,10 @@ class _MyNewItem extends State<MyNewItem> {
                     title: ClipRRect(
                   borderRadius: BorderRadius.circular(30.0),
                   child: Material(
-                    color: Colors.pink,
+                    color: Theme.of(context).accentColor,
                     borderRadius: BorderRadius.circular(30.0),
                     child: InkWell(
-                      splashColor: Colors.pink[400],
+                      splashColor:Theme.of(context).accentColor,
                       onTap: () {
                         if (_imgUrl != "" && stPage.uploadLoad) {
                           print("tapped");
