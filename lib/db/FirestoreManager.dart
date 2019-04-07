@@ -132,7 +132,7 @@ class _ItemsListState extends State<ItemsList> {
                                   debugPrint("idem dalej");},
                                   child: Container(
                                     decoration: new BoxDecoration(
-                                      color: Colors.pink,
+                                      color: Theme.of(context).accentColor,
                                       borderRadius: new BorderRadius.circular(30.0),
                                     ),
                                     margin: EdgeInsets.all(10.0),
@@ -158,7 +158,7 @@ class _ItemsListState extends State<ItemsList> {
                                   },
                                   child: Container(
                                     decoration: new BoxDecoration(
-                                      color: Colors.pink,
+                                      color: Theme.of(context).accentColor,
                                       borderRadius: new BorderRadius.circular(30.0),
                                     ),
                                     margin: EdgeInsets.all(10.0),
@@ -209,7 +209,7 @@ class UserList extends StatelessWidget {
                     children: snapshot.data.documents
                         .map((DocumentSnapshot document) {
                   return ListTile(
-                    trailing: Icon(Icons.send, color: Colors.pink,),
+                    trailing: Icon(Icons.send,color: Theme.of(context).accentColor),
                     title: Text(document['name']),
                     onTap: () {
                       //kod ktory urci usra, ktoremu bolo pozicane
@@ -449,7 +449,7 @@ class _State extends State<EditItem> {
           Navigator.pop(context);},
                       child: Container(
                           decoration: new BoxDecoration(
-                            color: Colors.pink,
+                           color: Theme.of(context).accentColor,
                             borderRadius: new BorderRadius.circular(30.0),
                           ),
                           alignment: Alignment.center,
@@ -612,7 +612,7 @@ class UserListHome extends StatelessWidget {
 //                                  document['photoUrl'],
 //                              height: 42.0,
 //                                  width: 42.0,),
-                              trailing: Icon(Icons.send, color: Colors.pink,),
+                              trailing: Icon(Icons.send, color: Theme.of(context).accentColor,),
                               title: Text(document['name']),
                               onTap: () {
                                 //kod ktory urci usra, ktoremu bolo pozicane

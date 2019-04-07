@@ -69,7 +69,7 @@ class _WardrobeTabState extends State<WardrobeTab> {
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(32.0)),
       child: Material(
-        color: _selected ? Colors.pinkAccent : Colors.white,
+        color: _selected ? Theme.of(context).accentColor: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(32.0)),
         child: InkWell(
           onTap: () {

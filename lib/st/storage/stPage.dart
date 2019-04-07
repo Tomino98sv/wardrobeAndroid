@@ -36,7 +36,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
         child: Container(
           width: 48.0,
           height: 48.0,
-          child: CircularProgressIndicator(backgroundColor: Colors.pink,),
+          child: CircularProgressIndicator(backgroundColor: Theme.of(context).accentColor,),
         ),
       );
     });
@@ -123,7 +123,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
                   onPressed: getImage,
                   tooltip: 'Add Image',
                   child: new Icon(Icons.add_photo_alternate),
-                  backgroundColor: Colors.pink,
+                  backgroundColor:Theme.of(context).accentColor,
                   mini: true,
                 ),padding: EdgeInsets.all(15.0),
               ),
@@ -133,7 +133,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
                   onPressed: getImage2,
                   tooltip: 'Add Image',
                   child: new Icon(Icons.add_a_photo),
-                  backgroundColor: Colors.pink,
+                  backgroundColor: Theme.of(context).accentColor,
                   mini: true,
                 ),padding: EdgeInsets.all(15.0)
               ),
@@ -159,10 +159,10 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30.0),
               child: Material(
-                color: Colors.pink,
+                color: Theme.of(context).accentColor,
                 borderRadius: BorderRadius.circular(30.0),
                 child: InkWell(
-                  splashColor: Colors.pink[400],
+                  splashColor:Theme.of(context).accentColor,
                   onTap:  () {uploadFile(filePath, context);},
                   child: Container(
                     width: 100.0,
@@ -192,10 +192,10 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30.0),
               child: Material(
-                color: Colors.pink,
+                color: Theme.of(context).accentColor,
                 borderRadius: BorderRadius.circular(30.0),
                 child: InkWell(
-                  splashColor: Colors.pink[400],
+                  splashColor: Theme.of(context).accentColor,
                   onTap:  () {uploadFile(filePath, context);},
                   child: Container(
                     width: 100.0,

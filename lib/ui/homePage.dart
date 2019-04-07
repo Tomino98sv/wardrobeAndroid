@@ -8,9 +8,11 @@ import 'package:flutter_app/db/model/Item.dart';
 import 'package:flutter_app/db/FirestoreManager.dart';
 import 'package:flutter_app/deals/dealsHome.dart';
 import 'package:flutter_app/notif/notifications.dart';
+import 'package:flutter_app/ui/themes.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class HomePage extends StatefulWidget{
+
   @override
   State<StatefulWidget> createState()  => _HomeState();
 }
@@ -118,7 +120,7 @@ class _HomeState extends State<HomePage> {
     GoogleSignIn _googleSignIn;
     _googleSignIn?.signOut();
     if(choice == Constants.Settings){
-      Navigator.push(context, MaterialPageRoute(
+      Navigator.of(context).push( MaterialPageRoute(
           builder: (context)=>SettingsPage()));
     }else if (choice == Constants.LogOut){
       FirebaseAuth.instance.signOut().then((value) {
