@@ -10,10 +10,11 @@ import 'package:flutter_app/bl/Pages/welcome.dart';
 class ShowDetails extends StatefulWidget {
   DocumentSnapshot item;
   FirebaseUser user;
+  var userName;
 
-  ShowDetails({@required this.item, @required this.user});
+  ShowDetails({@required this.item, @required this.user, @required this.userName});
 
-  _ShowDetails createState() => new _ShowDetails(item: item, user: user);
+  _ShowDetails createState() => new _ShowDetails(item: item, user: user, userName: userName);
 }
 
 //show details about item with option to edit
@@ -22,8 +23,9 @@ class _ShowDetails extends State<ShowDetails> {
   double _imageHeight = 248.0;
   FirebaseUser user;
   int requestButton;
+  var userName;
 
-  _ShowDetails({@required this.item, @required this.user});
+  _ShowDetails({@required this.item, @required this.user, @required this.userName});
 
   @override
   void initState() {
@@ -237,7 +239,9 @@ class _ShowDetails extends State<ShowDetails> {
                                 child: Icon(Icons.card_giftcard),
                               ),
                               Expanded(
-                                child: Text('Borrowed To?',
+                                child: Text(snapshot.data['borrowName'] != ""?
+                                    'Lent To' :
+                                    'Can I get it?',
                                     style: new TextStyle(
                                         fontSize: 20.0,
                                         color: Colors.black,
@@ -247,7 +251,7 @@ class _ShowDetails extends State<ShowDetails> {
                               Expanded(
                                 child: Text(snapshot.data['borrowName'] != "" ?
                                 snapshot.data['borrowName'] :
-                                '-',
+                                'Yes',
                                     style: new TextStyle(
                                         fontSize: 20.0,
                                         color: Colors.black,
@@ -260,9 +264,8 @@ class _ShowDetails extends State<ShowDetails> {
                           ),
                           Row(
                             children: <Widget>[
-                              Icon(Icons.get_app),
-                              Container(
-                                margin: EdgeInsets.only(left: 5.0, right: 5.0),
+                              Expanded(
+                                child: Icon(Icons.get_app),
                               ),
                               Expanded(
                                 child: RaisedButton(
@@ -276,47 +279,14 @@ class _ShowDetails extends State<ShowDetails> {
                                     ),
                                     onPressed: (){
                                       seeButtonText(snapshot.data);
-                                      giveBuySellBorrow(context, snapshot.data, user);
+                                      giveBuySellBorrow(context, snapshot.data, user, userName);
                                     }),
+                              ),
+                              Expanded(
+                                child: Text(""),
                               )
                             ],
                           ),
-
-//                          Row(
-//                            children: <Widget>[
-//                              Expanded(
-//                                child: Icon(Icons.person_pin_circle),
-//                              ),
-//                              Expanded(
-//                                child: Text(snapshot.data['']), //ak sa zisti userove meno
-//                              )
-//                            ],
-//                          )
-
-
-
-
-
-//kod na upravopovanie itemu, ktory asi netreba
-//                          Container(
-//                            child: InkWell(
-//                              onTap: (){ Navigator.push(context,
-//                                  MaterialPageRoute(builder: (context) {
-//                                    return EditItem(
-//                                      item: snapshot.data,
-//                                    );
-//                                  }));},
-//                              child: Container(
-//                                decoration: new BoxDecoration(
-//                                  color: Colors.pink,
-//                                  borderRadius: new BorderRadius.circular(30.0),
-//                                ),
-//                                alignment: Alignment.center,
-//                                padding: EdgeInsets.symmetric(vertical: 8.0),
-//                                child: Text('Edit',style: TextStyle(color: Colors.white),),
-//                              ),
-//                            ),
-//                          ),
                         ],
                       ),
                     ),
@@ -344,9 +314,9 @@ class _ShowDetails extends State<ShowDetails> {
     if(snapshot.data['borrowName'] == "" || snapshot.data['borrowName'] == null) {
       switch (snapshot.data['request']) {
         case (""):
-          return "Ask to Borrow1";break;
+          return "Ask to Borrow";break;
         case ("borrow"):
-          return "Ask to Borrow2"; break;
+          return "Ask to Borrow"; break;
         case ("sell"):
           return "Buy dress"; break;
         case ("giveaway"):
@@ -355,36 +325,10 @@ class _ShowDetails extends State<ShowDetails> {
     }
     else
       return "This item is currently taken";
-//    if((snapshot.data['request'] == "" || snapshot.data['request'] == null) && snapshot.data['borrowName'] == ""){
-//      setState(() {
-//        requestButton = 1;
-//      });
-//    }
-//    if (snapshot.data['request'] == "sell"){
-//      setState(() {
-//        requestButton = 2;
-//      });
-//    }
-//    if (snapshot.data['request'] == "giveaway"){
-//      setState(() {
-//        requestButton = 3;
-//      });
-//    }
-//    if (snapshot.data['request'] == "borrow"){
-//      setState(() {
-//        requestButton = 4;
-//      });
-//    }
-//
-//    if (snapshot.data['borrowName'] != "" ){
-//      setState(() {
-//        requestButton = 5;
-//      });
-//    }
   }
 }
 
-Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, FirebaseUser user) {
+Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, FirebaseUser user, String userName) {
 
 
   if (item.data['borrowName']=="" && item.data['request'] != "borrow"){
@@ -396,21 +340,39 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
           content: Text("I would like to borrow this dress"),
           actions: <Widget>[
             FlatButton(
-              child: Text("Send"),
+              child: Text("Confirm"),
               onPressed: (){
-                Firestore.instance.runTransaction((transaction) async {
-                  await transaction.set(Firestore.instance.collection("requestBorrow").document(), {
-                    'applicant': user.uid,
-                    'respondent': item.data['userId'],
-                    'itemID': item.documentID,
-                    'itemName': item.data['name'],
-                  });
+                showDialog(context: context,
+                builder: (BuildContext context){
+                  return AlertDialog(
+                    title: Text("Request sent"),
+                    content: Text("The request has been sent!"),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text("OK"),
+                        onPressed: (){
+                          Firestore.instance.runTransaction((transaction) async {
+                            await transaction.set(Firestore.instance.collection("requestBorrow").document(), {
+                              'applicant': user.uid,
+                              'respondent': item.data['userId'],
+                              'itemID': item.documentID,
+                              'itemName': item.data['name'],
+                              'applicantName': userName
+                            });
+                          });
+                          debugPrint(user.uid);
+                          Firestore.instance.collection('items').document(item.documentID)
+                              .updateData({"request": "borrow"});
+                          debugPrint("updatol som items request");
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        },
+                      )
+                    ],
+                  );
                 });
-                debugPrint(user.uid);
-                Firestore.instance.collection('items').document(item.documentID)
-                    .updateData({"request": "borrow"});
-                debugPrint("updatol som items request");
-                Navigator.pop(context);
+
               },
             ),
             FlatButton(
@@ -435,19 +397,65 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
             FlatButton(
               child: Text("Send"),
               onPressed: (){
-                Firestore.instance.runTransaction((transaction) async {
-                  await transaction.set(Firestore.instance.collection("requestBorrow").document(), {
-                    'applicant': user.uid,
-                    'respondent': item.data['userId'],
-                    'itemID': item.documentID,
-                    'itemName': item.data['name'],
-                  });
+                var count = 0;
+                Firestore.instance.collection('requestBorrow').where('itemID', isEqualTo: item.documentID).getDocuments().then((foundDoc){
+                  for (DocumentSnapshot ds in foundDoc.documents){
+                    if (ds['applicant'] == user.uid){
+                      count++;
+                    }
+                  }
+                  if (count ==0){
+                    showDialog(context: context,
+                        builder: (BuildContext context){
+                          return AlertDialog(
+                            title: Text("Request sent"),
+                            content: Text("The request has been sent!"),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text("OK"),
+                                onPressed: (){
+                                  Firestore.instance.runTransaction((transaction) async {
+                                    await transaction.set(Firestore.instance.collection("requestBorrow").document(), {
+                                      'applicant': user.uid,
+                                      'respondent': item.data['userId'],
+                                      'itemID': item.documentID,
+                                      'itemName': item.data['name'],
+                                      'applicantName': userName
+                                    });
+                                  });
+                                  debugPrint(user.uid);
+                                  Firestore.instance.collection('items').document(item.documentID)
+                                      .updateData({"request": "borrow"});
+                                  debugPrint("updatol som items request");
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                },
+                              )
+                            ],
+                          );
+                        });
+//                    Navigator.pop(context);
+                  }
+                  else {
+                    showDialog(context: context,
+                    builder: (BuildContext context){
+                      return AlertDialog(
+                        title: Text("Request not sent"),
+                        content: Text("You have already asked for this item"),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: Text("OK"),
+                            onPressed: (){
+                              Navigator.pop(context);
+                            },
+                          )
+                        ],
+                      );
+                    });
+                  }
+
                 });
-                debugPrint(user.uid);
-                Firestore.instance.collection('items').document(item.documentID)
-                    .updateData({"request": "borrow"});
-                debugPrint("updatol som items request");
-                Navigator.pop(context);
+
               },
             ),
             FlatButton(

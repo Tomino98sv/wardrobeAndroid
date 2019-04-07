@@ -45,6 +45,7 @@ class MyApp extends StatelessWidget {
     final ThemeBloc themeBloc = ThemeBloc();
     return ThemeSwitcher(
       themeBloc: themeBloc,
+      // ignore: duplicate_import
       child: StreamBuilder<ThemeData>(
         initialData: themeBloc.initialTheme().data,
         stream: themeBloc.themeDataStream,
