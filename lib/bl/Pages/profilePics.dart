@@ -143,8 +143,8 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
                   ),
                 ),
               ),
-              Container(
               SizedBox(height: 15.0),
+              Container(
                 width: 100.0,
                 height: 100.0,
                 decoration: BoxDecoration(
