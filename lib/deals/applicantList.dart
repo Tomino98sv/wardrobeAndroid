@@ -21,6 +21,7 @@ class _BorrowApplicants extends State<BorrowApplicants> {
   DocumentSnapshot requestedItem;
   FirebaseUser currentUser;
   BuildContext context;
+  int counter=0;
 
   _BorrowApplicants(
       {@required this.requestedItem, @required context, @required this.currentUser});
@@ -41,8 +42,10 @@ class _BorrowApplicants extends State<BorrowApplicants> {
                 children:
                   snapshot.data.documents.map((DocumentSnapshot document) {
                     if(document['itemID'] == requestedItem.documentID){
+                      counter++;
                       return ListTile(
-                        title: Text(document['applicant']),
+                        leading: Text("$counter."),
+                        title: Text(document['applicantName']),
                         trailing: FlatButton(
                             onPressed: (){
                               return showDialog(
@@ -55,8 +58,42 @@ class _BorrowApplicants extends State<BorrowApplicants> {
                                       FlatButton(
                                         child: Text('Yes'),
                                         onPressed: (){
+                                          showDialog(context: context,
+                                          builder: (BuildContext context){
+                                            return AlertDialog(
+                                              title: Text("Request sent"),
+                                              content: Text("Item lent to user ${requestedItem.data['name']}"),
+                                              actions: <Widget>[
+                                                FlatButton(
+                                                  child: Text("OK"),
+                                                  onPressed: (){
+                                                    Firestore.instance
+                                                        .collection('items')
+                                                        .document(requestedItem
+                                                        .documentID)
+                                                        .updateData({
+                                                      "borrowedTo": document['applicant'],
+                                                      "borrowName": document['applicantName'],
+                                                      "request": ""
+                                                    });
+                                                    
+                                                    Firestore.instance.collection('requestBorrow').where('itemID', isEqualTo: requestedItem.documentID).getDocuments().then((som){
+                                                      for (DocumentSnapshot ds in som.documents){
+                                                        ds.reference.delete();
+                                                      }
+                                                    });
+                                                    Navigator.pop(context);
+                                                    Navigator.pop(context);
+                                                    Navigator.pop(context);
+                                                  },
+                                                )
+                                              ],
+                                            );
+                                          });
+
+
                                           //kod do firebase
-                                          Navigator.pop(context);
+
                                         },
                                       ),
                                       FlatButton(
