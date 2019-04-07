@@ -114,6 +114,9 @@ class _SettingsPageState extends State<SettingsPage>{
           scaffoldBackgroundColor: Colors.grey[50],
           accentColor: Colors.blueAccent[400],
           buttonColor: Colors.blue,
+          toggleableActiveColor: Colors.lightBlue,
+          unselectedWidgetColor: Colors.blueAccent,
+//          splashColor: Colors.lightBlue,
           fontFamily: 'Quicksand',
           indicatorColor: Colors.blueGrey,
         ));

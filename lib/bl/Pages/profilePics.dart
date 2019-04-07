@@ -40,7 +40,7 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
         child: Container(
           width: 48.0,
           height: 48.0,
-          child: CircularProgressIndicator(backgroundColor: Colors.pink,),
+          child: CircularProgressIndicator(backgroundColor: Theme.of(context).accentColor,),
         ),
       );
     });
@@ -91,8 +91,8 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
       width: 120.0,
       child: Material(
         borderRadius: BorderRadius.circular(20.0),
-        shadowColor: Colors.pinkAccent,
-        color: Colors.pink,
+        shadowColor: Theme.of(context).accentColor,
+        color: Theme.of(context).primaryColor,
         elevation: 7.0,
         child: FlatButton(
           onPressed: getImage,
@@ -117,8 +117,8 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
       width: 120.0,
       child: Material(
         borderRadius: BorderRadius.circular(20.0),
-        shadowColor: Colors.pinkAccent,
-        color: Colors.pink,
+        shadowColor: Theme.of(context).accentColor,
+        color: Theme.of(context).primaryColor,
         elevation: 7.0,
         child: FlatButton(
           onPressed: uploadImage,
