@@ -175,8 +175,7 @@ class _WelcomePageState extends State<WelcomePage>
                     ),
                   ),
                   Expanded(
-                      child: TabBarView(controller: _tabController, children: <
-                          Widget>[
+                      child: TabBarView(controller: _tabController, children: <Widget>[
                     ListView(
                         children: snapshot.data.documents
                             .map((DocumentSnapshot document) {
