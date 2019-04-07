@@ -121,7 +121,7 @@ class _WelcomePageState extends State<WelcomePage>
                                   width: 100.0,
                                   height: 100.0,
                                   decoration: BoxDecoration(
-                                      color: Colors.pink,
+                                      color: Theme.of(context).accentColor,
                                       image: DecorationImage(
                                           image: NetworkImage(profileUrlImg),
                                           fit: BoxFit.cover),
@@ -237,7 +237,7 @@ class _WelcomePageState extends State<WelcomePage>
                                         },
                                         child: Container(
                                           decoration: new BoxDecoration(
-                                            color: Colors.pink,
+                                            color: Theme.of(context).accentColor,
                                             borderRadius:
                                                 new BorderRadius.circular(30.0),
                                           ),
@@ -266,7 +266,7 @@ class _WelcomePageState extends State<WelcomePage>
                                         },
                                         child: Container(
                                           decoration: new BoxDecoration(
-                                            color: Colors.pink,
+                                            color: Theme.of(context).accentColor,
                                             borderRadius:
                                                 new BorderRadius.circular(30.0),
                                           ),
@@ -380,10 +380,10 @@ class _WelcomePageState extends State<WelcomePage>
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(30.0),
                                   child: Material(
-                                    color: Colors.pink,
+                                    color: Theme.of(context).accentColor,
                                     borderRadius: BorderRadius.circular(30.0),
                                     child: InkWell(
-                                      splashColor: Colors.pink[400],
+                                      splashColor: Theme.of(context).accentColor,
                                       onTap: () {
                                         return showDialog(
                                             context: context,
@@ -497,10 +497,10 @@ class _WelcomePageState extends State<WelcomePage>
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(30.0),
                                   child: Material(
-                                    color: Colors.pink,
+                                    color: Theme.of(context).accentColor,
                                     borderRadius: BorderRadius.circular(30.0),
                                     child: InkWell(
-                                      splashColor: Colors.pink[400],
+                                      splashColor: Theme.of(context).accentColor,
                                       onTap: () {
                                         return showDialog(
                                             context: context,

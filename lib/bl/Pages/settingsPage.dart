@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/Pages/profilePics.dart';
+import 'package:flutter_app/main.dart';
+import 'package:flutter_app/ui/themes.dart';
 
 class SettingsPage extends StatefulWidget{
   @override
@@ -9,13 +11,15 @@ class SettingsPage extends StatefulWidget{
 
 }
 
-class _SettingsPageState extends State<SettingsPage>{
 
-  bool click = false;
+class _SettingsPageState extends State<SettingsPage>{
+  ThemeSwitcher inheritedThemeSwitcher;
   bool note = false;
+  bool click = false;
 
   @override
   Widget build(BuildContext context) {
+   inheritedThemeSwitcher = ThemeSwitcher.of(context);
     return new Scaffold(
       appBar: new AppBar(
         title: Text(
@@ -29,11 +33,10 @@ class _SettingsPageState extends State<SettingsPage>{
               children: <Widget>[
                 new Text("Changing color of app"),
                 new Switch(
-                    value: click,
-                    onChanged: (bool valueOfClick) => changingColor(valueOfClick),
+                  value: click ,
+                  onChanged: (bool valueOfClick) => changingColor(valueOfClick),
                 ),
-              ],
-            ),
+             ],),
              Row(
               children: <Widget>[
                 new Text("Turn on the notifications"),
@@ -72,16 +75,48 @@ class _SettingsPageState extends State<SettingsPage>{
         ),
       )
     );
+
+  }
+
+    DemoTheme _buildPinkTheme() {
+    return DemoTheme(
+        'light',
+        new ThemeData(
+        primaryColor: Colors.pink[400],
+        scaffoldBackgroundColor: Colors.grey[50],
+        accentColor: Colors.pink[400],
+        buttonColor: Colors.pink,
+        fontFamily: 'Quicksand',
+        indicatorColor: Colors.blueGrey,
+    ));
+  }
+
+  DemoTheme _buildBlueTheme() {
+    return DemoTheme(
+        'dark',
+        new ThemeData(
+          primaryColor: Colors.blue[400],
+          scaffoldBackgroundColor: Colors.grey[50],
+          accentColor: Colors.blueAccent[400],
+          buttonColor: Colors.blue,
+          toggleableActiveColor: Colors.lightBlue,
+          unselectedWidgetColor: Colors.blueAccent,
+//          splashColor: Colors.lightBlue,
+          fontFamily: 'Quicksand',
+          indicatorColor: Colors.blueGrey,
+        ));
   }
 
   void changingColor(bool valueOfClick){
     setState(() {
       if(valueOfClick){
-        click = false;
-        valueOfClick = false;
-      } else {
-        click = true;
+        inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildBlueTheme());
         valueOfClick = true;
+        click = true;
+      } else {
+        inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildPinkTheme());
+        valueOfClick =false;
+        click = false;
       }
     });
   }

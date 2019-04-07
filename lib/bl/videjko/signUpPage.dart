@@ -13,6 +13,7 @@ class _SignupPageState extends State<SignupPage> {
   String _name;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  int _groupGender;
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +63,29 @@ class _SignupPageState extends State<SignupPage> {
                 onSaved: (input) => _password = input,
               ),
               SizedBox(height: 5.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Radio(
+                      value: 0,
+                      activeColor: Colors.blue,
+                      groupValue: _groupGender,
+                      onChanged: (int gender) => pickGender(gender),
+                  ),
+                  Text(
+                    "Male"
+                  ),
+                  Radio(
+                      value: 1,
+                      activeColor: Colors.pink,
+                      groupValue: _groupGender,
+                      onChanged: (int gender) => pickGender(gender),
+                  ),
+                  Text(
+                    "Female"
+                  )
+                ],
+              ),
               Container(
                 margin: EdgeInsets.only(top: 8.0),
                 child: ClipRRect(
@@ -95,7 +119,7 @@ class _SignupPageState extends State<SignupPage> {
 
   void signUpMethod(BuildContext context) {
 
-    if(_formKey.currentState.validate()){
+    if(_formKey.currentState.validate() && _groupGender != null){
       _formKey.currentState.save();
 
       showDialog(context: context, barrierDismissible: false,builder: (BuildContext context) {
@@ -112,14 +136,20 @@ class _SignupPageState extends State<SignupPage> {
           .createUserWithEmailAndPassword(email: _email,
           password: _password)
           .then((signedInUser){
-
-        UserManagement().storeNewUser(signedInUser,context,_name);
+        if(_groupGender == 0){
+          UserManagement().storeNewUser(signedInUser,context,_name,"https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/woman.jpg?alt=media&token=3f3e2bbb-6f21-4e8e-8d02-79af6b3ea303");
+        }
+        if(_groupGender == 1){
+          UserManagement().storeNewUser(signedInUser,context,_name,"https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/man.jpg?alt=media&token=a3be6224-a659-4551-977f-1511faa3d34e");
+        }
       })
           .catchError((e){
         print(e);
         Navigator.of(context, rootNavigator: true).pop('dialog');
         _showSnackBar("Email already used or problem with internet connection");
       });
+    }else if(_groupGender == null){
+      _showSnackBar("You must pick up your gender");
     }else{
       debugPrint("validation not pass");
       _showSnackBar("Data not passed throught form validation");
@@ -148,6 +178,13 @@ class _SignupPageState extends State<SignupPage> {
       return false;
     }
 
+  }
+
+  void pickGender(int gender){
+    setState(() {
+      _groupGender=gender;
+      debugPrint("${_groupGender}");
+    });
   }
 }
 

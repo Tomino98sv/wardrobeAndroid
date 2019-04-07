@@ -43,7 +43,7 @@ class UserInfoList extends StatelessWidget{
                                     width: 100.0,
                                     height: 100.0,
                                     decoration: BoxDecoration(
-                                        color: Colors.pink,
+                                        color: Theme.of(context).accentColor,
                                         image: DecorationImage(
                                             image: NetworkImage(userInfo.data['photoUrl']),
                                             fit: BoxFit.cover),
@@ -130,7 +130,7 @@ class UserInfoList extends StatelessWidget{
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(30.0),
                                       child: Material(
-                                        color: Colors.pink,
+                                        color: Theme.of(context).accentColor,
                                         shape:  _DiamondBorder(),
                                     child: InkWell(
                                       onTap: (){
@@ -298,7 +298,7 @@ class UserInfoList2 extends StatelessWidget{
                                      width: 100.0,
                                      height: 100.0,
                                      decoration: BoxDecoration(
-                                         color: Colors.pink,
+                                         color: Theme.of(context).accentColor,
                                          image: DecorationImage(
                                              image: NetworkImage(userInfo.data['photoUrl']),
                                              fit: BoxFit.cover),

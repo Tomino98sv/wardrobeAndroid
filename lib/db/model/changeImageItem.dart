@@ -85,7 +85,7 @@ class _changeImageItemState extends State<changeImageItem>{
             child: Container(
               width: 48.0,
               height: 48.0,
-              child: CircularProgressIndicator(backgroundColor: Colors.pink,),
+              child: CircularProgressIndicator(backgroundColor: Theme.of(context).accentColor,),
             ),
           );
         });
