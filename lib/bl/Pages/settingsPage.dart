@@ -11,14 +11,15 @@ class SettingsPage extends StatefulWidget{
 
 }
 
-class _SettingsPageState extends State<SettingsPage>{
 
-  bool click = false;
+class _SettingsPageState extends State<SettingsPage>{
+  ThemeSwitcher inheritedThemeSwitcher;
   bool note = false;
+  bool click = false;
 
   @override
   Widget build(BuildContext context) {
-    final ThemeSwitcher inheritedThemeSwitcher = ThemeSwitcher.of(context);
+   inheritedThemeSwitcher = ThemeSwitcher.of(context);
     return new Scaffold(
       appBar: new AppBar(
         title: Text(
@@ -31,26 +32,10 @@ class _SettingsPageState extends State<SettingsPage>{
             Row(
               children: <Widget>[
                 new Text("Changing color of app"),
-                 Padding(
-                   padding: const EdgeInsets.only(left: 8.0),
-                   child: new RaisedButton(
-                onPressed: () =>
-                      inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildPinkTheme()),
-                child: Text(
-                    'Pink theme',
+                new Switch(
+                  value: click ,
+                  onChanged: (bool valueOfClick) => changingColor(valueOfClick),
                 ),
-              ),
-                 ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: RaisedButton(
-                  onPressed: () =>
-                      inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildBlueTheme()),
-                  child: Text(
-                    'Blue theme',
-                  ),
-                ),
-              ),
              ],),
              Row(
               children: <Widget>[
@@ -122,17 +107,19 @@ class _SettingsPageState extends State<SettingsPage>{
         ));
   }
 
-//  void changingColor(bool valueOfClick){
-//    setState(() {
-//      if(valueOfClick){
-//        click = false;
-//        valueOfClick = false;
-//      } else {
-//        click = true;
-//        valueOfClick =true;
-//      }
-//    });
-//  }
+  void changingColor(bool valueOfClick){
+    setState(() {
+      if(valueOfClick){
+        inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildBlueTheme());
+        valueOfClick = true;
+        click = true;
+      } else {
+        inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildPinkTheme());
+        valueOfClick =false;
+        click = false;
+      }
+    });
+  }
 
   void setNotifications(bool valueOfNote){
     setState(() {
