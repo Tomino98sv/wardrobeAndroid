@@ -60,7 +60,7 @@ class _SettingsPageState extends State<SettingsPage>{
                   },
                   child: Center(
                     child: Text(
-                        "ChangeProfilePics",
+                        "Change Profile Data",
                         style: new TextStyle(
                             fontSize: 12.0,
                             color: Colors.white,
