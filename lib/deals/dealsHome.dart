@@ -31,44 +31,46 @@ class _DealsPage extends State<DealsPage> with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
 //      stream: Firestore.instance.collection('requestBorrow').snapshots(),
-      stream: Firestore.instance.collection('items').snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
-        if (snapshot.hasError) return new Text('Error ${snapshot.error}');
-        switch (snapshot.connectionState){
-          case ConnectionState.waiting:
-            return new Text('Loading');
-          default:
-            return Column(
-              children: <Widget>[
-                    Container(
+        stream: Firestore.instance.collection('items').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
+          if (snapshot.hasError) return new Text('Error ${snapshot.error}');
+          switch (snapshot.connectionState){
+            case ConnectionState.waiting:
+              return new Text('Loading',style:Theme.of(context).textTheme.subhead);
+            default:
+              return Scaffold(
+                body: Column(
+                  children: <Widget>[
+                        Container(
 //                      width: double.maxFinite,
-                      child: DealsTabbar(
-                        tabController: _tabController,
-                      ),
-                    ),
-                    Expanded(
-                      child: TabBarView(
-                          controller: _tabController,
-                          children: <Widget>[
-                            ListView(
-                              children:
-                              snapshot.data.documents.map((DocumentSnapshot document) {
-                                if(document['request'] == "borrow" && userCurrent.uid == document['userId']) {
-                                  return ListTile(
-                                    title: Text(document['name']),
-                                    trailing: Icon(Icons.navigate_next),
-                                    onTap: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context){
-                                        return BorrowApplicants(requestedItem: document, context: context, currentUser: userCurrent,);
-                                      }));
-                                    }
+                          child: DealsTabbar(
+                            tabController: _tabController,
+                          ),
+                        ),
+                        Expanded(
+                          child: TabBarView(
+                              controller: _tabController,
+                              children: <Widget>[
+                                ListView(
+                                  children:
+                                  snapshot.data.documents.map((DocumentSnapshot document) {
+                                    if(document['request'] == "borrow" && userCurrent.uid == document['userId']) {
+                                      return ListTile(
+                                        title: Text(document['name'],style:Theme.of(context).textTheme.subhead),
+                                        trailing: Icon(Icons.navigate_next),
+                                        onTap: () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context){
+                                            return BorrowApplicants(requestedItem: document, context: context, currentUser: userCurrent,);
+                                          }));
+                                        }
 
-                                  );
-                                }
-                                else
-                                  return Container();
+                                      );
+                                    }
+                                    else
+                                      return Container();
 //                if(document['userId']==userCurrent.uid){
 //                  return ListTile(
 //                    title: Text(document['name']),
@@ -80,19 +82,21 @@ class _DealsPage extends State<DealsPage> with TickerProviderStateMixin{
 //                }
 
 
-                              }).toList(),
-                            ),
-                            Text("Requests from users who want to buy items"),
-                            Text("Requests from users who want to get items for free"),
-                          ]),
-                    )
+                                  }).toList(),
+                                ),
+                                Text("Requests from users who want to buy items",style:Theme.of(context).textTheme.subhead),
+                                Text("Requests from users who want to get items for free",style:Theme.of(context).textTheme.subhead),
+                              ]),
+                        )
 
 
 
-                  ],
-            );
-        }
-      },
+                      ],
+                ),
+              );
+          }
+        },
+      ),
     );
 
   }

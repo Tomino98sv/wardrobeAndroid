@@ -75,7 +75,7 @@ class _HomeState extends State<HomePage> {
               return Constants.choices.map((String choice){
                 return PopupMenuItem<String>(
                   value: choice,
-                  child: Text(choice),
+                  child: Text(choice, style: TextStyle(color: Colors.black),),
                 );
               }).toList();
             }
