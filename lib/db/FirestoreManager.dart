@@ -51,48 +51,48 @@ class _ItemsListState extends State<ItemsList> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('items').snapshots(),
       //shows items from Firebase
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+        if (snapshot.hasError) return new Text('Error: ${snapshot.error}', style:Theme.of(context).textTheme.subhead);
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return new Text('Loading...');
+            return new Text('Loading...',style:Theme.of(context).textTheme.subhead);
           default:
-            return new ListView(
-              children:
-              snapshot.data.documents.map((DocumentSnapshot document) {
-                Item item = Item(
-                    name: document['name'],
-                    color: document['color'],
-                    size: document['size'],
-                    length: document['length'],
-                    photoUrl: document['photo_url'],
-                    id: document.documentID,
-                    borrowName: document['borrowName']
-                );
-                if(document['userId']!=userCurrent.uid){
-                  return Slidable(
-                    delegate: new SlidableDrawerDelegate(),
-                    actionExtentRatio: 0.25,
-                    child: new ExpansionTile(
-                      leading: Container(
-                        width: 46.0,
-                        height: 46.0,
-                        child: item.photoUrl == null || item.photoUrl == ""
-                            ? Icon(Icons.broken_image)
-                            : ZoomableWidget(
-                            minScale: 1.0,
-                            maxScale: 2.0,
-                            // default factor is 1.0, use 0.0 to disable boundary
-                            panLimit: 0.0,
-                            bounceBackBoundary: true,
-                            child: CachedNetworkImage(
-                              imageUrl: item.photoUrl,
-                              placeholder: (context, imageUrl) => CircularProgressIndicator(),
-                            ),
+            return Scaffold(
+              body: new ListView(
+                children:
+                snapshot.data.documents.map((DocumentSnapshot document) {
+                  Item item = Item(
+                      name: document['name'],
+                      color: document['color'],
+                      size: document['size'],
+                      length: document['length'],
+                      photoUrl: document['photo_url'],
+                      id: document.documentID,
+                      borrowName: document['borrowName']
+                  );
+                  if(document['userId']!=userCurrent.uid){
+                    return Slidable(
+                      delegate: new SlidableDrawerDelegate(),
+                      actionExtentRatio: 0.25,
+                      child: new ExpansionTile(
+                        leading: Container(
+                          width: 46.0,
+                          height: 46.0,
+                          child: item.photoUrl == null || item.photoUrl == ""
+                              ? Icon(Icons.broken_image)
+                              : ZoomableWidget(
+                              minScale: 1.0,
+                              maxScale: 2.0,
+                              // default factor is 1.0, use 0.0 to disable boundary
+                              panLimit: 0.0,
+                              bounceBackBoundary: true,
+                              child: CachedNetworkImage(
+                                imageUrl: item.photoUrl,
+                                placeholder: (context, imageUrl) => CircularProgressIndicator(),
+                              ),
 //                              image: AdvancedNetworkImage(
 //                                  item.photoUrl,
 //                                  useDiskCache: true,
@@ -104,80 +104,81 @@ class _ItemsListState extends State<ItemsList> {
 //                              ),
 //                              placeholder: CircularProgressIndicator(),
 //                              duration: Duration(milliseconds: 300),)
+                          ),
                         ),
-                      ),
-                      title: new Text(item.name),
+                        title: new Text(item.name, style:Theme.of(context).textTheme.subhead),
 //                  subtitle: new Text(document['color']),
-                      children: <Widget>[
-                        new Text("Name: ${item.name}"),
-                        new Text("Color: ${item.color}"),
-                        new Text("Size: ${item.size}"),
-                        new Text("Length: ${item.length}"),
-                        new Text(document['borrowedTo'] == ""  || document['borrowedTo'] == null ?
-                        '' :
-                        'Borrowed to : ${item.borrowName}'),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Flexible(
-                              fit: FlexFit.tight,
-                              child: Container(
-                                child: InkWell(
-                                  onTap: (){ Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                        return ShowDetails(item: document, user: userCurrent, userName: userName);
+                        children: <Widget>[
+                          new Text("Name: ${item.name}", style:Theme.of(context).textTheme.subhead),
+                          new Text("Color: ${item.color}",  style:Theme.of(context).textTheme.subhead),
+                          new Text("Size: ${item.size}",style:Theme.of(context).textTheme.subhead),
+                          new Text("Length: ${item.length}",style:Theme.of(context).textTheme.subhead),
+                          new Text(document['borrowedTo'] == ""  || document['borrowedTo'] == null ?
+                          '' :
+                          'Borrowed to : ${item.borrowName}', style:Theme.of(context).textTheme.subhead),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Flexible(
+                                fit: FlexFit.tight,
+                                child: Container(
+                                  child: InkWell(
+                                    onTap: (){ Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                          return ShowDetails(item: document, user: userCurrent, userName: userName);
 //                            return SecondRoute(item: document); //tu je predchadzajuci kod
-                                      }));
-                                  debugPrint("idem dalej");},
-                                  child: Container(
-                                    decoration: new BoxDecoration(
-                                      color: Theme.of(context).accentColor,
-                                      borderRadius: new BorderRadius.circular(30.0),
+                                        }));
+                                    debugPrint("idem dalej");},
+                                    child: Container(
+                                      decoration: new BoxDecoration(
+                                        color: Theme.of(context).buttonColor,
+                                        borderRadius: new BorderRadius.circular(30.0),
+                                      ),
+                                      margin: EdgeInsets.all(10.0),
+                                      height: 40.0,
+                                      alignment: Alignment.center,
+                                      child: Text('GET dress',style:Theme.of(context).textTheme.subhead,),
                                     ),
-                                    margin: EdgeInsets.all(10.0),
-                                    height: 40.0,
-                                    alignment: Alignment.center,
-                                    child: Text('GET dress',style: TextStyle(color: Colors.white),),
                                   ),
                                 ),
                               ),
-                            ),
-                            Flexible(
-                              fit: FlexFit.tight,
-                              child: Container(
-                                child: InkWell(
-                                  onTap: (){
-                                    Firestore.instance.collection('users').where("uid", isEqualTo: document['userId']).snapshots().listen((user){
-                                      debugPrint(document['userId']);
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) {
-                                            return UserInfoList2(userInfo: user.documents?.first);
-                                          }));
-                                    });// kod s vyberom userov Navigator.push},
-                                  },
-                                  child: Container(
-                                    decoration: new BoxDecoration(
-                                      color: Theme.of(context).accentColor,
-                                      borderRadius: new BorderRadius.circular(30.0),
+                              Flexible(
+                                fit: FlexFit.tight,
+                                child: Container(
+                                  child: InkWell(
+                                    onTap: (){
+                                      Firestore.instance.collection('users').where("uid", isEqualTo: document['userId']).snapshots().listen((user){
+                                        debugPrint(document['userId']);
+                                        Navigator.push(context,
+                                            MaterialPageRoute(builder: (context) {
+                                              return UserInfoList2(userInfo: user.documents?.first);
+                                            }));
+                                      });// kod s vyberom userov Navigator.push},
+                                    },
+                                    child: Container(
+                                      decoration: new BoxDecoration(
+                                        color: Theme.of(context).buttonColor,
+                                        borderRadius: new BorderRadius.circular(30.0),
+                                      ),
+                                      margin: EdgeInsets.all(10.0),
+                                      height: 40.0,
+                                      alignment: Alignment.center,
+                                      child: Text('Owner Details', style:Theme.of(context).textTheme.subhead,),
                                     ),
-                                    margin: EdgeInsets.all(10.0),
-                                    height: 40.0,
-                                    alignment: Alignment.center,
-                                    child: Text('Owner Details', style: TextStyle(color: Colors.white),),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                }else{
-                  return Container();
-                }
-              }).toList(),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  }else{
+                    return Container();
+                  }
+                }).toList(),
+              ),
             );
         }
       },
@@ -200,16 +201,17 @@ class UserList extends StatelessWidget {
           if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
-              return new Text('Loading...');
+              return new Text('Loading...',style:Theme.of(context).textTheme.subhead);
             default:
               return Scaffold(
                   appBar: AppBar(
-                  title: Text("Fashonistats"),),
+                  title: Text("Fashonistats"),
+                  ),
                 body: new ListView(
                     children: snapshot.data.documents
                         .map((DocumentSnapshot document) {
                   return ListTile(
-                    trailing: Icon(Icons.send,color: Theme.of(context).accentColor),
+                    trailing: Icon(Icons.send,color: Theme.of(context).buttonColor),
                     title: Text(document['name']),
                     onTap: () {
                       //kod ktory urci usra, ktoremu bolo pozicane
@@ -302,9 +304,9 @@ class _State extends State<EditItem> {
 
 
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: new AppBar(
-        title: new Text('Edit Item'),
+        title: new Text('Edit Item',style:Theme.of(context).textTheme.subhead),
       ),
       body: SingleChildScrollView(
         child: new Container(
@@ -337,28 +339,30 @@ class _State extends State<EditItem> {
                 ),),
                 changeImageItem(item: item),
                 new TextField(
+                    style:Theme.of(context).textTheme.subhead,
                   decoration: new InputDecoration(
                       labelText: item['name'],
                       icon: new Icon(Icons.account_circle,
-                          color: Colors.black)),
+                          color: Theme.of(context).buttonColor)),
                   onChanged: _onChangedName,
                 ),
                 new TextField(
+                    style:Theme.of(context).textTheme.subhead,
                   decoration: new InputDecoration(
                       labelText: item['color'],
                       icon:
-                          new Icon(Icons.color_lens, color: Colors.black)),
+                          new Icon(Icons.color_lens, color: Theme.of(context).buttonColor)),
                   onChanged: _onChangedColor,
                 ),
                 Row(
                   children: <Widget>[
                     Expanded(
                       child: Icon(Icons.aspect_ratio,
-                    color: Colors.black),
+                    color: Theme.of(context).buttonColor),
                     ),
                     Expanded(
                       child: Text(
-                        'Size:'
+                        'Size:',style:Theme.of(context).textTheme.subhead
                       ),
                     ),
                     Expanded(
@@ -386,11 +390,11 @@ class _State extends State<EditItem> {
                   children: <Widget>[
                     Expanded(
                       child: Icon(Icons.content_cut,
-                          color: Colors.black),
+                          color: Theme.of(context).buttonColor),
                     ),
                     Expanded(
                       child: Text(
-                          'Length:'
+                          'Length:', style:Theme.of(context).textTheme.subhead
                       ),
                     ),
                     Expanded(
@@ -449,12 +453,12 @@ class _State extends State<EditItem> {
           Navigator.pop(context);},
                       child: Container(
                           decoration: new BoxDecoration(
-                           color: Theme.of(context).accentColor,
+                           color: Theme.of(context).buttonColor,
                             borderRadius: new BorderRadius.circular(30.0),
                           ),
                           alignment: Alignment.center,
                           padding: EdgeInsets.symmetric(vertical: 8.0),
-                          child: Text('Send',style: TextStyle(color: Colors.white),),
+                          child: Text('Send',style:Theme.of(context).textTheme.subhead,),
                 ),),),
               ],
             ),
@@ -495,7 +499,39 @@ class ItemsListSearch extends SearchDelegate<ItemsList> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
+          stream: items,
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: Text("No  data", style:Theme.of(context).textTheme.subhead),
+              );
+            }
+            final results = snapshot.data.documents
+                .where((a) => a['name'].toLowerCase().contains(query));
+
+            return ListView(
+              children: results.map(
+                (DocumentSnapshot document) {
+                  Item item = Item(
+                      name: document['name'],
+                      color: document['color'],
+                      size: document['size'],
+                      length: document['length'],
+                      photoUrl: document['photo_url'],
+                      id: document.documentID);
+                },
+              ).toList(),
+            );
+          }),
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
         stream: items,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
@@ -504,50 +540,21 @@ class ItemsListSearch extends SearchDelegate<ItemsList> {
             );
           }
           final results = snapshot.data.documents
-              .where((a) => a['name'].toLowerCase().contains(query));
-
+              .where((a) => a['name'].startsWith(query))
+              .toList();
+          //a.documentID.toLowerCase().contains(query));
           return ListView(
-            children: results.map(
-              (DocumentSnapshot document) {
-                Item item = Item(
-                    name: document['name'],
-                    color: document['color'],
-                    size: document['size'],
-                    length: document['length'],
-                    photoUrl: document['photo_url'],
-                    id: document.documentID);
-              },
-            ).toList(),
-          );
-        });
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: items,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) {
-          return Center(
-            child: Text("No  data"),
-          );
-        }
-        final results = snapshot.data.documents
-            .where((a) => a['name'].startsWith(query))
-            .toList();
-        //a.documentID.toLowerCase().contains(query));
-        return ListView(
-          children: results
-              .map<ListTile>((a) => ListTile(
-                    title: Text(a['name'],
-                        style: Theme.of(context).textTheme.subhead.copyWith(
-                              fontSize: 16.0,
-                              color: Colors.black,
-                            )),
-                    onTap: () {
+            children: results
+                .map<ListTile>((a) => ListTile(
+                      title: Text(a['name'],
+                          style: Theme.of(context).textTheme.subhead.copyWith(
+                                fontSize: 16.0,
+                                color: Colors.black,
+                              )),
+                      onTap: () {
 //                 close(context, a);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
 //                 return ShowDetails(item: Item(name: a['name'],
 //                   color: a['color'],
 //                   size: a['size'],
@@ -555,15 +562,16 @@ class ItemsListSearch extends SearchDelegate<ItemsList> {
 //                   photoUrl: a['photo_url'],
 //                   id: a.documentID
 //                 ));
-                        return ShowDetails(
-                          item: a,
-                        );
-                      }));
-                    },
-                  ))
-              .toList(),
-        );
-      },
+                          return ShowDetails(
+                            item: a,
+                          );
+                        }));
+                      },
+                    ))
+                .toList(),
+          );
+        },
+      ),
     );
   }
 }
@@ -589,43 +597,45 @@ class UserListHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-        stream: Firestore.instance.collection('users').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return new Text('Loading...');
-            default:
-              return Scaffold(
-                body: new ListView(
-                          children: snapshot.data.documents
-                              .map((DocumentSnapshot document) {
-                            return ListTile(
-                              leading:  CachedNetworkImage(
-                                imageUrl: document['photoUrl'],
-                                height: 42.0,
-                                width: 42.0,
-                                placeholder: (context, imageUrl) => CircularProgressIndicator(),
-                              ),
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
+          stream: Firestore.instance.collection('users').snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return new Text('Loading...');
+              default:
+                return Scaffold(
+                  body: new ListView(
+                            children: snapshot.data.documents
+                                .map((DocumentSnapshot document) {
+                              return ListTile(
+                                leading:  CachedNetworkImage(
+                                  imageUrl: document['photoUrl'],
+                                  height: 42.0,
+                                  width: 42.0,
+                                  placeholder: (context, imageUrl) => CircularProgressIndicator(),
+                                ),
 //                              leading: Image.network(
 //                                  document['photoUrl'],
 //                              height: 42.0,
 //                                  width: 42.0,),
-                              trailing: Icon(Icons.send, color: Theme.of(context).accentColor,),
-                              title: Text(document['name']),
-                              onTap: () {
-                                //kod ktory urci usra, ktoremu bolo pozicane
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                      return UserInfoList2(userInfo: document);
-                                    }));
-                              },
-                            );
-                          }).toList()),
-              );
-          }
-        });
+                                trailing: Icon(Icons.send, color: Theme.of(context).buttonColor,),
+                                title: Text(document['name'], style: Theme.of(context).textTheme.subhead,),
+                                onTap: () {
+                                  //kod ktory urci usra, ktoremu bolo pozicane
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                        return UserInfoList2(userInfo: document);
+                                      }));
+                                },
+                              );
+                            }).toList()),
+                );
+            }
+          }),
+    );
   }
 
 }

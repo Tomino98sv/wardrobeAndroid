@@ -9,11 +9,12 @@ class NotificationsPage extends StatefulWidget {
 class _NotificationsPage extends State<NotificationsPage>{
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return Column(
-      children: <Widget>[
-        Text("notifikacie")
-      ],
+    return Scaffold(
+      body: Column(
+        children: <Widget>[
+          Text("notifikacie", style: Theme.of(context).textTheme.subhead,)
+        ],
+      ),
     );
   }
 
