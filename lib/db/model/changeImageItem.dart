@@ -67,7 +67,7 @@ class _changeImageItemState extends State<changeImageItem>{
               Container(
                 child: RaisedButton(
                     onPressed: getImage,
-                    child: Text('Change image',style: TextStyle(color: Colors.white),),
+                    child: Text('Change image',style:Theme.of(context).textTheme.subhead,),
                 ),
                   padding: EdgeInsets.all(15.0),
               ),

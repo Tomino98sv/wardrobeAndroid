@@ -56,11 +56,10 @@ class _MyNewItem extends State<MyNewItem> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("Create New Item"),
+        title: Text("Create New Item",style:Theme.of(context).textTheme.subhead),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -73,6 +72,7 @@ class _MyNewItem extends State<MyNewItem> {
                   children: <Widget>[
                     Expanded(
                       child: TextField(
+                        style:Theme.of(context).textTheme.subhead,
                         decoration: new InputDecoration(
                             labelText: 'Name',
                             icon: new Icon(Icons.account_circle,
@@ -90,6 +90,7 @@ class _MyNewItem extends State<MyNewItem> {
                   children: <Widget>[
                     Expanded(
                       child: TextField(
+                        style:Theme.of(context).textTheme.subhead,
                         decoration: new InputDecoration(
                             labelText: 'Color',
                             icon: new Icon(Icons.color_lens,
@@ -109,7 +110,7 @@ class _MyNewItem extends State<MyNewItem> {
                       child: Icon(Icons.aspect_ratio, color: Colors.black),
                     ),
                     Expanded(
-                      child: Text('Size'),
+                      child: Text('Size',style:Theme.of(context).textTheme.subhead),
                     ),
                     Expanded(
                       child: DropdownButton<String>(
@@ -136,7 +137,7 @@ class _MyNewItem extends State<MyNewItem> {
                       child: Icon(Icons.content_cut, color: Colors.black),
                     ),
                     Expanded(
-                      child: Text('Length'),
+                      child: Text('Length',style:Theme.of(context).textTheme.subhead),
                     ),
                     Expanded(
                       child: DropdownButton<String>(
@@ -223,7 +224,7 @@ class _MyNewItem extends State<MyNewItem> {
                         padding: EdgeInsets.symmetric(vertical: 8.0),
                         child: Text(
                           'Send',
-                          style: TextStyle(color: Colors.white),
+                          style:Theme.of(context).textTheme.subhead,
                         ),
                       ),
                     ),
@@ -239,9 +240,9 @@ class _MyNewItem extends State<MyNewItem> {
 
   _showSnackBar(String str) {
     final snackBar = new SnackBar(
-      content: new Text(str),
+      content: new Text(str, style:Theme.of(context).textTheme.subhead),
       duration: new Duration(seconds: 3),
-      backgroundColor: Colors.black54,
+      backgroundColor: Colors.pinkAccent,
       action: new SnackBarAction(
           label: 'OUKEY',
           onPressed: () {
