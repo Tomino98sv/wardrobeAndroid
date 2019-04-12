@@ -293,7 +293,7 @@ class _ShowDetails extends State<ShowDetails> {
 Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, FirebaseUser user, String userName) {
 
 
-  if (item.data['borrowName']=="" && item.data['request'] != "borrow"){
+  if (item.data['borrowName']=="" && item.data['request'] == ""){
     return showDialog(
       context: context,
       builder: (context){
@@ -423,6 +423,58 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
             ),
             FlatButton(
               child: Text("Cancel", style:Theme.of(context).textTheme.subhead),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+  else if (item.data['request'] == "giveaway"){
+    return showDialog(
+      context: context,
+      builder: (context){
+        return AlertDialog(
+          title: Text("Get for free",style:Theme.of(context).textTheme.subhead),
+          content: Text("I would like to get this dress for free",style:Theme.of(context).textTheme.subhead),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Confirm"),
+              onPressed: (){
+                showDialog(context: context,
+                    builder: (BuildContext context){
+                      return AlertDialog(
+                        title: Text("Request sent",style:Theme.of(context).textTheme.subhead),
+                        content: Text("The request has been sent!",style:Theme.of(context).textTheme.subhead),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: Text("OK",style:Theme.of(context).textTheme.subhead),
+                            onPressed: (){
+                              Firestore.instance.runTransaction((transaction) async {
+                                await transaction.set(Firestore.instance.collection("requestGiveaway").document(), {
+                                  'applicant': user.uid,
+                                  'respondent': item.data['userId'],
+                                  'itemID': item.documentID,
+                                  'itemName': item.data['name'],
+                                  'applicantName': userName
+                                });
+                              });
+                              debugPrint(user.uid);
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                              Navigator.pop(context);
+                            },
+                          )
+                        ],
+                      );
+                    });
+
+              },
+            ),
+            FlatButton(
+              child: Text("Cancel",style:Theme.of(context).textTheme.subhead),
               onPressed: (){
                 Navigator.pop(context);
               },
