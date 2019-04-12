@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/deals/applicantList.dart';
+import 'package:flutter_app/deals/applicantListB.dart';
+import 'package:flutter_app/deals/applicantListGA.dart';
 import 'package:flutter_app/deals/dealsTabbar.dart';
 
 class DealsPage extends StatefulWidget {
@@ -85,7 +86,26 @@ class _DealsPage extends State<DealsPage> with TickerProviderStateMixin{
                                   }).toList(),
                                 ),
                                 Text("Requests from users who want to buy items",style:Theme.of(context).textTheme.subhead),
-                                Text("Requests from users who want to get items for free",style:Theme.of(context).textTheme.subhead),
+                                ListView(
+                                  children:
+                                  snapshot.data.documents.map((DocumentSnapshot document) {
+                                    if(document['request'] == "giveaway" && userCurrent.uid == document['userId']) {
+                                      return ListTile(
+                                          title: Text(document['name'],style:Theme.of(context).textTheme.subhead),
+                                          trailing: Icon(Icons.navigate_next),
+                                          onTap: () {
+                                            Navigator.push(context, MaterialPageRoute(builder: (context){
+                                              return GiveawayApplicants(requestedItem: document, context: context, currentUser: userCurrent,);
+                                            }));
+                                          }
+
+                                      );
+                                    }
+                                    else
+                                      return Container();
+                                  }).toList(),
+                                ),
+
                               ]),
                         )
 
