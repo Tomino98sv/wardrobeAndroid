@@ -267,6 +267,8 @@ class _State extends State<EditItem> {
       docFunction = '';
     else
       docFunction = item['request'];
+    if (item['price']!=null)
+      docPrice = item['price'];
  //   docImage = item['photo_url'];
   }
 
@@ -275,6 +277,7 @@ class _State extends State<EditItem> {
   String docSize = '';
   String docLength = '';
   String docFunction = '';
+  String docPrice = '';
 
 
   void _onChangedName(String value) {
@@ -299,6 +302,12 @@ class _State extends State<EditItem> {
         docFunction = "";
       else
         docFunction = '$value';
+    });
+  }
+
+  void _onChangedPrice(String value) {
+    setState(() {
+      docPrice = '$value';
     });
   }
 
@@ -475,6 +484,29 @@ class _State extends State<EditItem> {
                   ],
                 ),
                   Container(
+//                    child: (item['request'] == 'sell' || docFunction == 'sell')
+                    child: (docFunction == 'sell')
+                    ? Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Icon(Icons.monetization_on, color: Theme.of(context).buttonColor),
+                        ),
+                        Expanded(
+                          child: Text('Set price:',style:Theme.of(context).textTheme.subhead),
+                        ),
+                        Expanded(
+                          child: TextField(
+                            keyboardType: TextInputType.number,
+                            style:Theme.of(context).textTheme.subhead,
+                            decoration: new InputDecoration(
+                                labelText: item['price'],),
+                            onChanged: _onChangedPrice,
+                              ),
+                        )
+                      ],
+                    ) : Container(),
+                  ),
+                  Container(
                     child: InkWell(
                       onTap:() {
                         if (docName != '') {
@@ -512,6 +544,19 @@ class _State extends State<EditItem> {
                               .document(item.documentID)
                               .updateData({"request": docFunction});
                           debugPrint("zmenul som funkciu/request");
+                        }
+                        if (docPrice != '') {
+                          Firestore.instance
+                              .collection('items')
+                              .document(item.documentID)
+                              .updateData({"price": docPrice});
+                          debugPrint("zmenil som cenu");
+                        }
+                        if (docFunction != 'sell'){
+                          Firestore.instance
+                              .collection('items')
+                              .document(item.documentID)
+                              .updateData({'price' : FieldValue.delete()});
                         }
 
           Navigator.pop(context);},

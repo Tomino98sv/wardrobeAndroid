@@ -24,6 +24,7 @@ class _MyNewItem extends State<MyNewItem> {
   String function = "";
   FirebaseUser userLend;
   FirebaseUser user;
+  String price = "";
 
   var stPage;
 
@@ -191,6 +192,32 @@ class _MyNewItem extends State<MyNewItem> {
                     )
                   ],
                 ),
+                Container(
+                  child: function=="sell"
+                  ? Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Icon(Icons.monetization_on, color: Colors.black),
+                      ),
+                      Expanded(
+                        child: Text('Price:',style:Theme.of(context).textTheme.subhead),
+                      ),
+                      Expanded(
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          style:Theme.of(context).textTheme.subhead,
+                          decoration: new InputDecoration(
+                              labelText: 'Euros'),
+                          onChanged: (String userInput) {
+                            setState(() {
+                              price = userInput;
+                            });
+                          },
+                        ),
+                      )
+                    ],
+                  ) : Container()
+                ),
                 ListTile(
                     title: ClipRRect(
                   borderRadius: BorderRadius.circular(30.0),
@@ -219,7 +246,8 @@ class _MyNewItem extends State<MyNewItem> {
                                     'userId': user.uid,
                                     'borrowedTo': borrowedTo,
                                     'borrowName': borrowName,
-                                    'request': function
+                                    'request': function,
+                                    'price': price
                                   });
                             });
                             Navigator.pop(context);
