@@ -39,6 +39,9 @@ class _BorrowApplicants extends State<BorrowApplicants> {
               return new Text('Loading...',style:Theme.of(context).textTheme.subhead);
             default:
               return Scaffold(
+                appBar: AppBar(
+                  title: Text('Applicants'),
+                ),
                 body: ListView(
                   children:
                     snapshot.data.documents.map((DocumentSnapshot document) {
@@ -64,7 +67,7 @@ class _BorrowApplicants extends State<BorrowApplicants> {
                                             builder: (BuildContext context){
                                               return AlertDialog(
                                                 title: Text("Request sent",style:Theme.of(context).textTheme.subhead),
-                                                content: Text("Item lent to user ${requestedItem.data['name']}",style:Theme.of(context).textTheme.subhead),
+                                                content: Text("Item lent to user ${document['applicantName']}",style:Theme.of(context).textTheme.subhead),
                                                 actions: <Widget>[
                                                   FlatButton(
                                                     child: Text("OK",style:Theme.of(context).textTheme.subhead),

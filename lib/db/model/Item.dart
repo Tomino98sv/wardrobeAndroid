@@ -21,6 +21,7 @@ class _MyNewItem extends State<MyNewItem> {
   String color = "";
   String borrowedTo = "";
   String borrowName = "";
+  String function = "";
   FirebaseUser userLend;
   FirebaseUser user;
 
@@ -41,6 +42,8 @@ class _MyNewItem extends State<MyNewItem> {
   var _currentItemSelected = '38';
   var _length = ['Mini', 'Midi', 'Maxi', 'Oversize'];
   var _currentLengthSelected = 'Midi';
+  var _functions = ['-not selected-', 'giveaway', 'sell'];
+  var _currentFunctionSelected = '-not selected-';
   String _imgUrl = "";
 
   void _setImgUrl(String url) {
@@ -158,6 +161,36 @@ class _MyNewItem extends State<MyNewItem> {
                     )
                   ],
                 ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Icon(Icons.business_center, color: Colors.black),
+                    ),
+                    Expanded(
+                      child: Text('Sell/Giveaway:',style:Theme.of(context).textTheme.subhead),
+                    ),
+                    Expanded(
+                      child: DropdownButton<String>(
+                        items: _functions.map((String dropDownStringItem) {
+                          return DropdownMenuItem<String>(
+                            value: dropDownStringItem,
+                            child: Text(dropDownStringItem),
+                          );
+                        }).toList(),
+                        onChanged: (String newValueSelected) {
+                          setState(() {
+                            this._currentFunctionSelected = newValueSelected;
+                            function = newValueSelected;
+                            if (_currentFunctionSelected == '-not selected-'){
+                              function = "";
+                            }
+                          });
+                        },
+                        value: _currentFunctionSelected,
+                      ),
+                    )
+                  ],
+                ),
                 ListTile(
                     title: ClipRRect(
                   borderRadius: BorderRadius.circular(30.0),
@@ -185,7 +218,8 @@ class _MyNewItem extends State<MyNewItem> {
                                     'id': "",
                                     'userId': user.uid,
                                     'borrowedTo': borrowedTo,
-                                    'borrowName': borrowName
+                                    'borrowName': borrowName,
+                                    'request': function
                                   });
                             });
                             Navigator.pop(context);
