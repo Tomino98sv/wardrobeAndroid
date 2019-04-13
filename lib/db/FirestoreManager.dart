@@ -263,6 +263,10 @@ class _State extends State<EditItem> {
     docColor = item['color'];
     docSize = item['size'];
     docLength = item['length'];
+    if (item['request'] == 'borrow')
+      docFunction = '';
+    else
+      docFunction = item['request'];
  //   docImage = item['photo_url'];
   }
 
@@ -270,6 +274,7 @@ class _State extends State<EditItem> {
   String docColor = '';
   String docSize = '';
   String docLength = '';
+  String docFunction = '';
 
 
   void _onChangedName(String value) {
@@ -288,6 +293,15 @@ class _State extends State<EditItem> {
     setState(() => docLength = '$value');
   }
 
+  void _onChangedFunction(String value) {
+    setState(() {
+      if (value == '-not selected-')
+        docFunction = "";
+      else
+        docFunction = '$value';
+    });
+  }
+
 
 //
 //  void _onSubmit(String value) {
@@ -298,6 +312,8 @@ class _State extends State<EditItem> {
   var _currentItemSelected = '38';
   var _length = ['Mini', 'Midi', 'Maxi', 'Oversize'];
   var _currentLengthSelected = 'Midi';
+  var _functions = ['-not selected-', 'giveaway', 'sell'];
+  var _currentFunctionSelected = '-not selected-';
 
 
 
@@ -419,37 +435,85 @@ class _State extends State<EditItem> {
                     ),
                   ],
                 ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Icon(Icons.business_center,
+                          color: Theme.of(context).buttonColor),
+                    ),
+                    Expanded(
+                      child: Text(
+                          'Sell/Giveaway:', style:Theme.of(context).textTheme.subhead
+                      ),
+                    ),
+                    Expanded(
+                      child: DropdownButton(
+                          items: _functions.map((String dropDownStringItem) {
+                            return DropdownMenuItem<String>(
+                              value: dropDownStringItem,
+                              child: Text(dropDownStringItem),
+                            );
+                          }).toList(),
+                          onChanged: (String newValueSelected) {
+                            setState(() {
+                              this._currentFunctionSelected = newValueSelected;
+                              if (newValueSelected == '-not selected-')
+                                docFunction = "";
+                              else
+                                docFunction = newValueSelected;
+                            });
+                            _onChangedFunction(docFunction);
+                          },
+                          value: _currentFunctionSelected == item['request'].toString()
+                              ? item['request'].toString()
+                              : docFunction == ""
+                              ? '-not selected-' : docFunction
+//                        value: item['length'].toString(),
+//                      value: _currentLengthSelected,
+                      ),
+                    ),
+                  ],
+                ),
                   Container(
                     child: InkWell(
-                      onTap:() {  if (docName != '') {
-                  Firestore.instance
-                      .collection('items')
-                      .document(item.documentID)
-                      .updateData({"name": docName});
-                  debugPrint("zmenil som meno");
-                  }
-                      if (docColor != '') {
-          Firestore.instance
-              .collection('items')
-              .document(item.documentID)
-              .updateData({"color": docColor});
-          debugPrint("zmenil som farbu");
-          }
-              if (docSize != '') {
-        Firestore.instance
-            .collection('items')
-            .document(item.documentID)
-            .updateData({"size": docSize});
-        debugPrint("zmenil som velkost");
-        }
-            if (docLength != '') {
-      Firestore.instance
-          .collection('items')
-          .document(item.documentID)
-          .updateData({"length": docLength});
-      debugPrint("zmenil som dlzku");
+                      onTap:() {
+                        if (docName != '') {
+                          Firestore.instance
+                              .collection('items')
+                              .document(item.documentID)
+                              .updateData({"name": docName});
+                          debugPrint("zmenil som meno");
+                        }
+                        if (docColor != '') {
+                          Firestore.instance
+                              .collection('items')
+                              .document(item.documentID)
+                              .updateData({"color": docColor});
+                          debugPrint("zmenil som farbu");
+                        }
+                        if (docSize != '') {
+                          Firestore.instance
+                              .collection('items')
+                              .document(item.documentID)
+                              .updateData({"size": docSize});
+                          debugPrint("zmenil som velkost");
+                        }
+                        if (docLength != '') {
+                          Firestore.instance
+                              .collection('items')
+                              .document(item.documentID)
+                              .updateData({"length": docLength});
+                          debugPrint("zmenil som dlzku");
+                        }
+//                        if (docFunction !=''){
+                        if (item['request'].toString() != 'borrow' || docFunction!=''){
+                          Firestore.instance
+                              .collection('items')
+                              .document(item.documentID)
+                              .updateData({"request": docFunction});
+                          debugPrint("zmenul som funkciu/request");
+                        }
 
-      }
           Navigator.pop(context);},
                       child: Container(
                           decoration: new BoxDecoration(

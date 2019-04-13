@@ -29,6 +29,11 @@ class _DealsPage extends State<DealsPage> with TickerProviderStateMixin{
     _tabController = new TabController(length: 3, vsync: this);
   }
 
+  var countBorrow = 0;
+  var countSell = 0;
+  var countGive = 0;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +64,8 @@ class _DealsPage extends State<DealsPage> with TickerProviderStateMixin{
                                   children:
                                   snapshot.data.documents.map((DocumentSnapshot document) {
                                     if(document['request'] == "borrow" && userCurrent.uid == document['userId']) {
+//                                      countBorrow++;
+//                                      debugPrint(countBorrow.toString());
                                       return ListTile(
                                         title: Text(document['name'],style:Theme.of(context).textTheme.subhead),
                                         trailing: Icon(Icons.navigate_next),
@@ -67,21 +74,11 @@ class _DealsPage extends State<DealsPage> with TickerProviderStateMixin{
                                             return BorrowApplicants(requestedItem: document, context: context, currentUser: userCurrent,);
                                           }));
                                         }
-
                                       );
                                     }
-                                    else
-                                      return Container();
-//                if(document['userId']==userCurrent.uid){
-//                  return ListTile(
-//                    title: Text(document['name']),
-//
-//                  );
-//                }
-//                else{
-//                  return Container();
-//                }
-
+                                    else {
+                                     return Container();
+                                    }
 
                                   }).toList(),
                                 ),
