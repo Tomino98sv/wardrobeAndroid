@@ -57,6 +57,16 @@ class _HomeState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Wardrobe'),
         actions: <Widget>[
+          _page!=4? Container() :
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: (){
+              showSearch(
+                context: context,
+                delegate: UserListSearch(Firestore.instance.collection('users').snapshots()),
+              );
+            },
+          ),
           _page!=1? Container() :
           IconButton(
             icon: Icon(Icons.search),
