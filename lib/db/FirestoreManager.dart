@@ -578,13 +578,6 @@ class ItemsListSearch extends SearchDelegate<ItemsList> {
             return ListView(
               children: results.map(
                 (DocumentSnapshot document) {
-                  Item item = Item(
-                      name: document['name'],
-                      color: document['color'],
-                      size: document['size'],
-                      length: document['length'],
-                      photoUrl: document['photo_url'],
-                      id: document.documentID);
                 },
               ).toList(),
             );
@@ -616,16 +609,8 @@ class ItemsListSearch extends SearchDelegate<ItemsList> {
                                 color: Colors.black,
                               )),
                       onTap: () {
-//                 close(context, a);
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-//                 return ShowDetails(item: Item(name: a['name'],
-//                   color: a['color'],
-//                   size: a['size'],
-//                   length: a['length'],
-//                   photoUrl: a['photo_url'],
-//                   id: a.documentID
-//                 ));
                           return ShowDetails(
                             item: a,
                           );
@@ -701,5 +686,95 @@ class UserListHome extends StatelessWidget {
           }),
     );
   }
+}
 
+//searching bar
+class UserListSearch extends SearchDelegate<UserList> {
+  var users = Firestore.instance.collection('users').snapshots();
+
+  UserListSearch(this.users);
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
+          stream: users,
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: Text("No  data", style:Theme.of(context).textTheme.subhead),
+              );
+            }
+            final results = snapshot.data.documents
+                .where((a) => a['name'].toUpperCase().contains(query));
+
+            return ListView(
+              children: results.map(
+                    (DocumentSnapshot document) {}
+              ).toList(),
+            );
+          }),
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
+        stream: users,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: Text("No  data"),
+            );
+          }
+          final results = snapshot.data.documents
+              .where((a) => a['name'].startsWith(query))
+              .toList();
+          //a.documentID.toLowerCase().contains(query));
+          return ListView(
+            children: results
+                .map<ListTile>((a) => ListTile(
+              title: Text(a['name'],
+                  style: Theme.of(context).textTheme.subhead.copyWith(
+                    fontSize: 16.0,
+                    color: Colors.black,
+                  )),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) {
+                      return UserInfoList2(
+                        userInfo: a,
+                      );
+                    }));
+              },
+            ))
+                .toList(),
+          );
+        },
+      ),
+    );
+  }
 }
