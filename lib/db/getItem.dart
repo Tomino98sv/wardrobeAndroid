@@ -222,6 +222,26 @@ class _ShowDetails extends State<ShowDetails> {
                               )
                             ],
                           ),
+                          Padding(padding: EdgeInsets.only(bottom: 10.0),),
+                          Container(
+                            child: (snapshot.data['request']=="sell" ||snapshot.data['request']=="buy")
+                            ? Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Icon(Icons.monetization_on),
+                                ),
+                                Expanded(
+                                  child: Text("Price:", style:Theme.of(context).textTheme.subhead),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                      snapshot.data['price'],
+                                      style:Theme.of(context).textTheme.subhead),
+                                )
+                              ],
+                            )
+                            : Container(),
+                          ),
                           Row(
                             children: <Widget>[
                               Expanded(
@@ -240,7 +260,8 @@ class _ShowDetails extends State<ShowDetails> {
                                     ),
                                     onPressed: (){
                                       seeButtonText(snapshot.data);
-                                      giveBuySellBorrow(context, snapshot.data, user, userName);
+                                      if (seeButtonText(snapshot.data)!= "This item is currently taken""This item is currently taken")
+                                        giveBuySellBorrow(context, snapshot.data, user, userName);
                                     }),
                               ),
                               Expanded(
@@ -280,6 +301,8 @@ class _ShowDetails extends State<ShowDetails> {
         case ("borrow"):
           return "Ask to Borrow"; break;
         case ("sell"):
+          return "Buy dress"; break;
+        case ("buy"):
           return "Buy dress"; break;
         case ("giveaway"):
           return "Get for free"; break;
@@ -399,24 +422,8 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                         });
 //                    Navigator.pop(context);
                   }
-                  else {
-                    showDialog(context: context,
-                    builder: (BuildContext context){
-                      return AlertDialog(
-                        title: Text("Request not sent",style:Theme.of(context).textTheme.subhead),
-                        content: Text("You have already asked for this item", style:Theme.of(context).textTheme.subhead),
-                        actions: <Widget>[
-                          FlatButton(
-                            child: Text("OK",style:Theme.of(context).textTheme.subhead),
-                            onPressed: (){
-                              Navigator.pop(context);
-                            },
-                          )
-                        ],
-                      );
-                    });
-                  }
-
+                  else
+                    requestAlreadySent(context);
                 });
 
               },
@@ -443,33 +450,47 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
             FlatButton(
               child: Text("Confirm"),
               onPressed: (){
-                showDialog(context: context,
-                    builder: (BuildContext context){
-                      return AlertDialog(
-                        title: Text("Request sent",style:Theme.of(context).textTheme.subhead),
-                        content: Text("The request has been sent!",style:Theme.of(context).textTheme.subhead),
-                        actions: <Widget>[
-                          FlatButton(
-                            child: Text("OK",style:Theme.of(context).textTheme.subhead),
-                            onPressed: (){
-                              Firestore.instance.runTransaction((transaction) async {
-                                await transaction.set(Firestore.instance.collection("requestGiveaway").document(), {
-                                  'applicant': user.uid,
-                                  'respondent': item.data['userId'],
-                                  'itemID': item.documentID,
-                                  'itemName': item.data['name'],
-                                  'applicantName': userName
-                                });
-                              });
-                              debugPrint(user.uid);
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                              Navigator.pop(context);
-                            },
-                          )
-                        ],
-                      );
-                    });
+                var count2 = 0;
+                Firestore.instance.collection('requestGiveaway').where('itemID', isEqualTo: item.documentID).getDocuments().then((foundDoc) {
+                  for (DocumentSnapshot ds in foundDoc.documents) {
+                    if (ds['applicant'] == user.uid) {
+                      count2++;
+                    }
+                  }
+
+                  if (count2 ==0){
+                    showDialog(context: context,
+                        builder: (BuildContext context){
+                          return AlertDialog(
+                            title: Text("Request sent",style:Theme.of(context).textTheme.subhead),
+                            content: Text("The request has been sent!",style:Theme.of(context).textTheme.subhead),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text("OK",style:Theme.of(context).textTheme.subhead),
+                                onPressed: (){
+                                  Firestore.instance.runTransaction((transaction) async {
+                                    await transaction.set(Firestore.instance.collection("requestGiveaway").document(), {
+                                      'applicant': user.uid,
+                                      'respondent': item.data['userId'],
+                                      'itemID': item.documentID,
+                                      'itemName': item.data['name'],
+                                      'applicantName': userName
+                                    });
+                                  });
+                                  debugPrint(user.uid);
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                },
+                              )
+                            ],
+                          );
+                        });
+                  }
+                  else
+                    requestAlreadySent(context);
+                });
+
 
               },
             ),
@@ -484,8 +505,94 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
       },
     );
   }
+  else if (item.data['request'] == "sell" || item.data['request'] == "buy"){
+    return showDialog(
+      context: context,
+      builder: (context){
+        return AlertDialog(
+          title: Text("Buy item",style:Theme.of(context).textTheme.subhead),
+          content: Text("I would like to buy this dress \nfor ${item.data['price']} eur",style:Theme.of(context).textTheme.subhead),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Confirm", style:Theme.of(context).textTheme.subhead),
+              onPressed: (){
+                var count1 = 0;
+                Firestore.instance.collection('requestBuy').where('itemID', isEqualTo: item.documentID).getDocuments().then((foundDoc){
+                  for (DocumentSnapshot ds in foundDoc.documents){
+                    if (ds['applicant'] == user.uid){
+                      count1++;
+                    }
+                  }
+
+                  if(count1 ==0){
+                    showDialog(context: context,
+                        builder: (BuildContext context){
+                          return AlertDialog(
+                            title: Text("Request sent",style:Theme.of(context).textTheme.subhead),
+                            content: Text("The request has been sent!",style:Theme.of(context).textTheme.subhead),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text("OK",style:Theme.of(context).textTheme.subhead),
+                                onPressed: (){
+                                  Firestore.instance.runTransaction((transaction) async {
+                                    await transaction.set(Firestore.instance.collection("requestBuy").document(), {
+                                      'applicant': user.uid,
+                                      'respondent': item.data['userId'],
+                                      'itemID': item.documentID,
+                                      'itemName': item.data['name'],
+                                      'applicantName': userName,
+                                      'price': item.data['price']
+                                    });
+                                  });
+
+                                  Firestore.instance.collection('items').document(item.documentID)
+                                      .updateData({"request": "buy"});
+                                  debugPrint(user.uid);
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                },
+                              )
+                            ],
+                          );
+                        });
+                  }
+                  else
+                    requestAlreadySent(context);
+                });
+              },
+            ),
+            FlatButton(
+              child: Text("Cancel",style:Theme.of(context).textTheme.subhead),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
 
   return null;
 
+}
+Widget requestAlreadySent(BuildContext context){
+  showDialog(context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text("Request not sent",style:Theme.of(context).textTheme.subhead),
+          content: Text("You have already asked for this item", style:Theme.of(context).textTheme.subhead),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("OK",style:Theme.of(context).textTheme.subhead),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      });
 }
 
