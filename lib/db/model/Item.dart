@@ -22,6 +22,7 @@ class _MyNewItem extends State<MyNewItem> {
   String borrowedTo = "";
   String borrowName = "";
   String function = "";
+  String description = "";
   FirebaseUser userLend;
   FirebaseUser user;
   String price = "";
@@ -111,11 +112,30 @@ class _MyNewItem extends State<MyNewItem> {
                 Row(
                   children: <Widget>[
                     Expanded(
-                      child: Icon(Icons.aspect_ratio, color: Colors.black),
-                    ),
+                      child: TextField(
+                        maxLength: 140,
+                        style:Theme.of(context).textTheme.subhead,
+                        decoration: new InputDecoration(
+                            labelText: 'Description',
+                            icon: new Icon(Icons.event_note,
+                                color: Colors.black)),
+                        onChanged: (String userInput) {
+                          setState(() {
+                            description = userInput;
+                          });
+                        },
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Icon(Icons.aspect_ratio, color: Colors.black),
+                    Padding(padding: EdgeInsets.all(10.0)),
                     Expanded(
                       child: Text('Size',style:Theme.of(context).textTheme.subhead),
                     ),
+
                     Expanded(
                       child: DropdownButton<String>(
                         items: _sizes.map((String dropDownStringItem) {
@@ -137,9 +157,8 @@ class _MyNewItem extends State<MyNewItem> {
                 ),
                 Row(
                   children: <Widget>[
-                    Expanded(
-                      child: Icon(Icons.content_cut, color: Colors.black),
-                    ),
+                    Icon(Icons.content_cut, color: Colors.black),
+                    Padding(padding: EdgeInsets.all(10.0)),
                     Expanded(
                       child: Text('Length',style:Theme.of(context).textTheme.subhead),
                     ),
@@ -164,14 +183,14 @@ class _MyNewItem extends State<MyNewItem> {
                 ),
                 Row(
                   children: <Widget>[
+                    Icon(Icons.business_center, color: Colors.black),
+                    Padding(padding: EdgeInsets.all(10.0)),
                     Expanded(
-                      child: Icon(Icons.business_center, color: Colors.black),
-                    ),
-                    Expanded(
-                      child: Text('Sell/Giveaway:',style:Theme.of(context).textTheme.subhead),
+                      child: Text('Sell?',style:Theme.of(context).textTheme.subhead),
                     ),
                     Expanded(
                       child: DropdownButton<String>(
+                        isExpanded: true,
                         items: _functions.map((String dropDownStringItem) {
                           return DropdownMenuItem<String>(
                             value: dropDownStringItem,
@@ -196,9 +215,8 @@ class _MyNewItem extends State<MyNewItem> {
                   child: function=="sell"
                   ? Row(
                     children: <Widget>[
-                      Expanded(
-                        child: Icon(Icons.monetization_on, color: Colors.black),
-                      ),
+                      Icon(Icons.monetization_on, color: Colors.black),
+                      Padding(padding: EdgeInsets.all(10.0)),
                       Expanded(
                         child: Text('Price:',style:Theme.of(context).textTheme.subhead),
                       ),
@@ -244,6 +262,7 @@ class _MyNewItem extends State<MyNewItem> {
                                     'photo_url': _imgUrl,
                                     'id': "",
                                     'userId': user.uid,
+                                    'description': description,
                                     'borrowedTo': borrowedTo,
                                     'borrowName': borrowName,
                                     'request': function,
@@ -274,7 +293,7 @@ class _MyNewItem extends State<MyNewItem> {
                           }
                         }
                         if (_imgUrl == "" && stPage.uploadLoad) {
-                          _showSnackBar("First confirme picture");
+                          _showSnackBar("Please, confirm the picture above");
                         }
                         if (stPage.uploadLoad == false) {
                           _showSnackBar(
@@ -306,7 +325,7 @@ class _MyNewItem extends State<MyNewItem> {
       duration: new Duration(seconds: 3),
       backgroundColor: Colors.pinkAccent,
       action: new SnackBarAction(
-          label: 'OUKEY',
+          label: 'OK',
           onPressed: () {
             print("pressed snackbar");
           }),
