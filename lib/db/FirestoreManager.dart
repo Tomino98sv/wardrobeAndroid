@@ -265,6 +265,8 @@ class _State extends State<EditItem> {
     docLength = item['length'];
     if (item['request'] == 'borrow')
       docFunction = '';
+    else if (item['request'] == 'buy')
+      docFunction = "sell";
     else
       docFunction = item['request'];
     if (item['price']!=null)
@@ -538,7 +540,29 @@ class _State extends State<EditItem> {
                           debugPrint("zmenil som dlzku");
                         }
 //                        if (docFunction !=''){
-                        if (item['request'].toString() != 'borrow' || docFunction!=''){
+
+//                        if(docFunction == 'sell' && item['request'].toString() == 'buy'){
+                        if(docFunction == 'sell'){
+                          debugPrint('teraz je tototoo');
+                          var count = 0;
+                          Firestore.instance.collection('requestBuy')
+                              .where('respondent', isEqualTo: item['userId']).where('itemID', isEqualTo: item.documentID).getDocuments().then((foundDoc){
+                            for (DocumentSnapshot ds in foundDoc.documents){
+                              if (ds['respondent'] == item['userId']){
+                                count++;
+                              }
+                            }
+
+                            if (count!=0){
+                              Firestore.instance
+                                  .collection('items')
+                                  .document(item.documentID)
+                                  .updateData({"request": 'buy'});
+                              debugPrint("zmenul som funkciu/request");
+                            }
+                          });
+
+                        } else if (item['request'].toString() != 'borrow' || docFunction!=''){
                           Firestore.instance
                               .collection('items')
                               .document(item.documentID)
@@ -558,8 +582,7 @@ class _State extends State<EditItem> {
                               .document(item.documentID)
                               .updateData({'price' : FieldValue.delete()});
                         }
-
-          Navigator.pop(context);},
+                        Navigator.pop(context);},
                       child: Container(
                           decoration: new BoxDecoration(
                            color: Theme.of(context).buttonColor,

@@ -96,6 +96,7 @@ class _DealsPage extends State<DealsPage> with TickerProviderStateMixin{
                                             Navigator.push(context, MaterialPageRoute(builder: (context){
                                               return SellApplicants(requestedItem: document, context: context, currentUser: userCurrent,);
                                             }));
+
                                           }
 
                                       );
