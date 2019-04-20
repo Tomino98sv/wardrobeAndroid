@@ -10,10 +10,11 @@ import 'package:flutter_app/bl/Pages/welcome.dart';
 class ShowDetails extends StatefulWidget {
   DocumentSnapshot item;
   FirebaseUser user;
+  var userName;
 
-  ShowDetails({@required this.item, @required this.user});
+  ShowDetails({@required this.item, @required this.user, @required this.userName});
 
-  _ShowDetails createState() => new _ShowDetails(item: item, user: user);
+  _ShowDetails createState() => new _ShowDetails(item: item, user: user, userName: userName);
 }
 
 //show details about item with option to edit
@@ -22,8 +23,9 @@ class _ShowDetails extends State<ShowDetails> {
   double _imageHeight = 248.0;
   FirebaseUser user;
   int requestButton;
+  var userName;
 
-  _ShowDetails({@required this.item, @required this.user});
+  _ShowDetails({@required this.item, @required this.user, @required this.userName});
 
   @override
   void initState() {
@@ -53,14 +55,14 @@ class _ShowDetails extends State<ShowDetails> {
         //shows items from Firebase
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+          if (snapshot.hasError) return new Text('Error: ${snapshot.error}',style:Theme.of(context).textTheme.subhead);
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
-              return Scaffold(body: new Text('Loading...'));
+              return Scaffold(body: new Text('Loading...',style:Theme.of(context).textTheme.subhead));
             default:
               return new Scaffold(
                 appBar: new AppBar(
-                  title: new Text(snapshot.data['name']),
+                  title: new Text(snapshot.data['name'],style:Theme.of(context).textTheme.subhead),
                 ),
                 body: SingleChildScrollView(
                   child: new Container(
@@ -162,20 +164,10 @@ class _ShowDetails extends State<ShowDetails> {
                               ),
                               Expanded(
                                 child: Text('Color: ',
-                                  style: new TextStyle(
-                                      fontSize: 20.0,
-                                      color: Colors.black,
-                                      fontFamily: 'DancingScript-Bold', //neberie
-                                      fontWeight: FontWeight.w400
-                                  ),),),
+                                  style:Theme.of(context).textTheme.subhead),),
                               Expanded(
                                 child: Text(snapshot.data['color'],
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )),
+                                    style:Theme.of(context).textTheme.subhead),
                               )
                             ],
                           ),
@@ -187,20 +179,10 @@ class _ShowDetails extends State<ShowDetails> {
                               ),
                               Expanded(
                                 child: Text('Size:',
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )),),
+                                    style:Theme.of(context).textTheme.subhead),),
                               Expanded(
                                 child: Text(snapshot.data['size'],
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )),
+                                    style:Theme.of(context).textTheme.subhead),
                               )
                             ],
                           ),
@@ -212,21 +194,11 @@ class _ShowDetails extends State<ShowDetails> {
                               ),
                               Expanded(
                                 child: Text('Length:',
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )),),
+                                    style:Theme.of(context).textTheme.subhead),),
                               Expanded(
                                 child: Text(
                                     snapshot.data['length'],
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )),
+                                    style:Theme.of(context).textTheme.subhead),
                               )
                             ],
                           ),
@@ -237,37 +209,49 @@ class _ShowDetails extends State<ShowDetails> {
                                 child: Icon(Icons.card_giftcard),
                               ),
                               Expanded(
-                                child: Text('Borrowed To?',
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )),),
+                                child: Text(snapshot.data['borrowName'] != ""?
+                                    'Lent To' :
+                                    'Can I get it?',
+                                    style:Theme.of(context).textTheme.subhead),),
                               Expanded(
                                 child: Text(snapshot.data['borrowName'] != "" ?
                                 snapshot.data['borrowName'] :
-                                '-',
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )
+                                'Yes',
+                                    style:Theme.of(context).textTheme.subhead
                                 ),
                               )
                             ],
                           ),
+                          Padding(padding: EdgeInsets.only(bottom: 10.0),),
+                          Container(
+                            child: (snapshot.data['request']=="sell" ||snapshot.data['request']=="buy")
+                            ? Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Icon(Icons.monetization_on),
+                                ),
+                                Expanded(
+                                  child: Text("Price:", style:Theme.of(context).textTheme.subhead),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                      snapshot.data['price'],
+                                      style:Theme.of(context).textTheme.subhead),
+                                )
+                              ],
+                            )
+                            : Container(),
+                          ),
                           Row(
                             children: <Widget>[
-                              Icon(Icons.get_app),
-                              Container(
-                                margin: EdgeInsets.only(left: 5.0, right: 5.0),
+                              Expanded(
+                                child: Icon(Icons.get_app),
                               ),
                               Expanded(
                                 child: RaisedButton(
                                     child: Text(
-                                        seeButtonText(snapshot.data)
+                                        seeButtonText(snapshot.data),
+                                        style:Theme.of(context).textTheme.subhead
 //                                    requestButton == 1 ?
 //                                    "Ask to Borrow" : requestButton == 2 ?
 //                                    "Buy" : requestButton == 3 ?
@@ -276,47 +260,15 @@ class _ShowDetails extends State<ShowDetails> {
                                     ),
                                     onPressed: (){
                                       seeButtonText(snapshot.data);
-                                      giveBuySellBorrow(context, snapshot.data, user);
+                                      if (seeButtonText(snapshot.data)!= "This item is currently taken""This item is currently taken")
+                                        giveBuySellBorrow(context, snapshot.data, user, userName);
                                     }),
+                              ),
+                              Expanded(
+                                child: Text(""),
                               )
                             ],
                           ),
-
-//                          Row(
-//                            children: <Widget>[
-//                              Expanded(
-//                                child: Icon(Icons.person_pin_circle),
-//                              ),
-//                              Expanded(
-//                                child: Text(snapshot.data['']), //ak sa zisti userove meno
-//                              )
-//                            ],
-//                          )
-
-
-
-
-
-//kod na upravopovanie itemu, ktory asi netreba
-//                          Container(
-//                            child: InkWell(
-//                              onTap: (){ Navigator.push(context,
-//                                  MaterialPageRoute(builder: (context) {
-//                                    return EditItem(
-//                                      item: snapshot.data,
-//                                    );
-//                                  }));},
-//                              child: Container(
-//                                decoration: new BoxDecoration(
-//                                  color: Colors.pink,
-//                                  borderRadius: new BorderRadius.circular(30.0),
-//                                ),
-//                                alignment: Alignment.center,
-//                                padding: EdgeInsets.symmetric(vertical: 8.0),
-//                                child: Text('Edit',style: TextStyle(color: Colors.white),),
-//                              ),
-//                            ),
-//                          ),
                         ],
                       ),
                     ),
@@ -331,13 +283,14 @@ class _ShowDetails extends State<ShowDetails> {
     return new ClipPath(
       clipper: new DialogonalClipper(),
       child: new Image.asset(
-        'assets/images/pinkB.jpg',
+        'assets/images/biela.jpg',
         fit: BoxFit.fitWidth,
 //        height: _imageHeight,
       ),
     );
   }
 
+  //nebude vidno
   String seeButtonText(DocumentSnapshot snapshot) {
 
     debugPrint(snapshot.data['request']);
@@ -349,71 +302,66 @@ class _ShowDetails extends State<ShowDetails> {
           return "Ask to Borrow"; break;
         case ("sell"):
           return "Buy dress"; break;
+        case ("buy"):
+          return "Buy dress"; break;
         case ("giveaway"):
           return "Get for free"; break;
       }
     }
     else
       return "This item is currently taken";
-//    if((snapshot.data['request'] == "" || snapshot.data['request'] == null) && snapshot.data['borrowName'] == ""){
-//      setState(() {
-//        requestButton = 1;
-//      });
-//    }
-//    if (snapshot.data['request'] == "sell"){
-//      setState(() {
-//        requestButton = 2;
-//      });
-//    }
-//    if (snapshot.data['request'] == "giveaway"){
-//      setState(() {
-//        requestButton = 3;
-//      });
-//    }
-//    if (snapshot.data['request'] == "borrow"){
-//      setState(() {
-//        requestButton = 4;
-//      });
-//    }
-//
-//    if (snapshot.data['borrowName'] != "" ){
-//      setState(() {
-//        requestButton = 5;
-//      });
-//    }
   }
 }
 
-Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, FirebaseUser user) {
+Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, FirebaseUser user, String userName) {
 
 
-  if (item.data['borrowName']=="" && item.data['request'] != "borrow"){
+  if (item.data['borrowName']=="" && item.data['request'] == ""){
     return showDialog(
       context: context,
       builder: (context){
         return AlertDialog(
-          title: Text("Borrow Request"),
-          content: Text("I would like to borrow this dress"),
+          title: Text("Borrow Request",style:Theme.of(context).textTheme.subhead),
+          content: Text("I would like to borrow this dress",style:Theme.of(context).textTheme.subhead),
           actions: <Widget>[
             FlatButton(
-              child: Text("Send"),
+              child: Text("Confirm"),
               onPressed: (){
-                Firestore.instance.runTransaction((transaction) async {
-                  await transaction.set(Firestore.instance.collection("requestBorrow").document(), {
-                    'applicant': user.uid,
-                    'respondent': item.data['userId'],
-                    'itemID': item.documentID
-                  });
+                showDialog(context: context,
+                builder: (BuildContext context){
+                  return AlertDialog(
+                    title: Text("Request sent",style:Theme.of(context).textTheme.subhead),
+                    content: Text("The request has been sent!",style:Theme.of(context).textTheme.subhead),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text("OK",style:Theme.of(context).textTheme.subhead),
+                        onPressed: (){
+                          Firestore.instance.runTransaction((transaction) async {
+                            await transaction.set(Firestore.instance.collection("requestBorrow").document(), {
+                              'applicant': user.uid,
+                              'respondent': item.data['userId'],
+                              'itemID': item.documentID,
+                              'itemName': item.data['name'],
+                              'applicantName': userName
+                            });
+                          });
+                          debugPrint(user.uid);
+                          Firestore.instance.collection('items').document(item.documentID)
+                              .updateData({"request": "borrow"});
+                          debugPrint("updatol som items request");
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        },
+                      )
+                    ],
+                  );
                 });
-                debugPrint(user.uid);
-                Firestore.instance.collection('items').document(item.documentID)
-                    .updateData({"request": "borrow"});
-                debugPrint("updatol som items request");
-                Navigator.pop(context);
+
               },
             ),
             FlatButton(
-              child: Text("Cancel"),
+              child: Text("Cancel",style:Theme.of(context).textTheme.subhead),
               onPressed: (){
                 Navigator.pop(context);
               },
@@ -428,28 +376,194 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
       context: context,
       builder: (context){
         return AlertDialog(
-          title: Text("Borrow Request"),
-          content: Text("There is at least 1 other user who requested to borrow this dress. Would you like to send your request anyway?"),
+          title: Text("Borrow Request",style:Theme.of(context).textTheme.subhead),
+          content: Text("There is at least 1 other user who requested to borrow this dress. Would you like to send your request anyway?",
+              style:Theme.of(context).textTheme.subhead),
           actions: <Widget>[
             FlatButton(
-              child: Text("Send"),
+              child: Text("Send", style:Theme.of(context).textTheme.subhead),
               onPressed: (){
-                Firestore.instance.runTransaction((transaction) async {
-                  await transaction.set(Firestore.instance.collection("requestBorrow").document(), {
-                    'applicant': user.uid,
-                    'respondent': item.data['userId'],
-                    'itemID': item.documentID
-                  });
+                var count = 0;
+                Firestore.instance.collection('requestBorrow').where('itemID', isEqualTo: item.documentID).getDocuments().then((foundDoc){
+                  for (DocumentSnapshot ds in foundDoc.documents){
+                    if (ds['applicant'] == user.uid){
+                      count++;
+                    }
+                  }
+                  if (count ==0){
+                    showDialog(context: context,
+                        builder: (BuildContext context){
+                          return AlertDialog(
+                            title: Text("Request sent", style:Theme.of(context).textTheme.subhead),
+                            content: Text("The request has been sent!", style:Theme.of(context).textTheme.subhead),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text("OK",style:Theme.of(context).textTheme.subhead),
+                                onPressed: (){
+                                  Firestore.instance.runTransaction((transaction) async {
+                                    await transaction.set(Firestore.instance.collection("requestBorrow").document(), {
+                                      'applicant': user.uid,
+                                      'respondent': item.data['userId'],
+                                      'itemID': item.documentID,
+                                      'itemName': item.data['name'],
+                                      'applicantName': userName
+                                    });
+                                  });
+                                  debugPrint(user.uid);
+                                  Firestore.instance.collection('items').document(item.documentID)
+                                      .updateData({"request": "borrow"});
+                                  debugPrint("updatol som items request");
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                },
+                              )
+                            ],
+                          );
+                        });
+//                    Navigator.pop(context);
+                  }
+                  else
+                    requestAlreadySent(context);
                 });
-                debugPrint(user.uid);
-                Firestore.instance.collection('items').document(item.documentID)
-                    .updateData({"request": "borrow"});
-                debugPrint("updatol som items request");
-                Navigator.pop(context);
+
               },
             ),
             FlatButton(
-              child: Text("Cancel"),
+              child: Text("Cancel", style:Theme.of(context).textTheme.subhead),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+  else if (item.data['request'] == "giveaway"){
+    return showDialog(
+      context: context,
+      builder: (context){
+        return AlertDialog(
+          title: Text("Get for free",style:Theme.of(context).textTheme.subhead),
+          content: Text("I would like to get this dress for free",style:Theme.of(context).textTheme.subhead),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Confirm"),
+              onPressed: (){
+                var count2 = 0;
+                Firestore.instance.collection('requestGiveaway').where('itemID', isEqualTo: item.documentID).getDocuments().then((foundDoc) {
+                  for (DocumentSnapshot ds in foundDoc.documents) {
+                    if (ds['applicant'] == user.uid) {
+                      count2++;
+                    }
+                  }
+
+                  if (count2 ==0){
+                    showDialog(context: context,
+                        builder: (BuildContext context){
+                          return AlertDialog(
+                            title: Text("Request sent",style:Theme.of(context).textTheme.subhead),
+                            content: Text("The request has been sent!",style:Theme.of(context).textTheme.subhead),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text("OK",style:Theme.of(context).textTheme.subhead),
+                                onPressed: (){
+                                  Firestore.instance.runTransaction((transaction) async {
+                                    await transaction.set(Firestore.instance.collection("requestGiveaway").document(), {
+                                      'applicant': user.uid,
+                                      'respondent': item.data['userId'],
+                                      'itemID': item.documentID,
+                                      'itemName': item.data['name'],
+                                      'applicantName': userName
+                                    });
+                                  });
+                                  debugPrint(user.uid);
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                },
+                              )
+                            ],
+                          );
+                        });
+                  }
+                  else
+                    requestAlreadySent(context);
+                });
+
+
+              },
+            ),
+            FlatButton(
+              child: Text("Cancel",style:Theme.of(context).textTheme.subhead),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+  else if (item.data['request'] == "sell" || item.data['request'] == "buy"){
+    return showDialog(
+      context: context,
+      builder: (context){
+        return AlertDialog(
+          title: Text("Buy item",style:Theme.of(context).textTheme.subhead),
+          content: Text("I would like to buy this dress \nfor ${item.data['price']} eur",style:Theme.of(context).textTheme.subhead),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Confirm", style:Theme.of(context).textTheme.subhead),
+              onPressed: (){
+                var count1 = 0;
+                Firestore.instance.collection('requestBuy').where('itemID', isEqualTo: item.documentID).getDocuments().then((foundDoc){
+                  for (DocumentSnapshot ds in foundDoc.documents){
+                    if (ds['applicant'] == user.uid){
+                      count1++;
+                    }
+                  }
+
+                  if(count1 ==0){
+                    showDialog(context: context,
+                        builder: (BuildContext context){
+                          return AlertDialog(
+                            title: Text("Request sent",style:Theme.of(context).textTheme.subhead),
+                            content: Text("The request has been sent!",style:Theme.of(context).textTheme.subhead),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text("OK",style:Theme.of(context).textTheme.subhead),
+                                onPressed: (){
+                                  Firestore.instance.runTransaction((transaction) async {
+                                    await transaction.set(Firestore.instance.collection("requestBuy").document(), {
+                                      'applicant': user.uid,
+                                      'respondent': item.data['userId'],
+                                      'itemID': item.documentID,
+                                      'itemName': item.data['name'],
+                                      'applicantName': userName,
+                                      'price': item.data['price']
+                                    });
+                                  });
+
+                                  Firestore.instance.collection('items').document(item.documentID)
+                                      .updateData({"request": "buy"});
+                                  debugPrint(user.uid);
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                },
+                              )
+                            ],
+                          );
+                        });
+                  }
+                  else
+                    requestAlreadySent(context);
+                });
+              },
+            ),
+            FlatButton(
+              child: Text("Cancel",style:Theme.of(context).textTheme.subhead),
               onPressed: (){
                 Navigator.pop(context);
               },
@@ -460,7 +574,25 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
     );
   }
 
+
   return null;
 
+}
+Widget requestAlreadySent(BuildContext context){
+  showDialog(context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text("Request not sent",style:Theme.of(context).textTheme.subhead),
+          content: Text("You have already asked for this item", style:Theme.of(context).textTheme.subhead),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("OK",style:Theme.of(context).textTheme.subhead),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      });
 }
 

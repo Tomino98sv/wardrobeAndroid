@@ -3,45 +3,68 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 
 class UserManagement {
-  storeNewUser(user,context,String name){
+  storeNewUser(user, context, String name, String url) {
     Firestore.instance.collection('/users').add({
-      'email':user.email,
-      'uid':user.uid,
-      'name':name,
-      'photoUrl': "https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/55b9552d-78b1-421f-b11a-3e89bfbd7b5e.jpg?alt=media&token=b61fd432-4049-47fd-ba97-44d90c37b9d7",
-    }).then((value){
+      'email': user.email,
+      'uid': user.uid,
+      'name': name,
+      'photoUrl': url,
+    }).then((value) {
       Navigator.of(context, rootNavigator: true).pop('dialog');
       Navigator.of(context).pop();
-          Navigator.of(context).pushReplacementNamed('/homepage');
+      Navigator.of(context).pushReplacementNamed('/homepage');
     })
-        .catchError((e){
+        .catchError((e) {
       print(e);
     });
   }
 
- Future updateProfilePic(picUrl) async{
-    var userInfo = new UserUpdateInfo();
-    userInfo.photoUrl = picUrl;
+  Future updateProfilePic(picUrl) async {
+//    var userInfo = new UserUpdateInfo();
+//    userInfo.photoUrl = picUrl;
 
-    await FirebaseAuth.instance.currentUser().then((user){
+    await FirebaseAuth.instance.currentUser().then((user) {
+      Firestore.instance
+          .collection('/users')
+          .where('uid', isEqualTo: user.uid)
+          .getDocuments()
+          .then((docs) {
         Firestore.instance
-            .collection('/users')
-            .where('uid',isEqualTo: user.uid)
-            .getDocuments()
-            .then((docs){
-              Firestore.instance
-                  .document('/users/${docs.documents[0].documentID}')
-                  .updateData({'photoUrl': picUrl}).then((val){
-                 print("Updated");
-              }).catchError((e){
-                print(e);
-              });
-        }).catchError((e){
+            .document('/users/${docs.documents[0].documentID}')
+            .updateData({'photoUrl': picUrl}).then((val) {
+          print("Updated");
+        }).catchError((e) {
           print(e);
         });
-      }).catchError((e){
+      }).catchError((e) {
         print(e);
       });
+    }).catchError((e) {
+      print(e);
+    });
   }
 
+  Future updateProfileName(newName) async {
+//    var userInfo = new UserUpdateInfo();
+
+    await FirebaseAuth.instance.currentUser().then((user) {
+      Firestore.instance
+          .collection('/users')
+          .where('uid', isEqualTo: user.uid)
+          .getDocuments()
+          .then((docs) {
+        Firestore.instance
+            .document('/users/${docs.documents[0].documentID}')
+            .updateData({'name': newName}).then((val) {
+          print("Updated");
+        }).catchError((e) {
+          print(e);
+        });
+      }).catchError((e) {
+        print(e);
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
 }

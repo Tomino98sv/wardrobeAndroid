@@ -21,8 +21,11 @@ class _MyNewItem extends State<MyNewItem> {
   String color = "";
   String borrowedTo = "";
   String borrowName = "";
+  String function = "";
+  String description = "";
   FirebaseUser userLend;
   FirebaseUser user;
+  String price = "";
 
   var stPage;
 
@@ -41,6 +44,8 @@ class _MyNewItem extends State<MyNewItem> {
   var _currentItemSelected = '38';
   var _length = ['Mini', 'Midi', 'Maxi', 'Oversize'];
   var _currentLengthSelected = 'Midi';
+  var _functions = ['-not selected-', 'giveaway', 'sell'];
+  var _currentFunctionSelected = '-not selected-';
   String _imgUrl = "";
 
   void _setImgUrl(String url) {
@@ -56,11 +61,10 @@ class _MyNewItem extends State<MyNewItem> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("Create New Item"),
+        title: Text("Create New Item",style:Theme.of(context).textTheme.subhead),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -73,6 +77,7 @@ class _MyNewItem extends State<MyNewItem> {
                   children: <Widget>[
                     Expanded(
                       child: TextField(
+                        style:Theme.of(context).textTheme.subhead,
                         decoration: new InputDecoration(
                             labelText: 'Name',
                             icon: new Icon(Icons.account_circle,
@@ -90,6 +95,7 @@ class _MyNewItem extends State<MyNewItem> {
                   children: <Widget>[
                     Expanded(
                       child: TextField(
+                        style:Theme.of(context).textTheme.subhead,
                         decoration: new InputDecoration(
                             labelText: 'Color',
                             icon: new Icon(Icons.color_lens,
@@ -106,11 +112,30 @@ class _MyNewItem extends State<MyNewItem> {
                 Row(
                   children: <Widget>[
                     Expanded(
-                      child: Icon(Icons.aspect_ratio, color: Colors.black),
-                    ),
+                      child: TextField(
+                        maxLength: 140,
+                        style:Theme.of(context).textTheme.subhead,
+                        decoration: new InputDecoration(
+                            labelText: 'Description',
+                            icon: new Icon(Icons.event_note,
+                                color: Colors.black)),
+                        onChanged: (String userInput) {
+                          setState(() {
+                            description = userInput;
+                          });
+                        },
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Icon(Icons.aspect_ratio, color: Colors.black),
+                    Padding(padding: EdgeInsets.all(10.0)),
                     Expanded(
-                      child: Text('Size'),
+                      child: Text('Size',style:Theme.of(context).textTheme.subhead),
                     ),
+
                     Expanded(
                       child: DropdownButton<String>(
                         items: _sizes.map((String dropDownStringItem) {
@@ -132,11 +157,10 @@ class _MyNewItem extends State<MyNewItem> {
                 ),
                 Row(
                   children: <Widget>[
+                    Icon(Icons.content_cut, color: Colors.black),
+                    Padding(padding: EdgeInsets.all(10.0)),
                     Expanded(
-                      child: Icon(Icons.content_cut, color: Colors.black),
-                    ),
-                    Expanded(
-                      child: Text('Length'),
+                      child: Text('Length',style:Theme.of(context).textTheme.subhead),
                     ),
                     Expanded(
                       child: DropdownButton<String>(
@@ -157,14 +181,69 @@ class _MyNewItem extends State<MyNewItem> {
                     )
                   ],
                 ),
+                Row(
+                  children: <Widget>[
+                    Icon(Icons.business_center, color: Colors.black),
+                    Padding(padding: EdgeInsets.all(10.0)),
+                    Expanded(
+                      child: Text('Sell?',style:Theme.of(context).textTheme.subhead),
+                    ),
+                    Expanded(
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        items: _functions.map((String dropDownStringItem) {
+                          return DropdownMenuItem<String>(
+                            value: dropDownStringItem,
+                            child: Text(dropDownStringItem),
+                          );
+                        }).toList(),
+                        onChanged: (String newValueSelected) {
+                          setState(() {
+                            this._currentFunctionSelected = newValueSelected;
+                            function = newValueSelected;
+                            if (_currentFunctionSelected == '-not selected-'){
+                              function = "";
+                            }
+                          });
+                        },
+                        value: _currentFunctionSelected,
+                      ),
+                    )
+                  ],
+                ),
+                Container(
+                  child: function=="sell"
+                  ? Row(
+                    children: <Widget>[
+                      Icon(Icons.monetization_on, color: Colors.black),
+                      Padding(padding: EdgeInsets.all(10.0)),
+                      Expanded(
+                        child: Text('Price:',style:Theme.of(context).textTheme.subhead),
+                      ),
+                      Expanded(
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          style:Theme.of(context).textTheme.subhead,
+                          decoration: new InputDecoration(
+                              labelText: 'Euros'),
+                          onChanged: (String userInput) {
+                            setState(() {
+                              price = userInput;
+                            });
+                          },
+                        ),
+                      )
+                    ],
+                  ) : Container()
+                ),
                 ListTile(
                     title: ClipRRect(
                   borderRadius: BorderRadius.circular(30.0),
                   child: Material(
-                    color: Colors.pink,
+                    color: Theme.of(context).accentColor,
                     borderRadius: BorderRadius.circular(30.0),
                     child: InkWell(
-                      splashColor: Colors.pink[400],
+                      splashColor:Theme.of(context).accentColor,
                       onTap: () {
                         if (_imgUrl != "" && stPage.uploadLoad) {
                           print("tapped");
@@ -183,8 +262,11 @@ class _MyNewItem extends State<MyNewItem> {
                                     'photo_url': _imgUrl,
                                     'id': "",
                                     'userId': user.uid,
+                                    'description': description,
                                     'borrowedTo': borrowedTo,
-                                    'borrowName': borrowName
+                                    'borrowName': borrowName,
+                                    'request': function,
+                                    'price': price
                                   });
                             });
                             Navigator.pop(context);
@@ -211,7 +293,7 @@ class _MyNewItem extends State<MyNewItem> {
                           }
                         }
                         if (_imgUrl == "" && stPage.uploadLoad) {
-                          _showSnackBar("First confirme picture");
+                          _showSnackBar("Please, confirm the picture above");
                         }
                         if (stPage.uploadLoad == false) {
                           _showSnackBar(
@@ -223,7 +305,7 @@ class _MyNewItem extends State<MyNewItem> {
                         padding: EdgeInsets.symmetric(vertical: 8.0),
                         child: Text(
                           'Send',
-                          style: TextStyle(color: Colors.white),
+                          style:Theme.of(context).textTheme.subhead,
                         ),
                       ),
                     ),
@@ -239,11 +321,11 @@ class _MyNewItem extends State<MyNewItem> {
 
   _showSnackBar(String str) {
     final snackBar = new SnackBar(
-      content: new Text(str),
+      content: new Text(str, style:Theme.of(context).textTheme.subhead),
       duration: new Duration(seconds: 3),
-      backgroundColor: Colors.black54,
+      backgroundColor: Colors.pinkAccent,
       action: new SnackBarAction(
-          label: 'OUKEY',
+          label: 'OK',
           onPressed: () {
             print("pressed snackbar");
           }),

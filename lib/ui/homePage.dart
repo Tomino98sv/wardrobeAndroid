@@ -8,9 +8,11 @@ import 'package:flutter_app/db/model/Item.dart';
 import 'package:flutter_app/db/FirestoreManager.dart';
 import 'package:flutter_app/deals/dealsHome.dart';
 import 'package:flutter_app/notif/notifications.dart';
+import 'package:flutter_app/ui/themes.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class HomePage extends StatefulWidget{
+
   @override
   State<StatefulWidget> createState()  => _HomeState();
 }
@@ -55,6 +57,16 @@ class _HomeState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Wardrobe'),
         actions: <Widget>[
+          _page!=4? Container() :
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: (){
+              showSearch(
+                context: context,
+                delegate: UserListSearch(Firestore.instance.collection('users').snapshots()),
+              );
+            },
+          ),
           _page!=1? Container() :
           IconButton(
             icon: Icon(Icons.search),
@@ -73,7 +85,7 @@ class _HomeState extends State<HomePage> {
               return Constants.choices.map((String choice){
                 return PopupMenuItem<String>(
                   value: choice,
-                  child: Text(choice),
+                  child: Text(choice, style: TextStyle(color: Colors.black),),
                 );
               }).toList();
             }
@@ -118,7 +130,7 @@ class _HomeState extends State<HomePage> {
     GoogleSignIn _googleSignIn;
     _googleSignIn?.signOut();
     if(choice == Constants.Settings){
-      Navigator.push(context, MaterialPageRoute(
+      Navigator.of(context).push( MaterialPageRoute(
           builder: (context)=>SettingsPage()));
     }else if (choice == Constants.LogOut){
       FirebaseAuth.instance.signOut().then((value) {

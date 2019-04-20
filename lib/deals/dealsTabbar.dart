@@ -1,36 +1,36 @@
 import 'package:flutter/material.dart';
 
-class WardrobeTabBar extends StatefulWidget {
+class DealsTabbar extends StatefulWidget {
   final TabController tabController;
 
-  const WardrobeTabBar({Key key, @required this.tabController})
+  const DealsTabbar({Key key, @required this.tabController})
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _WardrobeTabBarState(tabController);
+  State<StatefulWidget> createState() => _DealsTabbarState(tabController);
 }
 
-class _WardrobeTabBarState extends State<WardrobeTabBar> {
+class _DealsTabbarState extends State<DealsTabbar> {
   final TabController _tabController;
 
-  _WardrobeTabBarState(this._tabController);
+  _DealsTabbarState(this._tabController);
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: <WardrobeTab>[
-        WardrobeTab(
-          text: 'My Items',
+      children: <DealsTab>[
+        DealsTab(
+          text: 'Borrow',
           position: 0,
           controller: _tabController,
         ),
-        WardrobeTab(
-          text: 'Borrowed To',
+        DealsTab(
+          text: 'Sell',
           position: 1,
           controller: _tabController,
         ),
-        WardrobeTab(
-          text: 'Lend From',
+        DealsTab(
+          text: 'Giveaway',
           position: 2,
           controller: _tabController,
         ),
@@ -41,25 +41,25 @@ class _WardrobeTabBarState extends State<WardrobeTabBar> {
   }
 }
 
-class WardrobeTab extends StatefulWidget {
+class DealsTab extends StatefulWidget {
   final String text;
   final int position;
   final TabController controller;
 
-  WardrobeTab({this.text, this.position, this.controller});
+  DealsTab({this.text, this.position, this.controller});
 
   @override
   State<StatefulWidget> createState() =>
-      _WardrobeTabState(text,  controller, position);
+      _DealsTabState(text,  controller, position);
 }
 
-class _WardrobeTabState extends State<WardrobeTab> {
+class _DealsTabState extends State<DealsTab> {
   String text;
   bool _selected = false;
   TabController _controller;
   int _position;
 
-  _WardrobeTabState(this.text, TabController controller, this._position) {
+  _DealsTabState(this.text, TabController controller, this._position) {
     _controller = controller;
     _controller.addListener(_handleScroll);
   }
@@ -69,7 +69,7 @@ class _WardrobeTabState extends State<WardrobeTab> {
     return ClipRRect(
       borderRadius: BorderRadius.all(Radius.circular(32.0)),
       child: Material(
-        color: _selected ? Theme.of(context).accentColor: Colors.white,
+        color: _selected ? Theme.of(context).buttonColor: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(32.0)),
         child: InkWell(
           onTap: () {

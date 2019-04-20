@@ -20,14 +20,14 @@ class UserInfoList extends StatelessWidget{
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('items').where("userId", isEqualTo: userInfo.data['uid']).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+        if (snapshot.hasError) return new Text('Error: ${snapshot.error}', style:Theme.of(context).textTheme.subhead);
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return Scaffold(body: new Text('Loading...'));
+            return Scaffold(body: new Text('Loading...', style:Theme.of(context).textTheme.subhead));
           default:
             return Scaffold(
               appBar: AppBar(
-                title: Text(userInfo['name']),
+                title: Text(userInfo['name'], style:Theme.of(context).textTheme.subhead),
               ),
                  body: new Center(
                    child: Column(
@@ -43,13 +43,13 @@ class UserInfoList extends StatelessWidget{
                                     width: 100.0,
                                     height: 100.0,
                                     decoration: BoxDecoration(
-                                        color: Colors.pink,
+                                        color: Theme.of(context).accentColor,
                                         image: DecorationImage(
                                             image: NetworkImage(userInfo.data['photoUrl']),
                                             fit: BoxFit.cover),
                                         borderRadius: BorderRadius.all(Radius.circular(75.0)),
                                         boxShadow: [
-                                          BoxShadow(blurRadius: 7.0, color: Colors.black)
+                                          BoxShadow(blurRadius: 7.0, color: Theme.of(context).buttonColor)
                                         ]
                                     ),
                                   ),
@@ -57,21 +57,19 @@ class UserInfoList extends StatelessWidget{
                                     children: <Widget>[
                                       Text(
                                         "User name: ",
-                                        style: new TextStyle(
-                                          //  fontSize: 30.0,
-                                            color: Colors.black,
-                                            fontFamily: 'DancingScript-Bold', //neberie
-                                            fontWeight: FontWeight.w400
+                                        style: TextStyle(
+                                          fontSize: 15.0,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w400,
                                         ),
                                       ),
                                       Padding(padding: EdgeInsets.only(right: 10.0),),
                                       Text(
                                         userInfo.data['name'],
-                                        style: new TextStyle(
-                                            fontSize: 20.0,
-                                            color: Colors.black,
-                                            fontFamily: 'DancingScript-Bold', //neberie
-                                            fontWeight: FontWeight.w400
+                                        style: TextStyle(
+                                          fontSize:17.0,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w400,
                                         ),
                                       ),
                                     ],
@@ -81,22 +79,20 @@ class UserInfoList extends StatelessWidget{
                                       Text(
                                         "User email: ",
                                         textAlign: TextAlign.left,
-                                        style: new TextStyle(
-                                          //  fontSize: 30.0,
-                                            color: Colors.black,
-                                            fontFamily: 'DancingScript-Bold', //neberie
-                                            fontWeight: FontWeight.w400
+                                        style: TextStyle(
+                                          fontSize: 15.0,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w400,
                                         ),
                                       ),
                                       Padding(padding: EdgeInsets.only(right: 10.0),),
                                       Text(
                                         userInfo.data['email'],
                                         textAlign: TextAlign.left,
-                                        style: new TextStyle(
-                                            fontSize: 15.0,
-                                            color: Colors.black,
-                                            fontFamily: 'DancingScript-Bold', //neberie
-                                            fontWeight: FontWeight.w400
+                                        style: TextStyle(
+                                          fontSize: 17.0,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w400,
                                         ),
                                       ),]
                                   ),
@@ -105,22 +101,20 @@ class UserInfoList extends StatelessWidget{
                                           Text(
                                             "Item: ",
                                             textAlign: TextAlign.left,
-                                            style: new TextStyle(
-                                              //  fontSize: 30.0,
-                                                color: Colors.black,
-                                                fontFamily: 'DancingScript-Bold', //neberie
-                                                fontWeight: FontWeight.w400
+                                            style: TextStyle(
+                                              fontSize: 15.0,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w400,
                                             ),
                                           ),
                                           Padding(padding: EdgeInsets.only(right: 10.0),),
                                           Text(
                                             itemInfo.data['name'],
                                             textAlign: TextAlign.left,
-                                            style: new TextStyle(
-                                                fontSize: 15.0,
-                                                color: Colors.black,
-                                                fontFamily: 'DancingScript-Bold', //neberie
-                                                fontWeight: FontWeight.w400
+                                            style: TextStyle(
+                                              fontSize: 17.0,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w400,
                                             ),
                                           ),
                                         ],
@@ -130,7 +124,7 @@ class UserInfoList extends StatelessWidget{
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(30.0),
                                       child: Material(
-                                        color: Colors.pink,
+                                        color: Theme.of(context).accentColor,
                                         shape:  _DiamondBorder(),
                                     child: InkWell(
                                       onTap: (){
@@ -164,7 +158,7 @@ class UserInfoList extends StatelessWidget{
                                         padding: EdgeInsets.symmetric(vertical: 30.0),
                                         child: Text(
                                             itemInfo.data['borrowedTo'] == ""  || itemInfo.data['borrowedTo'] == null ?
-                                            'Choose' : 'Return',style: TextStyle(color: Colors.white),),
+                                            'Choose' : 'Return',style:Theme.of(context).textTheme.subhead,),
                                     ),
                                   ),),),)
                                     ],
@@ -196,12 +190,12 @@ class UserInfoList extends StatelessWidget{
                                             ),
                                           )
                                       ),
-                                      title: Text(document['name']),
+                                      title: Text(document['name'], style:Theme.of(context).textTheme.subhead),
                                       children: <Widget>[
-                                        Text('Name: ${document['name']}'),
-                                        Text('Color: ${document['color']}'),
-                                        Text('Size: ${document['size']}'),
-                                        Text('Length: ${document['length']}'),
+                                        Text('Name: ${document['name']}',style:Theme.of(context).textTheme.subhead),
+                                        Text('Color: ${document['color']}',style:Theme.of(context).textTheme.subhead),
+                                        Text('Size: ${document['size']}', style:Theme.of(context).textTheme.subhead),
+                                        Text('Length: ${document['length']}', style:Theme.of(context).textTheme.subhead),
                                       ],
                                     ),
                                   );
@@ -219,7 +213,7 @@ class UserInfoList extends StatelessWidget{
     return new ClipPath(
       clipper: new DialogonalClipper(),
       child: new Image.asset(
-        'assets/images/pinkB.jpg',
+        'assets/images/biela.jpg',
         fit: BoxFit.fitWidth,
 //        height: _imageHeight,
       ),
@@ -274,14 +268,14 @@ class UserInfoList2 extends StatelessWidget{
     return StreamBuilder<QuerySnapshot>(
         stream: Firestore.instance.collection('items').where("userId", isEqualTo: userInfo.data['uid']).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+          if (snapshot.hasError) return new Text('Error: ${snapshot.error}', style:Theme.of(context).textTheme.subhead);
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
-              return Scaffold(body: new Text('Loading...'));
+              return Scaffold(body: new Text('Loading...', style:Theme.of(context).textTheme.subhead));
             default:
               return Scaffold(
                 appBar: AppBar(
-                  title: Text(userInfo['name']),
+                  title: Text(userInfo['name'], style:Theme.of(context).textTheme.subhead),
                 ),
                 body:
                new Center(
@@ -298,13 +292,13 @@ class UserInfoList2 extends StatelessWidget{
                                      width: 100.0,
                                      height: 100.0,
                                      decoration: BoxDecoration(
-                                         color: Colors.pink,
+                                         color: Theme.of(context).accentColor,
                                          image: DecorationImage(
                                              image: NetworkImage(userInfo.data['photoUrl']),
                                              fit: BoxFit.cover),
                                          borderRadius: BorderRadius.all(Radius.circular(75.0)),
                                          boxShadow: [
-                                           BoxShadow(blurRadius: 7.0, color: Colors.black)
+                                           BoxShadow(blurRadius: 7.0, color:Theme.of(context).buttonColor)
                                          ]
                                      ),
                                    ),
@@ -312,22 +306,20 @@ class UserInfoList2 extends StatelessWidget{
                                      children: <Widget>[
                                        Text(
                                            "User name: ",
-                                           style: new TextStyle(
-                                             //  fontSize: 30.0,
-                                               color: Colors.black,
-                                               fontFamily: 'DancingScript-Bold', //neberie
-                                               fontWeight: FontWeight.w400
-                                           ),
+                                         style: TextStyle(
+                                           fontSize: 15.0,
+                                           color: Colors.black,
+                                           fontWeight: FontWeight.w400,
+                                         ),
                                          ),
                                        Padding(padding: EdgeInsets.only(right: 10.0),),
                                        Text(
                                            userInfo.data['name'],
-                                           style: new TextStyle(
-                                             fontSize: 20.0,
-                                               color: Colors.black,
-                                               fontFamily: 'DancingScript-Bold', //neberie
-                                               fontWeight: FontWeight.w400
-                                           ),
+                                         style: TextStyle(
+                                           fontSize: 17.0,
+                                           color: Colors.black,
+                                           fontWeight: FontWeight.w400,
+                                         ),
                                          ),
                                      ],
                                    ),
@@ -336,23 +328,21 @@ class UserInfoList2 extends StatelessWidget{
                                         Text(
                                            "User email: ",
                                        textAlign: TextAlign.left,
-                                           style: new TextStyle(
-                                             //  fontSize: 30.0,
-                                               color: Colors.black,
-                                               fontFamily: 'DancingScript-Bold', //neberie
-                                               fontWeight: FontWeight.w400
-                                           ),
+                                          style: TextStyle(
+                                            fontSize: 15.0,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w400,
+                                          ),
                                          ),
                                         Padding(padding: EdgeInsets.only(right: 10.0),),
                                         Text(
                                            userInfo.data['email'],
                                            textAlign: TextAlign.left,
-                                           style: new TextStyle(
-                                                 fontSize: 15.0,
-                                               color: Colors.black,
-                                               fontFamily: 'DancingScript-Bold', //neberie
-                                               fontWeight: FontWeight.w400
-                                           ),
+                                          style: TextStyle(
+                                            fontSize: 17.0,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w400,
+                                          ),
                                          ),
                                      ],
                                    ),
@@ -361,7 +351,7 @@ class UserInfoList2 extends StatelessWidget{
                            ),
                        ],
                      ),
-                     Text('User\'s items: '),
+                     Text('User\'s items: ',),
                      Container(
                        height: 250,
                          child: ListView(
@@ -385,12 +375,12 @@ class UserInfoList2 extends StatelessWidget{
                                          ),
                                        )
                                    ),
-                                   title: Text(document['name']),
+                                   title: Text(document['name'], style:Theme.of(context).textTheme.subhead),
                                    children: <Widget>[
-                                     Text('Name: ${document['name']}'),
-                                     Text('Color: ${document['color']}'),
-                                     Text('Size: ${document['size']}'),
-                                     Text('Length: ${document['length']}'),
+                                     Text('Name: ${document['name']}', style:Theme.of(context).textTheme.subhead),
+                                     Text('Color: ${document['color']}', style:Theme.of(context).textTheme.subhead),
+                                     Text('Size: ${document['size']}',style:Theme.of(context).textTheme.subhead),
+                                     Text('Length: ${document['length']}',style:Theme.of(context).textTheme.subhead),
                                    ],
                                  ),
                                );

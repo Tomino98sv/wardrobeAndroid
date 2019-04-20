@@ -5,6 +5,7 @@ import 'package:flutter_app/bl/nutused/signIn.dart';
 import 'package:flutter_app/bl/nutused/hisMain.dart';
 import 'package:flutter_app/bl/videjko/loginpage.dart';
 import 'package:flutter_app/ui/homePage.dart';
+import 'package:flutter_app/ui/themes.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class QuickBee extends StatefulWidget {
@@ -23,7 +24,7 @@ class _QuickBeeState extends State<QuickBee> {
           debugPrint("already sign in");
           debugPrint(fuser.email);
           debugPrint(fuser.uid);
-          Navigator.push(context,  MaterialPageRoute(builder: (BuildContext context) => new HomePage()));
+          Navigator.pushReplacement(context,  MaterialPageRoute(builder: (BuildContext context) => new HomePage()));
 
         } else {
           debugPrint("continue to login");
