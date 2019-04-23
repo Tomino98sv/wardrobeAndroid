@@ -11,6 +11,7 @@ import 'package:flutter_app/bl/Pages/wardrobeTabbar.dart';
 import 'package:flutter_app/bl/mainLoginPage.dart';
 import 'package:flutter_app/bl/videjko/services/usermanagment.dart';
 import 'package:flutter_app/db/FirestoreManager.dart';
+import 'package:flutter_app/db/editItem.dart';
 import 'package:flutter_app/db/model/Item.dart';
 import 'package:flutter_app/db/userInfo.dart';
 import 'package:flutter_app/ui/homePage.dart';
