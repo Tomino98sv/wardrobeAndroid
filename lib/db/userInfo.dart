@@ -396,7 +396,7 @@ class UserInfoList2 extends StatelessWidget{
     return new ClipPath(
       clipper: new DialogonalClipper(),
       child: new Image.asset(
-        'assets/images/pinkB.jpg',
+        'assets/images/biela.jpg',
         fit: BoxFit.fitWidth,
 //        height: _imageHeight,
       ),
