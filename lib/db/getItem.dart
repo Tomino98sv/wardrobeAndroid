@@ -134,140 +134,156 @@ class _ShowDetails extends State<ShowDetails> {
                               )
                             ],
                           ),
-//                          Row(
-//                            children: <Widget>[
-//                              Padding(padding: EdgeInsets.only(top: 20.0),),
-//                            Expanded(child: Icon(Icons.account_circle)),
-//                            Expanded(
-//                              child: Text('Name: ',
-//                                style: new TextStyle(
-//                                    color: Colors.black,
-//                                    fontFamily: 'DancingScript-Bold', //neberie
-//                                    fontWeight: FontWeight.w400
-//                                ),),
-//                            ),
-//                            Expanded(
-//                                child: Text(snapshot.data['name'],
-//                              style: new TextStyle(
-//                                  fontSize: 20.0,
-//                                  color: Colors.black,
-//                                  fontFamily: 'DancingScript-Bold', //neberie
-//                                  fontWeight: FontWeight.w400
-//                              ),),)
-//                            ]
-//                          ),
-                          Padding(padding: EdgeInsets.only(top: 50.0),),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Icon(Icons.color_lens),
-                              ),
-                              Expanded(
-                                child: Text('Color: ',
-                                  style:Theme.of(context).textTheme.subhead),),
-                              Expanded(
-                                child: Text(snapshot.data['color'],
-                                    style:Theme.of(context).textTheme.subhead),
-                              )
-                            ],
-                          ),
-                          Padding(padding: EdgeInsets.only(bottom: 10.0),),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Icon(Icons.aspect_ratio),
-                              ),
-                              Expanded(
-                                child: Text('Size:',
-                                    style:Theme.of(context).textTheme.subhead),),
-                              Expanded(
-                                child: Text(snapshot.data['size'],
-                                    style:Theme.of(context).textTheme.subhead),
-                              )
-                            ],
-                          ),
-                          Padding(padding: EdgeInsets.only(bottom: 10.0),),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Icon(Icons.content_cut),
-                              ),
-                              Expanded(
-                                child: Text('Length:',
-                                    style:Theme.of(context).textTheme.subhead),),
-                              Expanded(
-                                child: Text(
-                                    snapshot.data['length'],
-                                    style:Theme.of(context).textTheme.subhead),
-                              )
-                            ],
-                          ),
-                          Padding(padding: EdgeInsets.only(bottom: 10.0),),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Icon(Icons.card_giftcard),
-                              ),
-                              Expanded(
-                                child: Text(snapshot.data['borrowName'] != ""?
-                                    'Lent To' :
-                                    'Can I get it?',
-                                    style:Theme.of(context).textTheme.subhead),),
-                              Expanded(
-                                child: Text(snapshot.data['borrowName'] != "" ?
-                                snapshot.data['borrowName'] :
-                                'Yes',
-                                    style:Theme.of(context).textTheme.subhead
-                                ),
-                              )
-                            ],
-                          ),
-                          Padding(padding: EdgeInsets.only(bottom: 10.0),),
+
+                          Padding(padding: EdgeInsets.only(top: 5.0),),
                           Container(
-                            child: (snapshot.data['request']=="sell" ||snapshot.data['request']=="buy")
-                            ? Row(
+                            padding: EdgeInsets.all(32.0),
+                            child: Column(
                               children: <Widget>[
-                                Expanded(
-                                  child: Icon(Icons.monetization_on),
+                                Row(
+                                  children: <Widget>[
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Icon(Icons.color_lens),
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Expanded(
+                                      child: Text('Color: ',
+                                          style:Theme.of(context).textTheme.subhead),),
+                                    Expanded(
+                                      child: Text(snapshot.data['color'],
+                                          style:Theme.of(context).textTheme.subhead),
+                                    )
+                                  ],
                                 ),
-                                Expanded(
-                                  child: Text("Price:", style:Theme.of(context).textTheme.subhead),
+                                Padding(padding: EdgeInsets.only(top: 10.0),),
+                                Row(
+                                  children: <Widget>[
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Icon(Icons.event_note),
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Expanded(
+                                      child: Text('Description: ',
+                                          style:Theme.of(context).textTheme.subhead),),
+                                    Expanded(
+                                      child: Container(),
+                                    )
+                                  ],
                                 ),
-                                Expanded(
-                                  child: Text(
-                                      snapshot.data['price'],
-                                      style:Theme.of(context).textTheme.subhead),
-                                )
-                              ],
-                            )
-                            : Container(),
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Icon(Icons.get_app),
-                              ),
-                              Expanded(
-                                child: RaisedButton(
-                                    child: Text(
-                                        seeButtonText(snapshot.data),
-                                        style:Theme.of(context).textTheme.subhead
+                                Padding(padding: EdgeInsets.only(bottom: 10.0),),
+                                Row(
+                                  children: <Widget>[
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Container(padding: EdgeInsets.only(right: 55.0),),
+                                    Expanded(
+                                      child: Text(snapshot.data['description'],
+                                          style:Theme.of(context).textTheme.subhead),
+                                    ),
+                                    Container(padding: EdgeInsets.only(left: 45.0),),
+                                  ],
+                                ),
+                                Padding(padding: EdgeInsets.only(bottom: 10.0),),
+                                Row(
+                                  children: <Widget>[
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Icon(Icons.aspect_ratio),
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Expanded(
+                                      child: Text('Size:',
+                                          style:Theme.of(context).textTheme.subhead),),
+                                    Expanded(
+                                      child: Text(snapshot.data['size'],
+                                          style:Theme.of(context).textTheme.subhead),
+                                    )
+                                  ],
+                                ),
+                                Padding(padding: EdgeInsets.only(bottom: 10.0),),
+                                Row(
+                                  children: <Widget>[
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Icon(Icons.content_cut),
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Expanded(
+                                      child: Text('Length:',
+                                          style:Theme.of(context).textTheme.subhead),),
+                                    Expanded(
+                                      child: Text(
+                                          snapshot.data['length'],
+                                          style:Theme.of(context).textTheme.subhead),
+                                    )
+                                  ],
+                                ),
+                                Padding(padding: EdgeInsets.only(bottom: 10.0),),
+                                Row(
+                                  children: <Widget>[
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Icon(Icons.card_giftcard),
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Expanded(
+                                      child: Text(snapshot.data['borrowName'] != ""?
+                                      'Lent To' :
+                                      'Can I get it?',
+                                          style:Theme.of(context).textTheme.subhead),),
+                                    Expanded(
+                                      child: Text(snapshot.data['borrowName'] != "" ?
+                                      snapshot.data['borrowName'] :
+                                      'Yes',
+                                          style:Theme.of(context).textTheme.subhead
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Padding(padding: EdgeInsets.only(bottom: 10.0),),
+                                Container(
+                                  child: (snapshot.data['request']=="sell" ||snapshot.data['request']=="buy")
+                                      ? Row(
+                                    children: <Widget>[
+                                      Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                      Icon(Icons.monetization_on),
+                                      Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                      Expanded(
+                                        child: Text("Price:", style:Theme.of(context).textTheme.subhead),
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                            snapshot.data['price'],
+                                            style:Theme.of(context).textTheme.subhead),
+                                      )
+                                    ],
+                                  )
+                                      : Container(),
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Icon(Icons.get_app),
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Expanded(
+                                      child: RaisedButton(
+                                          child: Text(
+                                              seeButtonText(snapshot.data),
+                                              style:Theme.of(context).textTheme.subhead
 //                                    requestButton == 1 ?
 //                                    "Ask to Borrow" : requestButton == 2 ?
 //                                    "Buy" : requestButton == 3 ?
 //                                    "Get for free" : (requestButton == 4 ||requestButton == 5)?
 //                                    "This item is currently taken" : "any"
+                                          ),
+                                          onPressed: (){
+                                            seeButtonText(snapshot.data);
+                                            if (seeButtonText(snapshot.data)!= "This item is currently taken""This item is currently taken")
+                                              giveBuySellBorrow(context, snapshot.data, user, userName);
+                                          }),
                                     ),
-                                    onPressed: (){
-                                      seeButtonText(snapshot.data);
-                                      if (seeButtonText(snapshot.data)!= "This item is currently taken""This item is currently taken")
-                                        giveBuySellBorrow(context, snapshot.data, user, userName);
-                                    }),
-                              ),
-                              Expanded(
-                                child: Text(""),
-                              )
-                            ],
+                                    Expanded(
+                                      child: Text(""),
+                                    )
+                                  ],
+                                ),
+
+
+
+
+                              ],
+                            ),
                           ),
                         ],
                       ),
