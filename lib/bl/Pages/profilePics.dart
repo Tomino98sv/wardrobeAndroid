@@ -105,7 +105,6 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return new Scaffold(
       appBar: AppBar(
         title: Text("Profile Picture"),
@@ -125,19 +124,15 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
                 width: 150.0,
                 child: Material(
                   borderRadius: BorderRadius.circular(20.0),
-                  shadowColor: Colors.pinkAccent,
-                  color: Colors.pink,
+                  shadowColor: Theme.of(context).accentColor,
+                  color: Theme.of(context).buttonColor,
                   elevation: 7.0,
                   child: FlatButton(
                     onPressed: getImage,
                     child: Center(
                       child: Text(
                           "Change Image",
-                          style: new TextStyle(
-                              fontSize: 15.0,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400
-                          )
+                          style:Theme.of(context).textTheme.subhead
                       ),
                     ),
                   ),
@@ -148,23 +143,19 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
                 width: 100.0,
                 height: 100.0,
                 decoration: BoxDecoration(
-                    color: Colors.pink,
+                    color: Theme.of(context).buttonColor,
                     image: DecorationImage(
                         image: newProfilePic==null?NetworkImage(profileUrlImg):FileImage(newProfilePic),
                         fit: BoxFit.cover),
                     borderRadius: BorderRadius.all(Radius.circular(75.0)),
                     boxShadow: [
-                      BoxShadow(blurRadius: 7.0, color: Colors.black)
+                      BoxShadow(blurRadius: 7.0, color: Theme.of(context).accentColor)
                     ]
                 ),
               ),
               SizedBox(height: 30.0),
               Text(
-                "${nameUser}",
-                style: new TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w400),
+                "${nameUser}", style:Theme.of(context).textTheme.subhead,
               ),
               SizedBox(height: 5.0),
               Form(
@@ -194,19 +185,15 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
           width: 150.0,
           child: Material(
             borderRadius: BorderRadius.circular(20.0),
-            shadowColor: Colors.pinkAccent,
-            color: Colors.pink,
+            shadowColor: Theme.of(context).accentColor,
+            color: Theme.of(context).buttonColor,
             elevation: 7.0,
             child: FlatButton(
               onPressed: appleChanges,
               child: Center(
                 child: Text(
                     "Apply changes",
-                    style: new TextStyle(
-                        fontSize: 15.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400
-                    )
+                    style:Theme.of(context).textTheme.subhead
                 ),
               ),
             ),
@@ -244,9 +231,9 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
 
   _showSnackBar(String str) {
     final snackBar = new SnackBar(
-      content: new Text(str),
+      content: new Text(str,style:Theme.of(context).textTheme.subhead),
       duration: new Duration(seconds: 3),
-      backgroundColor: Colors.black54,
+      backgroundColor: Theme.of(context).buttonColor,
       action: new SnackBarAction(
           label: 'Get Out',
           onPressed: () {
@@ -260,9 +247,9 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
 
   _showSnackBar2(String str) {
     final snackBar = new SnackBar(
-      content: new Text(str),
+      content: new Text(str,style:Theme.of(context).textTheme.subhead),
       duration: new Duration(seconds: 3),
-      backgroundColor: Colors.black54,
+      backgroundColor: Theme.of(context).buttonColor,
       action: new SnackBarAction(
           label: 'Notice',
           onPressed: () {

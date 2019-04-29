@@ -10,9 +10,6 @@ class MyAppSt extends StatelessWidget{
   Widget build(BuildContext context) {
     return  new MaterialApp(
       title: "Firebase Storage",
-      theme: new ThemeData(
-        primarySwatch: Colors.amber,
-      ),
       home: new MyStoragePage2(),
     );
   }

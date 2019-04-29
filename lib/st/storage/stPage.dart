@@ -110,7 +110,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
         children: <Widget>[
          new Center(
             child: sampleImage == null && sampleImage2 == null
-                ? Text('Select an Image')
+                ? Text('Select an Image',style:Theme.of(context).textTheme.subhead)
                 : sampleImage != null ? enableUpload() : enableUpload2(),
          ),
           new Row(
@@ -168,7 +168,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
                     width: 100.0,
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text('Confirm',style: TextStyle(color: Colors.white),),
+                    child: Text('Confirm',style:Theme.of(context).textTheme.subhead,),
                   ),
                 ),
               ),
@@ -201,7 +201,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
                     width: 100.0,
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text('Confirm',style: TextStyle(color: Colors.white),),
+                    child: Text('Confirm',style:Theme.of(context).textTheme.subhead,),
                   ),
                 ),
               ),

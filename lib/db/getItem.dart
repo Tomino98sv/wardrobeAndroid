@@ -55,14 +55,14 @@ class _ShowDetails extends State<ShowDetails> {
         //shows items from Firebase
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+          if (snapshot.hasError) return new Text('Error: ${snapshot.error}',style:Theme.of(context).textTheme.subhead);
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
-              return Scaffold(body: new Text('Loading...'));
+              return Scaffold(body: new Text('Loading...',style:Theme.of(context).textTheme.subhead));
             default:
               return new Scaffold(
                 appBar: new AppBar(
-                  title: new Text(snapshot.data['name']),
+                  title: new Text(snapshot.data['name'],style:Theme.of(context).textTheme.subhead),
                 ),
                 body: SingleChildScrollView(
                   child: new Container(
@@ -134,158 +134,156 @@ class _ShowDetails extends State<ShowDetails> {
                               )
                             ],
                           ),
-//                          Row(
-//                            children: <Widget>[
-//                              Padding(padding: EdgeInsets.only(top: 20.0),),
-//                            Expanded(child: Icon(Icons.account_circle)),
-//                            Expanded(
-//                              child: Text('Name: ',
-//                                style: new TextStyle(
-//                                    color: Colors.black,
-//                                    fontFamily: 'DancingScript-Bold', //neberie
-//                                    fontWeight: FontWeight.w400
-//                                ),),
-//                            ),
-//                            Expanded(
-//                                child: Text(snapshot.data['name'],
-//                              style: new TextStyle(
-//                                  fontSize: 20.0,
-//                                  color: Colors.black,
-//                                  fontFamily: 'DancingScript-Bold', //neberie
-//                                  fontWeight: FontWeight.w400
-//                              ),),)
-//                            ]
-//                          ),
-                          Padding(padding: EdgeInsets.only(top: 50.0),),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Icon(Icons.color_lens),
-                              ),
-                              Expanded(
-                                child: Text('Color: ',
-                                  style: new TextStyle(
-                                      fontSize: 20.0,
-                                      color: Colors.black,
-                                      fontFamily: 'DancingScript-Bold', //neberie
-                                      fontWeight: FontWeight.w400
-                                  ),),),
-                              Expanded(
-                                child: Text(snapshot.data['color'],
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )),
-                              )
-                            ],
-                          ),
-                          Padding(padding: EdgeInsets.only(bottom: 10.0),),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Icon(Icons.aspect_ratio),
-                              ),
-                              Expanded(
-                                child: Text('Size:',
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )),),
-                              Expanded(
-                                child: Text(snapshot.data['size'],
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )),
-                              )
-                            ],
-                          ),
-                          Padding(padding: EdgeInsets.only(bottom: 10.0),),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Icon(Icons.content_cut),
-                              ),
-                              Expanded(
-                                child: Text('Length:',
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )),),
-                              Expanded(
-                                child: Text(
-                                    snapshot.data['length'],
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )),
-                              )
-                            ],
-                          ),
-                          Padding(padding: EdgeInsets.only(bottom: 10.0),),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Icon(Icons.card_giftcard),
-                              ),
-                              Expanded(
-                                child: Text(snapshot.data['borrowName'] != ""?
-                                    'Lent To' :
-                                    'Can I get it?',
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )),),
-                              Expanded(
-                                child: Text(snapshot.data['borrowName'] != "" ?
-                                snapshot.data['borrowName'] :
-                                'Yes',
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
+
+                          Padding(padding: EdgeInsets.only(top: 5.0),),
+                          Container(
+                            padding: EdgeInsets.all(32.0),
+                            child: Column(
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Icon(Icons.color_lens),
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Expanded(
+                                      child: Text('Color: ',
+                                          style:Theme.of(context).textTheme.subhead),),
+                                    Expanded(
+                                      child: Text(snapshot.data['color'],
+                                          style:Theme.of(context).textTheme.subhead),
                                     )
+                                  ],
                                 ),
-                              )
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Icon(Icons.get_app),
-                              ),
-                              Expanded(
-                                child: RaisedButton(
-                                    child: Text(
-                                        seeButtonText(snapshot.data)
+                                Padding(padding: EdgeInsets.only(top: 10.0),),
+                                Row(
+                                  children: <Widget>[
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Icon(Icons.event_note),
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Expanded(
+                                      child: Text('Description: ',
+                                          style:Theme.of(context).textTheme.subhead),),
+                                    Expanded(
+                                      child: Container(),
+                                    )
+                                  ],
+                                ),
+                                Padding(padding: EdgeInsets.only(bottom: 10.0),),
+                                Row(
+                                  children: <Widget>[
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Container(padding: EdgeInsets.only(right: 55.0),),
+                                    Expanded(
+                                      child: Text(snapshot.data['description'],
+                                          style:Theme.of(context).textTheme.subhead),
+                                    ),
+                                    Container(padding: EdgeInsets.only(left: 45.0),),
+                                  ],
+                                ),
+                                Padding(padding: EdgeInsets.only(bottom: 10.0),),
+                                Row(
+                                  children: <Widget>[
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Icon(Icons.aspect_ratio),
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Expanded(
+                                      child: Text('Size:',
+                                          style:Theme.of(context).textTheme.subhead),),
+                                    Expanded(
+                                      child: Text(snapshot.data['size'],
+                                          style:Theme.of(context).textTheme.subhead),
+                                    )
+                                  ],
+                                ),
+                                Padding(padding: EdgeInsets.only(bottom: 10.0),),
+                                Row(
+                                  children: <Widget>[
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Icon(Icons.content_cut),
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Expanded(
+                                      child: Text('Length:',
+                                          style:Theme.of(context).textTheme.subhead),),
+                                    Expanded(
+                                      child: Text(
+                                          snapshot.data['length'],
+                                          style:Theme.of(context).textTheme.subhead),
+                                    )
+                                  ],
+                                ),
+                                Padding(padding: EdgeInsets.only(bottom: 10.0),),
+                                Row(
+                                  children: <Widget>[
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Icon(Icons.card_giftcard),
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Expanded(
+                                      child: Text(snapshot.data['borrowName'] != ""?
+                                      'Lent To' :
+                                      'Can I get it?',
+                                          style:Theme.of(context).textTheme.subhead),),
+                                    Expanded(
+                                      child: Text(snapshot.data['borrowName'] != "" ?
+                                      snapshot.data['borrowName'] :
+                                      'Yes',
+                                          style:Theme.of(context).textTheme.subhead
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Padding(padding: EdgeInsets.only(bottom: 10.0),),
+                                Container(
+                                  child: (snapshot.data['request']=="sell" ||snapshot.data['request']=="buy")
+                                      ? Row(
+                                    children: <Widget>[
+                                      Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                      Icon(Icons.monetization_on),
+                                      Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                      Expanded(
+                                        child: Text("Price:", style:Theme.of(context).textTheme.subhead),
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                            snapshot.data['price'],
+                                            style:Theme.of(context).textTheme.subhead),
+                                      )
+                                    ],
+                                  )
+                                      : Container(),
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Icon(Icons.get_app),
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
+                                    Expanded(
+                                      child: RaisedButton(
+                                          child: Text(
+                                              seeButtonText(snapshot.data),
+                                              style:Theme.of(context).textTheme.subhead
 //                                    requestButton == 1 ?
 //                                    "Ask to Borrow" : requestButton == 2 ?
 //                                    "Buy" : requestButton == 3 ?
 //                                    "Get for free" : (requestButton == 4 ||requestButton == 5)?
 //                                    "This item is currently taken" : "any"
+                                          ),
+                                          onPressed: (){
+                                            seeButtonText(snapshot.data);
+                                            if (seeButtonText(snapshot.data)!= "This item is currently taken""This item is currently taken")
+                                              giveBuySellBorrow(context, snapshot.data, user, userName);
+                                          }),
                                     ),
-                                    onPressed: (){
-                                      seeButtonText(snapshot.data);
-                                      giveBuySellBorrow(context, snapshot.data, user, userName);
-                                    }),
-                              ),
-                              Expanded(
-                                child: Text(""),
-                              )
-                            ],
+                                    Expanded(
+                                      child: Text(""),
+                                    )
+                                  ],
+                                ),
+
+
+
+
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -301,13 +299,14 @@ class _ShowDetails extends State<ShowDetails> {
     return new ClipPath(
       clipper: new DialogonalClipper(),
       child: new Image.asset(
-        'assets/images/pinkB.jpg',
+        'assets/images/biela.jpg',
         fit: BoxFit.fitWidth,
 //        height: _imageHeight,
       ),
     );
   }
 
+  //nebude vidno
   String seeButtonText(DocumentSnapshot snapshot) {
 
     debugPrint(snapshot.data['request']);
@@ -318,6 +317,8 @@ class _ShowDetails extends State<ShowDetails> {
         case ("borrow"):
           return "Ask to Borrow"; break;
         case ("sell"):
+          return "Buy dress"; break;
+        case ("buy"):
           return "Buy dress"; break;
         case ("giveaway"):
           return "Get for free"; break;
@@ -331,13 +332,13 @@ class _ShowDetails extends State<ShowDetails> {
 Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, FirebaseUser user, String userName) {
 
 
-  if (item.data['borrowName']=="" && item.data['request'] != "borrow"){
+  if (item.data['borrowName']=="" && item.data['request'] == ""){
     return showDialog(
       context: context,
       builder: (context){
         return AlertDialog(
-          title: Text("Borrow Request"),
-          content: Text("I would like to borrow this dress"),
+          title: Text("Borrow Request",style:Theme.of(context).textTheme.subhead),
+          content: Text("I would like to borrow this dress",style:Theme.of(context).textTheme.subhead),
           actions: <Widget>[
             FlatButton(
               child: Text("Confirm"),
@@ -345,11 +346,11 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                 showDialog(context: context,
                 builder: (BuildContext context){
                   return AlertDialog(
-                    title: Text("Request sent"),
-                    content: Text("The request has been sent!"),
+                    title: Text("Request sent",style:Theme.of(context).textTheme.subhead),
+                    content: Text("The request has been sent!",style:Theme.of(context).textTheme.subhead),
                     actions: <Widget>[
                       FlatButton(
-                        child: Text("OK"),
+                        child: Text("OK",style:Theme.of(context).textTheme.subhead),
                         onPressed: (){
                           Firestore.instance.runTransaction((transaction) async {
                             await transaction.set(Firestore.instance.collection("requestBorrow").document(), {
@@ -376,7 +377,7 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
               },
             ),
             FlatButton(
-              child: Text("Cancel"),
+              child: Text("Cancel",style:Theme.of(context).textTheme.subhead),
               onPressed: (){
                 Navigator.pop(context);
               },
@@ -391,11 +392,12 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
       context: context,
       builder: (context){
         return AlertDialog(
-          title: Text("Borrow Request"),
-          content: Text("There is at least 1 other user who requested to borrow this dress. Would you like to send your request anyway?"),
+          title: Text("Borrow Request",style:Theme.of(context).textTheme.subhead),
+          content: Text("There is at least 1 other user who requested to borrow this dress. Would you like to send your request anyway?",
+              style:Theme.of(context).textTheme.subhead),
           actions: <Widget>[
             FlatButton(
-              child: Text("Send"),
+              child: Text("Send", style:Theme.of(context).textTheme.subhead),
               onPressed: (){
                 var count = 0;
                 Firestore.instance.collection('requestBorrow').where('itemID', isEqualTo: item.documentID).getDocuments().then((foundDoc){
@@ -408,11 +410,11 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                     showDialog(context: context,
                         builder: (BuildContext context){
                           return AlertDialog(
-                            title: Text("Request sent"),
-                            content: Text("The request has been sent!"),
+                            title: Text("Request sent", style:Theme.of(context).textTheme.subhead),
+                            content: Text("The request has been sent!", style:Theme.of(context).textTheme.subhead),
                             actions: <Widget>[
                               FlatButton(
-                                child: Text("OK"),
+                                child: Text("OK",style:Theme.of(context).textTheme.subhead),
                                 onPressed: (){
                                   Firestore.instance.runTransaction((transaction) async {
                                     await transaction.set(Firestore.instance.collection("requestBorrow").document(), {
@@ -436,30 +438,148 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                         });
 //                    Navigator.pop(context);
                   }
-                  else {
-                    showDialog(context: context,
-                    builder: (BuildContext context){
-                      return AlertDialog(
-                        title: Text("Request not sent"),
-                        content: Text("You have already asked for this item"),
-                        actions: <Widget>[
-                          FlatButton(
-                            child: Text("OK"),
-                            onPressed: (){
-                              Navigator.pop(context);
-                            },
-                          )
-                        ],
-                      );
-                    });
-                  }
-
+                  else
+                    requestAlreadySent(context);
                 });
 
               },
             ),
             FlatButton(
-              child: Text("Cancel"),
+              child: Text("Cancel", style:Theme.of(context).textTheme.subhead),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+  else if (item.data['request'] == "giveaway"){
+    return showDialog(
+      context: context,
+      builder: (context){
+        return AlertDialog(
+          title: Text("Get for free",style:Theme.of(context).textTheme.subhead),
+          content: Text("I would like to get this dress for free",style:Theme.of(context).textTheme.subhead),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Confirm"),
+              onPressed: (){
+                var count2 = 0;
+                Firestore.instance.collection('requestGiveaway').where('itemID', isEqualTo: item.documentID).getDocuments().then((foundDoc) {
+                  for (DocumentSnapshot ds in foundDoc.documents) {
+                    if (ds['applicant'] == user.uid) {
+                      count2++;
+                    }
+                  }
+
+                  if (count2 ==0){
+                    showDialog(context: context,
+                        builder: (BuildContext context){
+                          return AlertDialog(
+                            title: Text("Request sent",style:Theme.of(context).textTheme.subhead),
+                            content: Text("The request has been sent!",style:Theme.of(context).textTheme.subhead),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text("OK",style:Theme.of(context).textTheme.subhead),
+                                onPressed: (){
+                                  Firestore.instance.runTransaction((transaction) async {
+                                    await transaction.set(Firestore.instance.collection("requestGiveaway").document(), {
+                                      'applicant': user.uid,
+                                      'respondent': item.data['userId'],
+                                      'itemID': item.documentID,
+                                      'itemName': item.data['name'],
+                                      'applicantName': userName
+                                    });
+                                  });
+                                  debugPrint(user.uid);
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                },
+                              )
+                            ],
+                          );
+                        });
+                  }
+                  else
+                    requestAlreadySent(context);
+                });
+
+
+              },
+            ),
+            FlatButton(
+              child: Text("Cancel",style:Theme.of(context).textTheme.subhead),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+  else if (item.data['request'] == "sell" || item.data['request'] == "buy"){
+    return showDialog(
+      context: context,
+      builder: (context){
+        return AlertDialog(
+          title: Text("Buy item",style:Theme.of(context).textTheme.subhead),
+          content: Text("I would like to buy this dress \nfor ${item.data['price']} eur",style:Theme.of(context).textTheme.subhead),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Confirm", style:Theme.of(context).textTheme.subhead),
+              onPressed: (){
+                var count1 = 0;
+                Firestore.instance.collection('requestBuy').where('itemID', isEqualTo: item.documentID).getDocuments().then((foundDoc){
+                  for (DocumentSnapshot ds in foundDoc.documents){
+                    if (ds['applicant'] == user.uid){
+                      count1++;
+                    }
+                  }
+
+                  if(count1 ==0){
+                    showDialog(context: context,
+                        builder: (BuildContext context){
+                          return AlertDialog(
+                            title: Text("Request sent",style:Theme.of(context).textTheme.subhead),
+                            content: Text("The request has been sent!",style:Theme.of(context).textTheme.subhead),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text("OK",style:Theme.of(context).textTheme.subhead),
+                                onPressed: (){
+                                  Firestore.instance.runTransaction((transaction) async {
+                                    await transaction.set(Firestore.instance.collection("requestBuy").document(), {
+                                      'applicant': user.uid,
+                                      'respondent': item.data['userId'],
+                                      'itemID': item.documentID,
+                                      'itemName': item.data['name'],
+                                      'applicantName': userName,
+                                      'price': item.data['price']
+                                    });
+                                  });
+
+                                  Firestore.instance.collection('items').document(item.documentID)
+                                      .updateData({"request": "buy"});
+                                  debugPrint(user.uid);
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                },
+                              )
+                            ],
+                          );
+                        });
+                  }
+                  else
+                    requestAlreadySent(context);
+                });
+              },
+            ),
+            FlatButton(
+              child: Text("Cancel",style:Theme.of(context).textTheme.subhead),
               onPressed: (){
                 Navigator.pop(context);
               },
@@ -470,7 +590,25 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
     );
   }
 
+
   return null;
 
+}
+Widget requestAlreadySent(BuildContext context){
+  showDialog(context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text("Request not sent",style:Theme.of(context).textTheme.subhead),
+          content: Text("You have already asked for this item", style:Theme.of(context).textTheme.subhead),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("OK",style:Theme.of(context).textTheme.subhead),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      });
 }
 

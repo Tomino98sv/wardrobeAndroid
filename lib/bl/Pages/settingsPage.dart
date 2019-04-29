@@ -16,6 +16,7 @@ class _SettingsPageState extends State<SettingsPage>{
   ThemeSwitcher inheritedThemeSwitcher;
   bool note = false;
   bool click = false;
+  bool mode = false;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class _SettingsPageState extends State<SettingsPage>{
     return new Scaffold(
       appBar: new AppBar(
         title: Text(
-            "Settings"
+            "Settings",style:Theme.of(context).textTheme.subhead
         ),
       ),
       body: Container(
@@ -31,15 +32,23 @@ class _SettingsPageState extends State<SettingsPage>{
           children: <Widget>[
             Row(
               children: <Widget>[
-                new Text("Changing color of app"),
+                new Text("Changing color of app",style:Theme.of(context).textTheme.subhead),
                 new Switch(
                   value: click ,
                   onChanged: (bool valueOfClick) => changingColor(valueOfClick),
                 ),
              ],),
+            Row(
+              children: <Widget>[
+                new Text("Dark mode",style:Theme.of(context).textTheme.subhead),
+                new Switch(
+                  value: mode,
+                  onChanged: (bool valueOfMode) => darkMode(valueOfMode),
+                ),
+              ],),
              Row(
               children: <Widget>[
-                new Text("Turn on the notifications"),
+                new Text("Turn on the notifications",style:Theme.of(context).textTheme.subhead),
                 new Switch(
                     value: note,
                     onChanged: (bool valueOfNote) => setNotifications(valueOfNote),
@@ -80,20 +89,21 @@ class _SettingsPageState extends State<SettingsPage>{
 
     DemoTheme _buildPinkTheme() {
     return DemoTheme(
-        'light',
+        'pink',
         new ThemeData(
-        primaryColor: Colors.pink[400],
-        scaffoldBackgroundColor: Colors.grey[50],
-        accentColor: Colors.pink[400],
-        buttonColor: Colors.pink,
-        fontFamily: 'Quicksand',
-        indicatorColor: Colors.blueGrey,
+            primaryColor: Colors.pink[400],
+            scaffoldBackgroundColor: Colors.grey[50],
+            accentColor: Colors.pink[400],
+            buttonColor: Colors.pink,
+            fontFamily: 'Quicksand',
+            indicatorColor: Colors.blueGrey,
+            brightness: Brightness.light,
     ));
   }
 
   DemoTheme _buildBlueTheme() {
     return DemoTheme(
-        'dark',
+        'blue',
         new ThemeData(
           primaryColor: Colors.blue[400],
           scaffoldBackgroundColor: Colors.grey[50],
@@ -101,9 +111,27 @@ class _SettingsPageState extends State<SettingsPage>{
           buttonColor: Colors.blue,
           toggleableActiveColor: Colors.lightBlue,
           unselectedWidgetColor: Colors.blueAccent,
-//          splashColor: Colors.lightBlue,
           fontFamily: 'Quicksand',
           indicatorColor: Colors.blueGrey,
+          brightness: Brightness.light,
+          textTheme: TextTheme(button: TextStyle(color: Colors.white))
+        ));
+  }
+
+
+  DemoTheme _buildDarkMode() {
+    return DemoTheme(
+        'dark',
+        new ThemeData(
+            textTheme: TextTheme(subhead: TextStyle(color: Colors.white),),
+            primaryColor: Colors.black,
+            scaffoldBackgroundColor: Colors.black,
+            accentColor: Colors.black45,
+            buttonColor: Colors.white12,
+            toggleableActiveColor: Colors.black54,
+            unselectedWidgetColor: Colors.black45,
+            fontFamily: 'Quicksand',
+            indicatorColor: Colors.black54,
         ));
   }
 
@@ -117,6 +145,20 @@ class _SettingsPageState extends State<SettingsPage>{
         inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildPinkTheme());
         valueOfClick =false;
         click = false;
+      }
+    });
+  }
+
+  void darkMode(bool valueOfMode){
+    setState(() {
+      if(valueOfMode){
+        inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildDarkMode());
+        valueOfMode = true;
+        mode = true;
+      } else {
+       inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildPinkTheme());
+        valueOfMode =false;
+        mode = false;
       }
     });
   }

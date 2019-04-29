@@ -51,48 +51,48 @@ class _ItemsListState extends State<ItemsList> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('items').snapshots(),
       //shows items from Firebase
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+        if (snapshot.hasError) return new Text('Error: ${snapshot.error}', style:Theme.of(context).textTheme.subhead);
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return new Text('Loading...');
+            return new Text('Loading...',style:Theme.of(context).textTheme.subhead);
           default:
-            return new ListView(
-              children:
-              snapshot.data.documents.map((DocumentSnapshot document) {
-                Item item = Item(
-                    name: document['name'],
-                    color: document['color'],
-                    size: document['size'],
-                    length: document['length'],
-                    photoUrl: document['photo_url'],
-                    id: document.documentID,
-                    borrowName: document['borrowName']
-                );
-                if(document['userId']!=userCurrent.uid){
-                  return Slidable(
-                    delegate: new SlidableDrawerDelegate(),
-                    actionExtentRatio: 0.25,
-                    child: new ExpansionTile(
-                      leading: Container(
-                        width: 46.0,
-                        height: 46.0,
-                        child: item.photoUrl == null || item.photoUrl == ""
-                            ? Icon(Icons.broken_image)
-                            : ZoomableWidget(
-                            minScale: 1.0,
-                            maxScale: 2.0,
-                            // default factor is 1.0, use 0.0 to disable boundary
-                            panLimit: 0.0,
-                            bounceBackBoundary: true,
-                            child: CachedNetworkImage(
-                              imageUrl: item.photoUrl,
-                              placeholder: (context, imageUrl) => CircularProgressIndicator(),
-                            ),
+            return Scaffold(
+              body: new ListView(
+                children:
+                snapshot.data.documents.map((DocumentSnapshot document) {
+                  Item item = Item(
+                      name: document['name'],
+                      color: document['color'],
+                      size: document['size'],
+                      length: document['length'],
+                      photoUrl: document['photo_url'],
+                      id: document.documentID,
+                      borrowName: document['borrowName']
+                  );
+                  if(document['userId']!=userCurrent.uid){
+                    return Slidable(
+                      delegate: new SlidableDrawerDelegate(),
+                      actionExtentRatio: 0.25,
+                      child: new ExpansionTile(
+                        leading: Container(
+                          width: 46.0,
+                          height: 46.0,
+                          child: item.photoUrl == null || item.photoUrl == ""
+                              ? Icon(Icons.broken_image)
+                              : ZoomableWidget(
+                              minScale: 1.0,
+                              maxScale: 2.0,
+                              // default factor is 1.0, use 0.0 to disable boundary
+                              panLimit: 0.0,
+                              bounceBackBoundary: true,
+                              child: CachedNetworkImage(
+                                imageUrl: item.photoUrl,
+                                placeholder: (context, imageUrl) => CircularProgressIndicator(),
+                              ),
 //                              image: AdvancedNetworkImage(
 //                                  item.photoUrl,
 //                                  useDiskCache: true,
@@ -104,80 +104,81 @@ class _ItemsListState extends State<ItemsList> {
 //                              ),
 //                              placeholder: CircularProgressIndicator(),
 //                              duration: Duration(milliseconds: 300),)
+                          ),
                         ),
-                      ),
-                      title: new Text(item.name),
+                        title: new Text(item.name, style:Theme.of(context).textTheme.subhead),
 //                  subtitle: new Text(document['color']),
-                      children: <Widget>[
-                        new Text("Name: ${item.name}"),
-                        new Text("Color: ${item.color}"),
-                        new Text("Size: ${item.size}"),
-                        new Text("Length: ${item.length}"),
-                        new Text(document['borrowedTo'] == ""  || document['borrowedTo'] == null ?
-                        '' :
-                        'Borrowed to : ${item.borrowName}'),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Flexible(
-                              fit: FlexFit.tight,
-                              child: Container(
-                                child: InkWell(
-                                  onTap: (){ Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                        return ShowDetails(item: document, user: userCurrent, userName: userName);
+                        children: <Widget>[
+                          new Text("Name: ${item.name}", style:Theme.of(context).textTheme.subhead),
+                          new Text("Color: ${item.color}",  style:Theme.of(context).textTheme.subhead),
+                          new Text("Size: ${item.size}",style:Theme.of(context).textTheme.subhead),
+                          new Text("Length: ${item.length}",style:Theme.of(context).textTheme.subhead),
+                          new Text(document['borrowedTo'] == ""  || document['borrowedTo'] == null ?
+                          '' :
+                          'Borrowed to : ${item.borrowName}', style:Theme.of(context).textTheme.subhead),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Flexible(
+                                fit: FlexFit.tight,
+                                child: Container(
+                                  child: InkWell(
+                                    onTap: (){ Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                          return ShowDetails(item: document, user: userCurrent, userName: userName);
 //                            return SecondRoute(item: document); //tu je predchadzajuci kod
-                                      }));
-                                  debugPrint("idem dalej");},
-                                  child: Container(
-                                    decoration: new BoxDecoration(
-                                      color: Theme.of(context).accentColor,
-                                      borderRadius: new BorderRadius.circular(30.0),
+                                        }));
+                                    debugPrint("idem dalej");},
+                                    child: Container(
+                                      decoration: new BoxDecoration(
+                                        color: Theme.of(context).buttonColor,
+                                        borderRadius: new BorderRadius.circular(30.0),
+                                      ),
+                                      margin: EdgeInsets.all(10.0),
+                                      height: 40.0,
+                                      alignment: Alignment.center,
+                                      child: Text('GET dress',style:Theme.of(context).textTheme.subhead,),
                                     ),
-                                    margin: EdgeInsets.all(10.0),
-                                    height: 40.0,
-                                    alignment: Alignment.center,
-                                    child: Text('GET dress',style: TextStyle(color: Colors.white),),
                                   ),
                                 ),
                               ),
-                            ),
-                            Flexible(
-                              fit: FlexFit.tight,
-                              child: Container(
-                                child: InkWell(
-                                  onTap: (){
-                                    Firestore.instance.collection('users').where("uid", isEqualTo: document['userId']).snapshots().listen((user){
-                                      debugPrint(document['userId']);
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) {
-                                            return UserInfoList2(userInfo: user.documents?.first);
-                                          }));
-                                    });// kod s vyberom userov Navigator.push},
-                                  },
-                                  child: Container(
-                                    decoration: new BoxDecoration(
-                                      color: Theme.of(context).accentColor,
-                                      borderRadius: new BorderRadius.circular(30.0),
+                              Flexible(
+                                fit: FlexFit.tight,
+                                child: Container(
+                                  child: InkWell(
+                                    onTap: (){
+                                      Firestore.instance.collection('users').where("uid", isEqualTo: document['userId']).snapshots().listen((user){
+                                        debugPrint(document['userId']);
+                                        Navigator.push(context,
+                                            MaterialPageRoute(builder: (context) {
+                                              return UserInfoList2(userInfo: user.documents?.first);
+                                            }));
+                                      });// kod s vyberom userov Navigator.push},
+                                    },
+                                    child: Container(
+                                      decoration: new BoxDecoration(
+                                        color: Theme.of(context).buttonColor,
+                                        borderRadius: new BorderRadius.circular(30.0),
+                                      ),
+                                      margin: EdgeInsets.all(10.0),
+                                      height: 40.0,
+                                      alignment: Alignment.center,
+                                      child: Text('Owner Details', style:Theme.of(context).textTheme.subhead,),
                                     ),
-                                    margin: EdgeInsets.all(10.0),
-                                    height: 40.0,
-                                    alignment: Alignment.center,
-                                    child: Text('Owner Details', style: TextStyle(color: Colors.white),),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                }else{
-                  return Container();
-                }
-              }).toList(),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  }else{
+                    return Container();
+                  }
+                }).toList(),
+              ),
             );
         }
       },
@@ -200,16 +201,17 @@ class UserList extends StatelessWidget {
           if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
-              return new Text('Loading...');
+              return new Text('Loading...',style:Theme.of(context).textTheme.subhead);
             default:
               return Scaffold(
                   appBar: AppBar(
-                  title: Text("Fashonistats"),),
+                  title: Text("Fashonistats"),
+                  ),
                 body: new ListView(
                     children: snapshot.data.documents
                         .map((DocumentSnapshot document) {
                   return ListTile(
-                    trailing: Icon(Icons.send,color: Theme.of(context).accentColor),
+                    trailing: Icon(Icons.send,color: Theme.of(context).buttonColor),
                     title: Text(document['name']),
                     onTap: () {
                       //kod ktory urci usra, ktoremu bolo pozicane
@@ -244,227 +246,6 @@ class DialogonalClipper extends CustomClipper<Path> {
   bool shouldReclip(CustomClipper<Path> oldClipper) => true;
 }
 
-//editing item screen
-class EditItem extends StatefulWidget {
-  DocumentSnapshot item;
-
-  EditItem({@required this.item});
-
-  _State createState() => new _State(item: item);
-}
-
-class _State extends State<EditItem> {
-  DocumentSnapshot item;
-
-  _State({@required this.item}) {
-    docName = item['name'];
-    docColor = item['color'];
-    docSize = item['size'];
-    docLength = item['length'];
- //   docImage = item['photo_url'];
-  }
-
-  String docName = '';
-  String docColor = '';
-  String docSize = '';
-  String docLength = '';
-
-
-  void _onChangedName(String value) {
-    setState(() => docName = '$value');
-  }
-
-  void _onChangedColor(String value) {
-    setState(() => docColor = '$value');
-  }
-
-  void _onChangedSize(String value) {
-    setState(() => docSize = '$value');
-  }
-
-  void _onChangedLength(String value) {
-    setState(() => docLength = '$value');
-  }
-
-
-//
-//  void _onSubmit(String value) {
-//    setState(() => docName = 'Submit: $value');
-//  }
-
-  var _sizes = ['34', '36', '38', '40', '42', '44', '46', '48'];
-  var _currentItemSelected = '38';
-  var _length = ['Mini', 'Midi', 'Maxi', 'Oversize'];
-  var _currentLengthSelected = 'Midi';
-
-
-
-
-
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Edit Item'),
-      ),
-      body: SingleChildScrollView(
-        child: new Container(
-          padding: new EdgeInsets.all(32.0),
-          child: new Center(
-            child: new Column(
-              children: <Widget>[
-                Container(
-                  width: 200.0,
-                  height: 200.0,
-                  child: new ZoomableWidget(
-                      minScale: 1.0,
-                      maxScale: 2.0,
-                      // default factor is 1.0, use 0.0 to disable boundary
-                      panLimit: 0.0,
-                      bounceBackBoundary: true,
-                      child: CachedNetworkImage(
-                        imageUrl: item['photo_url'],
-                        placeholder: (context, imageUrl) => CircularProgressIndicator(),
-                      ),
-//                      child: TransitionToImage(
-//                        image: AdvancedNetworkImage(
-//                          item['photo_url'],
-//                          useDiskCache: true,
-//                          cacheRule: CacheRule(maxAge: const Duration(days: 7)),
-//                        ),
-//                        placeholder: CircularProgressIndicator(),
-//                        duration: Duration(milliseconds: 300),
-//                      )),
-                ),),
-                changeImageItem(item: item),
-                new TextField(
-                  decoration: new InputDecoration(
-                      labelText: item['name'],
-                      icon: new Icon(Icons.account_circle,
-                          color: Colors.black)),
-                  onChanged: _onChangedName,
-                ),
-                new TextField(
-                  decoration: new InputDecoration(
-                      labelText: item['color'],
-                      icon:
-                          new Icon(Icons.color_lens, color: Colors.black)),
-                  onChanged: _onChangedColor,
-                ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Icon(Icons.aspect_ratio,
-                    color: Colors.black),
-                    ),
-                    Expanded(
-                      child: Text(
-                        'Size:'
-                      ),
-                    ),
-                    Expanded(
-                      child: DropdownButton(
-                          items: _sizes.map((String dropDownStringItem){
-                            return DropdownMenuItem<String>(
-                              value: dropDownStringItem,
-                              child: Text(dropDownStringItem),
-                            );
-                          }).toList(),
-                          onChanged: (String newValueSelected) {
-                            setState(() {
-                              this._currentItemSelected = newValueSelected;
-                              docSize = newValueSelected;
-                            });
-                            _onChangedSize(docSize);
-                          },
-                        //value: _currentItemSelected,
-                       value: _currentItemSelected == item['size'].toString() ? item['size'].toString() : docSize
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Icon(Icons.content_cut,
-                          color: Colors.black),
-                    ),
-                    Expanded(
-                      child: Text(
-                          'Length:'
-                      ),
-                    ),
-                    Expanded(
-                      child: DropdownButton(
-                        items: _length.map((String dropDownStringItem) {
-                          return DropdownMenuItem<String>(
-                            value: dropDownStringItem,
-                            child: Text(dropDownStringItem),
-                          );
-                        }).toList(),
-                        onChanged: (String newValueSelected) {
-                          setState(() {
-                            this._currentLengthSelected = newValueSelected;
-                            docLength = newValueSelected;
-                          });
-                          _onChangedLength(docLength);
-                        },
-                        value: _currentLengthSelected == item['length'].toString() ? item['length'].toString() : docLength
-//                        value: item['length'].toString(),
-//                      value: _currentLengthSelected,
-                      ),
-                    ),
-                  ],
-                ),
-                  Container(
-                    child: InkWell(
-                      onTap:() {  if (docName != '') {
-                  Firestore.instance
-                      .collection('items')
-                      .document(item.documentID)
-                      .updateData({"name": docName});
-                  debugPrint("zmenil som meno");
-                  }
-                      if (docColor != '') {
-          Firestore.instance
-              .collection('items')
-              .document(item.documentID)
-              .updateData({"color": docColor});
-          debugPrint("zmenil som farbu");
-          }
-              if (docSize != '') {
-        Firestore.instance
-            .collection('items')
-            .document(item.documentID)
-            .updateData({"size": docSize});
-        debugPrint("zmenil som velkost");
-        }
-            if (docLength != '') {
-      Firestore.instance
-          .collection('items')
-          .document(item.documentID)
-          .updateData({"length": docLength});
-      debugPrint("zmenil som dlzku");
-
-      }
-          Navigator.pop(context);},
-                      child: Container(
-                          decoration: new BoxDecoration(
-                           color: Theme.of(context).accentColor,
-                            borderRadius: new BorderRadius.circular(30.0),
-                          ),
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
-                          child: Text('Send',style: TextStyle(color: Colors.white),),
-                ),),),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 //searching bar
 class ItemsListSearch extends SearchDelegate<ItemsList> {
   var items = Firestore.instance.collection('items').snapshots();
@@ -495,7 +276,32 @@ class ItemsListSearch extends SearchDelegate<ItemsList> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
+          stream: items,
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: Text("No  data", style:Theme.of(context).textTheme.subhead),
+              );
+            }
+            final results = snapshot.data.documents
+                .where((a) => a['name'].toLowerCase().contains(query));
+
+            return ListView(
+              children: results.map(
+                (DocumentSnapshot document) {
+                },
+              ).toList(),
+            );
+          }),
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
         stream: items,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
@@ -504,66 +310,30 @@ class ItemsListSearch extends SearchDelegate<ItemsList> {
             );
           }
           final results = snapshot.data.documents
-              .where((a) => a['name'].toLowerCase().contains(query));
-
+              .where((a) => a['name'].startsWith(query))
+              .toList();
+          //a.documentID.toLowerCase().contains(query));
           return ListView(
-            children: results.map(
-              (DocumentSnapshot document) {
-                Item item = Item(
-                    name: document['name'],
-                    color: document['color'],
-                    size: document['size'],
-                    length: document['length'],
-                    photoUrl: document['photo_url'],
-                    id: document.documentID);
-              },
-            ).toList(),
+            children: results
+                .map<ListTile>((a) => ListTile(
+                      title: Text(a['name'],
+                          style: Theme.of(context).textTheme.subhead.copyWith(
+                                fontSize: 16.0,
+                                color: Colors.black,
+                              )),
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return ShowDetails(
+                            item: a,
+                          );
+                        }));
+                      },
+                    ))
+                .toList(),
           );
-        });
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: items,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) {
-          return Center(
-            child: Text("No  data"),
-          );
-        }
-        final results = snapshot.data.documents
-            .where((a) => a['name'].startsWith(query))
-            .toList();
-        //a.documentID.toLowerCase().contains(query));
-        return ListView(
-          children: results
-              .map<ListTile>((a) => ListTile(
-                    title: Text(a['name'],
-                        style: Theme.of(context).textTheme.subhead.copyWith(
-                              fontSize: 16.0,
-                              color: Colors.black,
-                            )),
-                    onTap: () {
-//                 close(context, a);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-//                 return ShowDetails(item: Item(name: a['name'],
-//                   color: a['color'],
-//                   size: a['size'],
-//                   length: a['length'],
-//                   photoUrl: a['photo_url'],
-//                   id: a.documentID
-//                 ));
-                        return ShowDetails(
-                          item: a,
-                        );
-                      }));
-                    },
-                  ))
-              .toList(),
-        );
-      },
+        },
+      ),
     );
   }
 }
@@ -589,43 +359,135 @@ class UserListHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-        stream: Firestore.instance.collection('users').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return new Text('Loading...');
-            default:
-              return Scaffold(
-                body: new ListView(
-                          children: snapshot.data.documents
-                              .map((DocumentSnapshot document) {
-                            return ListTile(
-                              leading:  CachedNetworkImage(
-                                imageUrl: document['photoUrl'],
-                                height: 42.0,
-                                width: 42.0,
-                                placeholder: (context, imageUrl) => CircularProgressIndicator(),
-                              ),
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
+          stream: Firestore.instance.collection('users').snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return new Text('Loading...');
+              default:
+                return Scaffold(
+                  body: new ListView(
+                            children: snapshot.data.documents
+                                .map((DocumentSnapshot document) {
+                              return ListTile(
+                                leading:  CachedNetworkImage(
+                                  imageUrl: document['photoUrl'],
+                                  height: 42.0,
+                                  width: 42.0,
+                                  placeholder: (context, imageUrl) => CircularProgressIndicator(),
+                                ),
 //                              leading: Image.network(
 //                                  document['photoUrl'],
 //                              height: 42.0,
 //                                  width: 42.0,),
-                              trailing: Icon(Icons.send, color: Theme.of(context).accentColor,),
-                              title: Text(document['name']),
-                              onTap: () {
-                                //kod ktory urci usra, ktoremu bolo pozicane
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                      return UserInfoList2(userInfo: document);
-                                    }));
-                              },
-                            );
-                          }).toList()),
-              );
-          }
-        });
+                                trailing: Icon(Icons.send, color: Theme.of(context).buttonColor,),
+                                title: Text(document['name'], style: Theme.of(context).textTheme.subhead,),
+                                onTap: () {
+                                  //kod ktory urci usra, ktoremu bolo pozicane
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                        return UserInfoList2(userInfo: document);
+                                      }));
+                                },
+                              );
+                            }).toList()),
+                );
+            }
+          }),
+    );
+  }
+}
+
+//searching bar
+class UserListSearch extends SearchDelegate<UserList> {
+  var users = Firestore.instance.collection('users').snapshots();
+
+  UserListSearch(this.users);
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
+    ];
   }
 
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
+          stream: users,
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: Text("No  data", style:Theme.of(context).textTheme.subhead),
+              );
+            }
+            final results = snapshot.data.documents
+                .where((a) => a['name'].toUpperCase().contains(query));
+
+            return ListView(
+              children: results.map(
+                    (DocumentSnapshot document) {}
+              ).toList(),
+            );
+          }),
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
+        stream: users,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: Text("No  data"),
+            );
+          }
+          final results = snapshot.data.documents
+              .where((a) => a['name'].startsWith(query))
+              .toList();
+          //a.documentID.toLowerCase().contains(query));
+          return ListView(
+            children: results
+                .map<ListTile>((a) => ListTile(
+              title: Text(a['name'],
+                  style: Theme.of(context).textTheme.subhead.copyWith(
+                    fontSize: 16.0,
+                    color: Colors.black,
+                  )),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) {
+                      return UserInfoList2(
+                        userInfo: a,
+                      );
+                    }));
+              },
+            ))
+                .toList(),
+          );
+        },
+      ),
+    );
+  }
 }
