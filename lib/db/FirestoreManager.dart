@@ -349,9 +349,11 @@ class Item {
   var borrowedTo = "";
   var borrowName = "";
   var request = "";
+  var description = "";
   
 
-  Item({this.name, this.color, this.size, this.length, this.photoUrl, this.id, this.userid, this.borrowedTo, this.borrowName, this.request});
+  Item({this.name, this.color, this.size, this.length, this.photoUrl, this.id, this.userid, this.borrowedTo, this.borrowName, this.request, this.description
+  });
 
 }
 

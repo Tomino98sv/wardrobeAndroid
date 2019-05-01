@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/Pages/settingsPage.dart';
 import 'package:flutter_app/bl/Pages/welcome.dart';
 import 'package:flutter_app/bl/mainLoginPage.dart';
+import 'package:flutter_app/db/allDressesList.dart';
 import 'package:flutter_app/db/model/Item.dart';
 import 'package:flutter_app/db/FirestoreManager.dart';
 import 'package:flutter_app/deals/dealsHome.dart';
@@ -24,7 +25,8 @@ class _HomeState extends State<HomePage> {
   final _options =[
     WelcomePage(),
 //    MyStoragePage2(),
-    ItemsList(),
+//    ItemsList()
+    AllDressesList(),
     NotificationsPage(),
     DealsPage(),
     UserListHome()
@@ -77,19 +79,19 @@ class _HomeState extends State<HomePage> {
               );
             },
           ),
-          _page!=0? Container() :
-          PopupMenuButton<String>(
-            onSelected: choiceAction,
-            offset: Offset(0, 100),
-            itemBuilder: (BuildContext context){
-              return Constants.choices.map((String choice){
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(choice, style: TextStyle(color: Colors.black),),
-                );
-              }).toList();
-            }
-          ),
+//          _page!=0? Container() :
+//          PopupMenuButton<String>(
+//            onSelected: choiceAction,
+//            offset: Offset(0, 100),
+//            itemBuilder: (BuildContext context){
+//              return Constants.choices.map((String choice){
+//                return PopupMenuItem<String>(
+//                  value: choice,
+//                  child: Text(choice, style: TextStyle(color: Colors.black),),
+//                );
+//              }).toList();
+//            }
+//          ),
         ],
       ),
       body: Container(
