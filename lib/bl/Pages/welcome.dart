@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:flutter_advanced_networkimage/zoomable.dart';
+import 'package:flutter_app/bl/Pages/menu.dart';
 import 'package:flutter_app/bl/Pages/profilePics.dart';
 import 'package:flutter_app/bl/Pages/wardrobeTabbar.dart';
 import 'package:flutter_app/bl/mainLoginPage.dart';
@@ -33,8 +34,6 @@ class _WelcomePageState extends State<WelcomePage>
   FirebaseUser user2;
   double _imageHeight = 248.0;
   TabController _tabController;
-  String profileUrlImg="";
-
 
   @override
   void initState() {
@@ -46,10 +45,6 @@ class _WelcomePageState extends State<WelcomePage>
             .collection('users')
             .where('uid', isEqualTo: user2.uid)
             .snapshots();
-
-        snapshot.listen((QuerySnapshot data){
-          profileUrlImg = data.documents[0]['photoUrl'];
-        });
       });
     });
     _tabController = new TabController(length: 3, vsync: this);
@@ -86,29 +81,6 @@ class _WelcomePageState extends State<WelcomePage>
                                   return Text("Loading data ... wait please",style:Theme.of(context).textTheme.subhead);
                                 return Row(
                                   children: <Widget>[
-                                    InkWell(
-                                      child: Container(
-                                        width: 65.0,
-                                        height: 65.0,
-                                        decoration: BoxDecoration(
-                                            color: Theme.of(context).accentColor,
-                                            image: DecorationImage(
-                                                image: NetworkImage(profileUrlImg),
-                                                fit: BoxFit.cover),
-                                            borderRadius: BorderRadius.all(Radius.circular(75.0)),
-                                            boxShadow: [
-                                              BoxShadow(blurRadius: 7.0, color: Colors.black)
-                                            ]
-                                        ),
-                                      ),
-                                      onTap: (){
-                                        add();
-                                        debugPrint("funguje klikanie na fotku");
-                                      },
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 10.0),
-                                    ),
                                     Column(
                                       children: <Widget>[
                                         Text(
@@ -132,6 +104,7 @@ class _WelcomePageState extends State<WelcomePage>
                                         ),
                                       ],
                                     ),
+                                    AnimatedFab()
                                   ],
                                 );
                               },
@@ -551,13 +524,17 @@ class _WelcomePageState extends State<WelcomePage>
   }
 
   Widget _buildIamge() {
-    return new ClipPath(
-      clipper: new DialogonalClipper(),
-      child: new Image.asset(
-        'assets/images/biela.jpg',
-        fit: BoxFit.fitWidth,
-        //     height: _imageHeight,
+    return Container(
+      width: double.maxFinite,
+      height: 200.0,
+      child: new ClipPath(
+        clipper: new DialogonalClipper(),
+        child: new Image.asset(
+          'assets/images/biela.jpg',
+          fit: BoxFit.fitWidth,
+          //     height: _imageHeight,
 
+        ),
       ),
     );
   }
@@ -576,6 +553,8 @@ class _WelcomePageState extends State<WelcomePage>
         .then((_) => print('Successfully deleted $filePath storage item'));
   }
 }
+
+
 
 class DialogonalClipper extends CustomClipper<Path> {
   @override
@@ -636,14 +615,7 @@ class Constants {
   ];
 }
 
-Widget add() {
-  return new Container(
-    child: FloatingActionButton(
-      onPressed: null,
-      tooltip: 'Add',
-      child: Icon(Icons.add),
-    ),
-  );
-}
+
+
 
 
