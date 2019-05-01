@@ -45,11 +45,6 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
         .animate(_animationController);
   }
 
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +57,10 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
           return Stack(
               children: <Widget>[
                 _buildExpandedBackground(),
-                _buildOption(Icons.perm_identity, 0.0,profile() ),
-                _buildOption(Icons.notifications, -math.pi / 3,notifications()),
-                _buildOption(Icons.settings, -2 * math.pi / 3,settings()),
-                _buildOption(Icons.power_settings_new, math.pi,logOut()),
+                _buildOption(Icons.perm_identity, 0.0, ),
+                _buildOption(Icons.notifications, -math.pi / 3,),
+                _buildOption(Icons.settings, -2 * math.pi / 3, ),
+                _buildOption(Icons.power_settings_new, math.pi, ),
                 _menuImage(),
               ],
           );
@@ -128,10 +123,7 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
     }
   }
 
-  Widget _buildOption(IconData icon, double angle, Function function) {
-    if (_animationController.isDismissed) {
-      return Container();
-    }
+  Widget _buildOption(IconData icon, double angle,) {
     double iconSize = 0.0;
     if (_animationController.value > 0.8) {
       iconSize = 26.0 * (_animationController.value - 0.8) * 5;
@@ -143,7 +135,7 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
         child: new Padding(
           padding: new EdgeInsets.only(top: 5.0,right: 3.0),
           child: new IconButton(
-            onPressed: _onIconClick(function),
+            onPressed: _onClicked(),
             icon: new Transform.rotate(
               angle: -angle,
               child: new Icon(
@@ -180,8 +172,8 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
 
   profile(){}
 
-  _onIconClick(Function function) {
-    widget.onClick();
-    function();
+  _onClicked(){
+    widget.onClick;
   }
+
 }
