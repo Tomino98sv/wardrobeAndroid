@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
+import 'package:flutter_app/bl/Pages/chatPage/chat.dart';
 import 'package:flutter_app/db/FirestoreManager.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -12,7 +13,6 @@ class UserInfoList extends StatelessWidget{
   double _imageHeight = 500.0;
 
   UserInfoList({@required this.userInfo, this.itemInfo});
-
 
 // ten list, ktory sa zobrazi ked si vyberiem borrow item
   @override
@@ -263,6 +263,7 @@ class UserInfoList2 extends StatelessWidget{
 
   UserInfoList2({@required this.userInfo});
 
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -351,6 +352,18 @@ class UserInfoList2 extends StatelessWidget{
                            ),
                        ],
                      ),
+                   new RaisedButton(
+                     child: const Text('Chat'),
+                     color: Theme.of(context).accentColor,
+                     elevation: 4.0,
+                     splashColor: Colors.blueGrey,
+                     onPressed: () {
+                       Navigator.push(
+                           context,
+                           MaterialPageRoute(builder: (context) => ChatPage(userInfo.data["email"])
+                           ));
+                     },
+                   ),
                      Text('User\'s items: ',),
                      Container(
                        height: 250,

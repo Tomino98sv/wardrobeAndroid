@@ -1,46 +1,30 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<head>
-<meta charset="UTF-8">
-<title> Sign in </title>
-<link rel="stylesheet" type="text/css" href="login.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="login.js" charset="utf-8"></script>
-</head>
-<body>
-<!--
-<h2> Sign in </h2>
-<button onclick="document.getElementById('id01').style.display='block'" > Sign in </button>
-<div id="id01" class="modal">
-<form class="modal-content animate" action="/action_page.php">
-<div class="imgcontainer">
-<span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close">&times;</span>
-</div>
--->
+  <head>
+    <meta charset="UTF-8">
+    <title> Sign in </title>
+    <link rel="stylesheet" type="text/css" href="login.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="login.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <script src="https://www.gstatic.com/firebasejs/5.11.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.11.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.11.1/firebase-database.js"></script>
 <div class="container">
 <h1> Sign in </h1>
-<label for="email">
-<b> Email address </b>
-</label>
+  <label for="email">
+    <b> Email address </b>
+  </label>
 <input type="email" placeholder="Enter email address." name="email" required>
-<label for="password">
-<b> Password </b>
-</label>
+  <label for="password">
+    <b> Password </b>
+  </label>
 <input type="password" placeholder="Enter password." name="password" required>
-<!--
-<label>
-<br/>
-<input type="checkbox" name="remember"> Remember me.
-</label>
--->
 </div>
 <div class="container">
-<button type="submit"> Sign in
-</button>
-<button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn"> Sign up
-</button>
+  <button type="submit"> Sign in </button>
+  <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn"> Sign up </button>
 </div>
-</form>
-</div>
-</body>
+  </body>
 </html>
