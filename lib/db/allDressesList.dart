@@ -55,7 +55,7 @@ class _DressesListState extends State<AllDressesList> {
               body: new GridView.count(
                 padding: EdgeInsets.only(top: 16.0),
                 crossAxisCount: 3,
-                crossAxisSpacing: 2.0,
+                crossAxisSpacing: 12.0,
                 mainAxisSpacing: 12.0,
                 children:
                     snapshot.data.documents.map((DocumentSnapshot document) {
@@ -71,29 +71,41 @@ class _DressesListState extends State<AllDressesList> {
                   );
                   if (document['userId'] != userCurrent.uid) {
                     return GestureDetector(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: new BorderRadius.only(
-                            topLeft: new Radius.elliptical(40.0, 10.0),
-                            bottomLeft: new Radius.circular(20.0),
+                      child: Material(
+                        color: Colors.white,
+                        shadowColor: Colors.grey,
+                        elevation: 14.0,
+                        borderRadius: BorderRadius.circular(24.0),
+
+
+
+                        child: Container(
+//                        decoration: BoxDecoration(
+//                          borderRadius: new BorderRadius.only(
+//                            topLeft: new Radius.elliptical(40.0, 10.0),
+//                            bottomLeft: new Radius.circular(20.0),
+//                          ),
+//                          boxShadow: [
+//                            new BoxShadow(
+//                              color: Colors.black12,
+//                              offset: new Offset(20.0, 10.0),
+//                              blurRadius: 20.0,
+//                            )
+//                          ],
+//                        ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: item.photoUrl == null || item.photoUrl == ""
+                                ? Icon(Icons.broken_image)
+                                : CachedNetworkImage(
+                                    imageUrl: item.photoUrl,
+                                    fit: BoxFit.cover,
+                                    alignment: Alignment.topLeft,
+
+                                    placeholder: (context, imageUrl) =>
+                                        CircularProgressIndicator(),
+                                  ),
                           ),
-                          boxShadow: [
-                            new BoxShadow(
-                              color: Colors.black12,
-                              offset: new Offset(20.0, 10.0),
-                              blurRadius: 20.0,
-                            )
-                          ],
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.elliptical(32.0, 20.0)),
-                          child: item.photoUrl == null || item.photoUrl == ""
-                              ? Icon(Icons.broken_image)
-                              : CachedNetworkImage(
-                                  imageUrl: item.photoUrl,
-                                  placeholder: (context, imageUrl) =>
-                                      CircularProgressIndicator(),
-                                ),
                         ),
                       ),
                       onTap: (){
