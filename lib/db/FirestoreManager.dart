@@ -392,7 +392,7 @@ class UserListHome extends StatelessWidget {
 //                                  document['photoUrl'],
 //                              height: 42.0,
 //                                  width: 42.0,),
-                                  trailing: Icon(Icons.info,color: Theme.of(context).buttonColor),
+                                  trailing: Icon(Icons.info_outline,color: Theme.of(context).buttonColor),
                                 title: Text(document['name'], style: Theme.of(context).textTheme.subhead,),
                                 onTap: () {
                                   //kod ktory urci usra, ktoremu bolo pozicane
