@@ -6,9 +6,7 @@ class ChatPage extends StatefulWidget {
 
   final String emailTarget;
 
-  ChatPage(this.emailTarget){
-    debugPrint("TERGET EMAIL JE "+emailTarget);
-  }
+  ChatPage(this.emailTarget);
 
   @override
   _ChatPageState createState() => new _ChatPageState();
@@ -17,6 +15,9 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
 
   final _controller = TextEditingController();
+
+  String documentIDcurrent;
+  CollectionReference refToSub;
 
   String nameUser;
   String emailUser;
@@ -32,16 +33,6 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
 
-    Future<bool> doesCollectionAlreadyExist(String name) async {
-      final QuerySnapshot result = await Firestore.instance
-          .collection(name)
-          .getDocuments();
-      final List<DocumentSnapshot> documents = result.documents;
-      debugPrint("POCET DOCUMENTOV V SNAPSHOTE ${documents.length}");
-      debugPrint("existuje?  ${documents.length != 0}");
-      return documents.length != 0;
-    }
-
     FirebaseAuth.instance.currentUser().then((fUser) {
       setState(() {
         user = fUser;
@@ -54,7 +45,6 @@ class _ChatPageState extends State<ChatPage> {
 //          profileUrlImg = data.documents[0]['photoUrl'];
           emailUser = data.documents[0]['email'];
           nameUser = data.documents[0]['name'];
-          debugPrint("PRVY MAIL JE "+emailUser);
         });
 
         Stream<QuerySnapshot> snapshotOfTarget = Firestore.instance
@@ -69,26 +59,20 @@ class _ChatPageState extends State<ChatPage> {
           bool prva;
           bool druha;
           doesCollectionAlreadyExist("${emailUser}_${emailUserTarget}")
-              .then((value){prva=value;debugPrint("Value v calle prva: ${value}");})
+              .then((value){prva=value;})
               .then((value){
-            doesCollectionAlreadyExist("${emailUserTarget}_${emailUser}").then((value){druha=value;debugPrint("Value v calle druha: ${value}");})
+            doesCollectionAlreadyExist("${emailUserTarget}_${emailUser}").then((value){druha=value;})
                 .then((value){
-              debugPrint("prva: po inite: ${prva}");
-              debugPrint("prva: po inite: ${druha}");
 
               if(prva==true){
-                debugPrint("${emailUser}_${emailUserTarget}   TATO EXISTUJE");
                 collname="${emailUser}_${emailUserTarget}";
               }else if(druha==true){
-                debugPrint("${emailUserTarget}_${emailUser}  TATO EXISTUJE");
                 collname="${emailUserTarget}_${emailUser}";
               }else{
-                debugPrint("${emailUserTarget}_${emailUser}  ziadna neexistuje tuto vytvaram");
                 collname="${emailUserTarget}_${emailUser}";
               }
             });
           });
-
         });
       });
     });
@@ -107,7 +91,9 @@ class _ChatPageState extends State<ChatPage> {
               Flexible(
                 child: StreamBuilder<QuerySnapshot>(
                   stream: Firestore.instance
-                      .collection("${collname}")
+                      .collection('chat')
+                      .document("${documentIDcurrent}")
+                      .collection(collname)
                       .orderBy("created_at", descending: true)
                       .snapshots(),
                   builder: (context, snapshot) {
@@ -198,21 +184,61 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  _handleSubmit(String message) {
+  _handleSubmit(String message) async {
     _controller.text = "";
-    var db = Firestore.instance;
-    db.collection("${collname}").add({
-      "user_email": emailUser,
-      "user_name": nameUser,
-      "message": message,
-      "created_at": DateTime.now()
-    }).then((val) {
-      print("sucess");
-    }).catchError((err) {
-      print(err);
-    });
+
+    if(refToSub==null){
+      var db = Firestore.instance;
+      db.collection("chat").add({
+        "room":collname,
+      }).then((val) {
+        print("sucess coll doc  ${val.documentID}");
+        documentIDcurrent=val.documentID;
+        Firestore.instance.collection("chat").document("${val.documentID}").collection("${collname}").add({
+          "user_email": emailUser,
+          "user_name": nameUser,
+          "message": message,
+          "created_at": DateTime.now()
+        }).then((value){
+          print("sucess subcoll doc ${value.documentID}");
+        });
+      }).catchError((err) {
+        print(err);
+      });
+      refToSub=Firestore.instance.collection("chat").document("${documentIDcurrent}").collection(collname);
+    }else{
+      refToSub.add({
+        "user_email": emailUser,
+        "user_name": nameUser,
+        "message": message,
+        "created_at": DateTime.now()
+      }).then((value){
+        print("ELSE sucess subcoll doc ${value.documentID}");
+      }).catchError((err){
+        print(err);
+      });
+    }
   }
 
+  Future<bool> doesCollectionAlreadyExist(String name) async {
 
+     final QuerySnapshot docId = await Firestore.instance
+        .collection("chat")
+        .where('room', isEqualTo: name)
+        .getDocuments();
+     final List<DocumentSnapshot> documents = docId.documents;
+
+     if(documents.length != 0){
+       refToSub = Firestore.instance.collection("chat").document("${documents[0].documentID}").collection(name);
+       documentIDcurrent="${documents[0].documentID}";
+     }
+     return documents.length != 0;
+
+//    final QuerySnapshot result = await Firestore.instance
+//        .collection(name)
+//        .getDocuments();
+//    final List<DocumentSnapshot> documents = result.documents;
+//    return documents.length != 0;
+  }
 
 }
