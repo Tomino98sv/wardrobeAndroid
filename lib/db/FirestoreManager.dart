@@ -205,7 +205,7 @@ class UserList extends StatelessWidget {
             default:
               return Scaffold(
                   appBar: AppBar(
-                  title: Text("Fashonistats"),
+                  title: Text("Fashionistas"),
                   ),
                 body: new ListView(
                     children: snapshot.data.documents

@@ -24,6 +24,7 @@ class _GiveawayApplicants extends State<GiveawayApplicants> {
   int counter=0;
 
   _GiveawayApplicants(
+
       {@required this.requestedItem, @required context, @required this.currentUser});
 
   @override
