@@ -81,23 +81,6 @@ class _ShowDetails extends State<ShowDetails> {
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: <Widget>[
-//                                        Icon(Icons.account_circle),
-//                                        Padding(padding: EdgeInsets.only(right: 10.0),),
-//                                        Text('Name: ',
-//                                          style: new TextStyle(
-//                                            color: Colors.black,
-//                                            fontFamily: 'DancingScript-Bold', //neberie
-//                                            fontWeight: FontWeight.w400
-//                                        ),),
-//                                        Padding(padding: EdgeInsets.only(right: 10.0),),
-//                                        Text(snapshot.data['name'],
-//                                          style: new TextStyle(
-//                                            fontSize: 20.0,
-//                                            color: Colors.black,
-//                                            fontFamily: 'DancingScript-Bold', //neberie
-//                                            fontWeight: FontWeight.w400
-//                                        ),),
-//                                        Padding(padding: EdgeInsets.only(right: 10.0),),
                                         Container(
                                           width: 200.0,
                                           height: 200.0,
@@ -111,20 +94,6 @@ class _ShowDetails extends State<ShowDetails> {
                                               imageUrl: snapshot.data['photo_url'],
                                               placeholder: (context, imageUrl) => CircularProgressIndicator(),
                                             ),
-//                                            child: TransitionToImage(
-//                                              image: AdvancedNetworkImage(
-//                                                  snapshot.data['photo_url'],
-//                                                  useDiskCache: true,
-//                                                  timeoutDuration: Duration(seconds: 7),
-//                                                  cacheRule: CacheRule(
-//                                                      maxAge: const Duration(days: 7)),
-////                                              fallbackAssetImage: 'assets/images/error_image.png',
-//                                                  fallbackAssetImage: 'assets/images/image_error.png',
-//                                                  retryLimit: 0
-//                                              ),
-//                                              placeholder: CircularProgressIndicator(),
-//                                              duration: Duration(milliseconds: 300),
-//                                            ),
                                           ),
                                         )
                                       ],
@@ -261,15 +230,10 @@ class _ShowDetails extends State<ShowDetails> {
                                           child: Text(
                                               seeButtonText(snapshot.data),
                                               style:Theme.of(context).textTheme.subhead
-//                                    requestButton == 1 ?
-//                                    "Ask to Borrow" : requestButton == 2 ?
-//                                    "Buy" : requestButton == 3 ?
-//                                    "Get for free" : (requestButton == 4 ||requestButton == 5)?
-//                                    "This item is currently taken" : "any"
                                           ),
                                           onPressed: (){
                                             seeButtonText(snapshot.data);
-                                            if (seeButtonText(snapshot.data)!= "This item is currently taken""This item is currently taken")
+                                            if (seeButtonText(snapshot.data)!= "N/A")
                                               giveBuySellBorrow(context, snapshot.data, user, userName);
                                           }),
                                     ),
@@ -313,19 +277,19 @@ class _ShowDetails extends State<ShowDetails> {
     if(snapshot.data['borrowName'] == "" || snapshot.data['borrowName'] == null) {
       switch (snapshot.data['request']) {
         case (""):
-          return "Ask to Borrow";break;
+          return "Borrow";break;
         case ("borrow"):
-          return "Ask to Borrow"; break;
+          return "Borrow"; break;
         case ("sell"):
           return "Buy dress"; break;
         case ("buy"):
           return "Buy dress"; break;
         case ("giveaway"):
-          return "Get for free"; break;
+          return "For free"; break;
       }
     }
     else
-      return "This item is currently taken";
+      return "N/A";
   }
 }
 
