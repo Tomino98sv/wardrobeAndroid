@@ -53,12 +53,14 @@ class _DressesListState extends State<AllDressesList> {
           default:
             return Scaffold(
               body: new GridView.count(
-                padding: EdgeInsets.only(top: 16.0),
+                padding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
                 crossAxisCount: 3,
                 crossAxisSpacing: 12.0,
                 mainAxisSpacing: 12.0,
                 children:
-                    snapshot.data.documents.map((DocumentSnapshot document) {
+                    snapshot.data.documents
+                        .where((doc) => doc["userId"] != userCurrent.uid)
+                        .map((DocumentSnapshot document) {
                   Item item = Item(
                       name: document['name'],
                       color: document['color'],
@@ -69,44 +71,42 @@ class _DressesListState extends State<AllDressesList> {
                       borrowName: document['borrowName'],
                       description: document['description'],
                   );
-                  if (document['userId'] != userCurrent.uid) {
                     return GestureDetector(
                       child: Material(
                         color: Colors.white,
                         shadowColor: Colors.grey,
                         elevation: 14.0,
                         borderRadius: BorderRadius.circular(24.0),
-
-
-
-                        child: Container(
-//                        decoration: BoxDecoration(
-//                          borderRadius: new BorderRadius.only(
-//                            topLeft: new Radius.elliptical(40.0, 10.0),
-//                            bottomLeft: new Radius.circular(20.0),
-//                          ),
-//                          boxShadow: [
-//                            new BoxShadow(
-//                              color: Colors.black12,
-//                              offset: new Offset(20.0, 10.0),
-//                              blurRadius: 20.0,
-//                            )
-//                          ],
-//                        ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10.0),
-                            child: item.photoUrl == null || item.photoUrl == ""
-                                ? Icon(Icons.broken_image)
-                                : CachedNetworkImage(
-                                    imageUrl: item.photoUrl,
-                                    fit: BoxFit.cover,
-                                    alignment: Alignment.topLeft,
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: <Widget>[
+                                item.photoUrl == null || item.photoUrl == ""
+                                    ? Icon(Icons.broken_image)
+                                    : CachedNetworkImage(
+                                  imageUrl: item.photoUrl,
+                                  fit: BoxFit.cover,
+                                  alignment: Alignment.topLeft,
 
-                                    placeholder: (context, imageUrl) =>
-                                        CircularProgressIndicator(),
+                                  placeholder: (context, imageUrl) =>
+                                      CircularProgressIndicator(),
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Container(
+                                    width: double.maxFinite,
+                                    height: 26.0,
+                                    padding: EdgeInsets.symmetric(vertical: 4.0,horizontal: 16.0),
+                                    color: Color(0x66000000),
+                                    alignment: Alignment.bottomCenter,
+                                    child: Text(document['name'],style: TextStyle(color: Colors.white),),
                                   ),
+                                )
+                              ],
+
+                            ),
                           ),
-                        ),
                       ),
                       onTap: (){
                         showDialog(
@@ -169,9 +169,6 @@ class _DressesListState extends State<AllDressesList> {
                       }
                       ,
                     );
-                  } else {
-                    return Container();
-                  }
                 }).toList(),
               ),
             );
