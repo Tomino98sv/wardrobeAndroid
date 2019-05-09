@@ -205,13 +205,20 @@ class UserList extends StatelessWidget {
             default:
               return Scaffold(
                   appBar: AppBar(
-                  title: Text("Fashonistats"),
+                  title: Text("Fashionistas"),
                   ),
                 body: new ListView(
                     children: snapshot.data.documents
                         .map((DocumentSnapshot document) {
                   return ListTile(
-                    trailing: Icon(Icons.send,color: Theme.of(context).buttonColor),
+                    leading: CachedNetworkImage(
+                      imageUrl: document['photoUrl'],
+                      height: 42.0,
+                      width: 42.0,
+                      placeholder: (context, imageUrl) => CircularProgressIndicator(),
+                    ),
+                    trailing:
+                        Icon(Icons.info,color: Theme.of(context).buttonColor),
                     title: Text(document['name']),
                     onTap: () {
                       //kod ktory urci usra, ktoremu bolo pozicane
@@ -385,7 +392,7 @@ class UserListHome extends StatelessWidget {
 //                                  document['photoUrl'],
 //                              height: 42.0,
 //                                  width: 42.0,),
-                                trailing: Icon(Icons.send, color: Theme.of(context).buttonColor,),
+                                  trailing: Icon(Icons.info_outline,color: Theme.of(context).buttonColor),
                                 title: Text(document['name'], style: Theme.of(context).textTheme.subhead,),
                                 onTap: () {
                                   //kod ktory urci usra, ktoremu bolo pozicane

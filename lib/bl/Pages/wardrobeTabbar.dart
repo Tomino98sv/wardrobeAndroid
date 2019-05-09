@@ -20,17 +20,17 @@ class _WardrobeTabBarState extends State<WardrobeTabBar> {
     return Row(
       children: <WardrobeTab>[
         WardrobeTab(
-          text: 'My Items',
+          text: 'My Dresses',
           position: 0,
           controller: _tabController,
         ),
         WardrobeTab(
-          text: 'Borrowed To',
+          text: 'Lent To',
           position: 1,
           controller: _tabController,
         ),
         WardrobeTab(
-          text: 'Lend From',
+          text: 'Borrowed From',
           position: 2,
           controller: _tabController,
         ),
@@ -78,11 +78,12 @@ class _WardrobeTabState extends State<WardrobeTab> {
             });
           },
           child: Container(
+            alignment: Alignment.centerLeft,
             padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
             child: Text(
               text,
               style: TextStyle(
-                fontSize: 20.0,
+                fontSize: 16.0,
                 color: _selected ? Colors.white : Colors.grey,
               ),
             ),
