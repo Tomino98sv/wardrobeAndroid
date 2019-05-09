@@ -1,6 +1,6 @@
 var modal = document.getElementById('id01');
 var firebaseConfig = {
-  apiKey: "api-key",
+  apiKey: "AIzaSyAJO1gWHi-EDYHCenr5SOssR2TRNnERAyI",
     authDomain: "https://console.firebase.google.com/u/0/project/wardrobe-2324a/authentication/users",
       databaseURL: "https://console.firebase.google.com/u/0/project/wardrobe-2324a/database/firestore/data~2Fitems~2F-LZa0Mv7OLDhGtNQLsjB",
         projectId: "project-id",
@@ -8,3 +8,7 @@ var firebaseConfig = {
             messagingSenderId: "sender-id",
   };
 firebase.initializeApp(firebaseConfig);
+var ref = firebase.database().ref();
+  ref.on("value", function(snapshot){
+    output.innerHTML = JSON.stringify(snapshot.val(), null, 2);
+});
