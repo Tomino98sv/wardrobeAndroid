@@ -55,12 +55,13 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
         animation: _animationController,
         builder: (BuildContext context, Widget child) {
           return Stack(
+            alignment: Alignment.centerRight,
               children: <Widget>[
                 _buildExpandedBackground(),
-                _buildOption(Icons.perm_identity, 0.0, ),
-                _buildOption(Icons.notifications, -math.pi / 3,),
-                _buildOption(Icons.settings, -2 * math.pi / 3, ),
-                _buildOption(Icons.power_settings_new, math.pi, ),
+                _buildOption(Icons.perm_identity, 0.0,profile ),
+                _buildOption(Icons.notifications, -math.pi / 3,notifications),
+                _buildOption(Icons.settings, -2 * math.pi / 3, settings),
+                _buildOption(Icons.power_settings_new, math.pi, logOut),
                 _menuImage(),
               ],
           );
@@ -72,7 +73,7 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
 
   Widget _menuImage(){
     return Padding(
-      padding: EdgeInsets.only(left: 80.0,top: 35.0),
+      padding: EdgeInsets.only(left: 80.0,top: 25.0),
       child: new InkWell(
         child: Container(
           width: 40.0,
@@ -123,7 +124,7 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
     }
   }
 
-  Widget _buildOption(IconData icon, double angle,) {
+  Widget _buildOption(IconData icon, double angle, Function func) {
     double iconSize = 0.0;
     if (_animationController.value > 0.8) {
       iconSize = 26.0 * (_animationController.value - 0.8) * 5;
@@ -135,7 +136,7 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
         child: new Padding(
           padding: new EdgeInsets.only(top: 5.0,right: 3.0),
           child: new IconButton(
-            onPressed: _onClicked(),
+            onPressed: (){func();},
             icon: new Transform.rotate(
               angle: -angle,
               child: new Icon(

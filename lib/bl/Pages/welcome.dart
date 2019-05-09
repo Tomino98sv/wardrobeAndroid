@@ -5,23 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
-import 'package:flutter_advanced_networkimage/transition.dart';
-import 'package:flutter_advanced_networkimage/zoomable.dart';
 import 'package:flutter_app/bl/Pages/menu.dart';
-import 'package:flutter_app/bl/Pages/profilePics.dart';
 import 'package:flutter_app/bl/Pages/wardrobeTabbar.dart';
-import 'package:flutter_app/bl/mainLoginPage.dart';
-import 'package:flutter_app/bl/videjko/services/usermanagment.dart';
 import 'package:flutter_app/db/FirestoreManager.dart';
 import 'package:flutter_app/db/editItem.dart';
 import 'package:flutter_app/db/model/Item.dart';
-import 'package:flutter_app/db/userInfo.dart';
-import 'package:flutter_app/ui/homePage.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
 
 class WelcomePage extends StatefulWidget {
   @override
@@ -126,11 +115,12 @@ class _WelcomePageState extends State<WelcomePage>
                               crossAxisCount: 3,
                                 crossAxisSpacing: 12.0,
                                 mainAxisSpacing: 12.0,
-
+                                padding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
+                                shrinkWrap: true,
                                 children: snapshot.data.documents
+                                    .where((doc) => doc['borrowedTo'] == "")
+                                    .where((doc) => doc['userId'] == user2.uid)
                                     .map((DocumentSnapshot document) {
-                                  if (document["userId"] == user2.uid &&
-                                      document['borrowedTo'] == "") {
                                     return GestureDetector(
                                       child: Material(
                                         color: Colors.white,
@@ -247,27 +237,26 @@ class _WelcomePageState extends State<WelcomePage>
                                         );
                                       },
                                     );
-                                  } else {
-                                    return Container();
-                                  }
+
                                 }).toList()),
+                            //second tab
                             GridView.count(
                                 crossAxisCount: 3,
                                 crossAxisSpacing: 12.0,
                                 mainAxisSpacing: 12.0,
+                                padding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
+                                shrinkWrap: true,
                                 children: snapshot.data.documents
+                                  .where((doc) => doc["userId"] == user2.uid)
+                                  .where((doc) => doc["borrowedTo"] != "")
                                     .map((DocumentSnapshot document)  {
-                                  if (document["userId"] == user2.uid &&
-                                      document['borrowedTo'] != "") {
                                     return GestureDetector(
                                       child: Material(
                                           color: Colors.white,
                                           shadowColor: Colors.grey,
                                           elevation:14.0,
                                           borderRadius: BorderRadius.circular(24.0),
-
                                           child: Container(
-
                                               child: ClipRRect(
                                                 borderRadius: BorderRadius.circular(10.0),
                                                 child: document["photo_url"] == null || document["photo_url"] == ""
@@ -362,22 +351,17 @@ class _WelcomePageState extends State<WelcomePage>
                                         );
                                       },
                                     );
-                                  } else {
-                                    return Container();
-                                  }
                                 }).toList()),
-
-
-
-
-
+                            //third tab
                             GridView.count(
                                 crossAxisCount: 3,
                                 crossAxisSpacing: 12.0,
                                 mainAxisSpacing: 12.0,
+                                padding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
+                                shrinkWrap: true,
                                 children: snapshot.data.documents
+                                  .where((doc) => doc["borrowedTo"] == user2.uid)
                                     .map((DocumentSnapshot document) {
-                                  if (document['borrowedTo'] == user2.uid) {
                                     return GestureDetector(
                                       child: Material(
                                           color: Colors.white,
@@ -488,9 +472,6 @@ class _WelcomePageState extends State<WelcomePage>
                                         );
                                       },
                                     );
-                                  } else {
-                                    return Container();
-                                  }
                                 }).toList()),
                           ])),
                           Container(
