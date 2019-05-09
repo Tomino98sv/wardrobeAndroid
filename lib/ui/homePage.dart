@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/bl/Pages/filter.dart';
 import 'package:flutter_app/bl/Pages/settingsPage.dart';
 import 'package:flutter_app/bl/Pages/welcome.dart';
 import 'package:flutter_app/bl/mainLoginPage.dart';
@@ -24,15 +25,10 @@ class _HomeState extends State<HomePage> {
 
   final _options =[
     WelcomePage(),
-//    MyStoragePage2(),
-//    ItemsList()
     AllDressesList(),
     NotificationsPage(),
     DealsPage(),
     UserListHome()
-//    MyNewItem(),  pre Kluad na floating buttonn
-//    Text('Index 2: Public'),
-
   ];
 
   void onPageChanged(int page) {
@@ -78,6 +74,13 @@ class _HomeState extends State<HomePage> {
                 delegate: ItemsListSearch(Firestore.instance.collection('items').snapshots()),
               );
             },
+          ),
+          _page!=1? Container() :
+          IconButton(
+            icon: Icon(Icons.filter_list),
+            onPressed: (){
+                FilterChipDisplay();
+              }
           ),
 //          _page!=0? Container() :
 //          PopupMenuButton<String>(
