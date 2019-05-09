@@ -79,7 +79,11 @@ class _HomeState extends State<HomePage> {
           IconButton(
             icon: Icon(Icons.filter_list),
             onPressed: (){
-                FilterChipDisplay();
+                Navigator.push(context, MaterialPageRoute (
+                  builder: (context){
+                    return FilterChipDisplay();
+                  }
+                ));
               }
           ),
 //          _page!=0? Container() :

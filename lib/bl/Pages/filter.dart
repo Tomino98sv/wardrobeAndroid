@@ -10,22 +10,24 @@ class FilterChipDisplay extends StatefulWidget {
 class _FilterChipDisplayState extends State<FilterChipDisplay> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Align(
-          alignment: Alignment.centerRight,
-          child: Container(
-            child: Wrap(
-              spacing: 2.0,
-              children: <Widget>[
-                FilterChipWidget(chipName: 'Size',),
-                FilterChipWidget(chipName: 'Length',),
-                FilterChipWidget(chipName: 'Color',),
-              ],
+    return Scaffold(
+      body: Column(
+        children: <Widget>[
+          Align(
+            alignment: Alignment.centerRight,
+            child: Container(
+              child: Wrap(
+                spacing: 2.0,
+                children: <Widget>[
+                  FilterChipWidget(chipName: 'Size',),
+                  FilterChipWidget(chipName: 'Length',),
+                  FilterChipWidget(chipName: 'Color',),
+                ],
+              ),
             ),
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 }
