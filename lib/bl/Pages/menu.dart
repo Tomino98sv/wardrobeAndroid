@@ -173,8 +173,5 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
 
   profile(){}
 
-  _onClicked(){
-    widget.onClick;
-  }
 
 }
