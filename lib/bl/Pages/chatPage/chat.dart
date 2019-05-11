@@ -29,6 +29,7 @@ class _ChatPageState extends State<ChatPage> {
 
   String collname;
   QuerySnapshot initialDataSnapshot;
+  var total;
 
   @override
   void initState() {
@@ -75,13 +76,6 @@ class _ChatPageState extends State<ChatPage> {
                 collname="${emailUserTarget}_${emailUser}";
                 getInitialData(collname);
               }
-//
-//              initialDataSnapshot=Firestore.instance
-//                  .collection('chat')
-//                  .document("${documentIDcurrent}")
-//                  .collection(collname)
-//                  .getDocuments();
-
             });
           });
         });
@@ -108,7 +102,7 @@ class _ChatPageState extends State<ChatPage> {
                       .collection(collname)
                       .orderBy("created_at", descending: true)
                       .snapshots(),
-                  builder: (context, snapshot) {
+                  builder: (BuildContext context, snapshot) {
                     if (!snapshot.hasData) {return Container();}
                     return new ListView.builder(
                       padding: new EdgeInsets.all(8.0),
@@ -126,7 +120,8 @@ class _ChatPageState extends State<ChatPage> {
                             : _message(
                             document['message'], document['user_name']);
                       },
-                      itemCount: snapshot.data.documents.length,
+//                      itemCount: snapshot.data.documents.length == 0 ? initialDataSnapshot.documents.length : snapshot.data.documents.length,
+                      itemCount: snapshot.data.documents.length == 0 ? 13 : notEmpty(snapshot.data.documents.length),
                     );
                   },
                 ),
@@ -256,17 +251,30 @@ class _ChatPageState extends State<ChatPage> {
     refToSub.getDocuments().then((value){
       initialDataSnapshot=value;
 
-      debugPrint(" DATA on initialData "+initialDataSnapshot.documents[0].data["user_email"]);
-      debugPrint(" DATA on initialData "+initialDataSnapshot.documents[0].data["user_name"]);
-      debugPrint(" DATA on initialData "+initialDataSnapshot.documents[0].data["message"]);
-
+      total = initialDataSnapshot.documents.length;
+      debugPrint(" DATA on initialData ");
       debugPrint("");
 
-      debugPrint(" DATA on initialData "+initialDataSnapshot.documents[1].data["user_email"]);
-      debugPrint(" DATA on initialData "+initialDataSnapshot.documents[1].data["user_name"]);
-      debugPrint(" DATA on initialData "+initialDataSnapshot.documents[1].data["message"]);
+      for(int a=0;a<initialDataSnapshot.documents.length;a++){
+        debugPrint(" user_email: "+initialDataSnapshot.documents[a].data["user_email"]);
+        debugPrint(" user_name: "+initialDataSnapshot.documents[a].data["user_name"]);
+        debugPrint(" message: "+initialDataSnapshot.documents[a].data["message"]);
+        debugPrint("");
+      }
 
     });
+  }
+
+  int empty(){
+
+    debugPrint("${total}");
+    debugPrint("Empty method was called  number is : ${total}");
+    return total;
+  }
+
+  int notEmpty(int number){
+    debugPrint("NOT Empty method was called");
+    return number;
   }
 
 }
