@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +31,8 @@ class _ChatPageState extends State<ChatPage> {
 
   String collname;
   QuerySnapshot initialDataSnapshot;
-  var total;
+
+  Stream<QuerySnapshot> stream;
 
   @override
   void initState() {
@@ -68,14 +71,18 @@ class _ChatPageState extends State<ChatPage> {
 
               if(prva==true){
                 collname="${emailUser}_${emailUserTarget}";
-                getInitialData(collname);
               }else if(druha==true){
                 collname="${emailUserTarget}_${emailUser}";
-                getInitialData(collname);
               }else{
                 collname="${emailUserTarget}_${emailUser}";
-                getInitialData(collname);
               }
+
+              stream = Firestore.instance
+                  .collection('chat')
+                  .document("${documentIDcurrent}")
+                  .collection(collname)
+                  .orderBy("created_at", descending: true)
+                  .snapshots();
             });
           });
         });
@@ -95,34 +102,33 @@ class _ChatPageState extends State<ChatPage> {
             children: <Widget>[
               Flexible(
                 child: StreamBuilder<QuerySnapshot>(
-                  initialData:initialDataSnapshot,
-                  stream: Firestore.instance
-                      .collection('chat')
-                      .document("${documentIDcurrent}")
-                      .collection(collname)
-                      .orderBy("created_at", descending: true)
-                      .snapshots(),
+                  stream: stream,
                   builder: (BuildContext context, snapshot) {
-                    if (!snapshot.hasData) {return Container();}
-                    return new ListView.builder(
-                      padding: new EdgeInsets.all(8.0),
-                      reverse: true,
-                      itemBuilder: (_, int index) {
-                        DocumentSnapshot document = snapshot.data.documents[index];
-                        bool isOwnMessage = false;
-                        if (document['user_email'] == emailUser) {
-                          isOwnMessage = true;
-                        }
-                        debugPrint("itemBuilder called");
-                        return isOwnMessage
-                            ? _ownMessage(
-                            document['message'], document['user_name'])
-                            : _message(
-                            document['message'], document['user_name']);
-                      },
-//                      itemCount: snapshot.data.documents.length == 0 ? initialDataSnapshot.documents.length : snapshot.data.documents.length,
-                      itemCount: snapshot.data.documents.length == 0 ? 13 : notEmpty(snapshot.data.documents.length),
-                    );
+                    switch(snapshot.connectionState){
+                      case ConnectionState.none: return Text("nothing to show");
+                      case ConnectionState.waiting: return CircularProgressIndicator();
+                      case ConnectionState.active:
+                        if (!snapshot.hasData) {return Container();}
+                        return new ListView.builder(
+                          padding: new EdgeInsets.all(8.0),
+                          reverse: true,
+                          itemBuilder: (_, int index) {
+                            DocumentSnapshot document = snapshot.data.documents[index];
+                            bool isOwnMessage = false;
+                            if (document['user_email'] == emailUser) {
+                              isOwnMessage = true;
+                            }
+                            debugPrint("itemBuilder called");
+                            return isOwnMessage
+                                ? _ownMessage(
+                                document['message'], document['user_name'])
+                                : _message(
+                                document['message'], document['user_name']);
+                          },
+                          itemCount: snapshot.data.documents.length,
+                        );
+                      case ConnectionState.done: return Text("Done");
+                    }
                   },
                 ),
               ),
@@ -247,11 +253,10 @@ class _ChatPageState extends State<ChatPage> {
 //    return documents.length != 0;
   }
 
-  void getInitialData(String nameCollection){
+  Future<QuerySnapshot> getInitialData(String nameCollection){
     refToSub.getDocuments().then((value){
       initialDataSnapshot=value;
 
-      total = initialDataSnapshot.documents.length;
       debugPrint(" DATA on initialData ");
       debugPrint("");
 
@@ -262,19 +267,9 @@ class _ChatPageState extends State<ChatPage> {
         debugPrint("");
       }
 
+      return initialDataSnapshot;
+
     });
-  }
-
-  int empty(){
-
-    debugPrint("${total}");
-    debugPrint("Empty method was called  number is : ${total}");
-    return total;
-  }
-
-  int notEmpty(int number){
-    debugPrint("NOT Empty method was called");
-    return number;
   }
 
 }
