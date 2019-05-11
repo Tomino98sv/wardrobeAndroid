@@ -28,6 +28,7 @@ class _ChatPageState extends State<ChatPage> {
   FirebaseUser targetUser;
 
   String collname;
+  QuerySnapshot initialDataSnapshot;
 
   @override
   void initState() {
@@ -66,11 +67,21 @@ class _ChatPageState extends State<ChatPage> {
 
               if(prva==true){
                 collname="${emailUser}_${emailUserTarget}";
+                getInitialData(collname);
               }else if(druha==true){
                 collname="${emailUserTarget}_${emailUser}";
+                getInitialData(collname);
               }else{
                 collname="${emailUserTarget}_${emailUser}";
+                getInitialData(collname);
               }
+//
+//              initialDataSnapshot=Firestore.instance
+//                  .collection('chat')
+//                  .document("${documentIDcurrent}")
+//                  .collection(collname)
+//                  .getDocuments();
+
             });
           });
         });
@@ -90,6 +101,7 @@ class _ChatPageState extends State<ChatPage> {
             children: <Widget>[
               Flexible(
                 child: StreamBuilder<QuerySnapshot>(
+                  initialData:initialDataSnapshot,
                   stream: Firestore.instance
                       .collection('chat')
                       .document("${documentIDcurrent}")
@@ -97,18 +109,17 @@ class _ChatPageState extends State<ChatPage> {
                       .orderBy("created_at", descending: true)
                       .snapshots(),
                   builder: (context, snapshot) {
-                    if (!snapshot.hasData) return Container();
+                    if (!snapshot.hasData) {return Container();}
                     return new ListView.builder(
                       padding: new EdgeInsets.all(8.0),
                       reverse: true,
                       itemBuilder: (_, int index) {
-                        DocumentSnapshot document =
-                        snapshot.data.documents[index];
-
+                        DocumentSnapshot document = snapshot.data.documents[index];
                         bool isOwnMessage = false;
                         if (document['user_email'] == emailUser) {
                           isOwnMessage = true;
                         }
+                        debugPrint("itemBuilder called");
                         return isOwnMessage
                             ? _ownMessage(
                             document['message'], document['user_name'])
@@ -239,6 +250,23 @@ class _ChatPageState extends State<ChatPage> {
 //        .getDocuments();
 //    final List<DocumentSnapshot> documents = result.documents;
 //    return documents.length != 0;
+  }
+
+  void getInitialData(String nameCollection){
+    refToSub.getDocuments().then((value){
+      initialDataSnapshot=value;
+
+      debugPrint(" DATA on initialData "+initialDataSnapshot.documents[0].data["user_email"]);
+      debugPrint(" DATA on initialData "+initialDataSnapshot.documents[0].data["user_name"]);
+      debugPrint(" DATA on initialData "+initialDataSnapshot.documents[0].data["message"]);
+
+      debugPrint("");
+
+      debugPrint(" DATA on initialData "+initialDataSnapshot.documents[1].data["user_email"]);
+      debugPrint(" DATA on initialData "+initialDataSnapshot.documents[1].data["user_name"]);
+      debugPrint(" DATA on initialData "+initialDataSnapshot.documents[1].data["message"]);
+
+    });
   }
 
 }
