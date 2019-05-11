@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +15,8 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+
+   Widget _screen;
 
   final _controller = TextEditingController();
 
@@ -30,10 +34,13 @@ class _ChatPageState extends State<ChatPage> {
   String collname;
   QuerySnapshot initialDataSnapshot;
 
+  Stream<QuerySnapshot> stream;
+
+
   @override
   void initState() {
     super.initState();
-
+    _screen= CircularProgressIndicator();
     FirebaseAuth.instance.currentUser().then((fUser) {
       setState(() {
         user = fUser;
@@ -67,21 +74,26 @@ class _ChatPageState extends State<ChatPage> {
 
               if(prva==true){
                 collname="${emailUser}_${emailUserTarget}";
-                getInitialData(collname);
               }else if(druha==true){
                 collname="${emailUserTarget}_${emailUser}";
-                getInitialData(collname);
               }else{
                 collname="${emailUserTarget}_${emailUser}";
-                getInitialData(collname);
               }
-//
-//              initialDataSnapshot=Firestore.instance
-//                  .collection('chat')
-//                  .document("${documentIDcurrent}")
-//                  .collection(collname)
-//                  .getDocuments();
 
+              stream = Firestore.instance
+                  .collection('chat')
+                  .document("${documentIDcurrent}")
+                  .collection(collname)
+                  .orderBy("created_at", descending: true)
+                  .snapshots();
+
+              if(refToSub != null){
+                debugPrint("refTosub have data ${refToSub}");
+                getInitialData(collname);
+              }else {
+                debugPrint("refTosub is empty ${refToSub}");
+                _screen = getScreen();
+              }
             });
           });
         });
@@ -100,36 +112,7 @@ class _ChatPageState extends State<ChatPage> {
           child: Column(
             children: <Widget>[
               Flexible(
-                child: StreamBuilder<QuerySnapshot>(
-                  initialData:initialDataSnapshot,
-                  stream: Firestore.instance
-                      .collection('chat')
-                      .document("${documentIDcurrent}")
-                      .collection(collname)
-                      .orderBy("created_at", descending: true)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {return Container();}
-                    return new ListView.builder(
-                      padding: new EdgeInsets.all(8.0),
-                      reverse: true,
-                      itemBuilder: (_, int index) {
-                        DocumentSnapshot document = snapshot.data.documents[index];
-                        bool isOwnMessage = false;
-                        if (document['user_email'] == emailUser) {
-                          isOwnMessage = true;
-                        }
-                        debugPrint("itemBuilder called");
-                        return isOwnMessage
-                            ? _ownMessage(
-                            document['message'], document['user_name'])
-                            : _message(
-                            document['message'], document['user_name']);
-                      },
-                      itemCount: snapshot.data.documents.length,
-                    );
-                  },
-                ),
+                child: _screen
               ),
               new Divider(height: 1.0),
               Container(
@@ -256,17 +239,53 @@ class _ChatPageState extends State<ChatPage> {
     refToSub.getDocuments().then((value){
       initialDataSnapshot=value;
 
-      debugPrint(" DATA on initialData "+initialDataSnapshot.documents[0].data["user_email"]);
-      debugPrint(" DATA on initialData "+initialDataSnapshot.documents[0].data["user_name"]);
-      debugPrint(" DATA on initialData "+initialDataSnapshot.documents[0].data["message"]);
-
+      debugPrint(" DATA on initialData ");
       debugPrint("");
 
-      debugPrint(" DATA on initialData "+initialDataSnapshot.documents[1].data["user_email"]);
-      debugPrint(" DATA on initialData "+initialDataSnapshot.documents[1].data["user_name"]);
-      debugPrint(" DATA on initialData "+initialDataSnapshot.documents[1].data["message"]);
-
+      for(int a=0;a<initialDataSnapshot.documents.length;a++){
+        debugPrint(" user_email: "+initialDataSnapshot.documents[a].data["user_email"]);
+        debugPrint(" user_name: "+initialDataSnapshot.documents[a].data["user_name"]);
+        debugPrint(" message: "+initialDataSnapshot.documents[a].data["message"]);
+        debugPrint("");
+      }
+    }).then((val){
+      setState(() {
+          _screen = getScreen();
+      });
     });
   }
 
+  Widget getScreen(){
+    return StreamBuilder<QuerySnapshot>(
+      initialData: initialDataSnapshot,
+      stream: stream,
+      builder: (BuildContext context, snapshot) {
+        switch(snapshot.connectionState){
+          case ConnectionState.none: return Text("Not streaming");
+          case ConnectionState.waiting: return CircularProgressIndicator();
+          case ConnectionState.active:
+            if (!snapshot.hasData) {return Container();}
+            return new ListView.builder(
+              padding: new EdgeInsets.all(8.0),
+              reverse: true,
+              itemBuilder: (_, int index) {
+                DocumentSnapshot document = snapshot.data.documents[index];
+                bool isOwnMessage = false;
+                if (document['user_email'] == emailUser) {
+                  isOwnMessage = true;
+                }
+                debugPrint("itemBuilder called");
+                return isOwnMessage
+                    ? _ownMessage(
+                    document['message'], document['user_name'])
+                    : _message(
+                    document['message'], document['user_name']);
+              },
+              itemCount: snapshot.data.documents.length,
+            );
+          case ConnectionState.done: return Text("Done");
+        }
+      },
+    );
+  }
 }
