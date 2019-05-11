@@ -71,3 +71,36 @@ function send_verification(){
     window.alert("Error: " + error.message);
   });
 }
+
+
+var provider = new firebase.auth.GoogleAuthProvider();
+firebase.auth().signInWithPopup(provider).then(function(result) {
+  var token = result.credential.accessToken;
+  var user = result.user;
+}).catch(function(error) {
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  var email = error.email;
+  var credential = error.credential;
+});
+
+
+/*
+firebase.auth().signInWithRedirect(provider);
+firebase.auth().getRedirectResult().then(function(result) {
+  if (result.credential) {
+    var token = result.credential.accessToken;
+  }
+  var user = result.user;
+}).catch(function(error) {
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  var email = error.email;
+  var credential = error.credential;
+});
+
+
+firebase.auth().signOut().then(function() {
+}).catch(function(error) {
+});
+*/
