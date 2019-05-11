@@ -92,7 +92,9 @@ class _ChatPageState extends State<ChatPage> {
                 getInitialData(collname);
               }else {
                 debugPrint("refTosub is empty ${refToSub}");
-                _screen = getScreen();
+                setState(() {
+                  _screen = getScreen();
+                });
               }
             });
           });
