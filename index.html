@@ -12,12 +12,18 @@
     <input type="password" placeholder="Password" id="password_field" />
 
     <button onclick="login()">Sign in</button>
+    <br/>
+    <button onclick="create_account()">Create a new account</button>
+    <br/>
+    <button onclick=" ()">Sign in with Google</button>
   </div>
 
   <div id="user_div" class="loggedin-div">
     <h3>Welcome to page Wardrobe!</h3>
     <p id="user_para">Welcome to login! You are currently logged in.</p>
     <button onclick="logout()">Sign out</button>
+    <br/>
+    <button id="verify_btn" onclick="send_verification()">Send verification</button>
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
