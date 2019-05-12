@@ -15,9 +15,10 @@ class ChatPage extends StatefulWidget {
   _ChatPageState createState() => new _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatPageState extends State<ChatPage>{
 
    Widget _screen;
+   Widget animationControl;
    final _controller = TextEditingController();
   String documentIDcurrent;
   CollectionReference refToSub;
@@ -122,35 +123,70 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _ownMessage(String message, String userName) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+    return  new Container(
+        margin: const EdgeInsets.symmetric(vertical: 8.0),
+        child: new Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            SizedBox(height: 10.0,),
-            Text(userName),
-            Text(message),
+            new Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  new Text("${userName}", style: Theme.of(context).textTheme.subhead),
+                  new Container(
+                    decoration: new BoxDecoration(
+                      borderRadius: new BorderRadius.circular(16.0),
+                      color: Colors.deepOrange,
+                    ),
+                    margin: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
+                    child: new Text("${message}",style:TextStyle(color: Colors.white)),
+                  ),
+                ],
+              ),
+            ),
+            new Container(
+
+              margin: const EdgeInsets.only(right: 18.0),
+              child: CircleAvatar(
+                  child:Text("${userName}")),
+            ),
           ],
         ),
-        Icon(Icons.person),
-      ],
-    );
+      );
   }
 
   Widget _message(String message, String userName) {
-    return Row(
-      children: <Widget>[
-        Icon(Icons.person),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(height: 10.0,),
-            Text(userName),
-            Text(message),
-          ],
-        )
-      ],
+    return  new Container(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      child: new Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          new Container(
+
+            margin: const EdgeInsets.only(right: 18.0),
+            child: CircleAvatar(
+                child:Text("${userName}")),
+          ),
+          new Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Text("${userName}", style: Theme.of(context).textTheme.subhead),
+                new Container(
+                  decoration: new BoxDecoration(
+                    borderRadius: new BorderRadius.circular(16.0),
+                    color: Colors.blue,
+                  ),
+                  margin: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(5.0),
+                  child: new Text("${message}",style:TextStyle(color: Colors.white)),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
