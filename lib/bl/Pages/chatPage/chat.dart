@@ -33,10 +33,13 @@ class _ChatPageState extends State<ChatPage>{
   Stream<QuerySnapshot> stream;
    bool _isWritting = false;
 
+   String myProfUrlImg = "";
+   String hisProfUrlImg = "";
+
   @override
   void initState() {
     super.initState();
-    _screen= CircularProgressIndicator();
+    _screen= getLoader("LOADING");
     FirebaseAuth.instance.currentUser().then((fUser) {
       setState(() {
         user = fUser;
@@ -46,7 +49,7 @@ class _ChatPageState extends State<ChatPage>{
             .snapshots();
 
         snapshot.listen((QuerySnapshot data){
-//          profileUrlImg = data.documents[0]['photoUrl'];
+          myProfUrlImg = data.documents[0]['photoUrl'];
           emailUser = data.documents[0]['email'];
           nameUser = data.documents[0]['name'];
         });
@@ -57,6 +60,7 @@ class _ChatPageState extends State<ChatPage>{
             .snapshots();
 
         snapshotOfTarget.listen((QuerySnapshot dataTarget){
+          hisProfUrlImg = dataTarget.documents[0]["photoUrl"];
           emailUserTarget = dataTarget.documents[0]['email'];
           nameUserTarget = dataTarget.documents[0]['name'];
 
@@ -90,6 +94,7 @@ class _ChatPageState extends State<ChatPage>{
                 debugPrint("refTosub is empty ${refToSub}");
                 setState(() {
                   _screen = getStreamBuilder();
+                  debugPrint("initial data snapshot ${initialDataSnapshot}");
                 });
               }
             });
@@ -122,9 +127,9 @@ class _ChatPageState extends State<ChatPage>{
         ));
   }
 
-  Widget _ownMessage(String message, String userName) {
+  Widget _ownMessage(String message) {
     return  new Container(
-        margin: const EdgeInsets.symmetric(vertical: 8.0),
+        margin: const EdgeInsets.symmetric(vertical: 4.0),
         child: new Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
@@ -132,55 +137,65 @@ class _ChatPageState extends State<ChatPage>{
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  new Text("${userName}", style: Theme.of(context).textTheme.subhead),
                   new Container(
                     decoration: new BoxDecoration(
-                      borderRadius: new BorderRadius.circular(16.0),
-                      color: Colors.deepOrange,
+                      borderRadius: new BorderRadius.circular(10.0),
+                      color: Theme.of(context).primaryColor,
                     ),
                     margin: const EdgeInsets.all(8.0),
-                    padding: EdgeInsets.all(5.0),
+                    padding: EdgeInsets.all(10.0),
                     child: new Text("${message}",style:TextStyle(color: Colors.white)),
                   ),
                 ],
               ),
             ),
             new Container(
-
-              margin: const EdgeInsets.only(right: 18.0),
-              child: CircleAvatar(
-                  child:Text("${userName}")),
+              width: 40.0,
+              height: 40.0,
+              margin: const EdgeInsets.only(right: 5.0),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).buttonColor,
+                  image: DecorationImage(
+                      image:NetworkImage(myProfUrlImg),
+                      fit: BoxFit.cover),
+                  borderRadius: BorderRadius.all(Radius.circular(75.0)),
+              ),
             ),
           ],
         ),
       );
   }
 
-  Widget _message(String message, String userName) {
+  Widget _message(String message) {
     return  new Container(
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      margin: const EdgeInsets.symmetric(vertical: 4.0),
       child: new Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           new Container(
-
-            margin: const EdgeInsets.only(right: 18.0),
-            child: CircleAvatar(
-                child:Text("${userName}")),
+            width: 40.0,
+            height: 40.0,
+            margin: const EdgeInsets.only(left: 5.0),
+            decoration: BoxDecoration(
+                color: Theme.of(context).buttonColor,
+                image: DecorationImage(
+                    image:NetworkImage(hisProfUrlImg),
+                    fit: BoxFit.cover),
+                borderRadius: BorderRadius.all(Radius.circular(75.0)),
+            ),
           ),
           new Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                new Text("${userName}", style: Theme.of(context).textTheme.subhead),
                 new Container(
                   decoration: new BoxDecoration(
-                    borderRadius: new BorderRadius.circular(16.0),
-                    color: Colors.blue,
+                    borderRadius: new BorderRadius.circular(10.0),
+                    color: Colors.white,
                   ),
                   margin: const EdgeInsets.all(8.0),
-                  padding: EdgeInsets.all(5.0),
-                  child: new Text("${message}",style:TextStyle(color: Colors.white)),
+                  padding: EdgeInsets.all(10.0),
+                  child: new Text("${message}",style:TextStyle(color: Colors.black)),
                 ),
               ],
             ),
@@ -210,8 +225,14 @@ class _ChatPageState extends State<ChatPage>{
           "created_at": DateTime.now()
         }).then((value){
           print("sucess subcoll doc ${value.documentID}");
-          refToSub=Firestore.instance.collection("chat").document("${documentIDcurrent}").collection(collname);
+          setState(() {
+            refToSub=Firestore.instance.collection("chat").document("${documentIDcurrent}").collection(collname);
+          });
+
+          debugPrint("initial data snapshot before method called ${initialDataSnapshot}");
           getInitialData(collname);
+          debugPrint("initial data snapshot after nethod called ${initialDataSnapshot}");
+
         });
       }).catchError((err) {
         print(err);
@@ -248,7 +269,11 @@ class _ChatPageState extends State<ChatPage>{
 
   void getInitialData(String nameCollection){
     refToSub.getDocuments().then((value){
-      initialDataSnapshot=value;
+      setState(() {
+        initialDataSnapshot=value;
+      });
+
+      debugPrint("initial data snapshot in getInitialData ${initialDataSnapshot}");
 
       debugPrint(" DATA on initialData ");
       debugPrint("");
@@ -261,7 +286,9 @@ class _ChatPageState extends State<ChatPage>{
       }
     }).then((val){
       setState(() {
-          _screen = getStreamBuilder();
+        _screen = getStreamBuilder();
+        debugPrint("initial data snapshot after setStete ${initialDataSnapshot}");
+
       });
     });
   }
@@ -273,7 +300,7 @@ class _ChatPageState extends State<ChatPage>{
       builder: (BuildContext context, snapshot) {
         switch(snapshot.connectionState){
           case ConnectionState.none: return Text("Not streaming");
-          case ConnectionState.waiting: return CircularProgressIndicator();
+          case ConnectionState.waiting: return getLoader("Waitting for connection");
           case ConnectionState.active:
             if (!snapshot.hasData) {return Container();}
             return new ListView.builder(
@@ -288,9 +315,9 @@ class _ChatPageState extends State<ChatPage>{
                 debugPrint("itemBuilder called");
                 return isOwnMessage
                     ? _ownMessage(
-                    document['message'], document['user_name'])
+                    document['message'])
                     : _message(
-                    document['message'], document['user_name']);
+                    document['message']);
               },
               itemCount: snapshot.data.documents.length,
             );
@@ -299,7 +326,22 @@ class _ChatPageState extends State<ChatPage>{
       },
     );
   }
-
+  
+  Widget getLoader(String content){
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          CircularProgressIndicator(),
+          Text(
+            content,
+            style: TextStyle(fontSize: 20.0),
+          )
+        ],
+      ),
+    );
+  }
+  
   Widget _getInputAndSend(){
     return IconTheme(
       data: new IconThemeData(
@@ -330,7 +372,7 @@ class _ChatPageState extends State<ChatPage>{
                       : null
               )
                   : new IconButton(
-                icon: new Icon(Icons.message),
+                icon: new Icon(Icons.send),
                 onPressed: _isWritting
                     ?() => _handleSubmit(_controller.text)
                     : null,
