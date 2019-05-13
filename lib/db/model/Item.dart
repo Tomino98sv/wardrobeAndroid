@@ -42,6 +42,8 @@ class _MyNewItem extends State<MyNewItem> {
 
   var _sizes = ['34', '36', '38', '40', '42', '44', '46', '48'];
   var _currentItemSelected = '38';
+  var _colors = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Brown", "Magenta", "Tan", "Cyan", "Olive", "Maroon", "Navy", "Aquamarine", "Turquoise", "Silver", "Lime", "Teal", "Indigo", "Violet", "Pink", "Black", "White", "Gray"];
+  var _currenttColorSelected = 'Black';
   var _length = ['Mini', 'Midi', 'Maxi', 'Oversize'];
   var _currentLengthSelected = 'Midi';
   var _functions = ['-not selected-', 'giveaway', 'sell'];
@@ -95,24 +97,6 @@ class _MyNewItem extends State<MyNewItem> {
                   children: <Widget>[
                     Expanded(
                       child: TextField(
-                        style:Theme.of(context).textTheme.subhead,
-                        decoration: new InputDecoration(
-                            labelText: 'Color',
-                            icon: new Icon(Icons.color_lens,
-                                color: Colors.black)),
-                        onChanged: (String userInput) {
-                          setState(() {
-                            color = userInput;
-                          });
-                        },
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextField(
                         maxLength: 140,
                         style:Theme.of(context).textTheme.subhead,
                         decoration: new InputDecoration(
@@ -128,6 +112,34 @@ class _MyNewItem extends State<MyNewItem> {
                     )
                   ],
                 ),
+                Row(
+                  children: <Widget>[
+                    Icon(Icons.color_lens, color: Colors.black),
+                    Padding(padding: EdgeInsets.all(10.0)),
+                    Expanded(
+                      child: Text('Color',style:Theme.of(context).textTheme.subhead),
+                    ),
+
+                    Expanded(
+                      child: DropdownButton<String>(
+                        items: _colors.map((String dropDownStringItem) {
+                          return DropdownMenuItem<String>(
+                            value: dropDownStringItem,
+                            child: Text(dropDownStringItem),
+                          );
+                        }).toList(),
+                        onChanged: (String newValueSelected) {
+                          setState(() {
+                            this._currenttColorSelected = newValueSelected;
+                            size = newValueSelected;
+                          });
+                        },
+                        value: _currenttColorSelected,
+                      ),
+                    )
+                  ],
+                ),
+
                 Row(
                   children: <Widget>[
                     Icon(Icons.aspect_ratio, color: Colors.black),
@@ -256,7 +268,7 @@ class _MyNewItem extends State<MyNewItem> {
                                       .document(),
                                   {
                                     'name': name,
-                                    'color': color,
+                                    'color': _currenttColorSelected,
                                     'size': _currentItemSelected,
                                     'length': _currentLengthSelected,
                                     'photo_url': _imgUrl,
@@ -280,7 +292,7 @@ class _MyNewItem extends State<MyNewItem> {
                                       .document(),
                                   {
                                     'name': name,
-                                    'color': color,
+                                    'color': _currenttColorSelected,
                                     'size': _currentItemSelected,
                                     'length': _currentLengthSelected,
                                     'photo_url': _imgUrl,
