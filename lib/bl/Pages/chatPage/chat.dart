@@ -39,7 +39,18 @@ class _ChatPageState extends State<ChatPage>{
   @override
   void initState() {
     super.initState();
-    _screen= CircularProgressIndicator();
+    _screen= Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CircularProgressIndicator(),
+              Text(
+                "LOADING",
+                style: TextStyle(fontSize: 20.0),
+              )
+            ],
+          ),
+    );
     FirebaseAuth.instance.currentUser().then((fUser) {
       setState(() {
         user = fUser;
