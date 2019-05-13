@@ -98,7 +98,10 @@ class _State extends State<EditItem> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        title: new Text('Edit Item',style:Theme.of(context).textTheme.subhead),
+        title: new Text('Edit Item',
+          style: TextStyle(
+              color: Colors.white
+          ),),
       ),
       body: SingleChildScrollView(
         child: new Container(
@@ -387,9 +390,13 @@ class _State extends State<EditItem> {
                         color: Theme.of(context).buttonColor,
                         borderRadius: new BorderRadius.circular(30.0),
                       ),
+                      width: 100,
                       alignment: Alignment.center,
                       padding: EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text('Send',style:Theme.of(context).textTheme.subhead,),
+                      child: Text('Send',
+                        style: TextStyle(
+                          color: Colors.white
+                        ),),
                     ),),),
               ],
             ),
