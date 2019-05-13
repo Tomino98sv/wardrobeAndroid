@@ -5,6 +5,8 @@ class FilterChipDisplay extends StatefulWidget {
    _FilterChipDisplayState createState() => _FilterChipDisplayState();
   }
 
+  var counter = 0;
+  bool selectedWidget= false;
 
 
 class _FilterChipDisplayState extends State<FilterChipDisplay> {
@@ -35,7 +37,7 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
                 spacing: 7.0,
                 runSpacing: 3.0,
                 children: <Widget>[
-                  FilterChipWidget(chipName: 'Size', chipFunction: buildExpandedWidget()),
+                  FilterChipWidget(chipName: 'Size',),
                   FilterChipWidget(chipName: 'Length',),
                   FilterChipWidget(chipName: 'Color',),
                 ],
@@ -46,7 +48,11 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
           Container(
             height: 1,
             color: Colors.grey,
+          ),
+          Container(
+            child: selectedWidget == true ? _buildExpandedWidget() : Container()
           )
+         
         ],
       ),
     );
@@ -57,9 +63,8 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
 
 class FilterChipWidget extends StatefulWidget{
   final String chipName;
-  Function chipFunction;
 
-  FilterChipWidget({Key key, this.chipName, this.chipFunction}) : super(key: key);
+  FilterChipWidget({Key key, this.chipName}) : super(key: key);
 
   @override
   _FilterChipWidgetState createState() => _FilterChipWidgetState();
@@ -87,8 +92,16 @@ class _FilterChipWidgetState extends State<FilterChipWidget>{
       backgroundColor: Colors.pink[100],
       onSelected: (isSelected){
         setState(() {
-         if(_isSelected = isSelected){
-           widget.chipFunction();
+          _isSelected = isSelected;
+          debugPrint("${isSelected}");
+         if(isSelected){
+           counter++;
+           debugPrint("$counter");
+           selectedWidget = true;
+//           debugPrint("$selectedWidget");
+         }
+         else {
+           debugPrint("neda to proste");
          }
         });
       },
@@ -98,11 +111,12 @@ class _FilterChipWidgetState extends State<FilterChipWidget>{
   }
 }
 
-buildExpandedWidget(){
+Widget _buildExpandedWidget(){
+  debugPrint("malo by vykreslit dropdown menu");
   String size;
   var _sizes = ['34', '36', '38', '40', '42', '44', '46', '48'];
   var _currentItemSelected = '38';
-  Expanded(
+  return Expanded(
     child: DropdownButton<String>(
       items: _sizes.map((String dropDownStringItem) {
         return DropdownMenuItem<String>(

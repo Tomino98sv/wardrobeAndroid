@@ -66,24 +66,27 @@ class _DealsTabState extends State<DealsTab> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(32.0)),
-      child: Material(
-        color: _selected ? Theme.of(context).buttonColor: Colors.white,
+    return Padding(
+      padding: const EdgeInsets.only(top: 15.0),
+      child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(32.0)),
-        child: InkWell(
-          onTap: () {
-            setState(() {
-              _controller.animateTo(_position);
-            });
-          },
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-            child: Text(
-              text,
-              style: TextStyle(
-                fontSize: 20.0,
-                color: _selected ? Colors.white : Colors.grey,
+        child: Material(
+          color: _selected ? Theme.of(context).buttonColor: Theme.of(context).indicatorColor,
+          borderRadius: BorderRadius.all(Radius.circular(32.0)),
+          child: InkWell(
+            onTap: () {
+              setState(() {
+                _controller.animateTo(_position);
+              });
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+              child: Text(
+                text,
+                style: TextStyle(
+                  fontSize: 20.0,
+                  color: _selected ? Colors.white : Colors.white,
+                ),
               ),
             ),
           ),
