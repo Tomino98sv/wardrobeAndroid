@@ -83,9 +83,11 @@ class _State extends State<EditItem> {
 //  }
 
   var _sizes = ['34', '36', '38', '40', '42', '44', '46', '48'];
+  var _colors = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Brown", "Magenta", "Tan", "Cyan", "Olive", "Maroon", "Navy", "Aquamarine", "Turquoise", "Silver", "Lime", "Teal", "Indigo", "Violet", "Pink", "Black", "White", "Gray"];
   var _currentItemSelected = '38';
   var _length = ['Mini', 'Midi', 'Maxi', 'Oversize'];
   var _currentLengthSelected = 'Midi';
+  var _currentColorSelected = "Black";
   var _functions = ['-not selected-', 'giveaway', 'sell'];
   var _currentFunctionSelected = '-not selected-';
 
@@ -136,14 +138,6 @@ class _State extends State<EditItem> {
                           color: Theme.of(context).buttonColor)),
                   onChanged: _onChangedName,
                 ),
-                new TextField(
-                  style:Theme.of(context).textTheme.subhead,
-                  decoration: new InputDecoration(
-                      labelText: item['color'],
-                      icon:
-                      new Icon(Icons.color_lens, color: Theme.of(context).buttonColor)),
-                  onChanged: _onChangedColor,
-                ),
                 TextField(
                   style:Theme.of(context).textTheme.subhead,
                   decoration: new InputDecoration(
@@ -152,8 +146,37 @@ class _State extends State<EditItem> {
                       new Icon(Icons.event_note, color: Theme.of(context).buttonColor)),
                   onChanged: _onChangedDescription,
                 ),
-
-
+                Row(
+                  children: <Widget>[
+                    Icon(Icons.color_lens,
+                        color: Theme.of(context).buttonColor),
+                    Padding(padding: EdgeInsets.all(10.0)),
+                    Expanded(
+                      child: Text(
+                          'Color:',style:Theme.of(context).textTheme.subhead
+                      ),
+                    ),
+                    Expanded(
+                      child: DropdownButton(
+                          items: _colors.map((String dropDownStringItem){
+                            return DropdownMenuItem<String>(
+                              value: dropDownStringItem,
+                              child: Text(dropDownStringItem),
+                            );
+                          }).toList(),
+                          onChanged: (String newValueSelected) {
+                            setState(() {
+                              this._currentColorSelected = newValueSelected;
+                              docColor = newValueSelected;
+                            });
+                            _onChangedColor(docColor);
+                          },
+                          //value: _currentItemSelected,
+                          value: _currentColorSelected == item['color'].toString() ? item['color'].toString() : docColor
+                      ),
+                    )
+                  ],
+                ),
                 Row(
                   children: <Widget>[
                     Icon(Icons.aspect_ratio,
@@ -224,7 +247,7 @@ class _State extends State<EditItem> {
                     Padding(padding: EdgeInsets.all(10.0)),
                     Expanded(
                       child: Text(
-                          'Sell/Giveaway:', style:Theme.of(context).textTheme.subhead
+                          'Sell?:', style:Theme.of(context).textTheme.subhead
                       ),
                     ),
                     Expanded(
