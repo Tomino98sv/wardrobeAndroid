@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
@@ -14,28 +15,23 @@ class ChatPage extends StatefulWidget {
   _ChatPageState createState() => new _ChatPageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatPageState extends State<ChatPage>{
 
    Widget _screen;
-
-  final _controller = TextEditingController();
-
+   Widget animationControl;
+   final _controller = TextEditingController();
   String documentIDcurrent;
   CollectionReference refToSub;
-
   String nameUser;
   String emailUser;
   FirebaseUser user;
-
   String nameUserTarget;
   String emailUserTarget;
   FirebaseUser targetUser;
-
   String collname;
   QuerySnapshot initialDataSnapshot;
-
   Stream<QuerySnapshot> stream;
-
+   bool _isWritting = false;
 
   @override
   void initState() {
@@ -92,7 +88,9 @@ class _ChatPageState extends State<ChatPage> {
                 getInitialData(collname);
               }else {
                 debugPrint("refTosub is empty ${refToSub}");
-                _screen = getScreen();
+                setState(() {
+                  _screen = getStreamBuilder();
+                });
               }
             });
           });
@@ -116,29 +114,8 @@ class _ChatPageState extends State<ChatPage> {
               ),
               new Divider(height: 1.0),
               Container(
-                margin: EdgeInsets.only(bottom: 20.0, right: 10.0, left: 10.0),
-                child: Row(
-                  children: <Widget>[
-                    new Flexible(
-                      child: new TextField(
-                        controller: _controller,
-                        onSubmitted: _handleSubmit,
-                        decoration:
-                        new InputDecoration.collapsed(hintText: "send message"),
-                      ),
-                    ),
-                    new Container(
-                      child: new IconButton(
-                          icon: new Icon(
-                            Icons.send,
-                            color: Colors.blue,
-                          ),
-                          onPressed: () {
-                            _handleSubmit(_controller.text);
-                          }),
-                    ),
-                  ],
-                ),
+                child: _getInputAndSend(),
+                decoration: BoxDecoration(color: Theme.of(context).cardColor), //accent color
               ),
             ],
           ),
@@ -146,40 +123,78 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _ownMessage(String message, String userName) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+    return  new Container(
+        margin: const EdgeInsets.symmetric(vertical: 8.0),
+        child: new Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            SizedBox(height: 10.0,),
-            Text(userName),
-            Text(message),
+            new Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  new Text("${userName}", style: Theme.of(context).textTheme.subhead),
+                  new Container(
+                    decoration: new BoxDecoration(
+                      borderRadius: new BorderRadius.circular(16.0),
+                      color: Colors.deepOrange,
+                    ),
+                    margin: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(5.0),
+                    child: new Text("${message}",style:TextStyle(color: Colors.white)),
+                  ),
+                ],
+              ),
+            ),
+            new Container(
+
+              margin: const EdgeInsets.only(right: 18.0),
+              child: CircleAvatar(
+                  child:Text("${userName}")),
+            ),
           ],
         ),
-        Icon(Icons.person),
-      ],
-    );
+      );
   }
 
   Widget _message(String message, String userName) {
-    return Row(
-      children: <Widget>[
-        Icon(Icons.person),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(height: 10.0,),
-            Text(userName),
-            Text(message),
-          ],
-        )
-      ],
+    return  new Container(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      child: new Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          new Container(
+
+            margin: const EdgeInsets.only(right: 18.0),
+            child: CircleAvatar(
+                child:Text("${userName}")),
+          ),
+          new Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Text("${userName}", style: Theme.of(context).textTheme.subhead),
+                new Container(
+                  decoration: new BoxDecoration(
+                    borderRadius: new BorderRadius.circular(16.0),
+                    color: Colors.blue,
+                  ),
+                  margin: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(5.0),
+                  child: new Text("${message}",style:TextStyle(color: Colors.white)),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
   _handleSubmit(String message) async {
     _controller.text = "";
+    setState(() {
+      _isWritting = false;
+    });
 
     if(refToSub==null){
       var db = Firestore.instance;
@@ -195,11 +210,12 @@ class _ChatPageState extends State<ChatPage> {
           "created_at": DateTime.now()
         }).then((value){
           print("sucess subcoll doc ${value.documentID}");
+          refToSub=Firestore.instance.collection("chat").document("${documentIDcurrent}").collection(collname);
+          getInitialData(collname);
         });
       }).catchError((err) {
         print(err);
       });
-      refToSub=Firestore.instance.collection("chat").document("${documentIDcurrent}").collection(collname);
     }else{
       refToSub.add({
         "user_email": emailUser,
@@ -228,11 +244,6 @@ class _ChatPageState extends State<ChatPage> {
      }
      return documents.length != 0;
 
-//    final QuerySnapshot result = await Firestore.instance
-//        .collection(name)
-//        .getDocuments();
-//    final List<DocumentSnapshot> documents = result.documents;
-//    return documents.length != 0;
   }
 
   void getInitialData(String nameCollection){
@@ -250,12 +261,12 @@ class _ChatPageState extends State<ChatPage> {
       }
     }).then((val){
       setState(() {
-          _screen = getScreen();
+          _screen = getStreamBuilder();
       });
     });
   }
 
-  Widget getScreen(){
+  Widget getStreamBuilder(){
     return StreamBuilder<QuerySnapshot>(
       initialData: initialDataSnapshot,
       stream: stream,
@@ -286,6 +297,53 @@ class _ChatPageState extends State<ChatPage> {
           case ConnectionState.done: return Text("Done");
         }
       },
+    );
+  }
+
+  Widget _getInputAndSend(){
+    return IconTheme(
+      data: new IconThemeData(
+          color:Theme.of(context).accentColor),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 9.0),
+        child: Row(
+          children: <Widget>[
+            new Flexible(
+              child: new TextField(
+                controller: _controller,
+                onChanged: (String txt){
+                  setState(() {
+                    _isWritting = txt.length>0;
+                  });
+                },
+                onSubmitted: _handleSubmit,
+                decoration:
+                new InputDecoration.collapsed(hintText: "Enter some text to send a message"),
+              ),
+            ),
+            new Container(
+              margin: EdgeInsets.symmetric(horizontal: 3.0),
+              child: Theme.of(context).platform == TargetPlatform.iOS
+                  ? new CupertinoButton(
+                  child: Text("Submit"),
+                  onPressed: _isWritting ? () => _handleSubmit(_controller.text)
+                      : null
+              )
+                  : new IconButton(
+                icon: new Icon(Icons.message),
+                onPressed: _isWritting
+                    ?() => _handleSubmit(_controller.text)
+                    : null,
+              ),
+            ),
+          ],
+        ),
+        decoration: Theme.of(context).platform == TargetPlatform.iOS
+            ? BoxDecoration(
+            border:
+            new Border(top: new BorderSide(color: Colors.brown)))
+            :null,
+      ),
     );
   }
 }
