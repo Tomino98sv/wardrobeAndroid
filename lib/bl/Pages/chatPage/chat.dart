@@ -39,18 +39,7 @@ class _ChatPageState extends State<ChatPage>{
   @override
   void initState() {
     super.initState();
-    _screen= Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              CircularProgressIndicator(),
-              Text(
-                "LOADING",
-                style: TextStyle(fontSize: 20.0),
-              )
-            ],
-          ),
-    );
+    _screen= getLoader("LOADING");
     FirebaseAuth.instance.currentUser().then((fUser) {
       setState(() {
         user = fUser;
@@ -105,6 +94,7 @@ class _ChatPageState extends State<ChatPage>{
                 debugPrint("refTosub is empty ${refToSub}");
                 setState(() {
                   _screen = getStreamBuilder();
+                  debugPrint("initial data snapshot ${initialDataSnapshot}");
                 });
               }
             });
@@ -150,7 +140,7 @@ class _ChatPageState extends State<ChatPage>{
                   new Container(
                     decoration: new BoxDecoration(
                       borderRadius: new BorderRadius.circular(10.0),
-                      color: Colors.pink,
+                      color: Theme.of(context).primaryColor,
                     ),
                     margin: const EdgeInsets.all(8.0),
                     padding: EdgeInsets.all(10.0),
@@ -235,8 +225,14 @@ class _ChatPageState extends State<ChatPage>{
           "created_at": DateTime.now()
         }).then((value){
           print("sucess subcoll doc ${value.documentID}");
-          refToSub=Firestore.instance.collection("chat").document("${documentIDcurrent}").collection(collname);
+          setState(() {
+            refToSub=Firestore.instance.collection("chat").document("${documentIDcurrent}").collection(collname);
+          });
+
+          debugPrint("initial data snapshot before method called ${initialDataSnapshot}");
           getInitialData(collname);
+          debugPrint("initial data snapshot after nethod called ${initialDataSnapshot}");
+
         });
       }).catchError((err) {
         print(err);
@@ -273,7 +269,11 @@ class _ChatPageState extends State<ChatPage>{
 
   void getInitialData(String nameCollection){
     refToSub.getDocuments().then((value){
-      initialDataSnapshot=value;
+      setState(() {
+        initialDataSnapshot=value;
+      });
+
+      debugPrint("initial data snapshot in getInitialData ${initialDataSnapshot}");
 
       debugPrint(" DATA on initialData ");
       debugPrint("");
@@ -286,7 +286,9 @@ class _ChatPageState extends State<ChatPage>{
       }
     }).then((val){
       setState(() {
-          _screen = getStreamBuilder();
+        _screen = getStreamBuilder();
+        debugPrint("initial data snapshot after setStete ${initialDataSnapshot}");
+
       });
     });
   }
@@ -298,7 +300,7 @@ class _ChatPageState extends State<ChatPage>{
       builder: (BuildContext context, snapshot) {
         switch(snapshot.connectionState){
           case ConnectionState.none: return Text("Not streaming");
-          case ConnectionState.waiting: return CircularProgressIndicator();
+          case ConnectionState.waiting: return getLoader("Waitting for connection");
           case ConnectionState.active:
             if (!snapshot.hasData) {return Container();}
             return new ListView.builder(
@@ -324,7 +326,22 @@ class _ChatPageState extends State<ChatPage>{
       },
     );
   }
-
+  
+  Widget getLoader(String content){
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          CircularProgressIndicator(),
+          Text(
+            content,
+            style: TextStyle(fontSize: 20.0),
+          )
+        ],
+      ),
+    );
+  }
+  
   Widget _getInputAndSend(){
     return IconTheme(
       data: new IconThemeData(
@@ -355,7 +372,7 @@ class _ChatPageState extends State<ChatPage>{
                       : null
               )
                   : new IconButton(
-                icon: new Icon(Icons.message),
+                icon: new Icon(Icons.send),
                 onPressed: _isWritting
                     ?() => _handleSubmit(_controller.text)
                     : null,
