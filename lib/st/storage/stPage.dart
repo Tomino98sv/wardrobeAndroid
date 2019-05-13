@@ -156,23 +156,20 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
           Image.file(sampleImage, height: 300.0, width: 300.0,),
           Container(
             margin: EdgeInsets.only(top: 8.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(30.0),
-              child: Material(
-                color: Theme.of(context).accentColor,
-                borderRadius: BorderRadius.circular(30.0),
-                child: InkWell(
+            child:InkWell(
                   splashColor:Theme.of(context).accentColor,
                   onTap:  () {uploadFile(filePath, context);},
                   child: Container(
+                    decoration: new BoxDecoration(
+                      color: Theme.of(context).buttonColor,
+                      borderRadius: new BorderRadius.circular(30.0),
+                    ),
                     width: 100.0,
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text('Confirm',style:Theme.of(context).textTheme.subhead,),
+                    child: Text('Confirm',style: TextStyle(color: Colors.white),),
                   ),
                 ),
-              ),
-            ),
           ),
         ],
       ),
@@ -189,23 +186,20 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
           Image.file(sampleImage2, height: 300.0, width: 300.0,),
           Container(
             margin: EdgeInsets.only(top: 8.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(30.0),
-              child: Material(
-                color: Theme.of(context).accentColor,
-                borderRadius: BorderRadius.circular(30.0),
-                child: InkWell(
+            child: InkWell(
                   splashColor: Theme.of(context).accentColor,
                   onTap:  () {uploadFile(filePath, context);},
                   child: Container(
+                    decoration: new BoxDecoration(
+                      color: Theme.of(context).buttonColor,
+                      borderRadius: new BorderRadius.circular(30.0),
+                    ),
                     width: 100.0,
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: 8.0),
-                    child: Text('Confirm',style:Theme.of(context).textTheme.subhead,),
+                    child: Text('Confirm',style: TextStyle(color: Colors.white),),
                   ),
-                ),
               ),
-            ),
           ),
         ],
       ),
