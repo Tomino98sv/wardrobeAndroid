@@ -96,7 +96,7 @@ class _SettingsPageState extends State<SettingsPage>{
             accentColor: Colors.pink[400],
             buttonColor: Colors.pink,
             fontFamily: 'Quicksand',
-            indicatorColor: Colors.blueGrey,
+            indicatorColor: Colors.pink[100],
             brightness: Brightness.light,
     ));
   }

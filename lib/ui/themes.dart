@@ -33,7 +33,7 @@ class ThemeBloc {
   accentColor: Colors.pink[400],
   buttonColor: Colors.pink,
   fontFamily: 'Quicksand',
-  indicatorColor: Colors.blueGrey,
+  indicatorColor: Colors.pink[100],
         ));
   }
 }

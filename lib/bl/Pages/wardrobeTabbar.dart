@@ -66,25 +66,28 @@ class _WardrobeTabState extends State<WardrobeTab> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(32.0)),
-      child: Material(
-        color: _selected ? Theme.of(context).accentColor: Colors.white,
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(32.0)),
-        child: InkWell(
-          onTap: () {
-            setState(() {
-              _controller.animateTo(_position);
-            });
-          },
-          child: Container(
-            alignment: Alignment.centerLeft,
-            padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-            child: Text(
-              text,
-              style: TextStyle(
-                fontSize: 16.0,
-                color: _selected ? Colors.white : Colors.grey,
+        child: Material(
+          color: _selected ? Theme.of(context).indicatorColor: Theme.of(context).accentColor,
+          borderRadius: BorderRadius.all(Radius.circular(32.0)),
+          child: InkWell(
+            onTap: () {
+              setState(() {
+                _controller.animateTo(_position);
+              });
+            },
+            child: Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+              child: Text(
+                text,
+                style: TextStyle(
+                  fontSize: 18.0,
+                  color: _selected ? Colors.white : Colors.white,
+                ),
               ),
             ),
           ),
