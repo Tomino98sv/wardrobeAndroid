@@ -65,11 +65,21 @@ class _changeImageItemState extends State<changeImageItem>{
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                child: RaisedButton(
-                    onPressed: getImage,
-                    child: Text('Change image',style:Theme.of(context).textTheme.subhead,),
+                margin: EdgeInsets.only(top: 8.0),
+                child: InkWell(
+                  splashColor: Theme.of(context).accentColor,
+                  onTap:  getImage,
+                  child: Container(
+                    decoration: new BoxDecoration(
+                      color: Theme.of(context).buttonColor,
+                      borderRadius: new BorderRadius.circular(30.0),
+                    ),
+                    width: 150.0,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text('Change image',style: TextStyle(color: Colors.white),),
+                  ),
                 ),
-                  padding: EdgeInsets.all(15.0),
               ),
             ],
           )

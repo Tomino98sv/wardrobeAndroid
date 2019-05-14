@@ -62,7 +62,7 @@ class _ShowDetails extends State<ShowDetails> {
             default:
               return new Scaffold(
                 appBar: new AppBar(
-                  title: new Text(snapshot.data['name'],style:Theme.of(context).textTheme.subhead),
+                  title: new Text(snapshot.data['name'],style: TextStyle(color: Colors.white)),
                 ),
                 body: SingleChildScrollView(
                   child: new Container(
@@ -224,19 +224,39 @@ class _ShowDetails extends State<ShowDetails> {
                                   children: <Widget>[
                                     Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
                                     Icon(Icons.get_app),
-                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
-                                    Expanded(
-                                      child: RaisedButton(
-                                          child: Text(
-                                              seeButtonText(snapshot.data),
-                                              style:Theme.of(context).textTheme.subhead
-                                          ),
-                                          onPressed: (){
+                                    Padding(padding: EdgeInsets.only(right: 15.0, left: 45.0, top: 10.0, bottom: 10.0)),
+                                    Container(
+                                        margin: EdgeInsets.only(top: 8.0),
+                                        child: InkWell(
+                                          splashColor: Theme.of(context).accentColor,
+                                          onTap:  () {
                                             seeButtonText(snapshot.data);
                                             if (seeButtonText(snapshot.data)!= "N/A")
                                               giveBuySellBorrow(context, snapshot.data, user, userName);
-                                          }),
-                                    ),
+                                            },
+                                          child: Container(
+                                            decoration: new BoxDecoration(
+                                              color: Theme.of(context).buttonColor,
+                                              borderRadius: new BorderRadius.circular(30.0),
+                                            ),
+                                            width: 100.0,
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.symmetric(vertical: 8.0),
+                                            child: Text(seeButtonText(snapshot.data),style: TextStyle(color: Colors.white),),
+                                          ),
+                                        ),
+                                      ),
+//                                      RaisedButton(
+//                                          child: Text(
+//                                              seeButtonText(snapshot.data),
+//                                              style:TextStyle(color: Colors.white)
+//                                          ),
+//                                          onPressed: (){
+//                                            seeButtonText(snapshot.data);
+//                                            if (seeButtonText(snapshot.data)!= "N/A")
+//                                              giveBuySellBorrow(context, snapshot.data, user, userName);
+//                                          }),
+//                                    ),
                                     Expanded(
                                       child: Text(""),
                                     )
