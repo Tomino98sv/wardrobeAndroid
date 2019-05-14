@@ -398,6 +398,9 @@ class UserListHome extends StatelessWidget {
                                   //kod ktory urci usra, ktoremu bolo pozicane
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
+
+                                            
+                                            //firebaseuser where zo streambuilderu user.uid je userinfo['userid']
                                         return UserInfoList2(userInfo: document);
                                       }));
                                 },
