@@ -93,7 +93,7 @@ class _ChatPageState extends State<ChatPage>{
               }else {
                 debugPrint("refTosub is empty ${refToSub}");
                 setState(() {
-                  _screen = getWelcomeMess();
+                  _screen = getOpeningMess();
                   debugPrint("initial data snapshot ${initialDataSnapshot}");
                 });
               }
@@ -224,15 +224,11 @@ class _ChatPageState extends State<ChatPage>{
           "message": message,
           "created_at": DateTime.now()
         }).then((value){
-          print("sucess subcoll doc ${value.documentID}");
-          setState(() {
-            refToSub=Firestore.instance.collection("chat").document("${documentIDcurrent}").collection(collname);
-          });
-
-          debugPrint("initial data snapshot before method called ${initialDataSnapshot}");
-          getInitialData(collname);
-          debugPrint("initial data snapshot after nethod called ${initialDataSnapshot}");
-
+          Navigator.pop(context);
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChatPage(widget.emailTarget)
+              ));
         });
       }).catchError((err) {
         print(err);
@@ -298,7 +294,7 @@ class _ChatPageState extends State<ChatPage>{
       builder: (BuildContext context, snapshot) {
         switch(snapshot.connectionState){
           case ConnectionState.none: return Text("Not streaming");
-          case ConnectionState.waiting: return getLoader("Waitting for connection");
+          case ConnectionState.waiting: return getLoader("Starting chatroom");
           case ConnectionState.active:
             if (!snapshot.hasData) {return Container();}
             return new ListView.builder(
@@ -324,6 +320,20 @@ class _ChatPageState extends State<ChatPage>{
       },
     );
   }
+
+  Widget getOpeningMess(){
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            "Start Conversation with first Message",
+            style: TextStyle(fontSize: 20.0),
+          ),
+        ],
+      ),
+    );
+  }
   
   Widget getLoader(String content){
     return Container(
@@ -340,48 +350,6 @@ class _ChatPageState extends State<ChatPage>{
     );
   }
 
-  Widget getWelcomeMess(){
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            "Start Conversation",
-            style: TextStyle(fontSize: 20.0),
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.settings_power
-            ),
-            iconSize: 100.0,
-            onPressed: () {var db = Firestore.instance;
-          db.collection("chat").add({
-            "room":collname,
-          }).then((val) {
-            print("sucess coll doc  ${val.documentID}");
-            documentIDcurrent=val.documentID;
-            Firestore.instance.collection("chat").document("${val.documentID}").collection("${collname}").add({
-              "user_email": emailUser,
-              "user_name": nameUser,
-              "message": "Hello",
-              "created_at": DateTime.now()
-            }).then((value){
-              Navigator.pop(context);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ChatPage(widget.emailTarget)
-                  ));
-            });
-          }).catchError((err) {
-            print(err);
-          });
-          },
-          )
-        ],
-      ),
-    );
-  }
-  
   Widget _getInputAndSend(){
     return IconTheme(
       data: new IconThemeData(
