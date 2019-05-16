@@ -54,9 +54,45 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
           height: 1,
           color: Colors.grey,
         ),
-        Container(
-            child:
-                selectedWidget == true ? _buildExpandedWidget() : Container())
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            FlatButton(
+                child:
+                selectedWidget == true ? Text("Choose") : Text(""),
+                onPressed:
+                selectedWidget == true ? (){
+                  showDialog(context: context,
+                      child: _buildExpandedWidget(context)
+                  ) ;
+                } : null
+            ),
+            FlatButton(
+                child:
+                selectedWidget == true ? Text("Choose") : Text(""),
+                onPressed:
+                selectedWidget == true ? (){
+                  showDialog(context: context,
+                      child: _buildExpandedWidget(context)
+                  ) ;
+                } : null
+            ),
+            FlatButton(
+                child:
+                selectedWidget == true ? Text("Choose") : Text(""),
+                onPressed:
+                selectedWidget == true ? (){
+                  showDialog(context: context,
+                      child: _buildExpandedWidget(context)
+                  ) ;
+                } : null
+            ),
+          ],
+        ),
+
+//        Container(
+//            child:
+//                selectedWidget == true ? _buildExpandedWidget(context) : Container())
       ],
     );
   }
@@ -109,32 +145,32 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
 List<String> sizes = ['34', '36', '38', '40', '42', '44', '46', '48'];
 int _currentItemSelected = 0;
 
-Widget _buildExpandedWidget() {
+Widget _buildExpandedWidget(BuildContext context) {
   debugPrint("malo by vykreslit dropdown menu");
-  return CupertinoAlertDialog(
-   actions:<Widget>[
-     CupertinoDialogAction(
-       isDefaultAction: true,
-       child: SizedBox(
-         width: 100,
-         height: 100,
-         child: CupertinoPicker(
-             itemExtent: 30,
-             backgroundColor: CupertinoColors.white,
-             onSelectedItemChanged: (index){
-               _currentItemSelected = index;
-               print(_currentItemSelected);
-             },
-             children: List<Widget>.generate(sizes.length, (index) {
-               return Center(
-                 child: Text(sizes[index]),
-               );
-             },
-             )
+  return  CupertinoAlertDialog(
+     actions:<Widget>[
+       CupertinoDialogAction(
+         isDefaultAction: true,
+         child: SizedBox(
+           width: 100,
+           height: 100,
+           child: CupertinoPicker(
+               itemExtent: 30,
+               backgroundColor: CupertinoColors.white,
+               onSelectedItemChanged: (index){
+                 _currentItemSelected = index;
+                 print(_currentItemSelected);
+               },
+               children: List<Widget>.generate(sizes.length, (index) {
+                 return Center(
+                   child: Text(sizes[index]),
+                 );
+               },
+               )
+           ),
          ),
-       ),
-     )
-   ] ,
+       )
+     ] ,
   );
 //  return DropdownButton<String>(
 //    items: _sizes.map((String dropDownStringItem) {
