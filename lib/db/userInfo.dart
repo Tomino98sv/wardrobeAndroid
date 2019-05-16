@@ -30,7 +30,7 @@ class UserInfoList extends StatelessWidget{
           default:
             return Scaffold(
               appBar: AppBar(
-                title: Text(userInfo['name'], style:Theme.of(context).textTheme.subhead),
+                title: Text(userInfo['name'], style: TextStyle(color: Colors.white)),
               ),
                  body: new Center(
                    child: Column(
@@ -161,7 +161,7 @@ class UserInfoList extends StatelessWidget{
                                         padding: EdgeInsets.symmetric(vertical: 30.0),
                                         child: Text(
                                             itemInfo.data['borrowedTo'] == ""  || itemInfo.data['borrowedTo'] == null ?
-                                            'Choose' : 'Return',style:Theme.of(context).textTheme.subhead,),
+                                            'Choose' : 'Return',style: TextStyle(color: Colors.white),),
                                     ),
                                   ),),),)
                                     ],
@@ -336,6 +336,7 @@ class _UserInfoList2 extends State<UserInfoList2>{
                                          ]
                                      ),
                                    ),
+                                   Padding(padding: EdgeInsets.only(bottom: 5.0),),
                                    Row(
                                      children: <Widget>[
                                        Text(
@@ -346,7 +347,7 @@ class _UserInfoList2 extends State<UserInfoList2>{
                                            fontWeight: FontWeight.w400,
                                          ),
                                          ),
-                                       Padding(padding: EdgeInsets.only(right: 10.0),),
+                                       Padding(padding: EdgeInsets.only(right: 10.0,bottom: 5.0),),
                                        Text(
                                            userInfo.data['name'],
                                          style: TextStyle(
@@ -368,7 +369,7 @@ class _UserInfoList2 extends State<UserInfoList2>{
                                             fontWeight: FontWeight.w400,
                                           ),
                                          ),
-                                        Padding(padding: EdgeInsets.only(right: 10.0),),
+                                        Padding(padding: EdgeInsets.only(right: 10.0,bottom: 5.0),),
                                         Text(
                                            userInfo.data['email'],
                                            textAlign: TextAlign.left,
@@ -380,23 +381,36 @@ class _UserInfoList2 extends State<UserInfoList2>{
                                          ),
                                      ],
                                    ),
+                                   Padding(padding: EdgeInsets.only(top: 10.0),),
+                                   Container(
+                                     margin: EdgeInsets.only(left: 290.0, right: 5.0,bottom: 15.0),
+                                     child: FloatingActionButton(
+                                         child: Icon(Icons.message),
+                                         shape: _DiamondBorder(),
+                                         onPressed: () {
+                                           Navigator.push(
+                                               context,
+                                               MaterialPageRoute(builder: (context) => ChatPage(userInfo.data["email"])
+                                               ));
+                                         }),
+                                   ),
                                  ],
                                ),
                            ),
                        ],
                      ),
-                   new RaisedButton(
-                     child: const Text('Message'),
-                     color: Theme.of(context).accentColor,
-                     elevation: 4.0,
-                     splashColor: Colors.blueGrey,
-                     onPressed: () {
-                       Navigator.push(
-                           context,
-                           MaterialPageRoute(builder: (context) => ChatPage(userInfo.data["email"])
-                           ));
-                     },
-                   ),
+//                   Container(
+//                     margin: EdgeInsets.only(left: 290.0, right: 5.0,bottom: 15.0),
+//                     child: FloatingActionButton(
+//                         child: Icon(Icons.message),
+//                         shape: _DiamondBorder(),
+//                         onPressed: () {
+//                           Navigator.push(
+//                               context,
+//                               MaterialPageRoute(builder: (context) => ChatPage(userInfo.data["email"])
+//                               ));
+//                         }),
+//                   ),
                      Text('User\'s items: ',),
                      Container(
                        child: Expanded(

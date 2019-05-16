@@ -307,21 +307,26 @@ class _MyNewItem extends State<MyNewItem> {
                               "Choose picture source between camera and galery");
                         }
                       },
-                      child: Container(
-                        decoration: new BoxDecoration(
-                          color: Theme.of(context).buttonColor,
-                          borderRadius: new BorderRadius.circular(30.0),
-                        ),
-                        width: 100,
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(
-                          'Send',
-                          style: TextStyle(
-                            color: Colors.white
-                          ),
-                        ),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(padding: EdgeInsets.only(right: 110.0,bottom: 5.0),),
+                          Container(
+                            decoration: new BoxDecoration(
+                              color: Theme.of(context).buttonColor,
+                              borderRadius: new BorderRadius.circular(30.0),
+                            ),
+                            width: 100,
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              'Send',
+                              style: TextStyle(
+                                color: Colors.white
+                              ),
+                            ),
                   ),
+                        ],
+                      ),
                 ))
               ],
             ),

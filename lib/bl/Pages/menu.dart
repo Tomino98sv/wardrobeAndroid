@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/bl/Pages/profilePics.dart';
 import 'package:flutter_app/bl/Pages/settingsPage.dart';
 import 'dart:math' as math;
 
@@ -171,7 +172,9 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
 
   notifications(){}
 
-  profile(){}
+  profile(){
+    Navigator.push(context, MaterialPageRoute(builder: (context) => SelectProfilePicPage()));
+  }
 
 
 }
