@@ -93,7 +93,7 @@ class _ChatPageState extends State<ChatPage>{
               }else {
                 debugPrint("refTosub is empty ${refToSub}");
                 setState(() {
-                  _screen = getStreamBuilder();
+                  _screen = getWelcomeMess();
                   debugPrint("initial data snapshot ${initialDataSnapshot}");
                 });
               }
@@ -269,9 +269,7 @@ class _ChatPageState extends State<ChatPage>{
 
   void getInitialData(String nameCollection){
     refToSub.getDocuments().then((value){
-      setState(() {
         initialDataSnapshot=value;
-      });
 
       debugPrint("initial data snapshot in getInitialData ${initialDataSnapshot}");
 
@@ -336,6 +334,48 @@ class _ChatPageState extends State<ChatPage>{
           Text(
             content,
             style: TextStyle(fontSize: 20.0),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget getWelcomeMess(){
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            "Start Conversation",
+            style: TextStyle(fontSize: 20.0),
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.settings_power
+            ),
+            iconSize: 100.0,
+            onPressed: () {var db = Firestore.instance;
+          db.collection("chat").add({
+            "room":collname,
+          }).then((val) {
+            print("sucess coll doc  ${val.documentID}");
+            documentIDcurrent=val.documentID;
+            Firestore.instance.collection("chat").document("${val.documentID}").collection("${collname}").add({
+              "user_email": emailUser,
+              "user_name": nameUser,
+              "message": "Hello",
+              "created_at": DateTime.now()
+            }).then((value){
+              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChatPage(widget.emailTarget)
+                  ));
+            });
+          }).catchError((err) {
+            print(err);
+          });
+          },
           )
         ],
       ),
