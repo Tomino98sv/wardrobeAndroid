@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/Pages/profilePics.dart';
+import 'package:flutter_app/bl/videjko/services/usermanagment.dart';
 import 'package:flutter_app/main.dart';
 import 'package:flutter_app/ui/themes.dart';
 
@@ -17,6 +18,8 @@ class _SettingsPageState extends State<SettingsPage>{
   bool note = false;
   bool click = false;
   bool mode = false;
+
+  UserManagement userManagement = new UserManagement();
 
   @override
   Widget build(BuildContext context) {
@@ -116,10 +119,13 @@ class _SettingsPageState extends State<SettingsPage>{
         inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildBlueTheme());
         valueOfClick = true;
         click = true;
+        userManagement.updateUsingTheme(valueOfClick);
+
       } else {
         inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildPinkTheme());
         valueOfClick =false;
         click = false;
+        userManagement.updateUsingTheme(valueOfClick);
       }
     });
   }

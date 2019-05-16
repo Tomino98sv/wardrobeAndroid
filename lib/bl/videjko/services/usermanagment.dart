@@ -9,6 +9,7 @@ class UserManagement {
       'uid': user.uid,
       'name': name,
       'photoUrl': url,
+      'theme':false,
     }).then((value) {
       Navigator.of(context, rootNavigator: true).pop('dialog');
       Navigator.of(context).pop();
@@ -67,4 +68,29 @@ class UserManagement {
       print(e);
     });
   }
+
+  Future updateUsingTheme(valueOfClick) async {
+//    var userInfo = new UserUpdateInfo();
+
+    await FirebaseAuth.instance.currentUser().then((user) {
+      Firestore.instance
+          .collection('/users')
+          .where('uid', isEqualTo: user.uid)
+          .getDocuments()
+          .then((docs) {
+        Firestore.instance
+            .document('/users/${docs.documents[0].documentID}')
+            .updateData({'theme': valueOfClick}).then((val) {
+          print("Updated");
+        }).catchError((e) {
+          print(e);
+        });
+      }).catchError((e) {
+        print(e);
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
 }
