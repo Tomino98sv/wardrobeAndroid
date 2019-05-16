@@ -24,7 +24,7 @@ class _SettingsPageState extends State<SettingsPage>{
     return new Scaffold(
       appBar: new AppBar(
         title: Text(
-            "Settings",style:Theme.of(context).textTheme.subhead
+            "Settings",style: TextStyle(color: Colors.white)
         ),
       ),
       body: Container(
@@ -55,31 +55,6 @@ class _SettingsPageState extends State<SettingsPage>{
                 ),
               ],
           ),
-            Container(
-              height: 30.0,
-              width: 150.0,
-              child: Material(
-                borderRadius: BorderRadius.circular(20.0),
-                shadowColor: Colors.pinkAccent,
-                color: Colors.pink,
-                elevation: 7.0,
-                child: FlatButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => SelectProfilePicPage()));
-                  },
-                  child: Center(
-                    child: Text(
-                        "Change Profile Data",
-                        style: new TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400
-                        )
-                    ),
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       )

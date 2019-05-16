@@ -218,7 +218,7 @@ class UserList extends StatelessWidget {
                       placeholder: (context, imageUrl) => CircularProgressIndicator(),
                     ),
                     trailing:
-                        Icon(Icons.info,color: Theme.of(context).buttonColor),
+                        Icon(Icons.info_outline,color: Theme.of(context).buttonColor),
                     title: Text(document['name']),
                     onTap: () {
                       //kod ktory urci usra, ktoremu bolo pozicane
