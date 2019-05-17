@@ -232,8 +232,8 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
   Future appleChanges() async {
     _formKey.currentState.save();
     if(_nameNew!= ""){
-      if(_nameNew.length<2 || _nameNew.length>10){
-        _showSnackBar2("Name must be at least 2 chars");
+      if(_nameNew.length<2 || _nameNew.length>20){
+        _showSnackBar2("Name must be at least 20 chars");
       }else{
         userManagement.updateProfileName(_nameNew);
         _showSnackBar("Name changed");

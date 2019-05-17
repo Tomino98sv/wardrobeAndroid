@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/Pages/profilePics.dart';
+import 'package:flutter_app/bl/videjko/services/usermanagment.dart';
 import 'package:flutter_app/main.dart';
 import 'package:flutter_app/ui/themes.dart';
 
@@ -17,6 +20,31 @@ class _SettingsPageState extends State<SettingsPage>{
   bool note = false;
   bool click = false;
   bool mode = false;
+  FirebaseUser user;
+  bool themeChosen;
+  UserManagement userManagement = new UserManagement();
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FirebaseAuth.instance.currentUser().then((fUser) {
+      setState(() {
+        user = fUser;
+        Stream<QuerySnapshot> snapshot = Firestore.instance
+            .collection('users')
+            .where('uid', isEqualTo: user.uid)
+            .snapshots();
+
+        snapshot.listen((QuerySnapshot data){
+          themeChosen = data.documents[0]['theme'];
+        });
+      });
+    }).then((val){
+      changingColor(themeChosen);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,10 +144,13 @@ class _SettingsPageState extends State<SettingsPage>{
         inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildBlueTheme());
         valueOfClick = true;
         click = true;
+        userManagement.updateUsingTheme(valueOfClick);
+
       } else {
         inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildPinkTheme());
         valueOfClick =false;
         click = false;
+        userManagement.updateUsingTheme(valueOfClick);
       }
     });
   }
