@@ -8,7 +8,10 @@ import 'package:flutter_app/db/FirestoreManager.dart';
 import 'package:flutter_app/db/allDressesList.dart';
 import 'package:flutter_app/deals/dealsHome.dart';
 import 'package:flutter_app/notif/notifications.dart';
+import 'package:flutter_app/ui/themes.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import '../main.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,7 +20,18 @@ class HomePage extends StatefulWidget {
 
 //preklikavanie v navigation bar
 class _HomeState extends State<HomePage> {
+
   int _page = 0;
+
+  ThemeSwitcher inheritedThemeSwitcher;
+  FirebaseUser user;
+  bool themeChosen;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getActiveTheme();
+  }
 
   final _options = [
     WelcomePage(),
@@ -35,6 +49,7 @@ class _HomeState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    inheritedThemeSwitcher = ThemeSwitcher.of(context);
     return WillPopScope(
       onWillPop: () {
         debugPrint("TUUUUUUUUUUUUUUU WILLPOPSCOPE");
@@ -199,4 +214,64 @@ class _HomeState extends State<HomePage> {
       print(e);
     });
   }
+
+  void getActiveTheme(){
+    FirebaseAuth.instance.currentUser().then((fUser) {
+      setState(() {
+        user = fUser;
+        Stream<QuerySnapshot> snapshot = Firestore.instance
+            .collection('users')
+            .where('uid', isEqualTo: user.uid)
+            .snapshots();
+
+        snapshot.listen((QuerySnapshot data){
+          themeChosen = data.documents[0]['theme'];
+          debugPrint("ThemeChosen: ${themeChosen}");
+          changingColor(themeChosen);
+        });
+      });
+    });
+  }
+
+  DemoTheme _buildPinkTheme() {
+    return DemoTheme(
+        'pink',
+        new ThemeData(
+          primaryColor: Colors.pink[400],
+          scaffoldBackgroundColor: Colors.grey[50],
+          accentColor: Colors.pink[400],
+          buttonColor: Colors.pink,
+          fontFamily: 'Quicksand',
+          indicatorColor: Colors.pink[100],
+          brightness: Brightness.light,
+        ));
+  }
+
+  DemoTheme _buildBlueTheme() {
+    return DemoTheme(
+        'blue',
+        new ThemeData(
+            primaryColor: Colors.blue[400],
+            scaffoldBackgroundColor: Colors.grey[50],
+            accentColor: Colors.blueAccent[400],
+            buttonColor: Colors.blue,
+            toggleableActiveColor: Colors.lightBlue,
+            unselectedWidgetColor: Colors.blueAccent,
+            fontFamily: 'Quicksand',
+            indicatorColor: Colors.blueGrey,
+            brightness: Brightness.light,
+            textTheme: TextTheme(button: TextStyle(color: Colors.white))
+        ));
+  }
+
+  void changingColor(bool valueOfClick){
+    setState(() {
+      if(valueOfClick){
+        inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildBlueTheme());
+      } else {
+        inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildPinkTheme());
+      }
+    });
+  }
+
 }
