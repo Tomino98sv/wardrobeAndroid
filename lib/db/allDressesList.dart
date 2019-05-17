@@ -9,8 +9,9 @@ import 'package:flutter_app/db/getItem.dart';
 import 'package:flutter_app/db/userInfo.dart';
 
 class AllDressesList extends StatefulWidget {
+  String filterValue;
 
-  AllDressesList({Key key}) : super(key: key);
+  AllDressesList({Key key, @required this.filterValue}) : super(key: key);
 
   @override
   DressesListState createState() {
@@ -23,6 +24,8 @@ class DressesListState extends State<AllDressesList> {
   var userName;
 
   bool showFilters = false;
+
+  get filterValue => filterValue;
 
   @override
   void initState() {
@@ -49,11 +52,17 @@ class DressesListState extends State<AllDressesList> {
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError)
           return new Text('Error: ${snapshot.error}',
-              style: Theme.of(context).textTheme.subhead);
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .subhead);
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
             return new Text('Loading...',
-                style: Theme.of(context).textTheme.subhead);
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .subhead);
           default:
             return Scaffold(
               body: Column(
@@ -207,4 +216,50 @@ class DressesListState extends State<AllDressesList> {
     else
       return Container();
   }
+}
+
+abstract class GridViewSearch extends SearchDelegate<AllDressesList>{
+  static final FirebaseUser userCurrent = FirebaseAuth.instance.currentUser() as FirebaseUser;
+  var items =  Firestore.instance
+      .collection('users')
+      .where('uid', isEqualTo: userCurrent.uid)
+      .snapshots();
+
+  GridViewSearch(this.items);
+
+  get filterValue => filterValue;
+
+  @override
+  String get query => filterValue;
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
+          stream: items,
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: Text("No  data", style:Theme.of(context).textTheme.subhead),
+              );
+            }
+            final results = snapshot.data.documents
+                .where((a) => a['size'].contains(query) || a['length'].contains(query) || a['color'].contains(query));
+            return GridView.count(
+              padding:
+              EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+              crossAxisCount: 3,
+              crossAxisSpacing: 12.0,
+              mainAxisSpacing: 12.0,
+              shrinkWrap: true,
+              children: results.map(
+                      (DocumentSnapshot document) {}
+              ).toList(),
+            );
+          }),
+    );
+  }
+
+
+
 }
