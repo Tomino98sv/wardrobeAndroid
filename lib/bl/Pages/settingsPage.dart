@@ -17,10 +17,10 @@ class SettingsPage extends StatefulWidget{
 
 class _SettingsPageState extends State<SettingsPage>{
   ThemeSwitcher inheritedThemeSwitcher;
+  FirebaseUser user;
   bool note = false;
   bool click = false;
   bool mode = false;
-  FirebaseUser user;
   bool themeChosen;
   UserManagement userManagement = new UserManagement();
 
@@ -29,21 +29,7 @@ class _SettingsPageState extends State<SettingsPage>{
   void initState() {
     // TODO: implement initState
     super.initState();
-    FirebaseAuth.instance.currentUser().then((fUser) {
-      setState(() {
-        user = fUser;
-        Stream<QuerySnapshot> snapshot = Firestore.instance
-            .collection('users')
-            .where('uid', isEqualTo: user.uid)
-            .snapshots();
-
-        snapshot.listen((QuerySnapshot data){
-          themeChosen = data.documents[0]['theme'];
-        });
-      });
-    }).then((val){
-      changingColor(themeChosen);
-    });
+    getActiveTheme();
   }
 
   @override
@@ -178,6 +164,24 @@ class _SettingsPageState extends State<SettingsPage>{
         note = true;
         valueOfNote = true;
       }
+    });
+  }
+
+  void getActiveTheme(){
+    FirebaseAuth.instance.currentUser().then((fUser) {
+      setState(() {
+        user = fUser;
+        Stream<QuerySnapshot> snapshot = Firestore.instance
+            .collection('users')
+            .where('uid', isEqualTo: user.uid)
+            .snapshots();
+
+        snapshot.listen((QuerySnapshot data){
+          themeChosen = data.documents[0]['theme'];
+          debugPrint("ThemeChosen: ${themeChosen}");
+          changingColor(themeChosen);
+        });
+      });
     });
   }
 }
