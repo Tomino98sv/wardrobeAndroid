@@ -362,6 +362,13 @@ class _State extends State<EditItem> {
                                 .updateData({"request": 'buy'});
                             debugPrint("zmenul som funkciu/request");
                           }
+                          else{
+                            Firestore.instance
+                                .collection('items')
+                                .document(item.documentID)
+                                .updateData({"request": 'sell'});
+                            debugPrint("zmenul som funkciu/request");
+                          }
                         });
 
                       } else if (item['request'].toString() != 'borrow' || docFunction!=''){
