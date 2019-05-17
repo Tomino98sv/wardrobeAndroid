@@ -7,7 +7,9 @@ class FilterChipDisplay extends StatefulWidget {
 }
 
 var counter = 0;
-bool selectedWidget = false;
+bool selectedWidgetSize = false;
+bool selectedWidgetLength = false;
+bool selectedWidgetColor = false;
 
 class _FilterChipDisplayState extends State<FilterChipDisplay> {
   @override
@@ -35,15 +37,25 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
                     chipName: 'Size',
                     onPressed: () {
                       setState(() {
-                        selectedWidget = !selectedWidget;
+                        selectedWidgetSize = !selectedWidgetSize;
                       });
                     },
                   ),
                   FilterChipWidget(
                     chipName: 'Length',
+                      onPressed: () {
+                        setState(() {
+                          selectedWidgetLength = !selectedWidgetLength;
+                        });
+                      }
                   ),
                   FilterChipWidget(
                     chipName: 'Color',
+                      onPressed: () {
+                        setState(() {
+                          selectedWidgetColor = !selectedWidgetColor;
+                        });
+                      }
                   ),
                 ],
               ),
@@ -54,9 +66,45 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
           height: 1,
           color: Colors.grey,
         ),
-        Container(
-            child:
-                selectedWidget == true ? _buildExpandedWidget() : Container())
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            FlatButton(
+                child:
+                selectedWidgetSize == true ? Text("Choose Size") : Text(""),
+                onPressed:
+                selectedWidgetSize == true ? (){
+                  showDialog(context: context,
+                      child: _buildSizeWidget(context)
+                  ) ;
+                } : null
+            ),
+            FlatButton(
+                child:
+                selectedWidgetLength == true ? Text("Choose Lenght") : Text(""),
+                onPressed:
+                selectedWidgetLength == true ? (){
+                  showDialog(context: context,
+                      child: _buildLenghtWidget(context)
+                  ) ;
+                } : null
+            ),
+            FlatButton(
+                child:
+                selectedWidgetColor == true ? Text("Choose color") : Text(""),
+                onPressed:
+                selectedWidgetColor == true ? (){
+                  showDialog(context: context,
+                      child: _buildColorWidget(context)
+                  ) ;
+                } : null
+            ),
+          ],
+        ),
+
+//        Container(
+//            child:
+//                selectedWidget == true ? _buildExpandedWidget(context) : Container())
       ],
     );
   }
@@ -95,7 +143,9 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
           if (isSelected) {
             counter++;
             debugPrint("$counter");
-            selectedWidget = true;
+            selectedWidgetSize = true;
+            selectedWidgetLength = true;
+            selectedWidgetColor = true;
 //           debugPrint("$selectedWidget");
           } else {
             debugPrint("neda to proste");
@@ -109,44 +159,111 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
 List<String> sizes = ['34', '36', '38', '40', '42', '44', '46', '48'];
 int _currentItemSelected = 0;
 
-Widget _buildExpandedWidget() {
+Widget _buildSizeWidget(BuildContext context) {
   debugPrint("malo by vykreslit dropdown menu");
   return CupertinoAlertDialog(
-   actions:<Widget>[
-     CupertinoDialogAction(
-       isDefaultAction: true,
-       child: SizedBox(
-         width: 100,
-         height: 100,
-         child: CupertinoPicker(
-             itemExtent: 30,
-             backgroundColor: CupertinoColors.white,
-             onSelectedItemChanged: (index){
-               _currentItemSelected = index;
-               print(_currentItemSelected);
-             },
-             children: List<Widget>.generate(sizes.length, (index) {
-               return Center(
-                 child: Text(sizes[index]),
-               );
-             },
-             )
+    title: Text("Your size is", style: TextStyle(
+        color: Colors.black,
+        fontSize: 15.0,
+      decorationStyle: TextDecorationStyle.dashed
+    ) ,),
+         content: SizedBox(
+           width: 200,
+           height: 200,
+           child: CupertinoPicker(
+               itemExtent: 30,
+               diameterRatio: 1.0,
+               backgroundColor: CupertinoColors.white,
+               onSelectedItemChanged: (index){
+                 _currentItemSelected = index;
+                 print(_currentItemSelected);
+               },
+               children: List<Widget>.generate(sizes.length, (index) {
+                 return Center(
+                   child: Text(sizes[index],
+                     style: TextStyle(
+                         fontSize: 20.0,
+                       color: Colors.pink
+                     ),
+                   ),
+                 );
+               },
+               )
+           ),
          ),
-       ),
-     )
-   ] ,
   );
-//  return DropdownButton<String>(
-//    items: _sizes.map((String dropDownStringItem) {
-//      return DropdownMenuItem<String>(
-//        value: dropDownStringItem,
-//        child: Text(dropDownStringItem),
-//      );
-//    }).toList(),
-//    onChanged: (String newValueSelected) {
-//      _currentItemSelected = newValueSelected;
-//      size = newValueSelected;
-//    },
-//    value: _currentItemSelected,
-//  );
+}
+
+List<String> lengths = ['Mini', 'Midi', 'Maxi', 'Oversize'];
+
+Widget _buildLenghtWidget(BuildContext context) {
+  debugPrint("malo by vykreslit dropdown menu 2");
+  return CupertinoAlertDialog(
+    title: Text("Favourite lenght is", style: TextStyle(
+        color: Colors.black,
+        fontSize: 15.0,
+        decorationStyle: TextDecorationStyle.dashed
+    ),),
+    content: SizedBox(
+      width: 200,
+      height: 200,
+      child: CupertinoPicker(
+          itemExtent: 30,
+          diameterRatio: 1.0,
+          backgroundColor: CupertinoColors.white,
+          onSelectedItemChanged: (index) {
+            _currentItemSelected = index;
+            print(_currentItemSelected);
+          },
+          children: List<Widget>.generate(lengths.length, (index) {
+            return Center(
+              child: Text(lengths[index],
+                style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.pink
+                ),
+              ),
+            );
+          },
+          )
+      ),
+    ),
+  );
+}
+
+List<String> colors = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Brown", "Magenta", "Tan", "Cyan", "Olive", "Maroon", "Navy", "Aquamarine", "Turquoise", "Silver", "Lime", "Teal", "Indigo", "Violet", "Pink", "Black", "White", "Gray"];
+
+Widget _buildColorWidget(BuildContext context) {
+  debugPrint("malo by vykreslit dropdown menu 3");
+  return CupertinoAlertDialog(
+    title: Text("Favourite color is", style: TextStyle(
+        color: Colors.black,
+        fontSize: 15.0,
+        decorationStyle: TextDecorationStyle.dashed
+    ),),
+    content: SizedBox(
+      width: 200,
+      height: 200,
+      child: CupertinoPicker(
+          itemExtent: 30,
+          diameterRatio: 1.0,
+          backgroundColor: CupertinoColors.white,
+          onSelectedItemChanged: (index) {
+            _currentItemSelected = index;
+            print(_currentItemSelected);
+          },
+          children: List<Widget>.generate(colors.length, (index) {
+            return Center(
+              child: Text(colors[index],
+                style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.pink
+                ),
+              ),
+            );
+          },
+          )
+      ),
+    ),
+  );
 }
