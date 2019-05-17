@@ -110,384 +110,390 @@ class _WelcomePageState extends State<WelcomePage>
                         ),
                       ),
                       Expanded(
-                          child: TabBarView(controller: _tabController, children: <Widget>[
-                            GridView.count(
-                              crossAxisCount: 3,
-                                crossAxisSpacing: 12.0,
-                                mainAxisSpacing: 12.0,
-                                padding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
-                                shrinkWrap: true,
-                                children: snapshot.data.documents
-                                    .where((doc) => doc['borrowedTo'] == "")
-                                    .where((doc) => doc['userId'] == user2.uid)
-                                    .map((DocumentSnapshot document) {
-                                    return GestureDetector(
-                                      child: Material(
-                                        color: Colors.white,
-                                        shadowColor: Colors.grey,
-                                        elevation:14.0,
-                                        borderRadius: BorderRadius.circular(24.0),
+                          child: Stack(
+                            children: <Widget> [
 
-                                        child: Container(
+                              TabBarView(
+                                controller: _tabController, children: <Widget>[
+                              GridView.count(
+                                crossAxisCount: 3,
+                                  crossAxisSpacing: 12.0,
+                                  mainAxisSpacing: 12.0,
+                                  padding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
+                                  shrinkWrap: true,
+                                  children: snapshot.data.documents
+                                      .where((doc) => doc['borrowedTo'] == "")
+                                      .where((doc) => doc['userId'] == user2.uid)
+                                      .map((DocumentSnapshot document) {
+                                      return GestureDetector(
+                                        child: Material(
+                                          color: Colors.white,
+                                          shadowColor: Colors.grey,
+                                          elevation:14.0,
+                                          borderRadius: BorderRadius.circular(24.0),
 
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(10.0),
-                                            child: document["photo_url"] == null || document["photo_url"] == ""
-                                                ? Icon(Icons.broken_image)
-                                                : CachedNetworkImage(
-                                              imageUrl: document["photo_url"],
-                                              fit: BoxFit.cover,
-                                              alignment: Alignment.topLeft,
-                                              placeholder: (context, imageUrl) =>
-                                                  CircularProgressIndicator(),
-                                            ),
-                                          )
-                                        )
-                                      ),
-                                      onTap: (){
-                                        showDialog(
-                                            context: context,
-                                            barrierDismissible: false,
-                                            child: CupertinoAlertDialog(
-                                              title: Text(document['name']),
-                                              content: Column(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: <Widget>[
-                                                  CachedNetworkImage(
-                                                    imageUrl: document['photo_url'],
-                                                    placeholder: (context, imageUrl) =>
-                                                        CircularProgressIndicator(),
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: <Widget>[
-                                                      Text("About:  "),
-                                                      Text(document["description"]),
-                                                    ],
-                                                  ),
-                                                ],
+                                          child: Container(
+
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(10.0),
+                                              child: document["photo_url"] == null || document["photo_url"] == ""
+                                                  ? Icon(Icons.broken_image)
+                                                  : CachedNetworkImage(
+                                                imageUrl: document["photo_url"],
+                                                fit: BoxFit.cover,
+                                                alignment: Alignment.topLeft,
+                                                placeholder: (context, imageUrl) =>
+                                                    CircularProgressIndicator(),
                                               ),
-                                              actions: <Widget>[
-                                                Row(
+                                            )
+                                          )
+                                        ),
+                                        onTap: (){
+                                          showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              child: CupertinoAlertDialog(
+                                                title: Text(document['name']),
+                                                content: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                   children: <Widget>[
-                                                    FlatButton(
-                                                      onPressed: (){
-                                                        Navigator.push(context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) {
-                                                                return EditItem(item: document);
-                                                              }));
-                                                      debugPrint("idem dalej");
-                                                      },
-                                                      child: Text("Edit"),
+                                                    CachedNetworkImage(
+                                                      imageUrl: document['photo_url'],
+                                                      placeholder: (context, imageUrl) =>
+                                                          CircularProgressIndicator(),
                                                     ),
-                                                    FlatButton(
-                                                      onPressed: (){
-                                                        Navigator.push(context,
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: <Widget>[
+                                                        Text("About:  "),
+                                                        Text(document["description"]),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                actions: <Widget>[
+                                                  Row(
+                                                    children: <Widget>[
+                                                      FlatButton(
+                                                        onPressed: (){
+                                                          Navigator.push(context,
                                                             MaterialPageRoute(
                                                                 builder: (context) {
-                                                                  return UserList(item: document);
+                                                                  return EditItem(item: document);
                                                                 }));
-                                                      },
-                                                      child: Text("Borrow"),
-                                                    ),
-                                                    FlatButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Text("Cancel"),
-                                                    )
-                                                  ],
-                                                )
-                                              ],
-                                            )
-                                        );
-                                      },
-                                      onLongPress: (){
-                                        return showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: Text('Delete Item',style:Theme.of(context).textTheme.subhead),
-                                              content: Text(
-                                                  'Are you sure you want to delete this item?',style:Theme.of(context).textTheme.subhead),
-                                              actions: <Widget>[
-                                                FlatButton(
-                                                  child: Text('Yes'),
-                                                  onPressed: () {
-                                                    Firestore.instance
-                                                        .collection('items')
-                                                        .document(document.documentID)
-                                                        .delete();
-                                                    Navigator.pop(context);
-                                                    deleteFireBaseStorageItem(
-                                                        document['photoUrl']);
-                                                    debugPrint("vymazanee");
-                                                  },
-                                                ),
-                                                FlatButton(
-                                                  child: Text('Cancel',style:Theme.of(context).textTheme.subhead),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                )
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      },
-                                    );
-
-                                }).toList()),
-                            //second tab
-                            GridView.count(
-                                crossAxisCount: 3,
-                                crossAxisSpacing: 12.0,
-                                mainAxisSpacing: 12.0,
-                                padding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
-                                shrinkWrap: true,
-                                children: snapshot.data.documents
-                                  .where((doc) => doc["userId"] == user2.uid)
-                                  .where((doc) => doc["borrowedTo"] != "")
-                                    .map((DocumentSnapshot document)  {
-                                    return GestureDetector(
-                                      child: Material(
-                                          color: Colors.white,
-                                          shadowColor: Colors.grey,
-                                          elevation:14.0,
-                                          borderRadius: BorderRadius.circular(24.0),
-                                          child: Container(
-                                              child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(10.0),
-                                                child: document["photo_url"] == null || document["photo_url"] == ""
-                                                    ? Icon(Icons.broken_image)
-                                                    : CachedNetworkImage(
-                                                  imageUrl: document["photo_url"],
-                                                  fit: BoxFit.cover,
-                                                  alignment: Alignment.topLeft,
-                                                  placeholder: (context, imageUrl) =>
-                                                      CircularProgressIndicator(),
-                                                ),
-                                              )
-                                          )
-                                      ),
-                                      onTap: (){
-                                        showDialog(
-                                            context: context,
-                                            barrierDismissible: false,
-                                            child: CupertinoAlertDialog(
-                                              title: Text(document['name']),
-                                              content: Column(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: <Widget>[
-                                                  CachedNetworkImage(
-                                                    imageUrl: document['photo_url'],
-                                                    placeholder: (context, imageUrl) =>
-                                                        CircularProgressIndicator(),
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: <Widget>[
-                                                      Text("Lent to:  "),
-                                                      Text('${document['borrowName']}',style:Theme.of(context).textTheme.subhead),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                              actions: <Widget>[
-                                                Row(
-                                                  children: <Widget>[
-                                                    FlatButton(
-                                                      onPressed: (){
-                                                        return showDialog(
-                                                            context: context,
-                                                            builder: (BuildContext context) {
-                                                              return AlertDialog(
-                                                                title: Text('Get item',style:Theme.of(context).textTheme.subhead),
-                                                                content: Text(
-                                                                    'Are you sure that user returned your item back to you?',
-                                                                    style:Theme.of(context).textTheme.subhead),
-                                                                actions: <Widget>[
-                                                                  FlatButton(
-                                                                    child: Text('Yes',style:Theme.of(context).textTheme.subhead),
-                                                                    onPressed: () {
-                                                                      Firestore.instance
-                                                                          .collection('items')
-                                                                          .document(document
-                                                                          .documentID)
-                                                                          .updateData({
-                                                                        "borrowedTo": "",
-                                                                        "borrowName": ""
-                                                                      });
-                                                                      debugPrint(
-                                                                          "vratil sa mi item");
-                                                                      Navigator.pop(context);
-                                                                      Navigator.pop(context);
-                                                                    },
-                                                                  ),
-                                                                  FlatButton(
-                                                                    child: Text('Cancel',style:Theme.of(context).textTheme.subhead),
-                                                                    onPressed: () {
-                                                                      Navigator.pop(context);
-                                                                    },
-                                                                  )
-                                                                ],
-                                                              );
-                                                            });
-
-                                                      },
-                                                      child: Text('Recieve',style:Theme.of(context).textTheme.subhead),
-                                                    ),
-                                                    FlatButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Text("Cancel"),
-                                                    )
-                                                  ],
-                                                )
-                                              ],
-                                            )
-                                        );
-                                      },
-                                    );
-                                }).toList()),
-                            //third tab
-                            GridView.count(
-                                crossAxisCount: 3,
-                                crossAxisSpacing: 12.0,
-                                mainAxisSpacing: 12.0,
-                                padding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
-                                shrinkWrap: true,
-                                children: snapshot.data.documents
-                                  .where((doc) => doc["borrowedTo"] == user2.uid)
-                                    .map((DocumentSnapshot document) {
-                                    return GestureDetector(
-                                      child: Material(
-                                          color: Colors.white,
-                                          shadowColor: Colors.grey,
-                                          elevation:14.0,
-                                          borderRadius: BorderRadius.circular(24.0),
-                                          child: Container(
-                                              child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(10.0),
-                                                child: document["photo_url"] == null || document["photo_url"] == ""
-                                                    ? Icon(Icons.broken_image)
-                                                    : CachedNetworkImage(
-                                                  imageUrl: document["photo_url"],
-                                                  fit: BoxFit.cover,
-                                                  alignment: Alignment.topLeft,
-                                                  placeholder: (context, imageUrl) =>
-                                                      CircularProgressIndicator(),
-                                                ),
-                                              )
-                                          )
-                                      ),
-                                      onTap: (){
-                                        showDialog(
-                                            context: context,
-                                            barrierDismissible: false,
-                                            child: CupertinoAlertDialog(
-                                              title: Text(document['name']),
-                                              content: Column(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: <Widget>[
-                                                  CachedNetworkImage(
-                                                    imageUrl: document['photo_url'],
-                                                    placeholder: (context, imageUrl) =>
-                                                        CircularProgressIndicator(),
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: <Widget>[
-                                                      Text("Borrowed from:  "),
-                                                      StreamBuilder<QuerySnapshot>(
-                                                        stream:  Firestore.instance
-                                                            .collection('users')
-                                                            .where('uid', isEqualTo: document['userId'])
-                                                            .snapshots(),
-                                                        builder: (context, snapshot) {
-                                                          return Text('${snapshot.data.documents[0]['name']}',
-                                                              style:Theme.of(context).textTheme.subhead);
+                                                        debugPrint("idem dalej");
                                                         },
+                                                        child: Text("Edit"),
                                                       ),
+                                                      FlatButton(
+                                                        onPressed: (){
+                                                          Navigator.push(context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) {
+                                                                    return UserList(item: document);
+                                                                  }));
+                                                        },
+                                                        child: Text("Borrow"),
+                                                      ),
+                                                      FlatButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(context);
+                                                        },
+                                                        child: Text("Cancel"),
+                                                      )
                                                     ],
-                                                  ),
+                                                  )
                                                 ],
-                                              ),
-                                              actions: <Widget>[
-                                                Row(
-                                                  children: <Widget>[
-                                                    FlatButton(
-                                                      onPressed: (){
-                                                        return showDialog(
-                                                            context: context,
-                                                            builder: (BuildContext context) {
-                                                              return AlertDialog(
-                                                                title: Text('Return item',style:Theme.of(context).textTheme.subhead),
-                                                                content: Text(
-                                                                    'Are you sure that you returned your item back to the owner?',
-                                                                    style:Theme.of(context).textTheme.subhead),
-                                                                actions: <Widget>[
-                                                                  FlatButton(
-                                                                    child: Text('Yes',style:Theme.of(context).textTheme.subhead),
-                                                                    onPressed: () {
-                                                                      Firestore.instance
-                                                                      .collection('items')
-                                                                      .document(document
-                                                                      .documentID)
-                                                                      .updateData({
-                                                                    "borrowedTo": "",
-                                                                    "borrowName": ""
-                                                                  });
-                                                                  debugPrint(
-                                                                      "vratil sa mi item");
-                                                                  Navigator.pop(context);
-                                                                  Navigator.pop(context);
-                                                                    },
-                                                                  ),
-                                                                  FlatButton(
-                                                                    child: Text('Cancel',style:Theme.of(context).textTheme.subhead),
-                                                                    onPressed: () {
-                                                                      Navigator.pop(context);
-                                                                    },
-                                                                  )
-                                                                ],
-                                                              );
-                                                            });
+                                              )
+                                          );
+                                        },
+                                        onLongPress: (){
+                                          return showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text('Delete Item',style:Theme.of(context).textTheme.subhead),
+                                                content: Text(
+                                                    'Are you sure you want to delete this item?',style:Theme.of(context).textTheme.subhead),
+                                                actions: <Widget>[
+                                                  FlatButton(
+                                                    child: Text('Yes'),
+                                                    onPressed: () {
+                                                      Firestore.instance
+                                                          .collection('items')
+                                                          .document(document.documentID)
+                                                          .delete();
+                                                      Navigator.pop(context);
+                                                      deleteFireBaseStorageItem(
+                                                          document['photoUrl']);
+                                                      debugPrint("vymazanee");
+                                                    },
+                                                  ),
+                                                  FlatButton(
+                                                    child: Text('Cancel',style:Theme.of(context).textTheme.subhead),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                  )
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                      );
 
-                                                      },
-                                                      child: Text('Return',style:Theme.of(context).textTheme.subhead),
-                                                    ),
-                                                    FlatButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: Text("Cancel"),
-                                                    )
-                                                  ],
+                                  }).toList()),
+                              //second tab
+                              GridView.count(
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing: 12.0,
+                                  mainAxisSpacing: 12.0,
+                                  padding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
+                                  shrinkWrap: true,
+                                  children: snapshot.data.documents
+                                    .where((doc) => doc["userId"] == user2.uid)
+                                    .where((doc) => doc["borrowedTo"] != "")
+                                      .map((DocumentSnapshot document)  {
+                                      return GestureDetector(
+                                        child: Material(
+                                            color: Colors.white,
+                                            shadowColor: Colors.grey,
+                                            elevation:14.0,
+                                            borderRadius: BorderRadius.circular(24.0),
+                                            child: Container(
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.circular(10.0),
+                                                  child: document["photo_url"] == null || document["photo_url"] == ""
+                                                      ? Icon(Icons.broken_image)
+                                                      : CachedNetworkImage(
+                                                    imageUrl: document["photo_url"],
+                                                    fit: BoxFit.cover,
+                                                    alignment: Alignment.topLeft,
+                                                    placeholder: (context, imageUrl) =>
+                                                        CircularProgressIndicator(),
+                                                  ),
                                                 )
-                                              ],
                                             )
-                                        );
-                                      },
-                                    );
-                                }).toList()),
+                                        ),
+                                        onTap: (){
+                                          showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              child: CupertinoAlertDialog(
+                                                title: Text(document['name']),
+                                                content: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    CachedNetworkImage(
+                                                      imageUrl: document['photo_url'],
+                                                      placeholder: (context, imageUrl) =>
+                                                          CircularProgressIndicator(),
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: <Widget>[
+                                                        Text("Lent to:  "),
+                                                        Text('${document['borrowName']}',style:Theme.of(context).textTheme.subhead),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                actions: <Widget>[
+                                                  Row(
+                                                    children: <Widget>[
+                                                      FlatButton(
+                                                        onPressed: (){
+                                                          return showDialog(
+                                                              context: context,
+                                                              builder: (BuildContext context) {
+                                                                return AlertDialog(
+                                                                  title: Text('Get item',style:Theme.of(context).textTheme.subhead),
+                                                                  content: Text(
+                                                                      'Are you sure that user returned your item back to you?',
+                                                                      style:Theme.of(context).textTheme.subhead),
+                                                                  actions: <Widget>[
+                                                                    FlatButton(
+                                                                      child: Text('Yes',style:Theme.of(context).textTheme.subhead),
+                                                                      onPressed: () {
+                                                                        Firestore.instance
+                                                                            .collection('items')
+                                                                            .document(document
+                                                                            .documentID)
+                                                                            .updateData({
+                                                                          "borrowedTo": "",
+                                                                          "borrowName": ""
+                                                                        });
+                                                                        debugPrint(
+                                                                            "vratil sa mi item");
+                                                                        Navigator.pop(context);
+                                                                        Navigator.pop(context);
+                                                                      },
+                                                                    ),
+                                                                    FlatButton(
+                                                                      child: Text('Cancel',style:Theme.of(context).textTheme.subhead),
+                                                                      onPressed: () {
+                                                                        Navigator.pop(context);
+                                                                      },
+                                                                    )
+                                                                  ],
+                                                                );
+                                                              });
+
+                                                        },
+                                                        child: Text('Recieve',style:Theme.of(context).textTheme.subhead),
+                                                      ),
+                                                      FlatButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(context);
+                                                        },
+                                                        child: Text("Cancel"),
+                                                      )
+                                                    ],
+                                                  )
+                                                ],
+                                              )
+                                          );
+                                        },
+                                      );
+                                  }).toList()),
+                              //third tab
+                              GridView.count(
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing: 12.0,
+                                  mainAxisSpacing: 12.0,
+                                  padding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
+                                  shrinkWrap: true,
+                                  children: snapshot.data.documents
+                                    .where((doc) => doc["borrowedTo"] == user2.uid)
+                                      .map((DocumentSnapshot document) {
+                                      return GestureDetector(
+                                        child: Material(
+                                            color: Colors.white,
+                                            shadowColor: Colors.grey,
+                                            elevation:14.0,
+                                            borderRadius: BorderRadius.circular(24.0),
+                                            child: Container(
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.circular(10.0),
+                                                  child: document["photo_url"] == null || document["photo_url"] == ""
+                                                      ? Icon(Icons.broken_image)
+                                                      : CachedNetworkImage(
+                                                    imageUrl: document["photo_url"],
+                                                    fit: BoxFit.cover,
+                                                    alignment: Alignment.topLeft,
+                                                    placeholder: (context, imageUrl) =>
+                                                        CircularProgressIndicator(),
+                                                  ),
+                                                )
+                                            )
+                                        ),
+                                        onTap: (){
+                                          showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              child: CupertinoAlertDialog(
+                                                title: Text(document['name']),
+                                                content: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    CachedNetworkImage(
+                                                      imageUrl: document['photo_url'],
+                                                      placeholder: (context, imageUrl) =>
+                                                          CircularProgressIndicator(),
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: <Widget>[
+                                                        Text("Borrowed from:  "),
+                                                        StreamBuilder<QuerySnapshot>(
+                                                          stream:  Firestore.instance
+                                                              .collection('users')
+                                                              .where('uid', isEqualTo: document['userId'])
+                                                              .snapshots(),
+                                                          builder: (context, snapshot) {
+                                                            return Text('${snapshot.data.documents[0]['name']}',
+                                                                style:Theme.of(context).textTheme.subhead);
+                                                          },
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                actions: <Widget>[
+                                                  Row(
+                                                    children: <Widget>[
+                                                      FlatButton(
+                                                        onPressed: (){
+                                                          return showDialog(
+                                                              context: context,
+                                                              builder: (BuildContext context) {
+                                                                return AlertDialog(
+                                                                  title: Text('Return item',style:Theme.of(context).textTheme.subhead),
+                                                                  content: Text(
+                                                                      'Are you sure that you returned your item back to the owner?',
+                                                                      style:Theme.of(context).textTheme.subhead),
+                                                                  actions: <Widget>[
+                                                                    FlatButton(
+                                                                      child: Text('Yes',style:Theme.of(context).textTheme.subhead),
+                                                                      onPressed: () {
+                                                                        Firestore.instance
+                                                                        .collection('items')
+                                                                        .document(document
+                                                                        .documentID)
+                                                                        .updateData({
+                                                                      "borrowedTo": "",
+                                                                      "borrowName": ""
+                                                                    });
+                                                                    debugPrint(
+                                                                        "vratil sa mi item");
+                                                                    Navigator.pop(context);
+                                                                    Navigator.pop(context);
+                                                                      },
+                                                                    ),
+                                                                    FlatButton(
+                                                                      child: Text('Cancel',style:Theme.of(context).textTheme.subhead),
+                                                                      onPressed: () {
+                                                                        Navigator.pop(context);
+                                                                      },
+                                                                    )
+                                                                  ],
+                                                                );
+                                                              });
+
+                                                        },
+                                                        child: Text('Return',style:Theme.of(context).textTheme.subhead),
+                                                      ),
+                                                      FlatButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(context);
+                                                        },
+                                                        child: Text("Cancel"),
+                                                      )
+                                                    ],
+                                                  )
+                                                ],
+                                              )
+                                          );
+                                        },
+                                      );
+                                  }).toList()),
+
+                            ]),
+                              Container(
+                                margin: EdgeInsets.only(left: 290.0, right: 5.0,top: 135.0),
+                                child: FloatingActionButton(
+                                    heroTag: "btnWelcome",
+                                    child: Icon(Icons.add),
+                                    shape: _DiamondBorder(),
+                                    onPressed: () {
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) {
+                                            return MyNewItem();
+                                          }));
+                                    }),
+                              ),
                           ])),
-                          Container(
-                            margin: EdgeInsets.only(left: 290.0, right: 5.0,bottom: 15.0),
-                            child: FloatingActionButton(
-                                heroTag: "btnWelcome",
-                                child: Icon(Icons.add),
-                                shape: _DiamondBorder(),
-                                onPressed: () {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                        return MyNewItem();
-                                      }));
-                                }),
-                          )
-                      ,
+
                     ],
                   );
               }
