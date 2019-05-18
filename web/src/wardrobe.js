@@ -102,33 +102,21 @@ function updateCartTotal() {
     document.getElementsByClassName('cart-total-price')[0].innerText = '$' + total
 }
 
-function getDownloadURL(){
-// Create a reference with an initial file path and name
-var storage = firebase.storage();
-var pathReference = storage.ref('8e77425d-f82c-498d-b7f2-df22a20c644a.jpg');
-
-// Create a reference from a Google Cloud Storage URI
-var gsReference = storage.refFromURL('gs://wardrobe-26e92.appspot.com/8e77425d-f82c-498d-b7f2-df22a20c644a.jpg')
-
-// Create a reference from an HTTPS URL
-// Note that in the URL, characters are URL escaped!
-var httpsReference = storage.refFromURL('https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/8e77425d-f82c-498d-b7f2-df22a20c644a.jpg?alt=media&token=55afafb2-eaa9-44a5-82d6-b8cf988c0765');
-
-
-storageRef.child('8e77425d-f82c-498d-b7f2-df22a20c644a.jpg').getDownloadURL().then(function(url) {
-  // `url` is the download URL for 'images/stars.jpg'
-
-  // This can be downloaded directly:
-  var xhr = new XMLHttpRequest();
-  xhr.responseType = 'blob';
-  xhr.onload = function(event) {
+function getDownloadURL() {
+    var storage = firebase.storage();
+    var pathReference = storage.ref('8e77425d-f82c-498d-b7f2-df22a20c644a.jpg');
+    var gsReference = storage.refFromURL('gs://wardrobe-26e92.appspot.com/8e77425d-f82c-498d-b7f2-df22a20c644a.jpg')
+    var httpsReference = storage.refFromURL('https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/8e77425d-f82c-498d-b7f2-df22a20c644a.jpg?alt=media&token=55afafb2-eaa9-44a5-82d6-b8cf988c0765');
+        storageRef.child('8e77425d-f82c-498d-b7f2-df22a20c644a.jpg').getDownloadURL().then(function(url) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.onload = function(event) {
     var blob = xhr.response;
   };
-  xhr.open('GET', url);
-  xhr.send();
-
-  var img = document.getElementById('myimg');
-  img.src = url;
+    xhr.open('GET', url);
+    xhr.send();
+    var img = document.getElementById('myimg');
+    img.src = url;
 }).catch(function(error) {
 });
 }
