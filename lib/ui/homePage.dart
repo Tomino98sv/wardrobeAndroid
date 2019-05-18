@@ -26,6 +26,7 @@ class _HomeState extends State<HomePage> {
   ThemeSwitcher inheritedThemeSwitcher;
   FirebaseUser user;
   bool themeChosen;
+  bool themeDarkChosen;
   @override
   void initState() {
     // TODO: implement initState
@@ -226,8 +227,13 @@ class _HomeState extends State<HomePage> {
 
         snapshot.listen((QuerySnapshot data){
           themeChosen = data.documents[0]['theme'];
-          debugPrint("ThemeChosen: ${themeChosen}");
-          changingColor(themeChosen);
+          themeDarkChosen = data.documents[0]['darkTheme'];
+          if(themeDarkChosen==true){
+            darkMode(themeDarkChosen);
+          }else {
+            debugPrint("ThemeChosen: ${themeChosen}");
+            changingColor(themeChosen);
+          }
         });
       });
     });
@@ -264,6 +270,22 @@ class _HomeState extends State<HomePage> {
         ));
   }
 
+  DemoTheme _buildDarkMode() {
+    return DemoTheme(
+        'dark',
+        new ThemeData(
+          textTheme: TextTheme(subhead: TextStyle(color: Colors.white),),
+          primaryColor: Colors.black,
+          scaffoldBackgroundColor: Colors.black,
+          accentColor: Colors.black45,
+          buttonColor: Colors.white12,
+          toggleableActiveColor: Colors.black54,
+          unselectedWidgetColor: Colors.black45,
+          fontFamily: 'Quicksand',
+          indicatorColor: Colors.black54,
+        ));
+  }
+
   void changingColor(bool valueOfClick){
     setState(() {
       if(valueOfClick){
@@ -271,6 +293,14 @@ class _HomeState extends State<HomePage> {
       } else {
         inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildPinkTheme());
       }
+    });
+  }
+
+  void darkMode(bool valueOfMode){
+    setState(() {
+      if(valueOfMode){
+        inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildDarkMode());
+        }
     });
   }
 

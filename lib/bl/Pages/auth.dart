@@ -83,6 +83,7 @@ class AuthService {
         'uid': user.uid,
         'photoUrl': user.photoUrl,
         'theme':false,
+        'darkTheme':false
     }, merge: true);
   }
 
