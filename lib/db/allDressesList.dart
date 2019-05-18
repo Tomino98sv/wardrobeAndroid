@@ -3,22 +3,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/zoomable.dart';
+import 'package:flutter_app/bl/Pages/filter.dart';
 import 'package:flutter_app/db/FirestoreManager.dart';
 import 'package:flutter_app/db/getItem.dart';
 import 'package:flutter_app/db/userInfo.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 class AllDressesList extends StatefulWidget {
+  String filterValue;
+
+  AllDressesList({Key key, @required this.filterValue}) : super(key: key);
+
   @override
-  _DressesListState createState() {
-    return _DressesListState();
+  DressesListState createState() {
+    return DressesListState();
   }
 }
 
-class _DressesListState extends State<AllDressesList> {
+class DressesListState extends State<AllDressesList> {
   FirebaseUser userCurrent;
   var userName;
+
+  bool showFilters = false;
+
+  get filterValue => filterValue;
 
   @override
   void initState() {
@@ -45,38 +52,49 @@ class _DressesListState extends State<AllDressesList> {
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError)
           return new Text('Error: ${snapshot.error}',
-              style: Theme.of(context).textTheme.subhead);
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .subhead);
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
             return new Text('Loading...',
-                style: Theme.of(context).textTheme.subhead);
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .subhead);
           default:
             return Scaffold(
-              body: new GridView.count(
-                padding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
-                crossAxisCount: 3,
-                crossAxisSpacing: 12.0,
-                mainAxisSpacing: 12.0,
-                children:
-                    snapshot.data.documents
+              body: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  createFilter(),
+                  new GridView.count(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 12.0,
+                    mainAxisSpacing: 12.0,
+                    shrinkWrap: true,
+                    children: snapshot.data.documents
                         .where((doc) => doc["userId"] != userCurrent.uid)
                         .map((DocumentSnapshot document) {
-                  Item item = Item(
-                      name: document['name'],
-                      color: document['color'],
-                      size: document['size'],
-                      length: document['length'],
-                      photoUrl: document['photo_url'],
-                      id: document.documentID,
-                      borrowName: document['borrowName'],
-                      description: document['description'],
-                  );
-                    return GestureDetector(
-                      child: Material(
-                        color: Colors.white,
-                        shadowColor: Colors.grey,
-                        elevation: 14.0,
-                        borderRadius: BorderRadius.circular(24.0),
+                      Item item = Item(
+                        name: document['name'],
+                        color: document['color'],
+                        size: document['size'],
+                        length: document['length'],
+                        photoUrl: document['photo_url'],
+                        id: document.documentID,
+                        borrowName: document['borrowName'],
+                        description: document['description'],
+                      );
+                      return GestureDetector(
+                        child: Material(
+                          color: Colors.white,
+                          shadowColor: Colors.grey,
+                          elevation: 14.0,
+                          borderRadius: BorderRadius.circular(24.0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10.0),
                             child: Stack(
@@ -85,96 +103,163 @@ class _DressesListState extends State<AllDressesList> {
                                 item.photoUrl == null || item.photoUrl == ""
                                     ? Icon(Icons.broken_image)
                                     : CachedNetworkImage(
-                                  imageUrl: item.photoUrl,
-                                  fit: BoxFit.cover,
-                                  alignment: Alignment.topLeft,
-
-                                  placeholder: (context, imageUrl) =>
-                                      CircularProgressIndicator(),
-                                ),
+                                        imageUrl: item.photoUrl,
+                                        fit: BoxFit.cover,
+                                        alignment: Alignment.topLeft,
+                                        placeholder: (context, imageUrl) =>
+                                            CircularProgressIndicator(),
+                                      ),
                                 Align(
                                   alignment: Alignment.bottomCenter,
                                   child: Container(
                                     width: double.maxFinite,
                                     height: 26.0,
-                                    padding: EdgeInsets.symmetric(vertical: 4.0,horizontal: 16.0),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 4.0, horizontal: 16.0),
                                     color: Color(0x66000000),
                                     alignment: Alignment.bottomCenter,
-                                    child: Text(document['name'],style: TextStyle(color: Colors.white),),
+                                    child: Text(
+                                      document['name'],
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                   ),
                                 )
                               ],
-
                             ),
                           ),
-                      ),
-                      onTap: (){
-                        showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          child: CupertinoAlertDialog(
-                            title: Text(item.name),
-                            content: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                CachedNetworkImage(
-                                  imageUrl: item.photoUrl,
-                                  placeholder: (context, imageUrl) =>
-                                      CircularProgressIndicator(),
-                                ),
-                                Row(
+                        ),
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              child: CupertinoAlertDialog(
+                                title: Text(item.name),
+                                content: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    Text("About:  "),
-                                    Text(item.description),
+                                    CachedNetworkImage(
+                                      imageUrl: item.photoUrl,
+                                      placeholder: (context, imageUrl) =>
+                                          CircularProgressIndicator(),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text("About:  "),
+                                        Text(item.description),
+                                      ],
+                                    ),
                                   ],
                                 ),
-                              ],
-                            ),
-                            actions: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  FlatButton(
-                                    onPressed: (){
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) {
-                                            return ShowDetails(item: document, user: userCurrent, userName: userName);
+                                actions: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      FlatButton(
+                                        onPressed: () {
+                                          Navigator.push(context,
+                                              MaterialPageRoute(
+                                                  builder: (context) {
+                                            return ShowDetails(
+                                                item: document,
+                                                user: userCurrent,
+                                                userName: userName);
                                           }));
-                                    },
-                                    child: Text("Get"),
-                                  ),
-                                  FlatButton(
-                                    onPressed: (){
-                                      Firestore.instance.collection('users').where("uid", isEqualTo: document['userId']).snapshots().listen((user){
-                                        debugPrint(document['userId']);
-                                        Navigator.push(context,
-                                            MaterialPageRoute(builder: (context) {
-                                              return UserInfoList2(userInfo: user.documents?.first);
+                                        },
+                                        child: Text("Get"),
+                                      ),
+                                      FlatButton(
+                                        onPressed: () {
+                                          Firestore.instance
+                                              .collection('users')
+                                              .where("uid",
+                                                  isEqualTo: document['userId'])
+                                              .snapshots()
+                                              .listen((user) {
+                                            debugPrint(document['userId']);
+                                            Navigator.push(context,
+                                                MaterialPageRoute(
+                                                    builder: (context) {
+                                              return UserInfoList2(
+                                                  userInfo:
+                                                      user.documents?.first);
                                             }));
-                                      });
-                                    },
-                                    child: Text("Seller"),
-                                  ),
-                                  FlatButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Text("Cancel"),
+                                          });
+                                        },
+                                        child: Text("Seller"),
+                                      ),
+                                      FlatButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text("Cancel"),
+                                      )
+                                    ],
                                   )
                                 ],
-                              )
-                            ],
-                          )
-                        );
-                      }
-                      ,
-                    );
-                }).toList(),
+                              ));
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ],
               ),
             );
         }
       },
     );
-    ;
   }
+
+  Widget createFilter() {
+    if (showFilters)
+      return FilterChipDisplay();
+    else
+      return Container();
+  }
+}
+
+abstract class GridViewSearch extends SearchDelegate<AllDressesList>{
+  static final FirebaseUser userCurrent = FirebaseAuth.instance.currentUser() as FirebaseUser;
+  var items =  Firestore.instance
+      .collection('users')
+      .where('uid', isEqualTo: userCurrent.uid)
+      .snapshots();
+
+  GridViewSearch(this.items);
+
+  get filterValue => filterValue;
+
+  @override
+  String get query => filterValue;
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
+          stream: items,
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: Text("No  data", style:Theme.of(context).textTheme.subhead),
+              );
+            }
+            final results = snapshot.data.documents
+                .where((a) => a['size'].contains(query) || a['length'].contains(query) || a['color'].contains(query));
+            return GridView.count(
+              padding:
+              EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+              crossAxisCount: 3,
+              crossAxisSpacing: 12.0,
+              mainAxisSpacing: 12.0,
+              shrinkWrap: true,
+              children: results.map(
+                      (DocumentSnapshot document) {}
+              ).toList(),
+            );
+          }),
+    );
+  }
+
+
+
 }

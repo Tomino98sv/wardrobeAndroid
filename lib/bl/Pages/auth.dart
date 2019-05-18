@@ -82,6 +82,7 @@ class AuthService {
         'name':user.displayName,
         'uid': user.uid,
         'photoUrl': user.photoUrl,
+        'theme':false,
     }, merge: true);
   }
 

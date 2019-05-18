@@ -107,7 +107,7 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text("Profile Picture"),
+        title: Text("Edit profile"),
       ),
         key: _scaffoldKey,
         body: getChooseButton(),
@@ -119,6 +119,22 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
       children: <Widget>[
         Column(
             children: <Widget>[
+              SizedBox(height: 40.0),
+              Container(
+                width: 150.0,
+                height: 150.0,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).buttonColor,
+                    image: DecorationImage(
+                        image: newProfilePic==null?NetworkImage(profileUrlImg):FileImage(newProfilePic),
+                        fit: BoxFit.cover),
+                    borderRadius: BorderRadius.all(Radius.circular(75.0)),
+                    boxShadow: [
+                      BoxShadow(blurRadius: 7.0, color: Theme.of(context).accentColor)
+                    ]
+                ),
+              ),
+              SizedBox(height: 30.0),
               Container(
                 height: 40.0,
                 width: 150.0,
@@ -132,72 +148,82 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
                     child: Center(
                       child: Text(
                           "Change Image",
-                          style:Theme.of(context).textTheme.subhead
+                          style: TextStyle(color: Colors.white)
                       ),
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 15.0),
-              Container(
-                width: 100.0,
-                height: 100.0,
-                decoration: BoxDecoration(
-                    color: Theme.of(context).buttonColor,
-                    image: DecorationImage(
-                        image: newProfilePic==null?NetworkImage(profileUrlImg):FileImage(newProfilePic),
-                        fit: BoxFit.cover),
-                    borderRadius: BorderRadius.all(Radius.circular(75.0)),
-                    boxShadow: [
-                      BoxShadow(blurRadius: 7.0, color: Theme.of(context).accentColor)
-                    ]
-                ),
-              ),
               SizedBox(height: 30.0),
-              Text(
-                "${nameUser}", style:Theme.of(context).textTheme.subhead,
+              Row(
+                children: <Widget>[
+                  Padding(padding: EdgeInsets.only(right: 10.0,bottom: 5.0),),
+                  Text(
+                    "Change your name: ",
+                    style: TextStyle(
+                      fontSize: 18.5,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Padding(padding: EdgeInsets.only(right: 10.0,bottom: 5.0),),
+                  Container(
+                    width: 200,
+                    child: Form(
+                      key: _formKey,
+                      child: TextFormField(
+                        onSaved: (input) => _nameNew = input,
+                        decoration: new InputDecoration(
+                          labelText: "Enter Name",
+                          fillColor: Colors.white,
+                          border: new OutlineInputBorder(
+                            borderRadius: new BorderRadius.circular(25.0),
+                          ),
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        style: new TextStyle(
+                          fontFamily: "Poppins",
+                        ),
+                      ),
+                    ),
+                  )
+//                Text(
+//                  "${nameUser}",
+//                  style: TextStyle(
+//                    fontSize: 25.0,
+//                    color: Colors.black,
+//                    fontWeight: FontWeight.w400,
+//                  ),
+//                ),
+                ],
               ),
               SizedBox(height: 5.0),
-              Form(
-               key: _formKey,
-               child: TextFormField(
-                 onSaved: (input) => _nameNew = input,
-                 decoration: new InputDecoration(
-                   labelText: "Enter Name",
-                   fillColor: Colors.white,
-                   border: new OutlineInputBorder(
-                     borderRadius: new BorderRadius.circular(25.0),
-                     borderSide: new BorderSide(
-                     ),
-                   ),
-                 ),
-                 keyboardType: TextInputType.emailAddress,
-                 style: new TextStyle(
-                   fontFamily: "Poppins",
-                 ),
-               ),
-              )
             ]
         ),
         SizedBox(height: 30.0),
-        Container(
-          height: 40.0,
-          width: 150.0,
-          child: Material(
-            borderRadius: BorderRadius.circular(20.0),
-            shadowColor: Theme.of(context).accentColor,
-            color: Theme.of(context).buttonColor,
-            elevation: 7.0,
-            child: FlatButton(
-              onPressed: appleChanges,
-              child: Center(
-                child: Text(
-                    "Apply changes",
-                    style:Theme.of(context).textTheme.subhead
+        Row(
+          children: <Widget>[
+            Padding(padding: EdgeInsets.only(right: 130.0,bottom: 5.0),),
+            Container(
+              height: 40.0,
+              width: 150.0,
+              child: Material(
+                borderRadius: BorderRadius.circular(20.0),
+                shadowColor: Theme.of(context).accentColor,
+                color: Theme.of(context).buttonColor,
+                elevation: 7.0,
+                child: FlatButton(
+                  onPressed: appleChanges,
+                  child: Center(
+                    child: Text(
+                        "Apply changes",
+                        style: TextStyle(color: Colors.white)
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
+          ],
         ),
       ],
     );
@@ -206,8 +232,8 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
   Future appleChanges() async {
     _formKey.currentState.save();
     if(_nameNew!= ""){
-      if(_nameNew.length<2 || _nameNew.length>10){
-        _showSnackBar2("Name must be at least 2 chars");
+      if(_nameNew.length<2 || _nameNew.length>20){
+        _showSnackBar2("Name must be at least 20 chars");
       }else{
         userManagement.updateProfileName(_nameNew);
         _showSnackBar("Name changed");

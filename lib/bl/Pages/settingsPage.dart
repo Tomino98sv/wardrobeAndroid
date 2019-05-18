@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/Pages/profilePics.dart';
+import 'package:flutter_app/bl/videjko/services/usermanagment.dart';
 import 'package:flutter_app/main.dart';
 import 'package:flutter_app/ui/themes.dart';
 
@@ -14,9 +17,20 @@ class SettingsPage extends StatefulWidget{
 
 class _SettingsPageState extends State<SettingsPage>{
   ThemeSwitcher inheritedThemeSwitcher;
+  FirebaseUser user;
   bool note = false;
   bool click = false;
   bool mode = false;
+  bool themeChosen;
+  UserManagement userManagement = new UserManagement();
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getActiveTheme();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +38,7 @@ class _SettingsPageState extends State<SettingsPage>{
     return new Scaffold(
       appBar: new AppBar(
         title: Text(
-            "Settings",style:Theme.of(context).textTheme.subhead
+            "Settings",style: TextStyle(color: Colors.white)
         ),
       ),
       body: Container(
@@ -55,31 +69,6 @@ class _SettingsPageState extends State<SettingsPage>{
                 ),
               ],
           ),
-            Container(
-              height: 30.0,
-              width: 150.0,
-              child: Material(
-                borderRadius: BorderRadius.circular(20.0),
-                shadowColor: Colors.pinkAccent,
-                color: Colors.pink,
-                elevation: 7.0,
-                child: FlatButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => SelectProfilePicPage()));
-                  },
-                  child: Center(
-                    child: Text(
-                        "Change Profile Data",
-                        style: new TextStyle(
-                            fontSize: 12.0,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400
-                        )
-                    ),
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       )
@@ -141,10 +130,13 @@ class _SettingsPageState extends State<SettingsPage>{
         inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildBlueTheme());
         valueOfClick = true;
         click = true;
+        userManagement.updateUsingTheme(valueOfClick);
+
       } else {
         inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildPinkTheme());
         valueOfClick =false;
         click = false;
+        userManagement.updateUsingTheme(valueOfClick);
       }
     });
   }
@@ -172,6 +164,24 @@ class _SettingsPageState extends State<SettingsPage>{
         note = true;
         valueOfNote = true;
       }
+    });
+  }
+
+  void getActiveTheme(){
+    FirebaseAuth.instance.currentUser().then((fUser) {
+      setState(() {
+        user = fUser;
+        Stream<QuerySnapshot> snapshot = Firestore.instance
+            .collection('users')
+            .where('uid', isEqualTo: user.uid)
+            .snapshots();
+
+        snapshot.listen((QuerySnapshot data){
+          themeChosen = data.documents[0]['theme'];
+          debugPrint("ThemeChosen: ${themeChosen}");
+          changingColor(themeChosen);
+        });
+      });
     });
   }
 }

@@ -93,7 +93,7 @@ class _ChatPageState extends State<ChatPage>{
               }else {
                 debugPrint("refTosub is empty ${refToSub}");
                 setState(() {
-                  _screen = getStreamBuilder();
+                  _screen = getOpeningMess();
                   debugPrint("initial data snapshot ${initialDataSnapshot}");
                 });
               }
@@ -224,15 +224,11 @@ class _ChatPageState extends State<ChatPage>{
           "message": message,
           "created_at": DateTime.now()
         }).then((value){
-          print("sucess subcoll doc ${value.documentID}");
-          setState(() {
-            refToSub=Firestore.instance.collection("chat").document("${documentIDcurrent}").collection(collname);
-          });
-
-          debugPrint("initial data snapshot before method called ${initialDataSnapshot}");
-          getInitialData(collname);
-          debugPrint("initial data snapshot after nethod called ${initialDataSnapshot}");
-
+          Navigator.pop(context);
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ChatPage(widget.emailTarget)
+              ));
         });
       }).catchError((err) {
         print(err);
@@ -269,9 +265,7 @@ class _ChatPageState extends State<ChatPage>{
 
   void getInitialData(String nameCollection){
     refToSub.getDocuments().then((value){
-      setState(() {
         initialDataSnapshot=value;
-      });
 
       debugPrint("initial data snapshot in getInitialData ${initialDataSnapshot}");
 
@@ -300,7 +294,7 @@ class _ChatPageState extends State<ChatPage>{
       builder: (BuildContext context, snapshot) {
         switch(snapshot.connectionState){
           case ConnectionState.none: return Text("Not streaming");
-          case ConnectionState.waiting: return getLoader("Waitting for connection");
+          case ConnectionState.waiting: return getLoader("Starting chatroom");
           case ConnectionState.active:
             if (!snapshot.hasData) {return Container();}
             return new ListView.builder(
@@ -326,6 +320,20 @@ class _ChatPageState extends State<ChatPage>{
       },
     );
   }
+
+  Widget getOpeningMess(){
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            "Start Conversation with first Message",
+            style: TextStyle(fontSize: 20.0),
+          ),
+        ],
+      ),
+    );
+  }
   
   Widget getLoader(String content){
     return Container(
@@ -341,7 +349,7 @@ class _ChatPageState extends State<ChatPage>{
       ),
     );
   }
-  
+
   Widget _getInputAndSend(){
     return IconTheme(
       data: new IconThemeData(

@@ -1,10 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:flutter_app/bl/Pages/chatPage/chat.dart';
 import 'package:flutter_app/db/FirestoreManager.dart';
+import 'package:flutter_app/db/getItem.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class UserInfoList extends StatelessWidget{
@@ -27,7 +30,7 @@ class UserInfoList extends StatelessWidget{
           default:
             return Scaffold(
               appBar: AppBar(
-                title: Text(userInfo['name'], style:Theme.of(context).textTheme.subhead),
+                title: Text(userInfo['name'], style: TextStyle(color: Colors.white)),
               ),
                  body: new Center(
                    child: Column(
@@ -158,7 +161,7 @@ class UserInfoList extends StatelessWidget{
                                         padding: EdgeInsets.symmetric(vertical: 30.0),
                                         child: Text(
                                             itemInfo.data['borrowedTo'] == ""  || itemInfo.data['borrowedTo'] == null ?
-                                            'Choose' : 'Return',style:Theme.of(context).textTheme.subhead,),
+                                            'Choose' : 'Return',style: TextStyle(color: Colors.white),),
                                     ),
                                   ),),),)
                                     ],
@@ -255,14 +258,44 @@ class _DiamondBorder extends ShapeBorder {
   }
 }
 
+class UserInfoList2 extends StatefulWidget{
+
+  DocumentSnapshot userInfo;
+  UserInfoList2({@required this.userInfo});
+  _UserInfoList2 createState() {
+    return _UserInfoList2(userInfo: userInfo);
+  }
+
+}
 
 // list userov (5.screen) a owner details
-class UserInfoList2 extends StatelessWidget{
+class _UserInfoList2 extends State<UserInfoList2>{
   DocumentSnapshot userInfo;
   double _imageHeight = 500.0;
 
-  UserInfoList2({@required this.userInfo});
+  _UserInfoList2({@required this.userInfo});
+  FirebaseUser curUser;
+  var userName;
 
+@override
+  void initState() {
+    super.initState();
+    FirebaseAuth.instance.currentUser().then((value){
+
+      setState(() {
+        curUser=value;
+        Stream<QuerySnapshot> snapshot = Firestore.instance
+            .collection('users')
+            .where('uid', isEqualTo: curUser.uid)
+            .snapshots();
+        snapshot.listen((QuerySnapshot data) {
+          userName = data.documents[0]['name'];
+          debugPrint("${userName}");
+        });
+      });
+
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -276,7 +309,7 @@ class UserInfoList2 extends StatelessWidget{
             default:
               return Scaffold(
                 appBar: AppBar(
-                  title: Text(userInfo['name'], style:Theme.of(context).textTheme.subhead),
+                  title: Text(userInfo['name'], style:TextStyle(color: Colors.white)),
                 ),
                 body:
                new Center(
@@ -303,6 +336,7 @@ class UserInfoList2 extends StatelessWidget{
                                          ]
                                      ),
                                    ),
+                                   Padding(padding: EdgeInsets.only(bottom: 5.0),),
                                    Row(
                                      children: <Widget>[
                                        Text(
@@ -313,7 +347,7 @@ class UserInfoList2 extends StatelessWidget{
                                            fontWeight: FontWeight.w400,
                                          ),
                                          ),
-                                       Padding(padding: EdgeInsets.only(right: 10.0),),
+                                       Padding(padding: EdgeInsets.only(right: 10.0,bottom: 5.0),),
                                        Text(
                                            userInfo.data['name'],
                                          style: TextStyle(
@@ -335,7 +369,7 @@ class UserInfoList2 extends StatelessWidget{
                                             fontWeight: FontWeight.w400,
                                           ),
                                          ),
-                                        Padding(padding: EdgeInsets.only(right: 10.0),),
+                                        Padding(padding: EdgeInsets.only(right: 10.0,bottom: 5.0),),
                                         Text(
                                            userInfo.data['email'],
                                            textAlign: TextAlign.left,
@@ -347,59 +381,162 @@ class UserInfoList2 extends StatelessWidget{
                                          ),
                                      ],
                                    ),
+                                   Padding(padding: EdgeInsets.only(top: 10.0),),
+                                   Container(
+                                     margin: EdgeInsets.only(left: 290.0, right: 5.0,bottom: 15.0),
+                                     child: FloatingActionButton(
+                                         child: Icon(Icons.message),
+                                         shape: _DiamondBorder(),
+                                         onPressed: () {
+                                           Navigator.push(
+                                               context,
+                                               MaterialPageRoute(builder: (context) => ChatPage(userInfo.data["email"])
+                                               ));
+                                         }),
+                                   ),
                                  ],
                                ),
                            ),
                        ],
                      ),
-                   new RaisedButton(
-                     child: const Text('Chat'),
-                     color: Theme.of(context).accentColor,
-                     elevation: 4.0,
-                     splashColor: Colors.blueGrey,
-                     onPressed: () {
-                       Navigator.push(
-                           context,
-                           MaterialPageRoute(builder: (context) => ChatPage(userInfo.data["email"])
-                           ));
-                     },
-                   ),
+//                   Container(
+//                     margin: EdgeInsets.only(left: 290.0, right: 5.0,bottom: 15.0),
+//                     child: FloatingActionButton(
+//                         child: Icon(Icons.message),
+//                         shape: _DiamondBorder(),
+//                         onPressed: () {
+//                           Navigator.push(
+//                               context,
+//                               MaterialPageRoute(builder: (context) => ChatPage(userInfo.data["email"])
+//                               ));
+//                         }),
+//                   ),
                      Text('User\'s items: ',),
                      Container(
-                       height: 250,
-                         child: ListView(
-                             children:
-                             snapshot.data.documents.map((DocumentSnapshot document){
-                               return Slidable(
-                                 delegate: SlidableDrawerDelegate(),
-                                 actionExtentRatio: 0.25,
-                                 child: ExpansionTile(
-                                   leading: Container(
-                                       width: 46.0,
-                                       height: 46.0,
-                                       child: document['photo_url'] == null || document['photo_url'] == ""
-                                           ? Icon(Icons.broken_image)
-                                           : TransitionToImage(
-                                         image: AdvancedNetworkImage(
-                                           document['photo_url'],
-                                           useDiskCache: true,
-                                           cacheRule:
-                                           CacheRule(maxAge: const Duration(days: 7)),
-                                         ),
+                       child: Expanded(
+                           child: GridView.count(
+                               crossAxisCount: 3,
+                               crossAxisSpacing: 12.0,
+                               mainAxisSpacing: 12.0,
+                               padding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
+                               shrinkWrap: true,
+                               children: snapshot.data.documents.map((DocumentSnapshot document)  {
+                                 return GestureDetector(
+                                   child: Material(
+                                       color: Colors.white,
+                                       shadowColor: Colors.grey,
+                                       elevation:14.0,
+                                       borderRadius: BorderRadius.circular(24.0),
+                                       child: Container(
+                                           child: ClipRRect(
+                                             borderRadius: BorderRadius.circular(10.0),
+                                             child: document["photo_url"] == null || document["photo_url"] == ""
+                                                 ? Icon(Icons.broken_image)
+                                                 : CachedNetworkImage(
+                                               imageUrl: document["photo_url"],
+                                               fit: BoxFit.cover,
+                                               alignment: Alignment.topLeft,
+                                               placeholder: (context, imageUrl) =>
+                                                   CircularProgressIndicator(),
+                                             ),
+                                           )
                                        )
                                    ),
-                                   title: Text(document['name'], style:Theme.of(context).textTheme.subhead),
-                                   children: <Widget>[
-                                     Text('Name: ${document['name']}', style:Theme.of(context).textTheme.subhead),
-                                     Text('Color: ${document['color']}', style:Theme.of(context).textTheme.subhead),
-                                     Text('Size: ${document['size']}',style:Theme.of(context).textTheme.subhead),
-                                     Text('Length: ${document['length']}',style:Theme.of(context).textTheme.subhead),
-                                   ],
-                                 ),
-                               );
-                             }).toList()
-                         ),
+                                   onTap: (){
+                                     showDialog(
+                                         context: context,
+                                         barrierDismissible: false,
+                                         child: CupertinoAlertDialog(
+                                           title: Text(document['name']),
+                                           content: Column(
+                                             mainAxisAlignment: MainAxisAlignment.center,
+                                             children: <Widget>[
+                                               CachedNetworkImage(
+                                                 imageUrl: document['photo_url'],
+                                                 placeholder: (context, imageUrl) =>
+                                                     CircularProgressIndicator(),
+                                               ),
+                                               Row(
+                                                 mainAxisAlignment: MainAxisAlignment.center,
+                                                 children: <Widget>[
+                                                   Text("About:  "),
+                                                   Text(document['description']),
+                                                 ],
+                                               ),
+                                             ],
+                                           ),
+                                           actions: <Widget>[
+                                             Row(
+                                               children: <Widget>[
+                                                 FlatButton(
+                                                   onPressed: (){
+                                                     Navigator.push(context,
+                                                         MaterialPageRoute(builder: (context) {
+                                                           return ShowDetails(item: document, user: curUser, userName: userName);
+                                                         }));
+                                                   },
+                                                   child: Text("Get"),
+                                                 ),
+                                                 FlatButton(
+                                                   onPressed: () {
+                                                     Navigator.pop(context);
+                                                   },
+                                                   child: Text("Cancel"),
+                                                 )
+                                               ],
+                                             )
+                                           ],
+                                         )
+                                     );
+                                   },
+                                 );
+                               }).toList()),
+
                        ),
+                       ),
+
+
+
+
+
+
+
+
+
+//                       height: 250,
+//                         child: ListView(
+//                             children:
+//                             snapshot.data.documents.map((DocumentSnapshot document){
+//                               return Slidable(
+//                                 delegate: SlidableDrawerDelegate(),
+//                                 actionExtentRatio: 0.25,
+//                                 child: ExpansionTile(
+//                                   leading: Container(
+//                                       width: 46.0,
+//                                       height: 46.0,
+//                                       child: document['photo_url'] == null || document['photo_url'] == ""
+//                                           ? Icon(Icons.broken_image)
+//                                           : TransitionToImage(
+//                                         image: AdvancedNetworkImage(
+//                                           document['photo_url'],
+//                                           useDiskCache: true,
+//                                           cacheRule:
+//                                           CacheRule(maxAge: const Duration(days: 7)),
+//                                         ),
+//                                       )
+//                                   ),
+//                                   title: Text(document['name'], style:Theme.of(context).textTheme.subhead),
+//                                   children: <Widget>[
+//                                     Text('Name: ${document['name']}', style:Theme.of(context).textTheme.subhead),
+//                                     Text('Color: ${document['color']}', style:Theme.of(context).textTheme.subhead),
+//                                     Text('Size: ${document['size']}',style:Theme.of(context).textTheme.subhead),
+//                                     Text('Length: ${document['length']}',style:Theme.of(context).textTheme.subhead),
+//                                   ],
+//                                 ),
+//                               );
+//                             }).toList()
+//                         ),
+
                    ],
                  ),
                ),);
