@@ -77,14 +77,25 @@ class AuthService {
   void storeNewUser(FirebaseUser user) async {
     DocumentReference ref = _db.collection('users').document(user.uid);
   //merge true cize ak uz existuje taky dokument v firestore tak nevytvori novy rovnaky
-    return ref.setData({
-        'email': user.email,
-        'name':user.displayName,
-        'uid': user.uid,
-        'photoUrl': user.photoUrl,
-        'theme':false,
-        'darkTheme':false
-    }, merge: true);
+    List<DocumentSnapshot> documents;
+    Firestore.instance
+        .collection("users")
+        .where('uid', isEqualTo: user.uid)
+        .getDocuments().then((querry){
+
+      documents = querry.documents;
+
+      if(documents.length == 0){
+        return ref.setData({
+          'email': user.email,
+          'name':user.displayName,
+          'uid': user.uid,
+          'photoUrl': user.photoUrl,
+          'theme':false,
+          'darkTheme':false
+        }, merge: true);
+      }
+    });
   }
 
 
