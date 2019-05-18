@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Wardrobe</title>
+        <meta name="description" content="This is the description">
+        <link rel="stylesheet" href="styles.css" />
+        <script src="src/wardrobe.js" async></script>
+    </head>
+    <body>
+        <header class="main-header">
+            <nav class="main-nav nav">
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <!-- <li><a href="about.html">ACCOUNT</a></li> -->
+                    <li><a href="store.html">WARDROBE</a></li>
+                </ul>
+            </nav>
+            <h1 class="band-name band-name-large">Wardrobe</h1>
+        </header>
+        <section class="container content-section">
+            <h2 class="section-header">Women</h2>
+            <div class="shop-items">
+                <div class="shop-item">
+                    <span class="shop-item-title">Item 1</span>
+                    <img class="shop-item-image" onclick="getDownloadURL()" name="myimg" src="8e77425d-f82c-498d-b7f2-df22a20c644a.jpg">
+                    <div class="shop-item-details">
+                        <span class="shop-item-price">$0.00</span>
+                        <button class="btn btn-primary shop-item-button" type="button">BORROW</button>
+                    </div>
+                </div>
+                <div class="shop-item">
+                    <span class="shop-item-title">Item 2</span>
+                    <img class="shop-item-image" src="saskaokres@gmail.com_profilePicture.jpg">
+                    <div class="shop-item-details">
+                        <span class="shop-item-price">$0.00</span>
+                        <button class="btn btn-primary shop-item-button"type="button">BORROW</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="container content-section">
+            <h2 class="section-header">Men</h2>
+            <div class="shop-items">
+                <div class="shop-item">
+                    <span class="shop-item-title">Item 01</span>
+                    <img class="shop-item-image" src="c397a5ce-f79c-4621-b18f-20bdbc80d784.jpg">
+                    <div class="shop-item-details">
+                        <span class="shop-item-price">$0.00</span>
+                        <button class="btn btn-primary shop-item-button" type="button">BORROW</button>
+                    </div>
+                </div>
+                <div class="shop-item">
+                    <span class="shop-item-title">Item 02</span>
+                    <img class="shop-item-image" src="cafdf3b5-e927-4a89-be14-f5cd9765c75a.jpg">
+                    <div class="shop-item-details">
+                        <span class="shop-item-price">$0.00</span>
+                        <button class="btn btn-primary shop-item-button" type="button">BORROW</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="container content-section">
+            <h2 class="section-header">LIST OF ITEMS</h2>
+            <div class="cart-row">
+                <span class="cart-item cart-header cart-column">ITEM</span>
+                <span class="cart-price cart-header cart-column">PRICE</span>
+                <span class="cart-quantity cart-header cart-column">QUANTITY</span>
+            </div>
+            <div class="cart-items">
+            </div>
+            <div class="cart-total">
+                <strong class="cart-total-title">Total</strong>
+                <span class="cart-total-price">$0</span>
+            </div>
+            <button class="btn btn-primary btn-purchase" type="button">RESERVE</button>
+        </section>
+        <footer class="main-footer">
+            <div class="container main-footer-container">
+                <h3 class="band-name">Wardrobe</h3>
+                <ul class="nav footer-nav">
+                </ul>
+            </div>
+        </footer>
+    </body>
+</html>
