@@ -136,14 +136,34 @@ class _WelcomePageState extends State<WelcomePage>
 
                                             child: ClipRRect(
                                               borderRadius: BorderRadius.circular(10.0),
-                                              child: document["photo_url"] == null || document["photo_url"] == ""
-                                                  ? Icon(Icons.broken_image)
-                                                  : CachedNetworkImage(
-                                                imageUrl: document["photo_url"],
-                                                fit: BoxFit.cover,
-                                                alignment: Alignment.topLeft,
-                                                placeholder: (context, imageUrl) =>
-                                                    CircularProgressIndicator(),
+                                              child: Stack(
+                                                fit: StackFit.expand,
+                                                children: <Widget>[
+                                                  document["photo_url"] == null || document["photo_url"] == ""
+                                                      ? Icon(Icons.broken_image)
+                                                      : CachedNetworkImage(
+                                                    imageUrl: document["photo_url"],
+                                                    fit: BoxFit.cover,
+                                                    alignment: Alignment.topLeft,
+                                                    placeholder: (context, imageUrl) =>
+                                                        CircularProgressIndicator(),
+                                                  ),
+                                                  Align(
+                                                    alignment: Alignment.bottomCenter,
+                                                    child: Container(
+                                                      width: double.maxFinite,
+                                                      height: 26.0,
+                                                      padding: EdgeInsets.symmetric(
+                                                          vertical: 4.0, horizontal: 16.0),
+                                                      color: Color(0x66000000),
+                                                      alignment: Alignment.bottomCenter,
+                                                      child: Text(
+                                                        document['name'],
+                                                        style: TextStyle(color: Colors.white),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
                                               ),
                                             )
                                           )
@@ -263,15 +283,38 @@ class _WelcomePageState extends State<WelcomePage>
                                             child: Container(
                                                 child: ClipRRect(
                                                   borderRadius: BorderRadius.circular(10.0),
-                                                  child: document["photo_url"] == null || document["photo_url"] == ""
-                                                      ? Icon(Icons.broken_image)
-                                                      : CachedNetworkImage(
-                                                    imageUrl: document["photo_url"],
-                                                    fit: BoxFit.cover,
-                                                    alignment: Alignment.topLeft,
-                                                    placeholder: (context, imageUrl) =>
-                                                        CircularProgressIndicator(),
+                                                  child: Stack(
+                                                    fit: StackFit.expand,
+                                                    children: <Widget>[
+                                                      document["photo_url"] == null || document["photo_url"] == ""
+                                                          ? Icon(Icons.broken_image)
+                                                          : CachedNetworkImage(
+                                                        imageUrl: document["photo_url"],
+                                                        fit: BoxFit.cover,
+                                                        alignment: Alignment.topLeft,
+                                                        placeholder: (context, imageUrl) =>
+                                                            CircularProgressIndicator(),
+                                                      ),
+                                                      Align(
+                                                        alignment: Alignment.bottomCenter,
+                                                        child: Container(
+                                                          width: double.maxFinite,
+                                                          height: 26.0,
+                                                          padding: EdgeInsets.symmetric(
+                                                              vertical: 4.0, horizontal: 16.0),
+                                                          color: Color(0x66000000),
+                                                          alignment: Alignment.bottomCenter,
+                                                          child: Text(
+                                                            document['name'],
+                                                            style: TextStyle(color: Colors.white),
+                                                          ),
+                                                        ),
+                                                      )
+
+                                                    ],
                                                   ),
+
+//
                                                 )
                                             )
                                         ),
@@ -375,15 +418,38 @@ class _WelcomePageState extends State<WelcomePage>
                                             child: Container(
                                                 child: ClipRRect(
                                                   borderRadius: BorderRadius.circular(10.0),
-                                                  child: document["photo_url"] == null || document["photo_url"] == ""
-                                                      ? Icon(Icons.broken_image)
-                                                      : CachedNetworkImage(
-                                                    imageUrl: document["photo_url"],
-                                                    fit: BoxFit.cover,
-                                                    alignment: Alignment.topLeft,
-                                                    placeholder: (context, imageUrl) =>
-                                                        CircularProgressIndicator(),
+                                                  child: Stack(
+                                                    fit: StackFit.expand,
+                                                    children: <Widget>[
+                                                      document["photo_url"] == null || document["photo_url"] == ""
+                                                          ? Icon(Icons.broken_image)
+                                                          : CachedNetworkImage(
+                                                        imageUrl: document["photo_url"],
+                                                        fit: BoxFit.cover,
+                                                        alignment: Alignment.topLeft,
+                                                        placeholder: (context, imageUrl) =>
+                                                            CircularProgressIndicator(),
+                                                      ),
+                                                      Align(
+                                                        alignment: Alignment.bottomCenter,
+                                                        child: Container(
+                                                          width: double.maxFinite,
+                                                          height: 26.0,
+                                                          padding: EdgeInsets.symmetric(
+                                                              vertical: 4.0, horizontal: 16.0),
+                                                          color: Color(0x66000000),
+                                                          alignment: Alignment.bottomCenter,
+                                                          child: Text(
+                                                            document['name'],
+                                                            style: TextStyle(color: Colors.white),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
                                                   ),
+
+
+
                                                 )
                                             )
                                         ),
@@ -480,7 +546,7 @@ class _WelcomePageState extends State<WelcomePage>
 
                             ]),
                               Container(
-                                margin: EdgeInsets.only(left: 290.0, right: 5.0,top: 135.0),
+                                margin: EdgeInsets.only(left: 320.0, right: 5.0,top: 305.0,),
                                 child: FloatingActionButton(
                                     heroTag: "btnWelcome",
                                     child: Icon(Icons.add),
