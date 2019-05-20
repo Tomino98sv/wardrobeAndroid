@@ -480,7 +480,7 @@ class _WelcomePageState extends State<WelcomePage>
 
                             ]),
                               Container(
-                                margin: EdgeInsets.only(left: 290.0, right: 5.0,top: 135.0),
+                                margin: EdgeInsets.only(left: 320.0, right: 5.0,top: 305.0,),
                                 child: FloatingActionButton(
                                     heroTag: "btnWelcome",
                                     child: Icon(Icons.add),
