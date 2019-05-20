@@ -15,7 +15,7 @@ class AllDressesList extends StatefulWidget {
 
   @override
   DressesListState createState() {
-    return DressesListState();
+    return DressesListState(filterValue: filterValue);
   }
 }
 
@@ -24,8 +24,18 @@ class DressesListState extends State<AllDressesList> {
   var userName;
 
   bool showFilters = false;
+  String filterValue;
 
-  get filterValue => filterValue;
+  DressesListState({@required this.filterValue});
+
+//  get filterValue => filterValue;
+
+  var docSize = "";
+
+  void onChangeSize(String value){
+    setState(() => docSize = '$value');
+  }
+
 
   @override
   void initState() {
@@ -78,6 +88,7 @@ class DressesListState extends State<AllDressesList> {
                     shrinkWrap: true,
                     children: snapshot.data.documents
                         .where((doc) => doc["userId"] != userCurrent.uid)
+//                        .where((doc) => filterValue == null || doc["size"] == filterValue || doc["color"] == filterValue || doc["length"] == filterValue )
                         .map((DocumentSnapshot document) {
                       Item item = Item(
                         name: document['name'],
@@ -89,6 +100,9 @@ class DressesListState extends State<AllDressesList> {
                         borrowName: document['borrowName'],
                         description: document['description'],
                       );
+                      debugPrint("Filter value je $filterValue");
+//                      if (docSize != ""){
+//                      if (filterValue == null || item.size == filterValue ||filterValue item.color == filterValue || item.length == filterValue){
                       return GestureDetector(
                         child: Material(
                           color: Colors.white,
@@ -200,6 +214,9 @@ class DressesListState extends State<AllDressesList> {
                               ));
                         },
                       );
+//                        }
+//                      else
+//                        return Container();
                     }).toList(),
                   ),
                 ],
@@ -218,48 +235,48 @@ class DressesListState extends State<AllDressesList> {
   }
 }
 
-abstract class GridViewSearch extends SearchDelegate<AllDressesList>{
-  static final FirebaseUser userCurrent = FirebaseAuth.instance.currentUser() as FirebaseUser;
-  var items =  Firestore.instance
-      .collection('users')
-      .where('uid', isEqualTo: userCurrent.uid)
-      .snapshots();
-
-  GridViewSearch(this.items);
-
-  get filterValue => filterValue;
-
-  @override
-  String get query => filterValue;
-
-  @override
-  Widget buildResults(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder<QuerySnapshot>(
-          stream: items,
-          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) {
-              return Center(
-                child: Text("No  data", style:Theme.of(context).textTheme.subhead),
-              );
-            }
-            final results = snapshot.data.documents
-                .where((a) => a['size'].contains(query) || a['length'].contains(query) || a['color'].contains(query));
-            return GridView.count(
-              padding:
-              EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
-              crossAxisCount: 3,
-              crossAxisSpacing: 12.0,
-              mainAxisSpacing: 12.0,
-              shrinkWrap: true,
-              children: results.map(
-                      (DocumentSnapshot document) {}
-              ).toList(),
-            );
-          }),
-    );
-  }
-
-
-
-}
+//abstract class GridViewSearch extends SearchDelegate<AllDressesList>{
+//  static final FirebaseUser userCurrent = FirebaseAuth.instance.currentUser() as FirebaseUser;
+//  var items =  Firestore.instance
+//      .collection('users')
+//      .where('uid', isEqualTo: userCurrent.uid)
+//      .snapshots();
+//
+//  GridViewSearch(this.items);
+//
+//  get filterValue => filterValue;
+//
+//  @override
+//  String get query => filterValue;
+//
+//  @override
+//  Widget buildResults(BuildContext context) {
+//    return Scaffold(
+//      body: StreamBuilder<QuerySnapshot>(
+//          stream: items,
+//          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+//            if (!snapshot.hasData) {
+//              return Center(
+//                child: Text("No  data", style:Theme.of(context).textTheme.subhead),
+//              );
+//            }
+//            final results = snapshot.data.documents
+//                .where((a) => a['size'].contains(query) || a['length'].contains(query) || a['color'].contains(query));
+//            return GridView.count(
+//              padding:
+//              EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+//              crossAxisCount: 3,
+//              crossAxisSpacing: 12.0,
+//              mainAxisSpacing: 12.0,
+//              shrinkWrap: true,
+//              children: results.map(
+//                      (DocumentSnapshot document) {}
+//              ).toList(),
+//            );
+//          }),
+//    );
+//  }
+//
+//
+//
+//}
