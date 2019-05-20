@@ -165,7 +165,7 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
           }
         });
       },
-      selectedColor: Colors.pinkAccent,
+      selectedColor: Theme.of(context).indicatorColor,
     );
   }
 }
@@ -199,7 +199,7 @@ Widget _buildSizeWidget(BuildContext context) {
                    child: Text(sizes[index],
                      style: TextStyle(
                          fontSize: 20.0,
-                       color: Colors.pink
+                       color: Theme.of(context).indicatorColor
                      ),
                    ),
                  );

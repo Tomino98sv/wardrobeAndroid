@@ -266,7 +266,7 @@ class _HomeState extends State<HomePage> {
             fontFamily: 'Quicksand',
             indicatorColor: Colors.blueGrey,
             brightness: Brightness.light,
-            textTheme: TextTheme(button: TextStyle(color: Colors.white))
+            textTheme: TextTheme(subhead: TextStyle(color: Colors.white))
         ));
   }
 
@@ -274,9 +274,9 @@ class _HomeState extends State<HomePage> {
     return DemoTheme(
         'dark',
         new ThemeData(
-          textTheme: TextTheme(subhead: TextStyle(color: Colors.white),),
+         // textTheme: TextTheme(subhead: TextStyle(color: Colors.white),),
           primaryColor: Colors.black,
-          scaffoldBackgroundColor: Colors.black,
+          scaffoldBackgroundColor: Colors.black54,
           accentColor: Colors.black45,
           buttonColor: Colors.white12,
           toggleableActiveColor: Colors.black54,
