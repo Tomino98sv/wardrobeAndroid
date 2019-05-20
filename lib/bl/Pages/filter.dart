@@ -2,6 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FilterChipDisplay extends StatefulWidget {
+  String _valueFilter;
+
+  FilterChipDisplay({@required String valueFilter}) {
+    _valueFilter = valueFilter;
+  }
+
   @override
   _FilterChipDisplayState createState() => _FilterChipDisplayState();
 }
@@ -38,6 +44,7 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
                     onPressed: () {
                       setState(() {
                         selectedWidgetSize = !selectedWidgetSize;
+                        widget._valueFilter = value;
                       });
                     },
                   ),
@@ -46,6 +53,7 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
                       onPressed: () {
                         setState(() {
                           selectedWidgetLength = !selectedWidgetLength;
+                          widget._valueFilter = value;
                         });
                       }
                   ),
@@ -54,6 +62,7 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
                       onPressed: () {
                         setState(() {
                           selectedWidgetColor = !selectedWidgetColor;
+                          widget._valueFilter = value;
                         });
                       }
                   ),
@@ -109,6 +118,7 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
     );
   }
 }
+String value;
 
 class FilterChipWidget extends StatefulWidget {
   final String chipName;
@@ -116,6 +126,7 @@ class FilterChipWidget extends StatefulWidget {
 
   FilterChipWidget({Key key, this.chipName, this.onPressed})
       : super(key: key);
+
 
   @override
   _FilterChipWidgetState createState() => _FilterChipWidgetState();
@@ -177,6 +188,9 @@ Widget _buildSizeWidget(BuildContext context) {
                onSelectedItemChanged: (index){
                  _currentItemSelected = index;
                  print(_currentItemSelected);
+//                 String size = sizes[index];
+                 value = sizes[index];
+                 print(value);
                },
                children: List<Widget>.generate(sizes.length, (index) {
                  return Center(
@@ -214,6 +228,8 @@ Widget _buildLenghtWidget(BuildContext context) {
           onSelectedItemChanged: (index) {
             _currentItemSelected = index;
             print(_currentItemSelected);
+            value = lengths[index];
+            print(value);
           },
           children: List<Widget>.generate(lengths.length, (index) {
             return Center(
@@ -251,6 +267,8 @@ Widget _buildColorWidget(BuildContext context) {
           onSelectedItemChanged: (index) {
             _currentItemSelected = index;
             print(_currentItemSelected);
+            value = colors[index];
+            print(value);
           },
           children: List<Widget>.generate(colors.length, (index) {
             return Center(
@@ -267,3 +285,8 @@ Widget _buildColorWidget(BuildContext context) {
     ),
   );
 }
+
+
+//String whatIsSelected(String value){
+//  return value;
+//}
