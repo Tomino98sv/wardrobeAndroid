@@ -306,6 +306,8 @@ class _ShowDetails extends State<ShowDetails> {
           return "Buy dress"; break;
         case ("giveaway"):
           return "For free"; break;
+        case ("getforfree"):
+          return "For free"; break;
       }
     }
     else
@@ -342,7 +344,8 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                               'respondent': item.data['userId'],
                               'itemID': item.documentID,
                               'itemName': item.data['name'],
-                              'applicantName': userName
+                              'applicantName': userName,
+                              'photo_Url': item.data['photo_url']
                             });
                           });
                           debugPrint(user.uid);
@@ -406,7 +409,8 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                                       'respondent': item.data['userId'],
                                       'itemID': item.documentID,
                                       'itemName': item.data['name'],
-                                      'applicantName': userName
+                                      'applicantName': userName,
+                                      'photo_Url': item.data['photo_url']
                                     });
                                   });
                                   debugPrint(user.uid);
@@ -439,7 +443,7 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
       },
     );
   }
-  else if (item.data['request'] == "giveaway"){
+  else if (item.data['request'] == "giveaway" || item.data['request'] == "getforfree"){
     return showDialog(
       context: context,
       builder: (context){
@@ -474,9 +478,12 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                                       'respondent': item.data['userId'],
                                       'itemID': item.documentID,
                                       'itemName': item.data['name'],
-                                      'applicantName': userName
+                                      'applicantName': userName,
+                                      'photo_Url': item.data['photo_url']
                                     });
                                   });
+                                  Firestore.instance.collection('items').document(item.documentID)
+                                      .updateData({"request": "getforfree"});
                                   debugPrint(user.uid);
                                   Navigator.pop(context);
                                   Navigator.pop(context);
@@ -541,7 +548,8 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                                       'itemID': item.documentID,
                                       'itemName': item.data['name'],
                                       'applicantName': userName,
-                                      'price': item.data['price']
+                                      'price': item.data['price'],
+                                      'photo_Url': item.data['photo_url']
                                     });
                                   });
 
