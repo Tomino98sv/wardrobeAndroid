@@ -30,6 +30,7 @@ class UserInfoList extends StatelessWidget{
           default:
             return Scaffold(
               appBar: AppBar(
+                iconTheme: IconThemeData(color: Colors.white),
                 title: Text(userInfo['name'], style: TextStyle(color: Colors.white)),
               ),
                  body: new Center(
@@ -309,6 +310,7 @@ class _UserInfoList2 extends State<UserInfoList2>{
             default:
               return Scaffold(
                 appBar: AppBar(
+                  iconTheme: IconThemeData(color: Colors.white),
                   title: Text(userInfo['name'], style:TextStyle(color: Colors.white)),
                 ),
                 body:
