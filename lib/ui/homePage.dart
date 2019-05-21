@@ -264,7 +264,7 @@ class _HomeState extends State<HomePage> {
             toggleableActiveColor: Colors.lightBlue,
             unselectedWidgetColor: Colors.blueAccent,
             fontFamily: 'Quicksand',
-            indicatorColor: Colors.blueGrey,
+            indicatorColor: Colors.blue[200],
             brightness: Brightness.light,
             textTheme: TextTheme(subhead: TextStyle(color: Colors.black)),
           iconTheme: IconThemeData(color: Colors.white)

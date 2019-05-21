@@ -107,7 +107,8 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text("Edit profile"),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text("Edit profile", style: TextStyle(color: Colors.white),),
       ),
         key: _scaffoldKey,
         body: getChooseButton(),
