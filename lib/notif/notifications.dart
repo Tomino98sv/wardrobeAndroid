@@ -116,16 +116,26 @@ class _NotificationsPage extends State<NotificationsPage>{
   }
 
   Widget getUnseen(String targetEmail, DocumentSnapshot document) {
-    Firestore
-        .instance
-        .collection("chat")
-        .document("${document.documentID}")
-        .collection(document.data['room'])
-        .getDocuments().then((value){
-      debugPrint("targetEmail:  ${targetEmail}");
-      debugPrint("documentColl length  ${value.documents.length}");
-      return Text("${value.documents.length}");
-    });
+
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore
+          .instance
+          .collection("chat")
+          .document("${document.documentID}")
+          .collection(document.data['room'])
+          .snapshots(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        switch(snapshot.connectionState){
+          case ConnectionState.none: return Text("Not streaming");
+          case ConnectionState.waiting: return getLoader("Starting chatroom");
+          case ConnectionState.active:
+            if (!snapshot.hasData) {return Container(child: Text("No data"),);}
+            debugPrint("${snapshot.data.documents.length}");
+            return Text("${snapshot.data.documents.length}");
+          case ConnectionState.done: return Text("Done");
+        }
+      },
+    );
   }
 
 }
