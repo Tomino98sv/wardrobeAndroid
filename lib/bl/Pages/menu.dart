@@ -101,8 +101,7 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
     return new Container(
       height: size,
       width: size,
-      decoration: new BoxDecoration(shape: BoxShape.circle, color: Colors.pink),
-    );
+      decoration: new BoxDecoration(shape: BoxShape.circle, color: Theme.of(context).primaryColor));
   }
 
   open() {

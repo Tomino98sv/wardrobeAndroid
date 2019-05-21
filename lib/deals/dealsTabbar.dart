@@ -96,6 +96,7 @@ class _DealsTabState extends State<DealsTab> {
   }
 
   void _handleScroll() {
+    if (!mounted) return;
     setState(() {
       _selected = _position == _controller.index;
     });
