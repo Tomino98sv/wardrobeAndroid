@@ -51,7 +51,7 @@ class _NotificationsPage extends State<NotificationsPage>{
           Flexible(
               child: StreamBuilder<QuerySnapshot>(
                 stream: stream,
-                builder: (BuildContext context, snapshot) {
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
                   switch(snapshot.connectionState){
                     case ConnectionState.none: return Text("Not streaming");
                     case ConnectionState.waiting: return getLoader("Starting chatroom");
