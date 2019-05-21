@@ -66,6 +66,7 @@ class _MyNewItem extends State<MyNewItem> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text("Create New Item",style: TextStyle(color: Colors.white)),
       ),
       body: SingleChildScrollView(
