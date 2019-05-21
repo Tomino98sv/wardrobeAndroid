@@ -100,6 +100,7 @@ class _State extends State<EditItem> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         title: new Text('Edit Item',
           style: TextStyle(
               color: Colors.white

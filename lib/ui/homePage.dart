@@ -65,12 +65,12 @@ class _HomeState extends State<HomePage> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text('Wardrobe'),
+          title: Text('Wardrobe', style: TextStyle(color: Colors.white),),
           actions: <Widget>[
             _page != 4
                 ? Container()
                 : IconButton(
-                    icon: Icon(Icons.search),
+                    icon: Icon(Icons.search, color: Colors.white,),
                     onPressed: () {
                       showSearch(
                         context: context,
@@ -82,7 +82,7 @@ class _HomeState extends State<HomePage> {
             _page != 1
                 ? Container()
                 : IconButton(
-                    icon: Icon(Icons.search),
+                    icon: Icon(Icons.search,color: Colors.white,),
                     onPressed: () {
                       showSearch(
                         context: context,
@@ -94,7 +94,7 @@ class _HomeState extends State<HomePage> {
             _page != 1
                 ? Container()
                 : IconButton(
-                    icon: Icon(Icons.filter_list),
+                    icon: Icon(Icons.filter_list, color: Colors.white,),
                     onPressed: () {
                       GlobalKey key = (_options[_page] as AllDressesList).key;
                       DressesListState state =
@@ -131,23 +131,23 @@ class _HomeState extends State<HomePage> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: new Icon(Icons.face, color: Colors.grey[900]),
-              title: new Text('Me'),
+              title: new Text('Me', style: TextStyle(color: Colors.black),),
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.style, color: Colors.grey[900]),
-              title: new Text('Dresses'),
+              title: new Text('Dresses',style: TextStyle(color: Colors.black),),
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.notifications, color: Colors.grey[900]),
-              title: new Text('Alerts'),
+              title: new Text('Alerts',style: TextStyle(color: Colors.black),),
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.shopping_cart, color: Colors.grey[900]),
-              title: new Text('Deals'),
+              title: new Text('Deals', style: TextStyle(color: Colors.black),),
             ),
             BottomNavigationBarItem(
-                icon: new Icon(Icons.account_circle, color: Colors.grey[900]),
-                title: new Text('Users'))
+                icon: new Icon(Icons.account_circle, color:Colors.grey[900]),
+                title: new Text('Users', style: TextStyle(color: Colors.black),))
           ],
           currentIndex: _page,
           onTap: onPageChanged,
@@ -266,7 +266,8 @@ class _HomeState extends State<HomePage> {
             fontFamily: 'Quicksand',
             indicatorColor: Colors.blueGrey,
             brightness: Brightness.light,
-            textTheme: TextTheme(subhead: TextStyle(color: Colors.white))
+            textTheme: TextTheme(subhead: TextStyle(color: Colors.black)),
+          iconTheme: IconThemeData(color: Colors.white)
         ));
   }
 
@@ -274,7 +275,7 @@ class _HomeState extends State<HomePage> {
     return DemoTheme(
         'dark',
         new ThemeData(
-         // textTheme: TextTheme(subhead: TextStyle(color: Colors.white),),
+          textTheme: TextTheme(subhead: TextStyle(color: Colors.white),),
           primaryColor: Colors.black,
           scaffoldBackgroundColor: Colors.black54,
           accentColor: Colors.black45,

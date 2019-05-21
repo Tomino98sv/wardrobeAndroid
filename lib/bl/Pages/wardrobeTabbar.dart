@@ -22,8 +22,8 @@ class _WardrobeTabBarState extends State<WardrobeTabBar> {
         WardrobeTab(
           textW: Row(
             children: <Widget>[
-              Text("My "),
-              Icon(Icons.style)
+              Text("My ", style: TextStyle(color: Colors.white),),
+              Icon(Icons.style, color: Colors.white)
             ],
           ),
           position: 0,
@@ -32,8 +32,8 @@ class _WardrobeTabBarState extends State<WardrobeTabBar> {
         WardrobeTab(
           textW: Row(
             children: <Widget>[
-              Text("Lent ", style: TextStyle(),),
-              Icon(Icons.style)
+              Text("Lent ", style: TextStyle(color: Colors.white),),
+              Icon(Icons.style,color: Colors.white)
             ],
           ),
           position: 1,
@@ -42,8 +42,8 @@ class _WardrobeTabBarState extends State<WardrobeTabBar> {
         WardrobeTab(
           textW: Row(
             children: <Widget>[
-              Text("Borrowed "),
-              Icon(Icons.style)
+              Text("Borrowed ", style: TextStyle(color: Colors.white)),
+              Icon(Icons.style, color: Colors.white,)
             ],
           ),
           position: 2,
