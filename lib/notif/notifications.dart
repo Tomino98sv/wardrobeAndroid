@@ -48,7 +48,6 @@ class _NotificationsPage extends State<NotificationsPage>{
     return Scaffold(
       body: Column(
         children: <Widget>[
-          Text("notifikacie", style: Theme.of(context).textTheme.subhead,),
           Flexible(
               child: StreamBuilder<QuerySnapshot>(
                 stream: stream,
@@ -64,13 +63,8 @@ class _NotificationsPage extends State<NotificationsPage>{
                         padding: new EdgeInsets.all(8.0),
                         itemBuilder: (_, int index) {
                           DocumentSnapshot document = snapshot.data.documents[index];
-                          if(document.data['participantOne']==emailUser.toString){
-                            debugPrint("   ${document.data['participantOne']}   TRUE");
-                          }
-                          if(document.data['participantTwo']==emailUser.toString()){
-                            debugPrint("  ${document.data['participantTwo']}  TRUE");
-                          }
-
+                          if(document.data['participantOne']==emailUser || document.data['participantTwo']==emailUser){
+                            debugPrint("   ${document.data['participantOne']}   TRUE    ${document.data['participantTwo']}   AND  ${emailUser}");
                             return Container(
                                 child: Row(
                                   children: <Widget>[
@@ -87,6 +81,10 @@ class _NotificationsPage extends State<NotificationsPage>{
                                   ],
                                 )
                             );
+                          }else{
+                            return Container();
+                          }
+
                         },
                         itemCount: snapshot.data.documents.length,
                       );
