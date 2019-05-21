@@ -38,6 +38,7 @@ class _SettingsPageState extends State<SettingsPage>{
    inheritedThemeSwitcher = ThemeSwitcher.of(context);
     return new Scaffold(
       appBar: new AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
             "Settings",style: TextStyle(color: Colors.white)
         ),
