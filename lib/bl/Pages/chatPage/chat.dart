@@ -22,11 +22,14 @@ class _ChatPageState extends State<ChatPage>{
    final _controller = TextEditingController();
   String documentIDcurrent;
   CollectionReference refToSub;
+  DocumentReference refToDoc;
   String nameUser;
   String emailUser;
+   String uid;
   FirebaseUser user;
   String nameUserTarget;
   String emailUserTarget;
+  String uidTarget;
   FirebaseUser targetUser;
   String collname;
   QuerySnapshot initialDataSnapshot;
@@ -52,6 +55,7 @@ class _ChatPageState extends State<ChatPage>{
           myProfUrlImg = data.documents[0]['photoUrl'];
           emailUser = data.documents[0]['email'];
           nameUser = data.documents[0]['name'];
+          uid = data.documents[0]['uid'];
         });
 
         Stream<QuerySnapshot> snapshotOfTarget = Firestore.instance
@@ -63,6 +67,8 @@ class _ChatPageState extends State<ChatPage>{
           hisProfUrlImg = dataTarget.documents[0]["photoUrl"];
           emailUserTarget = dataTarget.documents[0]['email'];
           nameUserTarget = dataTarget.documents[0]['name'];
+          uidTarget = dataTarget.documents[0]['uid'];
+
 
           bool prva;
           bool druha;
@@ -106,25 +112,32 @@ class _ChatPageState extends State<ChatPage>{
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        appBar: new AppBar(
-          title: new Text("chat page"),
-        ),
-        body: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Column(
-            children: <Widget>[
-              Flexible(
-                child: _screen
-              ),
-              new Divider(height: 1.0),
-              Container(
-                child: _getInputAndSend(),
-                decoration: BoxDecoration(color: Theme.of(context).cardColor), //accent color
-              ),
-            ],
+    return new WillPopScope(
+      onWillPop: () {
+        refToDoc.updateData({"lastVisitOf${uid}":DateTime.now()});
+        Navigator.pop(context);
+
+      },
+      child: Scaffold(
+          appBar: new AppBar(
+            title: new Text("chat page"),
           ),
-        ));
+          body: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Column(
+              children: <Widget>[
+                Flexible(
+                    child: _screen
+                ),
+                new Divider(height: 1.0),
+                Container(
+                  child: _getInputAndSend(),
+                  decoration: BoxDecoration(color: Theme.of(context).cardColor), //accent color
+                ),
+              ],
+            ),
+          )),
+    );
   }
 
   Widget _ownMessage(String message) {
@@ -215,6 +228,10 @@ class _ChatPageState extends State<ChatPage>{
       var db = Firestore.instance;
       db.collection("chat").add({
         "room":collname,
+        "participantOne":emailUser,
+        "participantTwo":emailUserTarget,
+        "lastVisitOf${uid}":DateTime.now(),
+        "lastVisitOf${uidTarget}":DateTime.now(),
       }).then((val) {
         print("sucess coll doc  ${val.documentID}");
         documentIDcurrent=val.documentID;
@@ -222,7 +239,7 @@ class _ChatPageState extends State<ChatPage>{
           "user_email": emailUser,
           "user_name": nameUser,
           "message": message,
-          "created_at": DateTime.now()
+          "created_at": DateTime.now(),
         }).then((value){
           Navigator.pop(context);
           Navigator.push(
@@ -257,6 +274,7 @@ class _ChatPageState extends State<ChatPage>{
 
      if(documents.length != 0){
        refToSub = Firestore.instance.collection("chat").document("${documents[0].documentID}").collection(name);
+       refToDoc = Firestore.instance.collection("chat").document("${documents[0].documentID}");
        documentIDcurrent="${documents[0].documentID}";
      }
      return documents.length != 0;
