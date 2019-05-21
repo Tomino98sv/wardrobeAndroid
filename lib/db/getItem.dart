@@ -62,6 +62,7 @@ class _ShowDetails extends State<ShowDetails> {
             default:
               return new Scaffold(
                 appBar: new AppBar(
+                  iconTheme: IconThemeData(color: Colors.white),
                   title: new Text(snapshot.data['name'],style: TextStyle(color: Colors.white)),
                 ),
                 body: SingleChildScrollView(

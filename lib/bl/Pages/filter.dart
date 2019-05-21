@@ -147,7 +147,7 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
           side: BorderSide(color: Colors.grey)),
-      backgroundColor: Colors.pink[100],
+      backgroundColor: Theme.of(context).indicatorColor,
       onSelected: (isSelected) {
         widget.onPressed();
         setState(() {
@@ -165,7 +165,7 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
           }
         });
       },
-      selectedColor: Theme.of(context).indicatorColor,
+      selectedColor: Theme.of(context).accentColor,
     );
   }
 }
