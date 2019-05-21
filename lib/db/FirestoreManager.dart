@@ -187,7 +187,7 @@ class _ItemsListState extends State<ItemsList> {
   
 }
 
-
+//ked chces vybrat user pre borrow
 class UserList extends StatelessWidget {
   DocumentSnapshot item;
 
@@ -205,7 +205,7 @@ class UserList extends StatelessWidget {
             default:
               return Scaffold(
                   appBar: AppBar(
-                  title: Text("Fashionistas"),
+                  title: Text("Fashionistas", style: TextStyle(color: Colors.white),),
                   ),
                 body: new ListView(
                     children: snapshot.data.documents
@@ -363,7 +363,7 @@ class Item {
   });
 
 }
-
+// 5. screen
 class UserListHome extends StatelessWidget {
 
   @override
