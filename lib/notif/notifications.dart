@@ -76,7 +76,9 @@ class _NotificationsPage extends State<NotificationsPage>{
                                       ],
                                     ),
                                     Container(
-                                      child: getUnseen(),
+                                      child: document.data['participantOne'] != emailUser ?
+                                      getUnseen(document.data['participantOne'], document) :
+                                      getUnseen(document.data['participantTwo'], document),
                                     )
                                   ],
                                 )
@@ -113,8 +115,17 @@ class _NotificationsPage extends State<NotificationsPage>{
     );
   }
 
-  Widget getUnseen(){
-    return Text("0");
+  Widget getUnseen(String targetEmail, DocumentSnapshot document) {
+    Firestore
+        .instance
+        .collection("chat")
+        .document("${document.documentID}")
+        .collection(document.data['room'])
+        .getDocuments().then((value){
+      debugPrint("targetEmail:  ${targetEmail}");
+      debugPrint("documentColl length  ${value.documents.length}");
+      return Text("${value.documents.length}");
+    });
   }
 
 }
