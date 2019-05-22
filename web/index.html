@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="description" content="This is the description">
+        <link rel="stylesheet" href="styles.css" />
+        <title>Login</title>
+	      <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+	      <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <header class="main-header">
+            <nav class="nav main-nav">
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="wardrobe.html">WARDROBE</a></li>
+                </ul>
+            </nav>
+            <h1 class="band-name band-name-large">Wardrobe</h1>
+            <div class="container">
+            </div>
+        </header>
+
+        <div id="login_div" class="main-div">
+<!--
+          <h1>&nbsp;&nbsp;&nbsp;&nbsp;Welcome to page Wardrobe!</h1><br/>
+      <!--    <h1>&nbsp;&nbsp;&nbsp;&nbsp;We wish you <br/>a pleasant time!</h1>
+          -->
+        <section class="content-section container">
+            <h2 class="section-header"></h2>
+            		<input type="email" placeholder="Email" id="email_field" />
+            		<input type="password" placeholder="Password" id="password_field" />
+            		<button onclick="login()">Continue with email</button>
+            		<br/>
+            		<button onclick="create_account()">Sign up</button>
+            		<br/>
+                <button onclick="signInWithPopup()">Continue with <img src="logo2.png" width="10%" height="40%"/></button><br/>
+                <button onclick="signInWithPopup()">Continue with <img src="logo1.png" width="10%" height="40%"/></button>
+
+        </div>
+
+            	<div id="user_div" class="loggedin-div">
+            		<h1>User</h1>
+                <img src="user.png" width="85%" height="50%"/>
+                <h3 id="user_para">You are signed in now.</h3>
+
+            		<button onclick="logout()">Sign out</button>
+            		<br/>
+            		<button id="verify_btn" onclick="send_verification()">Send verification</button>
+            	</div>
+            	<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+            	<script>
+            		var config = {
+                  apiKey: "AIzaSyBWJzCUQnWrgEf0rzsXrsIFRPhIp0N3tnc",
+                  authDomain: "wardrobe-26e92.firebaseapp.com",
+                  databaseURL: "https://wardrobe-26e92.firebaseio.com",
+                  projectId: "wardrobe-26e92",
+                  storageBucket: "wardrobe-26e92.appspot.com",
+                  messagingSenderId: "502526601242"
+                };
+                firebase.initializeApp(config);
+            	</script>
+            	<script src="src/index.js"></script>
+              <!--
+            <footer class="main-footer">
+                  <div class="container main-footer-container">
+                      <h3 class="band-name">Wardrobe</h3>
+                      <ul class="nav footer-nav">
+                      </ul>
+                  </div>
+          </footer>
+        -->
+    </body>
+</html>
