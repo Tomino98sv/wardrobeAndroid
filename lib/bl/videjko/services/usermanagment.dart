@@ -10,6 +10,7 @@ class UserManagement {
       'name': name,
       'photoUrl': url,
       'theme':false,
+      'darkTheme':false
     }).then((value) {
       Navigator.of(context, rootNavigator: true).pop('dialog');
       Navigator.of(context).pop();
@@ -81,7 +82,7 @@ class UserManagement {
         Firestore.instance
             .document('/users/${docs.documents[0].documentID}')
             .updateData({'theme': valueOfClick}).then((val) {
-          print("Updated");
+          print("Updated common theme");
         }).catchError((e) {
           print(e);
         });
@@ -92,5 +93,31 @@ class UserManagement {
       print(e);
     });
   }
+
+
+  Future updateUsingThemeDark(valueOfDarkClick) async {
+//    var userInfo = new UserUpdateInfo();
+
+    await FirebaseAuth.instance.currentUser().then((user) {
+      Firestore.instance
+          .collection('/users')
+          .where('uid', isEqualTo: user.uid)
+          .getDocuments()
+          .then((docs) {
+        Firestore.instance
+            .document('/users/${docs.documents[0].documentID}')
+            .updateData({'darkTheme': valueOfDarkClick}).then((val) {
+          print("Updated dark theme");
+        }).catchError((e) {
+          print(e);
+        });
+      }).catchError((e) {
+        print(e);
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
 
 }

@@ -25,6 +25,8 @@ class _State extends State<EditItem> {
       docFunction = '';
     else if (item['request'] == 'buy')
       docFunction = "sell";
+    else if (item['request'] == 'getforfree')
+      docFunction = "giveaway";
     else
       docFunction = item['request'];
     if (item['price']!=null)
@@ -98,6 +100,7 @@ class _State extends State<EditItem> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         title: new Text('Edit Item',
           style: TextStyle(
               color: Colors.white
@@ -144,6 +147,7 @@ class _State extends State<EditItem> {
                 TextField(
                   style:Theme.of(context).textTheme.subhead,
                   decoration: new InputDecoration(
+
                       labelText: item['description'],
                       icon:
                       new Icon(Icons.event_note, color: Theme.of(context).buttonColor)),
@@ -371,7 +375,35 @@ class _State extends State<EditItem> {
                           }
                         });
 
-                      } else if (item['request'].toString() != 'borrow' || docFunction!=''){
+                      }
+                      else if (docFunction == 'giveaway'){
+                        var count = 0;
+                        Firestore.instance.collection('requestGiveaway')
+                            .where('respondent', isEqualTo: item['userId']).where('itemID', isEqualTo: item.documentID).getDocuments().then((foundDoc){
+                          for (DocumentSnapshot ds in foundDoc.documents){
+                            if (ds['respondent'] == item['userId']){
+                              count++;
+                            }
+                          }
+
+                          if (count!=0){
+                            Firestore.instance
+                                .collection('items')
+                                .document(item.documentID)
+                                .updateData({"request": 'getforfree'});
+                            debugPrint("zmenul som funkciu/request");
+                          }
+                          else{
+                            Firestore.instance
+                                .collection('items')
+                                .document(item.documentID)
+                                .updateData({"request": 'giveaway'});
+                            debugPrint("zmenul som funkciu/request");
+                          }
+                        });
+                      }
+
+                      else if (item['request'].toString() != 'borrow' || docFunction!=''){
                         Firestore.instance
                             .collection('items')
                             .document(item.documentID)
@@ -385,6 +417,7 @@ class _State extends State<EditItem> {
                             .updateData({"price": docPrice});
                         debugPrint("zmenil som cenu");
                       }
+
                       if (docFunction != 'sell'){
                         Firestore.instance
                             .collection('items')

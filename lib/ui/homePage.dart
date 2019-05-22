@@ -26,6 +26,7 @@ class _HomeState extends State<HomePage> {
   ThemeSwitcher inheritedThemeSwitcher;
   FirebaseUser user;
   bool themeChosen;
+  bool themeDarkChosen;
   @override
   void initState() {
     // TODO: implement initState
@@ -64,12 +65,12 @@ class _HomeState extends State<HomePage> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text('Wardrobe'),
+          title: Text('Wardrobe', style: TextStyle(color: Colors.white),),
           actions: <Widget>[
             _page != 4
                 ? Container()
                 : IconButton(
-                    icon: Icon(Icons.search),
+                    icon: Icon(Icons.search, color: Colors.white,),
                     onPressed: () {
                       showSearch(
                         context: context,
@@ -81,7 +82,7 @@ class _HomeState extends State<HomePage> {
             _page != 1
                 ? Container()
                 : IconButton(
-                    icon: Icon(Icons.search),
+                    icon: Icon(Icons.search,color: Colors.white,),
                     onPressed: () {
                       showSearch(
                         context: context,
@@ -93,7 +94,7 @@ class _HomeState extends State<HomePage> {
             _page != 1
                 ? Container()
                 : IconButton(
-                    icon: Icon(Icons.filter_list),
+                    icon: Icon(Icons.filter_list, color: Colors.white,),
                     onPressed: () {
                       GlobalKey key = (_options[_page] as AllDressesList).key;
                       DressesListState state =
@@ -130,23 +131,23 @@ class _HomeState extends State<HomePage> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: new Icon(Icons.face, color: Colors.grey[900]),
-              title: new Text('Me'),
+              title: new Text('Me', style: TextStyle(color: Colors.black),),
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.style, color: Colors.grey[900]),
-              title: new Text('Dresses'),
+              title: new Text('Dresses',style: TextStyle(color: Colors.black),),
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.notifications, color: Colors.grey[900]),
-              title: new Text('Alerts'),
+              title: new Text('Alerts',style: TextStyle(color: Colors.black),),
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.shopping_cart, color: Colors.grey[900]),
-              title: new Text('Deals'),
+              title: new Text('Deals', style: TextStyle(color: Colors.black),),
             ),
             BottomNavigationBarItem(
-                icon: new Icon(Icons.account_circle, color: Colors.grey[900]),
-                title: new Text('Users'))
+                icon: new Icon(Icons.account_circle, color:Colors.grey[900]),
+                title: new Text('Users', style: TextStyle(color: Colors.black),))
           ],
           currentIndex: _page,
           onTap: onPageChanged,
@@ -226,8 +227,13 @@ class _HomeState extends State<HomePage> {
 
         snapshot.listen((QuerySnapshot data){
           themeChosen = data.documents[0]['theme'];
-          debugPrint("ThemeChosen: ${themeChosen}");
-          changingColor(themeChosen);
+          themeDarkChosen = data.documents[0]['darkTheme'];
+          if(themeDarkChosen==true){
+            darkMode(themeDarkChosen);
+          }else {
+            debugPrint("ThemeChosen: ${themeChosen}");
+            changingColor(themeChosen);
+          }
         });
       });
     });
@@ -258,9 +264,26 @@ class _HomeState extends State<HomePage> {
             toggleableActiveColor: Colors.lightBlue,
             unselectedWidgetColor: Colors.blueAccent,
             fontFamily: 'Quicksand',
-            indicatorColor: Colors.blueGrey,
+            indicatorColor: Colors.blue[200],
             brightness: Brightness.light,
-            textTheme: TextTheme(button: TextStyle(color: Colors.white))
+            textTheme: TextTheme(subhead: TextStyle(color: Colors.black)),
+          iconTheme: IconThemeData(color: Colors.white)
+        ));
+  }
+
+  DemoTheme _buildDarkMode() {
+    return DemoTheme(
+        'dark',
+        new ThemeData(
+          textTheme: TextTheme(subhead: TextStyle(color: Colors.white),),
+          primaryColor: Colors.black,
+          scaffoldBackgroundColor: Colors.black54,
+          accentColor: Colors.black45,
+          buttonColor: Colors.white12,
+          toggleableActiveColor: Colors.black54,
+          unselectedWidgetColor: Colors.black45,
+          fontFamily: 'Quicksand',
+          indicatorColor: Colors.black54,
         ));
   }
 
@@ -271,6 +294,14 @@ class _HomeState extends State<HomePage> {
       } else {
         inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildPinkTheme());
       }
+    });
+  }
+
+  void darkMode(bool valueOfMode){
+    setState(() {
+      if(valueOfMode){
+        inheritedThemeSwitcher.themeBloc.selectedTheme.add(_buildDarkMode());
+        }
     });
   }
 

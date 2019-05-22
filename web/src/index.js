@@ -16,7 +16,7 @@ firebase.auth().onAuthStateChanged(function(user) {
       }
 
       document.getElementById("user_para").innerHTML =
-        "Welcome user: " + email_id + "<br/> Verified: " + email_verified;
+        "<h3>User email:</h3>" + email_id + "<br/><h3>Verified account: </h3>" + email_verified;
     }
   } else {
     document.getElementById("user_div").style.display = "none";
@@ -89,23 +89,3 @@ function signInWithPopup() {
       var credential = error.credential;
     });
 }
-
-/*
-firebase.auth().signInWithRedirect(provider);
-firebase.auth().getRedirectResult().then(function(result) {
-  if (result.credential) {
-    var token = result.credential.accessToken;
-  }
-  var user = result.user;
-}).catch(function(error) {
-  var errorCode = error.code;
-  var errorMessage = error.message;
-  var email = error.email;
-  var credential = error.credential;
-});
-
-
-firebase.auth().signOut().then(function() {
-}).catch(function(error) {
-});
-*/

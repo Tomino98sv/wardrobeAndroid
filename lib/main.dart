@@ -8,27 +8,6 @@ import 'package:flutter_app/bl/videjko/signUpPage.dart';
 import 'package:flutter_app/ui/homePage.dart';
 import 'package:flutter_app/ui/themes.dart';
 import 'package:flutter/material.dart';
-//import 'package:theme_switcher/themes.dart';
-
-//final ThemeData pinkTheme = new ThemeData(
-//  primaryColor: Colors.pink[400],
-//  scaffoldBackgroundColor: Colors.grey[50],
-//  accentColor: Colors.pink[400],
-//  buttonColor: Colors.pink,
-//  fontFamily: 'Quicksand',
-//  indicatorColor: Colors.blueGrey,
-//);
-//
-////COMMIT PRE NOVU GITHUB HRACKU
-//
-//final ThemeData darkTheme = new ThemeData(
-//  primaryColor: Colors.brown[400],
-//  scaffoldBackgroundColor: Colors.grey[50],
-//  accentColor: Colors.brown[400],
-//  buttonColor: Colors.brown,
-//  fontFamily: 'Quicksand',
-//  indicatorColor: Colors.blueGrey,
-//);
 
 void main(){
   SystemChrome.setPreferredOrientations([

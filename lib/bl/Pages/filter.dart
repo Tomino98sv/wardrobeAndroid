@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/db/allDressesList.dart';
 
 class FilterChipDisplay extends StatefulWidget {
   String _valueFilter;
@@ -46,6 +47,7 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
                         selectedWidgetSize = !selectedWidgetSize;
                         widget._valueFilter = value;
                       });
+//                      return AllDressesList(filterValue: value,); //tu toto by malo vratit vsetky aj s hodnpotoou...
                     },
                   ),
                   FilterChipWidget(
@@ -145,7 +147,7 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
           side: BorderSide(color: Colors.grey)),
-      backgroundColor: Colors.pink[100],
+      backgroundColor: Theme.of(context).indicatorColor,
       onSelected: (isSelected) {
         widget.onPressed();
         setState(() {
@@ -163,7 +165,7 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
           }
         });
       },
-      selectedColor: Colors.pinkAccent,
+      selectedColor: Theme.of(context).accentColor,
     );
   }
 }
@@ -197,7 +199,7 @@ Widget _buildSizeWidget(BuildContext context) {
                    child: Text(sizes[index],
                      style: TextStyle(
                          fontSize: 20.0,
-                       color: Colors.pink
+                       color: Theme.of(context).indicatorColor
                      ),
                    ),
                  );
