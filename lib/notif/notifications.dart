@@ -48,11 +48,10 @@ class _NotificationsPage extends State<NotificationsPage>{
     return Scaffold(
       body: Column(
         children: <Widget>[
-          Text("notifikacie", style: Theme.of(context).textTheme.subhead,),
           Flexible(
               child: StreamBuilder<QuerySnapshot>(
                 stream: stream,
-                builder: (BuildContext context, snapshot) {
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
                   switch(snapshot.connectionState){
                     case ConnectionState.none: return Text("Not streaming");
                     case ConnectionState.waiting: return getLoader("Starting chatroom");
@@ -64,13 +63,8 @@ class _NotificationsPage extends State<NotificationsPage>{
                         padding: new EdgeInsets.all(8.0),
                         itemBuilder: (_, int index) {
                           DocumentSnapshot document = snapshot.data.documents[index];
-                          if(document.data['participantOne']==emailUser.toString){
-                            debugPrint("   ${document.data['participantOne']}   TRUE");
-                          }
-                          if(document.data['participantTwo']==emailUser.toString()){
-                            debugPrint("  ${document.data['participantTwo']}  TRUE");
-                          }
-
+                          if(document.data['participantOne']==emailUser || document.data['participantTwo']==emailUser){
+                            debugPrint("   ${document.data['participantOne']}   TRUE    ${document.data['participantTwo']}   AND  ${emailUser}");
                             return Container(
                                 child: Row(
                                   children: <Widget>[
@@ -82,11 +76,17 @@ class _NotificationsPage extends State<NotificationsPage>{
                                       ],
                                     ),
                                     Container(
-                                      child: getUnseen(),
+                                      child: document.data['participantOne'] != emailUser ?
+                                      getUnseen(document.data['participantOne'], document) :
+                                      getUnseen(document.data['participantTwo'], document),
                                     )
                                   ],
                                 )
                             );
+                          }else{
+                            return Container();
+                          }
+
                         },
                         itemCount: snapshot.data.documents.length,
                       );
@@ -115,8 +115,27 @@ class _NotificationsPage extends State<NotificationsPage>{
     );
   }
 
-  Widget getUnseen(){
-    return Text("0");
+  Widget getUnseen(String targetEmail, DocumentSnapshot document) {
+
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore
+          .instance
+          .collection("chat")
+          .document("${document.documentID}")
+          .collection(document.data['room'])
+          .snapshots(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        switch(snapshot.connectionState){
+          case ConnectionState.none: return Text("Not streaming");
+          case ConnectionState.waiting: return getLoader("Starting chatroom");
+          case ConnectionState.active:
+            if (!snapshot.hasData) {return Container(child: Text("No data"),);}
+            debugPrint("${snapshot.data.documents.length}");
+            return Text("${snapshot.data.documents.length}");
+          case ConnectionState.done: return Text("Done");
+        }
+      },
+    );
   }
 
 }
