@@ -129,7 +129,7 @@ class _NotificationsPage extends State<NotificationsPage>{
                 }
               }
               if(unseenCount!=0){
-                return getUnseenContainer(targetEmail,listOfUnreadMess);
+                return getUnseenContainer(targetEmail,listOfUnreadMess,snapshot.data.documents[0]['user_name']);
               }else{
                 return Container(
                   child: Text("All message readed with ${targetEmail}"),
@@ -145,7 +145,7 @@ class _NotificationsPage extends State<NotificationsPage>{
     );
   }
 
-  Widget getUnseenContainer(String targetEmail,List<DocumentSnapshot>listMess){
+  Widget getUnseenContainer(String targetEmail,List<DocumentSnapshot>snapList,user_name){
     return Container(
         margin:const EdgeInsets.symmetric(horizontal: 9.0),
         padding: EdgeInsets.all(5.0),
@@ -154,32 +154,31 @@ class _NotificationsPage extends State<NotificationsPage>{
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-
                 Flexible(
-                  child: Text("${targetEmail}"),
+                  child: Text("${user_name}"),
                 ),
                 Container(
                   child: Text("${unseenCount}"),
                 )
               ],
             ),
-            getUnseenMessages(listMess)
+            getUnseenMessages(snapList),
           ],
         )
     );
   }
   
-  Widget getUnseenMessages(List<DocumentSnapshot>listMess){
+  Widget getUnseenMessages(List<DocumentSnapshot>snapList){
     return
       ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         padding: new EdgeInsets.all(8.0),
         itemBuilder: (_, int index) {
-          DocumentSnapshot document = listMess[index];
+          DocumentSnapshot document = snapList[index];
           return Text("${document.data['message']}");
         },
-        itemCount: listMess.length,
+        itemCount: snapList.length,
       );
   }
 
