@@ -15,7 +15,7 @@ class _NotificationsPage extends State<NotificationsPage>{
   String emailUser;
   String uid;
   Stream<QuerySnapshot> stream;
-  DocumentSnapshot _documentSnapshot;
+  var unseenCount=0;
 
   @override
   void initState() {
@@ -65,24 +65,9 @@ class _NotificationsPage extends State<NotificationsPage>{
                           DocumentSnapshot document = snapshot.data.documents[index];
                           if(document.data['participantOne']==emailUser || document.data['participantTwo']==emailUser){
                             debugPrint("   ${document.data['participantOne']}   TRUE    ${document.data['participantTwo']}   AND  ${emailUser}");
-                            return Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Column(
-                                      children: <Widget>[
-                                        Text("${document.data['participantOne']}"),
-                                        Text("${document.data['participantTwo']}"),
-                                        SizedBox(height: 30.0),
-                                      ],
-                                    ),
-                                    Container(
-                                      child: document.data['participantOne'] != emailUser ?
-                                      getUnseen(document.data['participantOne'], document) :
-                                      getUnseen(document.data['participantTwo'], document),
-                                    )
-                                  ],
-                                )
-                            );
+                            return document.data['participantOne'] != emailUser ?
+                            getUnseen(document.data['participantOne'], document) :
+                            getUnseen(document.data['participantTwo'], document);
                           }else{
                             return Container();
                           }
@@ -123,6 +108,7 @@ class _NotificationsPage extends State<NotificationsPage>{
           .collection("chat")
           .document("${document.documentID}")
           .collection(document.data['room'])
+          .where("user_email",isEqualTo: targetEmail)
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch(snapshot.connectionState){
@@ -131,7 +117,43 @@ class _NotificationsPage extends State<NotificationsPage>{
           case ConnectionState.active:
             if (!snapshot.hasData) {return Container(child: Text("No data"),);}
             debugPrint("${snapshot.data.documents.length}");
-            return Text("${snapshot.data.documents.length}");
+            if(snapshot.data.documents.length!=0){
+              unseenCount=0;
+              for(int a=0;a<snapshot.data.documents.length;a++){
+                DateTime time1 =snapshot.data.documents[a]["created_at"];
+                DateTime time2 = document.data['lastVisitOf${currentUser.uid}'];
+                if(time1.difference(time2).isNegative){
+                  debugPrint("NEGATIVE");
+                }else{
+                  unseenCount++;
+                  debugPrint("POSITIVE");
+                }
+            }
+              if(unseenCount!=0){
+                return Container(
+                    child: Row(
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            Text("${targetEmail}"),
+                            SizedBox(height: 30.0),
+                          ],
+                        ),
+                        Container(
+                          child: Text("${unseenCount}"),
+                        )
+                      ],
+                    )
+                );
+              }else{
+                return Container(
+                  child: Text("All message readed with ${targetEmail}"),
+                );
+              }
+            }else{
+              return Container();
+            }
+              break;
           case ConnectionState.done: return Text("Done");
         }
       },
