@@ -58,7 +58,7 @@ html, body {
     background-image: url("Images/Header.png");
     background-blend-mode: multiply;
     background-size: cover;
-    padding-bottom: 30px;
+    padding-bottom: 1px;
 }
 
 .band-name {
