@@ -16,6 +16,7 @@ class _NotificationsPage extends State<NotificationsPage>{
   String uid;
   Stream<QuerySnapshot> stream;
   var unseenCount=0;
+  List<DocumentSnapshot> listOfUnreadMess = new List<DocumentSnapshot>();
 
   @override
   void initState() {
@@ -33,7 +34,6 @@ class _NotificationsPage extends State<NotificationsPage>{
           emailUser = data.documents[0]['email'];
           nameUser = data.documents[0]['name'];
           uid = data.documents[0]['uid'];
-          debugPrint("My email is ${emailUser}");
         });
       });
     }).then((value){
@@ -64,7 +64,6 @@ class _NotificationsPage extends State<NotificationsPage>{
                         itemBuilder: (_, int index) {
                           DocumentSnapshot document = snapshot.data.documents[index];
                           if(document.data['participantOne']==emailUser || document.data['participantTwo']==emailUser){
-                            debugPrint("   ${document.data['participantOne']}   TRUE    ${document.data['participantTwo']}   AND  ${emailUser}");
                             return document.data['participantOne'] != emailUser ?
                             getUnseen(document.data['participantOne'], document) :
                             getUnseen(document.data['participantTwo'], document);
@@ -86,7 +85,7 @@ class _NotificationsPage extends State<NotificationsPage>{
   }
 
   Widget getLoader(String content){
-    return Container(
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -113,38 +112,24 @@ class _NotificationsPage extends State<NotificationsPage>{
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch(snapshot.connectionState){
           case ConnectionState.none: return Text("Not streaming");
-          case ConnectionState.waiting: return getLoader("Starting chatroom");
+          case ConnectionState.waiting: return getLoader("Loading conversation");
           case ConnectionState.active:
             if (!snapshot.hasData) {return Container(child: Text("No data"),);}
             debugPrint("${snapshot.data.documents.length}");
             if(snapshot.data.documents.length!=0){
               unseenCount=0;
+              listOfUnreadMess=new List<DocumentSnapshot>();
               for(int a=0;a<snapshot.data.documents.length;a++){
                 DateTime time1 =snapshot.data.documents[a]["created_at"];
                 DateTime time2 = document.data['lastVisitOf${currentUser.uid}'];
                 if(time1.difference(time2).isNegative){
-                  debugPrint("NEGATIVE");
                 }else{
+                  listOfUnreadMess.add(snapshot.data.documents[a]);
                   unseenCount++;
-                  debugPrint("POSITIVE");
                 }
-            }
+              }
               if(unseenCount!=0){
-                return Container(
-                    child: Row(
-                      children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            Text("${targetEmail}"),
-                            SizedBox(height: 30.0),
-                          ],
-                        ),
-                        Container(
-                          child: Text("${unseenCount}"),
-                        )
-                      ],
-                    )
-                );
+                return getUnseenContainer(targetEmail,listOfUnreadMess);
               }else{
                 return Container(
                   child: Text("All message readed with ${targetEmail}"),
@@ -158,6 +143,44 @@ class _NotificationsPage extends State<NotificationsPage>{
         }
       },
     );
+  }
+
+  Widget getUnseenContainer(String targetEmail,List<DocumentSnapshot>listMess){
+    return Container(
+        margin:const EdgeInsets.symmetric(horizontal: 9.0),
+        padding: EdgeInsets.all(5.0),
+        child: Column(
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+
+                Flexible(
+                  child: Text("${targetEmail}"),
+                ),
+                Container(
+                  child: Text("${unseenCount}"),
+                )
+              ],
+            ),
+            getUnseenMessages(listMess)
+          ],
+        )
+    );
+  }
+  
+  Widget getUnseenMessages(List<DocumentSnapshot>listMess){
+    return
+      ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        padding: new EdgeInsets.all(8.0),
+        itemBuilder: (_, int index) {
+          DocumentSnapshot document = listMess[index];
+          return Text("${document.data['message']}");
+        },
+        itemCount: listMess.length,
+      );
   }
 
 }
