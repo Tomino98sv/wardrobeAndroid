@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+
 class NotificationsPage extends StatefulWidget {
   @override
   _NotificationsPage createState() => _NotificationsPage();
@@ -157,16 +158,17 @@ class _NotificationsPage extends State<NotificationsPage>{
       }
 
       return Container(
-        margin:const EdgeInsets.symmetric(horizontal: 9.0),
-        child: Column(
+        margin:const EdgeInsets.symmetric(horizontal: 9.0, vertical: 6.0),
+        child: Material(
+          color: Colors.white,
+          shadowColor: Colors.grey,
+          elevation: 14.0,
+          borderRadius: BorderRadius.circular(14.0),
+          child:
+        Column(
           children: <Widget>[
             Container(
                 height: 60.0,
-              child: Material(
-                color: Colors.white,
-                shadowColor: Colors.grey,
-                elevation: 14.0,
-                borderRadius: BorderRadius.circular(14.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   mainAxisSize: MainAxisSize.max,
@@ -227,11 +229,11 @@ class _NotificationsPage extends State<NotificationsPage>{
                     ),
                   ],
                 ),
-              )
             ),
             seenMess
           ],
-        )
+        ),
+      ),
     );
   }
   Widget getUnseenMessages(List<DocumentSnapshot>snapList){
@@ -242,7 +244,33 @@ class _NotificationsPage extends State<NotificationsPage>{
         padding: new EdgeInsets.all(8.0),
         itemBuilder: (_, int index) {
           DocumentSnapshot document = snapList[index];
-          return Text("${document.data['message']}");
+          return Container(
+            margin: EdgeInsets.only(top: 20.0),
+              child:
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                          "${dateFormat(document.data["created_at"])}",
+                        style: TextStyle(
+                          fontSize: 15.0,
+                          color: Colors.blueGrey,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                      Text(
+                          "${document.data['message']}",
+                        style: TextStyle(
+                          fontSize: 15.0,
+                          color: Colors.black,
+                          fontWeight: FontWeight.normal,
+                        ),
+                      )
+                    ],
+                  ),
+          );
         },
         itemCount: snapList.length,
       );
@@ -251,16 +279,27 @@ class _NotificationsPage extends State<NotificationsPage>{
   Widget getLastUnseenMessages(List<DocumentSnapshot>snapList){
     return
       Container(
-        margin: EdgeInsets.only(left: 10.0),
-        child: Text(
-          "${snapList[snapList.length-1].data['message']}",
-          textAlign: TextAlign.justify,
-          style: TextStyle(
-            fontSize: 15.0,
-            color: Colors.black,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
+        margin: EdgeInsets.only(top: 20.0),
+        child: Column(
+          children: <Widget>[
+            Text(
+              "${dateFormat(snapList[snapList.length-1].data["created_at"])}",
+              style: TextStyle(
+                fontSize: 15.0,
+                color: Colors.blueGrey,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+            Text(
+              "${snapList[snapList.length-1].data['message']}",
+              style: TextStyle(
+                fontSize: 15.0,
+                color: Colors.black,
+                fontWeight: FontWeight.normal,
+              ),
+            )
+          ],
+        )
       );
   }
 
@@ -285,6 +324,15 @@ class _NotificationsPage extends State<NotificationsPage>{
       }
     });
 
+  }
+
+  String dateFormat(DateTime date){
+    return "${date.year.toString()}-"
+        "${date.month.toString().padLeft(2,'0')}-"
+        "${date.day.toString().padLeft(2,'0')} "
+        "${date.hour.toString().padLeft(2,'0')}:"
+        "${date.minute.toString().padLeft(2,'0')}:"
+        "${date.second.toString().padLeft(2,'0')} ";
   }
 
 }
