@@ -17,6 +17,7 @@ class _NotificationsPage extends State<NotificationsPage>{
   Stream<QuerySnapshot> stream;
   var unseenCount=0;
   List<DocumentSnapshot> listOfUnreadMess = new List<DocumentSnapshot>();
+  Map<String, String> urlProfiles=Map();
 
   @override
   void initState() {
@@ -41,11 +42,14 @@ class _NotificationsPage extends State<NotificationsPage>{
           .collection('chat')
           .snapshots();
     });
+
+    getInitialData();
+
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return urlProfiles.length==0?getLoader("Loading"):Scaffold(
       body: Column(
         children: <Widget>[
           Flexible(
@@ -85,6 +89,7 @@ class _NotificationsPage extends State<NotificationsPage>{
   }
 
   Widget getLoader(String content){
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -115,7 +120,6 @@ class _NotificationsPage extends State<NotificationsPage>{
           case ConnectionState.waiting: return getLoader("Loading conversation");
           case ConnectionState.active:
             if (!snapshot.hasData) {return Container(child: Text("No data"),);}
-            debugPrint("${snapshot.data.documents.length}");
             if(snapshot.data.documents.length!=0){
               unseenCount=0;
               listOfUnreadMess=new List<DocumentSnapshot>();
@@ -151,6 +155,19 @@ class _NotificationsPage extends State<NotificationsPage>{
         padding: EdgeInsets.all(5.0),
         child: Column(
           children: <Widget>[
+            Container(
+              width: 40.0,
+              height: 40.0,
+              margin: const EdgeInsets.only(left: 5.0),
+              decoration:
+              BoxDecoration(
+                color: Theme.of(context).buttonColor,
+                image: DecorationImage(
+                    image:NetworkImage(urlProfiles[targetEmail]),
+                    fit: BoxFit.cover),
+                borderRadius: BorderRadius.all(Radius.circular(75.0)),
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -180,6 +197,28 @@ class _NotificationsPage extends State<NotificationsPage>{
         },
         itemCount: snapList.length,
       );
+  }
+
+
+  getInitialData(){
+    Firestore.instance
+        .collection("users")
+        .getDocuments().then((value){
+      List<DocumentSnapshot> documents = value.documents;
+      for(var a=0;a<documents.length;a++){
+        Firestore
+            .instance
+            .collection("users")
+            .where("email",isEqualTo: documents[a].data['email'])
+            .snapshots().listen((data) {
+          urlProfiles[documents[a].data['email']]= data.documents[0]['photoUrl'];
+          setState(() {
+            urlProfiles.length;
+          });
+        });
+      }
+    });
+
   }
 
 }
