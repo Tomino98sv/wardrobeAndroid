@@ -114,8 +114,12 @@ class _ChatPageState extends State<ChatPage>{
   Widget build(BuildContext context) {
     return new WillPopScope(
       onWillPop: () {
-        refToDoc.updateData({"lastVisitOf${uid}":DateTime.now()});
-        Navigator.pop(context);
+        if(refToDoc!=null){
+          refToDoc.updateData({"lastVisitOf${uid}":DateTime.now()});
+          Navigator.pop(context);
+        }else{
+          Navigator.pop(context);
+        }
 
       },
       child: Scaffold(

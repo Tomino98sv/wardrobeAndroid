@@ -15,7 +15,11 @@ class _NotificationsPage extends State<NotificationsPage>{
   String emailUser;
   String uid;
   Stream<QuerySnapshot> stream;
-  DocumentSnapshot _documentSnapshot;
+  var unseenCount=0;
+  List<DocumentSnapshot> listOfUnreadMess = new List<DocumentSnapshot>();
+  Map<String, String> urlProfiles=Map();
+  Widget seenMess;
+  Map<String, bool> whoShowAllMess = Map();
 
   @override
   void initState() {
@@ -33,7 +37,6 @@ class _NotificationsPage extends State<NotificationsPage>{
           emailUser = data.documents[0]['email'];
           nameUser = data.documents[0]['name'];
           uid = data.documents[0]['uid'];
-          debugPrint("My email is ${emailUser}");
         });
       });
     }).then((value){
@@ -41,11 +44,14 @@ class _NotificationsPage extends State<NotificationsPage>{
           .collection('chat')
           .snapshots();
     });
+
+    getInitialData();
+
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return urlProfiles.length==0?getLoader("Loading"):Scaffold(
       body: Column(
         children: <Widget>[
           Flexible(
@@ -60,29 +66,12 @@ class _NotificationsPage extends State<NotificationsPage>{
                       return new ListView.builder(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
-                        padding: new EdgeInsets.all(8.0),
                         itemBuilder: (_, int index) {
                           DocumentSnapshot document = snapshot.data.documents[index];
                           if(document.data['participantOne']==emailUser || document.data['participantTwo']==emailUser){
-                            debugPrint("   ${document.data['participantOne']}   TRUE    ${document.data['participantTwo']}   AND  ${emailUser}");
-                            return Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Column(
-                                      children: <Widget>[
-                                        Text("${document.data['participantOne']}"),
-                                        Text("${document.data['participantTwo']}"),
-                                        SizedBox(height: 30.0),
-                                      ],
-                                    ),
-                                    Container(
-                                      child: document.data['participantOne'] != emailUser ?
-                                      getUnseen(document.data['participantOne'], document) :
-                                      getUnseen(document.data['participantTwo'], document),
-                                    )
-                                  ],
-                                )
-                            );
+                            return document.data['participantOne'] != emailUser ?
+                            getUnseen(document.data['participantOne'], document) :
+                            getUnseen(document.data['participantTwo'], document);
                           }else{
                             return Container();
                           }
@@ -101,7 +90,8 @@ class _NotificationsPage extends State<NotificationsPage>{
   }
 
   Widget getLoader(String content){
-    return Container(
+
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -123,19 +113,178 @@ class _NotificationsPage extends State<NotificationsPage>{
           .collection("chat")
           .document("${document.documentID}")
           .collection(document.data['room'])
+          .where("user_email",isEqualTo: targetEmail)
           .snapshots(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch(snapshot.connectionState){
           case ConnectionState.none: return Text("Not streaming");
-          case ConnectionState.waiting: return getLoader("Starting chatroom");
+          case ConnectionState.waiting: return Container();
           case ConnectionState.active:
             if (!snapshot.hasData) {return Container(child: Text("No data"),);}
-            debugPrint("${snapshot.data.documents.length}");
-            return Text("${snapshot.data.documents.length}");
+            if(snapshot.data.documents.length!=0){
+              unseenCount=0;
+              listOfUnreadMess=new List<DocumentSnapshot>();
+              for(int a=0;a<snapshot.data.documents.length;a++){
+                DateTime time1 =snapshot.data.documents[a]["created_at"];
+                DateTime time2 = document.data['lastVisitOf${currentUser.uid}'];
+                if(time1.difference(time2).isNegative){
+                }else{
+                  listOfUnreadMess.add(snapshot.data.documents[a]);
+                  unseenCount++;
+                }
+              }
+              if(unseenCount!=0){
+                return getUnseenContainer(targetEmail,listOfUnreadMess,snapshot.data.documents[0]['user_name']);
+              }else{
+                return Container();
+              }
+            }else{
+              return Container();
+            }
+              break;
           case ConnectionState.done: return Text("Done");
         }
       },
     );
+  }
+
+  Widget getUnseenContainer(String targetEmail,List<DocumentSnapshot>snapList,user_name){
+    seenMess=null;
+      if(whoShowAllMess[targetEmail] == true){
+        seenMess=getUnseenMessages(snapList);
+      }else{
+        seenMess=getLastUnseenMessages(snapList);
+      }
+
+      return Container(
+        margin:const EdgeInsets.symmetric(horizontal: 9.0),
+        child: Column(
+          children: <Widget>[
+            Container(
+                height: 60.0,
+              child: Material(
+                color: Colors.white,
+                shadowColor: Colors.grey,
+                elevation: 14.0,
+                borderRadius: BorderRadius.circular(14.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(left: 7.0),
+                          width: 40.0,
+                          height: 40.0,
+                          decoration:
+                          BoxDecoration(
+                            color: Theme.of(context).buttonColor,
+                            image: DecorationImage(
+                                image:NetworkImage(urlProfiles[targetEmail]),
+                                fit: BoxFit.cover),
+                            borderRadius: BorderRadius.all(Radius.circular(75.0)),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 10.0),
+                          child: Text(
+                              "${user_name}",
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                              ),
+                          ),
+                        ),
+                      ]
+                    ),
+                    new RawMaterialButton(
+                      onPressed: () {
+                        debugPrint("Pressed ${targetEmail}");
+                          setState(() {
+                              if(whoShowAllMess[targetEmail]==false){
+                                whoShowAllMess[targetEmail]=true;
+                              }else{
+                                whoShowAllMess[targetEmail]=false;
+                              }
+                          });
+                      },
+                      child: Text(
+                          "${unseenCount}",
+                          style: TextStyle(
+                          fontSize: 15.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      shape: new CircleBorder(),
+                      elevation: 2.0,
+                      fillColor: Colors.red,
+                      padding: const EdgeInsets.all(10.0),
+                    ),
+                  ],
+                ),
+              )
+            ),
+            seenMess
+          ],
+        )
+    );
+  }
+  Widget getUnseenMessages(List<DocumentSnapshot>snapList){
+    return
+      ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        padding: new EdgeInsets.all(8.0),
+        itemBuilder: (_, int index) {
+          DocumentSnapshot document = snapList[index];
+          return Text("${document.data['message']}");
+        },
+        itemCount: snapList.length,
+      );
+  }
+
+  Widget getLastUnseenMessages(List<DocumentSnapshot>snapList){
+    return
+      Container(
+        margin: EdgeInsets.only(left: 10.0),
+        child: Text(
+          "${snapList[snapList.length-1].data['message']}",
+          textAlign: TextAlign.justify,
+          style: TextStyle(
+            fontSize: 15.0,
+            color: Colors.black,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      );
+  }
+
+
+  getInitialData(){
+    Firestore.instance
+        .collection("users")
+        .getDocuments().then((value){
+      List<DocumentSnapshot> documents = value.documents;
+      for(var a=0;a<documents.length;a++){
+        Firestore
+            .instance
+            .collection("users")
+            .where("email",isEqualTo: documents[a].data['email'])
+            .snapshots().listen((data) {
+          urlProfiles[documents[a].data['email']]= data.documents[0]['photoUrl'];
+          whoShowAllMess[documents[a].data['email']]=false;
+          setState(() {
+            urlProfiles.length;
+          });
+        });
+      }
+    });
+
   }
 
 }
