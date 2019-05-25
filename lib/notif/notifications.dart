@@ -18,6 +18,8 @@ class _NotificationsPage extends State<NotificationsPage>{
   var unseenCount=0;
   List<DocumentSnapshot> listOfUnreadMess = new List<DocumentSnapshot>();
   Map<String, String> urlProfiles=Map();
+  Widget seenMess;
+  Map<String, bool> whoShowAllMess = Map();
 
   @override
   void initState() {
@@ -64,7 +66,6 @@ class _NotificationsPage extends State<NotificationsPage>{
                       return new ListView.builder(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
-                        padding: new EdgeInsets.all(8.0),
                         itemBuilder: (_, int index) {
                           DocumentSnapshot document = snapshot.data.documents[index];
                           if(document.data['participantOne']==emailUser || document.data['participantTwo']==emailUser){
@@ -117,7 +118,7 @@ class _NotificationsPage extends State<NotificationsPage>{
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch(snapshot.connectionState){
           case ConnectionState.none: return Text("Not streaming");
-          case ConnectionState.waiting: return getLoader("Loading conversation");
+          case ConnectionState.waiting: return Container();
           case ConnectionState.active:
             if (!snapshot.hasData) {return Container(child: Text("No data"),);}
             if(snapshot.data.documents.length!=0){
@@ -135,9 +136,7 @@ class _NotificationsPage extends State<NotificationsPage>{
               if(unseenCount!=0){
                 return getUnseenContainer(targetEmail,listOfUnreadMess,snapshot.data.documents[0]['user_name']);
               }else{
-                return Container(
-                  child: Text("All message readed with ${targetEmail}"),
-                );
+                return Container();
               }
             }else{
               return Container();
@@ -150,41 +149,91 @@ class _NotificationsPage extends State<NotificationsPage>{
   }
 
   Widget getUnseenContainer(String targetEmail,List<DocumentSnapshot>snapList,user_name){
-    return Container(
+    seenMess=null;
+      if(whoShowAllMess[targetEmail] == true){
+        seenMess=getUnseenMessages(snapList);
+      }else{
+        seenMess=getLastUnseenMessages(snapList);
+      }
+
+      return Container(
         margin:const EdgeInsets.symmetric(horizontal: 9.0),
-        padding: EdgeInsets.all(5.0),
         child: Column(
           children: <Widget>[
             Container(
-              width: 40.0,
-              height: 40.0,
-              margin: const EdgeInsets.only(left: 5.0),
-              decoration:
-              BoxDecoration(
-                color: Theme.of(context).buttonColor,
-                image: DecorationImage(
-                    image:NetworkImage(urlProfiles[targetEmail]),
-                    fit: BoxFit.cover),
-                borderRadius: BorderRadius.all(Radius.circular(75.0)),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Flexible(
-                  child: Text("${user_name}"),
+                height: 60.0,
+              child: Material(
+                color: Colors.white,
+                shadowColor: Colors.grey,
+                elevation: 14.0,
+                borderRadius: BorderRadius.circular(14.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(left: 7.0),
+                          width: 40.0,
+                          height: 40.0,
+                          decoration:
+                          BoxDecoration(
+                            color: Theme.of(context).buttonColor,
+                            image: DecorationImage(
+                                image:NetworkImage(urlProfiles[targetEmail]),
+                                fit: BoxFit.cover),
+                            borderRadius: BorderRadius.all(Radius.circular(75.0)),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 10.0),
+                          child: Text(
+                              "${user_name}",
+                              textAlign: TextAlign.justify,
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400,
+                              ),
+                          ),
+                        ),
+                      ]
+                    ),
+                    new RawMaterialButton(
+                      onPressed: () {
+                        debugPrint("Pressed ${targetEmail}");
+                          setState(() {
+                              if(whoShowAllMess[targetEmail]==false){
+                                whoShowAllMess[targetEmail]=true;
+                              }else{
+                                whoShowAllMess[targetEmail]=false;
+                              }
+                          });
+                      },
+                      child: Text(
+                          "${unseenCount}",
+                          style: TextStyle(
+                          fontSize: 15.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      shape: new CircleBorder(),
+                      elevation: 2.0,
+                      fillColor: Colors.red,
+                      padding: const EdgeInsets.all(10.0),
+                    ),
+                  ],
                 ),
-                Container(
-                  child: Text("${unseenCount}"),
-                )
-              ],
+              )
             ),
-            getUnseenMessages(snapList),
+            seenMess
           ],
         )
     );
   }
-  
   Widget getUnseenMessages(List<DocumentSnapshot>snapList){
     return
       ListView.builder(
@@ -196,6 +245,22 @@ class _NotificationsPage extends State<NotificationsPage>{
           return Text("${document.data['message']}");
         },
         itemCount: snapList.length,
+      );
+  }
+
+  Widget getLastUnseenMessages(List<DocumentSnapshot>snapList){
+    return
+      Container(
+        margin: EdgeInsets.only(left: 10.0),
+        child: Text(
+          "${snapList[snapList.length-1].data['message']}",
+          textAlign: TextAlign.justify,
+          style: TextStyle(
+            fontSize: 15.0,
+            color: Colors.black,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
       );
   }
 
@@ -212,6 +277,7 @@ class _NotificationsPage extends State<NotificationsPage>{
             .where("email",isEqualTo: documents[a].data['email'])
             .snapshots().listen((data) {
           urlProfiles[documents[a].data['email']]= data.documents[0]['photoUrl'];
+          whoShowAllMess[documents[a].data['email']]=false;
           setState(() {
             urlProfiles.length;
           });
