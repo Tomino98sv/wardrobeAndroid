@@ -244,8 +244,15 @@ class _NotificationsPage extends State<NotificationsPage>{
         padding: new EdgeInsets.all(8.0),
         itemBuilder: (_, int index) {
           DocumentSnapshot document = snapList[index];
+          DateTime date = document.data["created_at"];
+          var dateformat = "${date.year.toString()}-"
+              "${date.month.toString().padLeft(2,'0')}-"
+              "${date.day.toString().padLeft(2,'0')} "
+              "${date.hour.toString().padLeft(2,'0')}:"
+              "${date.minute.toString().padLeft(2,'0')}:"
+              "${date.second.toString().padLeft(2,'0')} ";
           return Container(
-            margin: EdgeInsets.only(top: 20.0),
+            margin: EdgeInsets.only(top: 20.0, bottom: 5.0),
               child:
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -253,7 +260,7 @@ class _NotificationsPage extends State<NotificationsPage>{
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                          "${dateFormat(document.data["created_at"])}",
+                          "${dateformat}",
                         style: TextStyle(
                           fontSize: 15.0,
                           color: Colors.blueGrey,
@@ -277,25 +284,40 @@ class _NotificationsPage extends State<NotificationsPage>{
   }
 
   Widget getLastUnseenMessages(List<DocumentSnapshot>snapList){
+    DateTime date = snapList[snapList.length-1].data["created_at"];
+    var dateformat =
+        "${date.hour.toString().padLeft(2,'0')}:"
+        "${date.minute.toString().padLeft(2,'0')}:"
+        "${date.second.toString().padLeft(2,'0')} ";
     return
       Container(
-        margin: EdgeInsets.only(top: 20.0),
+        margin: EdgeInsets.only(top: 20.0, bottom: 5.0),
         child: Column(
           children: <Widget>[
             Text(
-              "${dateFormat(snapList[snapList.length-1].data["created_at"])}",
+              "${dateformat}",
               style: TextStyle(
                 fontSize: 15.0,
                 color: Colors.blueGrey,
                 fontWeight: FontWeight.normal,
               ),
             ),
-            Text(
-              "${snapList[snapList.length-1].data['message']}",
-              style: TextStyle(
-                fontSize: 15.0,
-                color: Colors.black,
-                fontWeight: FontWeight.normal,
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                    top: BorderSide(
+                        color: Colors.black,
+                        width: 1.0
+                    )
+                ),
+              ),
+              child: Text(
+                "${snapList[snapList.length-1].data['message']}",
+                style: TextStyle(
+                  fontSize: 15.0,
+                  color: Colors.black,
+                  fontWeight: FontWeight.normal,
+                ),
               ),
             )
           ],
@@ -324,15 +346,6 @@ class _NotificationsPage extends State<NotificationsPage>{
       }
     });
 
-  }
-
-  String dateFormat(DateTime date){
-    return "${date.year.toString()}-"
-        "${date.month.toString().padLeft(2,'0')}-"
-        "${date.day.toString().padLeft(2,'0')} "
-        "${date.hour.toString().padLeft(2,'0')}:"
-        "${date.minute.toString().padLeft(2,'0')}:"
-        "${date.second.toString().padLeft(2,'0')} ";
   }
 
 }
