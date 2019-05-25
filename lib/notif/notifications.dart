@@ -159,81 +159,96 @@ class _NotificationsPage extends State<NotificationsPage>{
 
       return Container(
         margin:const EdgeInsets.symmetric(horizontal: 9.0, vertical: 6.0),
-        child: Material(
+        child:
+        Column(
+          children: <Widget>[
+          Container(
+
+          height: 60.0,
+          child: Material(
+            color: Theme.of(context).accentColor,
+            shadowColor: Colors.grey,
+            elevation: 14.0,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(14.0),
+              topRight: Radius.circular(14.0),
+            ),
+            child:
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Row(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(left: 7.0),
+                        width: 40.0,
+                        height: 40.0,
+                        decoration:
+                        BoxDecoration(
+                          color: Theme.of(context).buttonColor,
+                          image: DecorationImage(
+                              image:NetworkImage(urlProfiles[targetEmail]),
+                              fit: BoxFit.cover),
+                          borderRadius: BorderRadius.all(Radius.circular(75.0)),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(left: 10.0),
+                        child: Text(
+                          "${user_name}",
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).scaffoldBackgroundColor
+                          ),
+                        ),
+                      ),
+                    ]
+                ),
+                new RawMaterialButton(
+                  onPressed: () {
+                    debugPrint("Pressed ${targetEmail}");
+                    setState(() {
+                      if(whoShowAllMess[targetEmail]==false){
+                        whoShowAllMess[targetEmail]=true;
+                      }else{
+                        whoShowAllMess[targetEmail]=false;
+                      }
+                    });
+                  },
+                  child: Text(
+                    "${unseenCount}",
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  shape: new CircleBorder(),
+                  elevation: 2.0,
+                  fillColor: Colors.red,
+                  padding: const EdgeInsets.all(10.0),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        Material(
           color: Colors.white,
           shadowColor: Colors.grey,
           elevation: 14.0,
-          borderRadius: BorderRadius.circular(14.0),
-          child:
-        Column(
-          children: <Widget>[
-            Container(
-                height: 60.0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(left: 7.0),
-                          width: 40.0,
-                          height: 40.0,
-                          decoration:
-                          BoxDecoration(
-                            color: Theme.of(context).buttonColor,
-                            image: DecorationImage(
-                                image:NetworkImage(urlProfiles[targetEmail]),
-                                fit: BoxFit.cover),
-                            borderRadius: BorderRadius.all(Radius.circular(75.0)),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 10.0),
-                          child: Text(
-                              "${user_name}",
-                              textAlign: TextAlign.justify,
-                              style: TextStyle(
-                                fontSize: 15.0,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w400,
-                              ),
-                          ),
-                        ),
-                      ]
-                    ),
-                    new RawMaterialButton(
-                      onPressed: () {
-                        debugPrint("Pressed ${targetEmail}");
-                          setState(() {
-                              if(whoShowAllMess[targetEmail]==false){
-                                whoShowAllMess[targetEmail]=true;
-                              }else{
-                                whoShowAllMess[targetEmail]=false;
-                              }
-                          });
-                      },
-                      child: Text(
-                          "${unseenCount}",
-                          style: TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      shape: new CircleBorder(),
-                      elevation: 2.0,
-                      fillColor: Colors.red,
-                      padding: const EdgeInsets.all(10.0),
-                    ),
-                  ],
-                ),
-            ),
-            seenMess
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(14.0),
+            bottomRight: Radius.circular(14.0),
+          ),
+          child: seenMess
+        ),
           ],
         ),
-      ),
     );
   }
   Widget getUnseenMessages(List<DocumentSnapshot>snapList){
@@ -254,29 +269,29 @@ class _NotificationsPage extends State<NotificationsPage>{
           return Container(
             margin: EdgeInsets.only(top: 20.0, bottom: 5.0),
               child:
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                          "${dateformat}",
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.blueGrey,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      Text(
-                          "${document.data['message']}",
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.black,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      )
-                    ],
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "${dateformat}",
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.blueGrey,
+                      fontWeight: FontWeight.normal,
+                    ),
                   ),
+                  Text(
+                    "${document.data['message']}",
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  )
+                ],
+              ),
           );
         },
         itemCount: snapList.length,
@@ -284,44 +299,58 @@ class _NotificationsPage extends State<NotificationsPage>{
   }
 
   Widget getLastUnseenMessages(List<DocumentSnapshot>snapList){
-    DateTime date = snapList[snapList.length-1].data["created_at"];
-    var dateformat =
-        "${date.hour.toString().padLeft(2,'0')}:"
-        "${date.minute.toString().padLeft(2,'0')}:"
-        "${date.second.toString().padLeft(2,'0')} ";
     return
-      Container(
-        margin: EdgeInsets.only(top: 20.0, bottom: 5.0),
-        child: Column(
-          children: <Widget>[
-            Text(
-              "${dateformat}",
-              style: TextStyle(
-                fontSize: 15.0,
-                color: Colors.blueGrey,
-                fontWeight: FontWeight.normal,
-              ),
+      ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        padding: new EdgeInsets.all(8.0),
+        itemBuilder: (_, int index) {
+          DocumentSnapshot document = snapList[snapList.length-1];
+          DateTime date = document.data["created_at"];
+          var dateformat =
+              "${date.hour.toString().padLeft(2,'0')}:"
+              "${date.minute.toString().padLeft(2,'0')}:"
+              "${date.second.toString().padLeft(2,'0')} ";
+          return Container(
+            margin: EdgeInsets.only(top: 20.0, bottom: 5.0),
+            child:
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "${dateformat}",
+                  style: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.blueGrey,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border(
+                          top: BorderSide(
+                              color: Colors.black,
+                              width: 1.0
+                          )
+                      )
+                  ),
+                  child: Text(
+                    "${document.data['message']}",
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                )
+
+              ],
             ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border(
-                    top: BorderSide(
-                        color: Colors.black,
-                        width: 1.0
-                    )
-                ),
-              ),
-              child: Text(
-                "${snapList[snapList.length-1].data['message']}",
-                style: TextStyle(
-                  fontSize: 15.0,
-                  color: Colors.black,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-            )
-          ],
-        )
+          );
+        },
+        itemCount: 1,
       );
   }
 
@@ -348,4 +377,35 @@ class _NotificationsPage extends State<NotificationsPage>{
 
   }
 
+  confirm(BuildContext context, String title, String description) {
+    debugPrint("TUUUUUUUUUUUUUUU ALERTDIALOG");
+
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(title),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[Text(description)],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () => debugPrint("nic"),
+                child: Text("Continue"),
+              ),
+              FlatButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text("Cancel"),
+              )
+            ],
+          );
+        });
+  }
+
 }
+
+
+//confirm(context,"Continue to ChatPage","want chatting with that person?")
