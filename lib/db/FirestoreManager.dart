@@ -378,32 +378,47 @@ class UserListHome extends StatelessWidget {
                 return new Text('Loading...');
               default:
                 return Scaffold(
-                  body: new ListView(
+                  body:
+                  ListView(
                             children: snapshot.data.documents
                                 .map((DocumentSnapshot document) {
-                              return ListTile(
-                                leading:  CachedNetworkImage(
-                                  imageUrl: document['photoUrl'],
-                                  height: 42.0,
-                                  width: 42.0,
-                                  placeholder: (context, imageUrl) => CircularProgressIndicator(),
-                                ),
+                              return Container(
+                                height: 80.0,
+                                padding:  EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                                child: Material(
+                                  color: Colors.white,
+                                  shadowColor: Colors.grey,
+                                  elevation: 14.0,
+                                  borderRadius: BorderRadius.circular(14.0),
+                                  child: ListTile(
+                                    contentPadding: EdgeInsets.only(top: 7.0, left: 12.0, right: 12.0),                                    leading:  ClipOval(
+                                      child: CachedNetworkImage(
+                                        width: 50.0,
+                                        height: 50.0,
+                                        fit: BoxFit.cover,
+                                        imageUrl: document['photoUrl'],
+                                        
+                                        placeholder: (context, imageUrl) => CircularProgressIndicator(),
+                                      ),
+                                    ),
 //                              leading: Image.network(
 //                                  document['photoUrl'],
 //                              height: 42.0,
 //                                  width: 42.0,),
-                                  trailing: Icon(Icons.info_outline,color: Theme.of(context).buttonColor),
-                                title: Text(document['name'], style: Theme.of(context).textTheme.subhead,),
-                                onTap: () {
-                                  //kod ktory urci usra, ktoremu bolo pozicane
-                                  Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
+                                      trailing: Icon(Icons.info_outline,color: Theme.of(context).buttonColor),
+                                    title: Text(document['name'], style: Theme.of(context).textTheme.subhead,),
+                                    onTap: () {
+                                      //kod ktory urci usra, ktoremu bolo pozicane
+                                      Navigator.push(context,
+                                          MaterialPageRoute(builder: (context) {
 
-                                            
-                                            //firebaseuser where zo streambuilderu user.uid je userinfo['userid']
-                                        return UserInfoList2(userInfo: document);
-                                      }));
-                                },
+
+                                                //firebaseuser where zo streambuilderu user.uid je userinfo['userid']
+                                            return UserInfoList2(userInfo: document);
+                                          }));
+                                    },
+                                  ),
+                                ),
                               );
                             }).toList()),
                 );
