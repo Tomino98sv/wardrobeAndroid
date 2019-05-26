@@ -4,9 +4,10 @@ import 'package:flutter_app/db/allDressesList.dart';
 
 class FilterChipDisplay extends StatefulWidget {
   String _valueFilter;
+  Function onFilterChosen;
 
-  FilterChipDisplay({@required String valueFilter}) {
-    _valueFilter = valueFilter;
+  FilterChipDisplay({@required Function function}) {
+    onFilterChosen = function;
   }
 
   @override
@@ -86,7 +87,7 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
                 onPressed:
                 selectedWidgetSize == true ? (){
                   showDialog(context: context,
-                      child: _buildSizeWidget(context)
+                      child: _buildSizeWidget(context, widget.onFilterChosen)
                   ) ;
                 } : null
             ),
@@ -172,7 +173,7 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
 List<String> sizes = ['34', '36', '38', '40', '42', '44', '46', '48'];
 int _currentItemSelected = 0;
 
-Widget _buildSizeWidget(BuildContext context) {
+Widget _buildSizeWidget(BuildContext context, Function func) {
   debugPrint("malo by vykreslit dropdown menu");
   return CupertinoAlertDialog(
     title: Text("Your size is", style: TextStyle(
@@ -188,11 +189,13 @@ Widget _buildSizeWidget(BuildContext context) {
                diameterRatio: 1.0,
                backgroundColor: CupertinoColors.white,
                onSelectedItemChanged: (index){
+
                  _currentItemSelected = index;
                  print(_currentItemSelected);
 //                 String size = sizes[index];
                  value = sizes[index];
                  print(value);
+                 func(value);
                },
                children: List<Widget>.generate(sizes.length, (index) {
                  return Center(
