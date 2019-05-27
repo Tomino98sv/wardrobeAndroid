@@ -177,7 +177,7 @@ class _NotificationsPage extends State<NotificationsPage> {
           Container(
             height: 60.0,
             child: Material(
-              color: Theme.of(context).accentColor,
+              color: Colors.white,
               shadowColor: Colors.grey,
               elevation: 14.0,
               borderRadius: BorderRadius.only(
@@ -220,7 +220,8 @@ class _NotificationsPage extends State<NotificationsPage> {
                         style: TextStyle(
                             fontSize: 15.0,
                             fontWeight: FontWeight.bold,
-                            color: Theme.of(context).scaffoldBackgroundColor),
+                            color: Colors.black
+                        ),
                       ),
                     ),
                   ]),
