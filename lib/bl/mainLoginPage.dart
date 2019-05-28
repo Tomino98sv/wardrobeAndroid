@@ -43,114 +43,89 @@ class _QuickBeeState extends State<QuickBee> {
         decoration: BoxDecoration(
           image: DecorationImage(
               fit: BoxFit.cover,
-              image: AssetImage("assets/images/blackDresses.png")),
+              image: AssetImage("assets/images/pinkBG.jpg")),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                    padding: const EdgeInsets.only(top: 8.0, bottom: 80.0),
-                    child: new Text("Wardrobe",
-                      style: new TextStyle(
-                        fontSize: 50.0,
-                        color: Colors.white,
-                        fontFamily: 'Alyfe_Demo',
-                      ),
-                      textAlign: TextAlign.center,
-                    )
-                )
-              ],
-            ),
-            new Row(
-              children: <Widget>[
-                new Container(
-                  padding: const EdgeInsets.only(left:1.0,right: 1.0,top: 2.0,bottom: 2.0),
-                  margin: EdgeInsets.only(bottom: 16.0,top: 130.0, left: 15.0, right: 38.0),
-                  child:MaterialButton(
-//                          onPressed: () => Navigator.of(context).pushReplacementNamed('/signup'),
-                    onPressed: navigationToSignInMail,
-                    child: new Text(
-                      "Continue with email",
-                      style: new TextStyle(fontSize: 15.0,color: Colors.white),
-                        textAlign: TextAlign.center
-                    ),
-                  ),
-                  height: 55,
-                  alignment: Alignment.center,
-                  decoration: new BoxDecoration(
-                      color: Colors.white12,
-                      borderRadius: new BorderRadius.circular(30.0),
-                    border: Border.all(color: Colors.white)
-                  ),
-                ),
-                new Container(
-                  padding: const EdgeInsets.only(left:1.0,right: 1.0,top: 2.0,bottom: 2.0),
-                  margin: EdgeInsets.only(bottom: 16.0,top: 130.0, left: 5.0, right: 5.0),
-                  alignment: Alignment.center,
-                  decoration: new BoxDecoration(
-                      color: Colors.white12,
-                      borderRadius: new BorderRadius.circular(30.0),
-                      border: Border.all(color: Colors.white)
-                  ),
-                  child: MaterialButton(
-                    onPressed: () async {
-                      await authService.googleSignIn();
-                      Navigator.pushReplacement(context, MaterialPageRoute(
-                          builder: (context)=>HomePage()));
-                    },
-                    child: Row(
-                      children: <Widget>[
-                        new Text(
-                          "Continue with  ",
-
-                          style: new TextStyle(fontSize: 15.0,color: Colors.white),
-                          textAlign: TextAlign.center,
+        child: Container(
+          margin: EdgeInsets.only(left:30.0, right: 30.0, top: 100.0,bottom: 100.0),
+          decoration: BoxDecoration(
+            color:Colors.white24,
+            borderRadius: BorderRadius.circular(30.0)
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                      padding: const EdgeInsets.only(top: 60.0, bottom: 80.0),
+                      child: new Text("Wardrobe",
+                        style: new TextStyle(
+                          fontSize: 50.0,
+                          color: Colors.white,
+                          fontFamily: 'Alyfe_Demo',
                         ),
-                        Image.asset("assets/images/google.png",
-                          width: 20.0, height: 20.0,),
-                      ],
+                        textAlign: TextAlign.center,
+                      )
+                  )
+                ],
+              ),
+              new Column(
+                children: <Widget>[
+                  new Container(
+                    padding: const EdgeInsets.only(left:1.0,right: 1.0,top: 2.0,bottom: 2.0),
+                    margin: EdgeInsets.only(bottom: 16.0,top: 30.0, left: 60.0, right: 60.0),
+                    child:MaterialButton(
+//                          onPressed: () => Navigator.of(context).pushReplacementNamed('/signup'),
+                      onPressed: navigationToSignInMail,
+                      child: new Text(
+                        "Continue with email",
+                        style: new TextStyle(fontSize: 15.0,color: Colors.white),
+                          textAlign: TextAlign.center
+                      ),
+                    ),
+                    height: 55,
+                    alignment: Alignment.center,
+                    decoration: new BoxDecoration(
+                        color: Colors.white12,
+                        borderRadius: new BorderRadius.circular(30.0),
+                      border: Border.all(color: Colors.white)
                     ),
                   ),
-                ),
-              ],
-            ),
-//            new Row(
-//              children: <Widget>[
-//                new Container(
-//                  margin: EdgeInsets.only(bottom: 16.0,top: 10.0, left: 75.0, right: 5.0),
-//                  padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 2.0,bottom: 2.0),
-//                  alignment: Alignment.center,
-//                  decoration: new BoxDecoration(
-//                      color: Colors.white12,
-//                      borderRadius: new BorderRadius.circular(30.0),
-//                      border: Border.all(color: Colors.white)
-//                  ),
-//                  child: MaterialButton(
-//                    onPressed: () async {
-//                      await authService.googleSignIn();
-//                      Navigator.pushReplacement(context, MaterialPageRoute(
-//                          builder: (context)=>HomePage()));
-//                    },
-//                    child: Row(
-//                      children: <Widget>[
-//                        new Text(
-//                          " Continue      with  ",
-//
-//                          style: new TextStyle(fontSize: 20.0,color: Colors.white),
-//                            textAlign: TextAlign.center,
-//                        ),
-//                        Image.asset("assets/images/google.png",
-//                          width: 24.0, height: 24.0,),
-//                      ],
-//                    ),
-//                  ),
-//                ),
-//              ],
-//            )
-          ],
+                  new Container(
+                    padding: const EdgeInsets.only(left:1.0,right: 1.0,top: 2.0,bottom: 2.0),
+                    margin: EdgeInsets.only(bottom: 10.0,top: 30.0, left: 60.0, right: 60.0),
+                    alignment: Alignment.center,
+                    decoration: new BoxDecoration(
+                        color: Colors.white12,
+                        borderRadius: new BorderRadius.circular(30.0),
+                        border: Border.all(color: Colors.white)
+                    ),
+                    child: MaterialButton(
+                      onPressed: () async {
+                        await authService.googleSignIn();
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                            builder: (context)=>HomePage()));
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          new Text(
+                            "Continue with  ",
+                            style: new TextStyle(fontSize: 15.0,color: Colors.white),
+                            textAlign: TextAlign.center,
+                          ),
+                          Image.asset("assets/images/google.png",
+                            width: 20.0, height: 20.0,),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
