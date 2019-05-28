@@ -38,8 +38,6 @@ class _QuickBeeState extends State<QuickBee> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-
     return new Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -68,93 +66,90 @@ class _QuickBeeState extends State<QuickBee> {
             ),
             new Row(
               children: <Widget>[
-                Expanded(
-                  child: new Container(
-                    padding: const EdgeInsets.only(left:20.0,right: 20.0,top: 8.0,bottom: 8.0),
-                    margin: EdgeInsets.only(bottom: 16.0,top: 80.0, left: 10.0, right: 10.0),
-                    child:MaterialButton(
+                new Container(
+                  padding: const EdgeInsets.only(left:1.0,right: 1.0,top: 2.0,bottom: 2.0),
+                  margin: EdgeInsets.only(bottom: 16.0,top: 130.0, left: 15.0, right: 38.0),
+                  child:MaterialButton(
 //                          onPressed: () => Navigator.of(context).pushReplacementNamed('/signup'),
-                      onPressed: navigationToSignInMail,
-                      child: new Text(
-                        " Continue     with email",
-                        style: new TextStyle(fontSize: 22.0,color: Colors.white),
-                          textAlign: TextAlign.center
-                      ),
+                    onPressed: navigationToSignInMail,
+                    child: new Text(
+                      "Continue with email",
+                      style: new TextStyle(fontSize: 15.0,color: Colors.white),
+                        textAlign: TextAlign.center
                     ),
-                    height: 60.0,
-                    alignment: Alignment.center,
-                    decoration: new BoxDecoration(
-                        color: Colors.white12,
-                        borderRadius: new BorderRadius.circular(30.0),
+                  ),
+                  height: 55,
+                  alignment: Alignment.center,
+                  decoration: new BoxDecoration(
+                      color: Colors.white12,
+                      borderRadius: new BorderRadius.circular(30.0),
+                    border: Border.all(color: Colors.white)
+                  ),
+                ),
+                new Container(
+                  padding: const EdgeInsets.only(left:1.0,right: 1.0,top: 2.0,bottom: 2.0),
+                  margin: EdgeInsets.only(bottom: 16.0,top: 130.0, left: 5.0, right: 5.0),
+                  alignment: Alignment.center,
+                  decoration: new BoxDecoration(
+                      color: Colors.white12,
+                      borderRadius: new BorderRadius.circular(30.0),
                       border: Border.all(color: Colors.white)
+                  ),
+                  child: MaterialButton(
+                    onPressed: () async {
+                      await authService.googleSignIn();
+                      Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context)=>HomePage()));
+                    },
+                    child: Row(
+                      children: <Widget>[
+                        new Text(
+                          "Continue with  ",
+
+                          style: new TextStyle(fontSize: 15.0,color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                        Image.asset("assets/images/google.png",
+                          width: 20.0, height: 20.0,),
+                      ],
                     ),
                   ),
                 ),
               ],
             ),
-            new Row(
-              children: <Widget>[
-                Expanded(
-                  child: new Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10.0),
-                    height: 40.0,
-                    decoration: new BoxDecoration(
-                        color: Colors.white12,
-                        borderRadius: new BorderRadius.circular(30.0),
-                        border: Border.all(color: Colors.white)
-                    ),
-                    child: MaterialButton(
-                      onPressed: print,
-                      child: Center(
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            new Text(
-                              "Continue with ",
-                              style: new TextStyle(fontSize: 15.0,color: Colors.white),
-                                textAlign: TextAlign.center
-                            ),
-                          Image.asset("assets/images/fb2.png",
-                          width: 24.0, height: 24.0,),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: new Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10.0),
-                    height: 40.0,
-                    alignment: Alignment.center,
-                    decoration: new BoxDecoration(
-                        color: Colors.white12,
-                        borderRadius: new BorderRadius.circular(30.0),
-                        border: Border.all(color: Colors.white)
-                    ),
-                    child: MaterialButton(
-                      onPressed: () async {
-                        await authService.googleSignIn();
-                        Navigator.pushReplacement(context, MaterialPageRoute(
-                            builder: (context)=>HomePage()));
-                      },
-                      child: Row(
-                        children: <Widget>[
-                          new Text(
-                            "Continue with  ",
-
-                            style: new TextStyle(fontSize: 15.0,color: Colors.white),
-                              textAlign: TextAlign.center,
-                          ),
-                          Image.asset("assets/images/google.png",
-                            width: 24.0, height: 24.0,),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            )
+//            new Row(
+//              children: <Widget>[
+//                new Container(
+//                  margin: EdgeInsets.only(bottom: 16.0,top: 10.0, left: 75.0, right: 5.0),
+//                  padding: const EdgeInsets.only(left:8.0,right: 8.0,top: 2.0,bottom: 2.0),
+//                  alignment: Alignment.center,
+//                  decoration: new BoxDecoration(
+//                      color: Colors.white12,
+//                      borderRadius: new BorderRadius.circular(30.0),
+//                      border: Border.all(color: Colors.white)
+//                  ),
+//                  child: MaterialButton(
+//                    onPressed: () async {
+//                      await authService.googleSignIn();
+//                      Navigator.pushReplacement(context, MaterialPageRoute(
+//                          builder: (context)=>HomePage()));
+//                    },
+//                    child: Row(
+//                      children: <Widget>[
+//                        new Text(
+//                          " Continue      with  ",
+//
+//                          style: new TextStyle(fontSize: 20.0,color: Colors.white),
+//                            textAlign: TextAlign.center,
+//                        ),
+//                        Image.asset("assets/images/google.png",
+//                          width: 24.0, height: 24.0,),
+//                      ],
+//                    ),
+//                  ),
+//                ),
+//              ],
+//            )
           ],
         ),
       ),

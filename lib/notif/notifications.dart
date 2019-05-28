@@ -169,7 +169,6 @@ class _NotificationsPage extends State<NotificationsPage> {
     } else {
       seenMess = getLastUnseenMessages(snapList);
     }
-
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 9.0, vertical: 6.0),
       child: Column(
@@ -207,7 +206,7 @@ class _NotificationsPage extends State<NotificationsPage> {
                                 image: NetworkImage(urlProfiles[targetEmail]),
                                 fit: BoxFit.cover),
                             borderRadius:
-                                BorderRadius.all(Radius.circular(75.0)),
+                            BorderRadius.all(Radius.circular(75.0)),
                           ),
                         ),
                       ),
@@ -313,10 +312,10 @@ class _NotificationsPage extends State<NotificationsPage> {
   }
 
   Widget getLastUnseenMessages(List<DocumentSnapshot> snapList) {
-    return ListView.builder(
+     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      padding: new EdgeInsets.all(8.0),
+      padding: new EdgeInsets.all(5.0),
       itemBuilder: (_, int index) {
         DocumentSnapshot document = snapList[snapList.length - 1];
         DateTime date = document.data["created_at"];
@@ -324,12 +323,22 @@ class _NotificationsPage extends State<NotificationsPage> {
             "${date.minute.toString().padLeft(2, '0')}:"
             "${date.second.toString().padLeft(2, '0')} ";
         return Container(
-          margin: EdgeInsets.only(top: 20.0, bottom: 5.0),
-          child: Column(
+          margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
+          padding: EdgeInsets.only(left: 4.0),
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+
+          Text(
+            "${document.data['message']}",
+            style: TextStyle(
+              fontSize: 15.0,
+              color: Colors.black,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
               Text(
                 "${dateformat}",
                 style: TextStyle(
@@ -338,19 +347,6 @@ class _NotificationsPage extends State<NotificationsPage> {
                   fontWeight: FontWeight.normal,
                 ),
               ),
-              Container(
-                decoration: BoxDecoration(
-                    border: Border(
-                        top: BorderSide(color: Colors.black, width: 1.0))),
-                child: Text(
-                  "${document.data['message']}",
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    color: Colors.black,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-              )
             ],
           ),
         );
