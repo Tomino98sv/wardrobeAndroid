@@ -1,9 +1,10 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=C:\Program Files\Android\Android Studio\flutter_windows_v1.2.1-stable\flutter
-FLUTTER_APPLICATION_PATH=C:\Users\User\Desktop\FlutterGit\wardrobeAndroid
-FLUTTER_TARGET=lib/main.dart
+FLUTTER_ROOT=/Users/klaudiakriva/Documents/flutter-sdk/flutter
+FLUTTER_APPLICATION_PATH=/Users/klaudiakriva/Documents/flutter-erik/wardrobeAndroid
+FLUTTER_TARGET=/Users/klaudiakriva/Documents/flutter-erik/wardrobeAndroid/lib/main.dart
 FLUTTER_BUILD_DIR=build
-SYMROOT=${SOURCE_ROOT}/../build\ios
-FLUTTER_FRAMEWORK_DIR=C:\Program Files\Android\Android Studio\flutter_windows_v1.2.1-stable\flutter\bin\cache\artifacts\engine\ios
+SYMROOT=${SOURCE_ROOT}/../build/ios
+FLUTTER_FRAMEWORK_DIR=/Users/klaudiakriva/Documents/flutter-sdk/flutter/bin/cache/artifacts/engine/ios
 FLUTTER_BUILD_NAME=1.0.0
 FLUTTER_BUILD_NUMBER=1
+TRACK_WIDGET_CREATION=true

@@ -136,8 +136,11 @@ class _NotificationsPage extends State<NotificationsPage> {
               unseenCount = 0;
               listOfUnreadMess = new List<DocumentSnapshot>();
               for (int a = 0; a < snapshot.data.documents.length; a++) {
-                DateTime time1 = snapshot.data.documents[a]["created_at"];
-                DateTime time2 = document.data['lastVisitOf${currentUser.uid}'];
+//                DateTime time1 = snapshot.data.documents[a]["created_at"];
+                DateTime time1 = (snapshot.data.documents[a]["created_at"]).toDate();
+//                debugPrint("$time1");
+                DateTime time2 = (document.data['lastVisitOf${currentUser.uid}']).toDate();
+//                DateTime time2 = document.data['lastVisitOf${currentUser.uid}'];
                 if (time1.difference(time2).isNegative) {
                 } else {
                   listOfUnreadMess.add(snapshot.data.documents[a]);
@@ -274,7 +277,7 @@ class _NotificationsPage extends State<NotificationsPage> {
       padding: new EdgeInsets.all(8.0),
       itemBuilder: (_, int index) {
         DocumentSnapshot document = snapList[index];
-        DateTime date = document.data["created_at"];
+        DateTime date = (document.data["created_at"]).toDate();
         var dateformat = "${date.year.toString()}-"
             "${date.month.toString().padLeft(2, '0')}-"
             "${date.day.toString().padLeft(2, '0')} "
@@ -319,7 +322,7 @@ class _NotificationsPage extends State<NotificationsPage> {
       padding: new EdgeInsets.all(8.0),
       itemBuilder: (_, int index) {
         DocumentSnapshot document = snapList[snapList.length - 1];
-        DateTime date = document.data["created_at"];
+        DateTime date = (document.data["created_at"]).toDate();
         var dateformat = "${date.hour.toString().padLeft(2, '0')}:"
             "${date.minute.toString().padLeft(2, '0')}:"
             "${date.second.toString().padLeft(2, '0')} ";
