@@ -57,6 +57,7 @@ flutter:
   #  - images/a_dot_ham.jpeg
   assets:
     - assets/images/pinkB.jpg
+    - assets/images/pinkBG.jpg
     - assets/images/blackDresses.png
     - assets/images/fb.png
     - assets/images/fb2.png
