@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -136,8 +138,21 @@ class _NotificationsPage extends State<NotificationsPage> {
               unseenCount = 0;
               listOfUnreadMess = new List<DocumentSnapshot>();
               for (int a = 0; a < snapshot.data.documents.length; a++) {
-                DateTime time1 = snapshot.data.documents[a]["created_at"];
-                DateTime time2 = document.data['lastVisitOf${currentUser.uid}'];
+//                DateTime time1 = snapshot.data.documents[a]["created_at"];
+                DateTime time1;
+                DateTime time2;
+              if(Platform.isAndroid) {
+                time1 = snapshot.data.documents[a]["created_at"];
+                debugPrint("$time1");
+                time2 = document.data['lastVisitOf${currentUser.uid}'];
+              }
+              else {
+                time1 = (snapshot.data.documents[a]["created_at"]).toDate();
+                debugPrint("$time1");
+                time2 = (document.data['lastVisitOf${currentUser.uid}']).toDate();
+              }
+
+//                DateTime time2 = document.data['lastVisitOf${currentUser.uid}'];
                 if (time1.difference(time2).isNegative) {
                 } else {
                   listOfUnreadMess.add(snapshot.data.documents[a]);
@@ -273,7 +288,13 @@ class _NotificationsPage extends State<NotificationsPage> {
       padding: new EdgeInsets.all(8.0),
       itemBuilder: (_, int index) {
         DocumentSnapshot document = snapList[index];
-        DateTime date = document.data["created_at"];
+        DateTime date;
+        if(Platform.isAndroid){
+          date = document.data["created_at"];
+        }
+        else{
+          date = (document.data["created_at"]).toDate();
+        }
         var dateformat = "${date.year.toString()}-"
             "${date.month.toString().padLeft(2, '0')}-"
             "${date.day.toString().padLeft(2, '0')} "
@@ -318,7 +339,13 @@ class _NotificationsPage extends State<NotificationsPage> {
       padding: new EdgeInsets.all(5.0),
       itemBuilder: (_, int index) {
         DocumentSnapshot document = snapList[snapList.length - 1];
-        DateTime date = document.data["created_at"];
+        DateTime date;
+        if(Platform.isAndroid){
+          date = document.data["created_at"];
+        }
+        else{
+          date = (document.data["created_at"]).toDate();
+        }
         var dateformat = "${date.hour.toString().padLeft(2, '0')}:"
             "${date.minute.toString().padLeft(2, '0')}:"
             "${date.second.toString().padLeft(2, '0')} ";
