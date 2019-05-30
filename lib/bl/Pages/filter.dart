@@ -81,35 +81,54 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            FlatButton(
-                child:
-                selectedWidgetSize == true ? Text("Choose Size") : Text(""),
-                onPressed:
-                selectedWidgetSize == true ? (){
-                  showDialog(context: context,
-                      child: _buildSizeWidget(context, widget.onFilterChosen)
-                  ) ;
-                } : null
+            Expanded(
+              child: FlatButton(
+                  child:
+                  selectedWidgetSize == true ? FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: SizedBox(
+                        child: Text("Choose size")),
+                  ) : Text(""),
+                  onPressed:
+                  selectedWidgetSize == true ? (){
+                    showDialog(context: context,
+                        child: _buildSizeWidget(context, widget.onFilterChosen)
+                    ) ;
+                  } : null
+              ),
             ),
-            FlatButton(
-                child:
-                selectedWidgetLength == true ? Text("Choose Lenght") : Text(""),
-                onPressed:
-                selectedWidgetLength == true ? (){
-                  showDialog(context: context,
-                      child: _buildLenghtWidget(context)
-                  ) ;
-                } : null
+            Expanded(
+              child: FlatButton(
+                  child:
+                  selectedWidgetLength == true ?FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: SizedBox(
+                        child: Text("Choose length")),
+                  ) : Text(""),
+                  onPressed:
+                  selectedWidgetLength == true ? (){
+                    showDialog(context: context,
+                        child: _buildLenghtWidget(context)
+                    ) ;
+                  } : null
+              ),
             ),
-            FlatButton(
-                child:
-                selectedWidgetColor == true ? Text("Choose color") : Text(""),
-                onPressed:
-                selectedWidgetColor == true ? (){
-                  showDialog(context: context,
-                      child: _buildColorWidget(context)
-                  ) ;
-                } : null
+            Expanded(
+              child: FlatButton(
+                  child:
+                  selectedWidgetColor == true ? FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: SizedBox(
+                      child: Text("Choose color")),
+                    )
+                     : Text(""),
+                  onPressed:
+                  selectedWidgetColor == true ? (){
+                    showDialog(context: context,
+                        child: _buildColorWidget(context)
+                    ) ;
+                  } : null
+              ),
             ),
           ],
         ),

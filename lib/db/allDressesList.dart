@@ -79,7 +79,7 @@ class DressesListState extends State<AllDressesList> {
                       crossAxisCount: 3,
                       crossAxisSpacing: 12.0,
                       mainAxisSpacing: 12.0,
-                      shrinkWrap: true,
+                      shrinkWrap: true, //must be here!!!!
                       children: snapshot.data.documents
                           .where((doc) => doc["userId"] != userCurrent.uid)
                         .where((doc) => filterValue == null || doc["size"] == filterValue || doc["color"] == filterValue || doc["length"] == filterValue )
