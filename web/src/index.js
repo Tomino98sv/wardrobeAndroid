@@ -1,22 +1,28 @@
+var config = {
+  apiKey: "AIzaSyBWJzCUQnWrgEf0rzsXrsIFRPhIp0N3tnc",
+  authDomain: "wardrobe-26e92.firebaseapp.com",
+  databaseURL: "https://wardrobe-26e92.firebaseio.com",
+  projectId: "wardrobe-26e92",
+  storageBucket: "wardrobe-26e92.appspot.com",
+  messagingSenderId: "502526601242"
+};
+    firebase.initializeApp(config);
+
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     document.getElementById("user_div").style.display = "block";
     document.getElementById("login_div").style.display = "none";
-
-    var user = firebase.auth().currentUser;
-
-    if (user != null) {
-      var email_id = user.email;
-      var email_verified = user.emailVerified;
-
+      var user = firebase.auth().currentUser;
+      if (user != null) {
+        var email_id = user.email;
+        var email_verified = user.emailVerified;
       if (email_verified) {
         document.getElementById("verify_btn").style.display = "none";
       } else {
         document.getElementById("verify_btn").style.display = "block";
       }
-
       document.getElementById("user_para").innerHTML =
-        "<h3>User email:</h3>" + email_id + "<br/><h3>Verified account: </h3>" + email_verified;
+        "<h2>User email: </h2>" + email_id + "<br/><h2>Verified account: </h2>" + email_verified;
     }
   } else {
     document.getElementById("user_div").style.display = "none";
@@ -27,30 +33,26 @@ firebase.auth().onAuthStateChanged(function(user) {
 function login() {
   var userEmail = document.getElementById("email_field").value;
   var userPass = document.getElementById("password_field").value;
-
   firebase
     .auth()
     .signInWithEmailAndPassword(userEmail, userPass)
     .catch(function(error) {
       var errorCode = error.code;
       var errorMessage = error.message;
-
-      window.alert("Error : " + errorMessage);
+        window.alert("Error : " + errorMessage);
     });
 }
 
 function create_account() {
   var userEmail = document.getElementById("email_field").value;
   var userPass = document.getElementById("password_field").value;
-
   firebase
     .auth()
     .createUserWithEmailAndPassword(userEmail, userPass)
     .catch(function(error) {
       var errorCode = error.code;
       var errorMessage = error.message;
-
-      window.alert("Error : " + errorMessage);
+        window.alert("Error : " + errorMessage);
     });
 }
 
@@ -63,7 +65,7 @@ function send_verification() {
   user
     .sendEmailVerification()
     .then(function() {
-      window.alert("Verification was sent.");
+      window.alert("A verification link has been sent to your email account.");
     })
     .catch(function(error) {
       window.alert("Error: " + error.message);
@@ -71,7 +73,7 @@ function send_verification() {
 }
 
 function signInWithPopup() {
-  console.log("ide?");
+  console.log("It works?");
   var provider = new firebase.auth.GoogleAuthProvider();
   firebase
     .auth()

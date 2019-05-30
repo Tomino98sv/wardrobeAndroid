@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="description" content="This is the description">
-        <link rel="stylesheet" href="styles.css" />
+        <meta name="description" content="Wardrobe and clothes">
+        <link rel="stylesheet" href="src/styles.css"/>
         <title>Login</title>
-	      <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
-	      <link rel="stylesheet" href="style.css" />
+	      <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet"/>
+	      <link rel="stylesheet" href="src/style.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous"/>
     </head>
     <body>
         <header class="main-header">
@@ -15,42 +17,31 @@
                     <li><a href="wardrobe.html">WARDROBE</a></li>
                 </ul>
             </nav>
-            <h1 class="band-name band-name-large">Wardrobe</h1>
-            <div class="container">
-            </div>
+            <h1 class="page-name page-name-large">Wardrobe</h1>
+             <div class="container">
+             </div>
         </header>
           <div id="login_div" class="main-div">
-          <section class="content-section container">
-            <h2 class="section-header"></h2>
-            		<input type="email" placeholder="Email" id="email_field" />
-            		<input type="password" placeholder="Password" id="password_field" />
-            		<button onclick="login()">Continue with email</button>
-            		<br/>
-            		<button onclick="create_account()">Sign up</button>
-            		<br/>
-                <button onclick="signInWithPopup()">Continue with <img src="logo2.png" width="10%" height="40%"/></button><br/>
-                <button onclick="signInWithPopup()">Continue with <img src="logo1.png" width="10%" height="40%"/></button>
+           <section class="content-section container">
+             <h2 class="section-header2">SIGN IN</h2>
+              <i class="fas fa-envelope"></i>
+            	<input type="email" placeholder="Email" id="email_field"/>
+                <i class="fas fa-font"></i>
+            		<input type="password" placeholder="Password" id="password_field"/>
+            		 <button onclick="login()">Continue with email</button><br/>
+            		 <button onclick="create_account()">Sign up</button><br/>
+                 <button onclick="signInWithPopup()">Continue with <img src="img/logo1.png" width="9%" height="40%"/></button><br/>
+                 <button onclick="anotherSignInWithPopup()">Continue with <img src="img/logo2.png" width="9%" height="40%"/></button>
+           </section>
           </div>
           <div id="user_div" class="loggedin-div">
-            		<h1>User</h1>
-                <img src="user.png" width="85%" height="50%"/>
-                <h3 id="user_para">You are signed in now.</h3>
-            		<button onclick="logout()">Sign out</button>
-            		<br/>
+                <h1>User</h1>
+                <img src="img/user.png" width="110%" height="110%"/>
+                <h3 id="user_para">You are signed in.</h3>
+            		<button onclick="logout()">Sign out</button><br/>
             		<button id="verify_btn" onclick="send_verification()">Send verification</button>
           </div>
             	<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
-            	<script>
-            		var config = {
-                  apiKey: "AIzaSyBWJzCUQnWrgEf0rzsXrsIFRPhIp0N3tnc",
-                  authDomain: "wardrobe-26e92.firebaseapp.com",
-                  databaseURL: "https://wardrobe-26e92.firebaseio.com",
-                  projectId: "wardrobe-26e92",
-                  storageBucket: "wardrobe-26e92.appspot.com",
-                  messagingSenderId: "502526601242"
-                };
-                firebase.initializeApp(config);
-            	</script>
             	<script src="src/index.js"></script>
     </body>
 </html>

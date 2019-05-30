@@ -19,8 +19,6 @@ class _NotificationsPage extends State<NotificationsPage> {
   var unseenCount = 0;
   List<DocumentSnapshot> listOfUnreadMess = new List<DocumentSnapshot>();
   Map<String, String> urlProfiles = Map();
-  Widget seenMess;
-  Map<String, bool> whoShowAllMess = Map();
 
   @override
   void initState() {
@@ -176,14 +174,7 @@ class _NotificationsPage extends State<NotificationsPage> {
     );
   }
 
-  Widget getUnseenContainer(
-      String targetEmail, List<DocumentSnapshot> snapList, user_name) {
-    seenMess = null;
-    if (whoShowAllMess[targetEmail] == true) {
-      seenMess = getUnseenMessages(snapList);
-    } else {
-      seenMess = getLastUnseenMessages(snapList);
-    }
+  Widget getUnseenContainer(String targetEmail, List<DocumentSnapshot> snapList, user_name) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 9.0, vertical: 6.0),
       child: Column(
@@ -213,8 +204,8 @@ class _NotificationsPage extends State<NotificationsPage> {
                               "Want to chat with that person?", targetEmail);
                         },
                         child: Container(
-                          width: 40.0,
-                          height: 40.0,
+                          width: 45.0,
+                          height: 45.0,
                           decoration: BoxDecoration(
                             color: Theme.of(context).buttonColor,
                             image: DecorationImage(
@@ -239,30 +230,42 @@ class _NotificationsPage extends State<NotificationsPage> {
                       ),
                     ),
                   ]),
-                  new RawMaterialButton(
-                    onPressed: () {
-                      debugPrint("Pressed ${targetEmail}");
-                      setState(() {
-                        if (whoShowAllMess[targetEmail] == false) {
-                          whoShowAllMess[targetEmail] = true;
-                        } else {
-                          whoShowAllMess[targetEmail] = false;
-                        }
-                      });
-                    },
-                    child: Text(
-                      "${unseenCount}",
-                      style: TextStyle(
-                        fontSize: 15.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
+                  Stack(
+                    children:<Widget>[
+                      new RawMaterialButton(
+                        onPressed: () {
+                          debugPrint("Pressed ${targetEmail}");
+                          confirm(context, "Continue to Chat",
+                              "Want to chat with that person?", targetEmail);
+                        },
+                        child: Icon(
+                            Icons.message,
+                            size: 36.0,
+                            color: Colors.black
+                        ),
                       ),
-                    ),
-                    shape: new CircleBorder(),
-                    elevation: 2.0,
-                    fillColor: Colors.red,
-                    padding: const EdgeInsets.all(10.0),
-                  ),
+                      Positioned(
+                        left: 45,
+                        height: 30.0,
+                        width: 30.0,
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle
+                          ),
+                          child: Text(
+                            "${unseenCount}",
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
                 ],
               ),
             ),
@@ -275,48 +278,36 @@ class _NotificationsPage extends State<NotificationsPage> {
                 bottomLeft: Radius.circular(14.0),
                 bottomRight: Radius.circular(14.0),
               ),
-              child: seenMess),
+              child: getLastUnseenMessages(snapList)
+          ),
         ],
       ),
     );
   }
 
-  Widget getUnseenMessages(List<DocumentSnapshot> snapList) {
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      padding: new EdgeInsets.all(8.0),
-      itemBuilder: (_, int index) {
-        DocumentSnapshot document = snapList[index];
-        DateTime date;
-        if(Platform.isAndroid){
-          date = document.data["created_at"];
-        }
-        else{
-          date = (document.data["created_at"]).toDate();
-        }
-        var dateformat = "${date.year.toString()}-"
-            "${date.month.toString().padLeft(2, '0')}-"
-            "${date.day.toString().padLeft(2, '0')} "
-            "${date.hour.toString().padLeft(2, '0')}:"
-            "${date.minute.toString().padLeft(2, '0')}:"
-            "${date.second.toString().padLeft(2, '0')} ";
-        return Container(
-          margin: EdgeInsets.only(top: 20.0, bottom: 5.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                "${dateformat}",
-                style: TextStyle(
-                  fontSize: 15.0,
-                  color: Colors.blueGrey,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-              Text(
+  Widget getLastUnseenMessages(List<DocumentSnapshot> snapList) {
+    DocumentSnapshot document = snapList[snapList.length - 1];
+    DateTime date;
+    if(Platform.isAndroid){
+      date = document.data["created_at"];
+    }
+    else{
+      date = (document.data["created_at"]).toDate();
+    }
+    var dateformat = "${date.hour.toString().padLeft(2, '0')}:"
+        "${date.minute.toString().padLeft(2, '0')}:"
+        "${date.second.toString().padLeft(2, '0')} ";
+    return Container(
+      margin: EdgeInsets.only(top: 8.0, bottom: 8.0),
+      padding: EdgeInsets.only(left: 6.0, right: 6.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+
+          new Expanded(
+              child: Text(
                 "${document.data['message']}",
                 style: TextStyle(
                   fontSize: 15.0,
@@ -324,61 +315,17 @@ class _NotificationsPage extends State<NotificationsPage> {
                   fontWeight: FontWeight.normal,
                 ),
               )
-            ],
           ),
-        );
-      },
-      itemCount: snapList.length,
-    );
-  }
-
-  Widget getLastUnseenMessages(List<DocumentSnapshot> snapList) {
-     return ListView.builder(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      padding: new EdgeInsets.all(5.0),
-      itemBuilder: (_, int index) {
-        DocumentSnapshot document = snapList[snapList.length - 1];
-        DateTime date;
-        if(Platform.isAndroid){
-          date = document.data["created_at"];
-        }
-        else{
-          date = (document.data["created_at"]).toDate();
-        }
-        var dateformat = "${date.hour.toString().padLeft(2, '0')}:"
-            "${date.minute.toString().padLeft(2, '0')}:"
-            "${date.second.toString().padLeft(2, '0')} ";
-        return Container(
-          margin: EdgeInsets.only(top: 5.0, bottom: 5.0),
-          padding: EdgeInsets.only(left: 4.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-
           Text(
-            "${document.data['message']}",
+            "${dateformat}",
             style: TextStyle(
               fontSize: 15.0,
-              color: Colors.black,
+              color: Colors.blueGrey,
               fontWeight: FontWeight.normal,
             ),
           ),
-              Text(
-                "${dateformat}",
-                style: TextStyle(
-                  fontSize: 15.0,
-                  color: Colors.blueGrey,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-      itemCount: 1,
+        ],
+      ),
     );
   }
 
@@ -393,7 +340,6 @@ class _NotificationsPage extends State<NotificationsPage> {
             .listen((data) {
           urlProfiles[documents[a].data['email']] =
               data.documents[0]['photoUrl'];
-          whoShowAllMess[documents[a].data['email']] = false;
           setState(() {
             urlProfiles.length;
           });
