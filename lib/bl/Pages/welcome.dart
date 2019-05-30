@@ -61,7 +61,7 @@ class _WelcomePageState extends State<WelcomePage>
                           _buildIamge(),
                           new Padding(
                             padding: new EdgeInsets.only(
-                                left: 16.0, top: _imageHeight / 5.0),
+                                left: 30.0,top: 2.0),
                             child: StreamBuilder<QuerySnapshot>(
                               stream: Firestore.instance
                                   .collection('users')
@@ -95,7 +95,10 @@ class _WelcomePageState extends State<WelcomePage>
                                         ),
                                       ],
                                     ),
-                                    AnimatedFab()
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 55.0),
+                                    ),
+                                    AnimatedFab(),
                                   ],
                                 );
                               },
@@ -210,7 +213,7 @@ class _WelcomePageState extends State<WelcomePage>
                                                           Navigator.push(context,
                                                               MaterialPageRoute(
                                                                   builder: (context) {
-                                                                    return UserList(item: document);
+                                                                    return UserList(item: document, user: user2);
                                                                   }));
                                                         },
                                                         child: Text("Borrow"),
@@ -546,7 +549,7 @@ class _WelcomePageState extends State<WelcomePage>
 
                             ]),
                               Container(
-                                margin: EdgeInsets.only(left: 320.0, right: 5.0,top: 305.0,),
+                                margin: EdgeInsets.only(left: 320.0, right: 5.0,top: 250.0,),
                                 child: FloatingActionButton(
                                     heroTag: "btnWelcome",
                                     child: Icon(Icons.add),
@@ -563,6 +566,7 @@ class _WelcomePageState extends State<WelcomePage>
                     ],
                   );
               }
+
             })
     );
   }
@@ -570,7 +574,7 @@ class _WelcomePageState extends State<WelcomePage>
   Widget _buildIamge() {
     return Container(
       width: double.maxFinite,
-      height: 200.0,
+      height: 180.0,
       child: new ClipPath(
         clipper: new DialogonalClipper(),
         child: new Image.asset(

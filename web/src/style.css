@@ -1,8 +1,8 @@
 body {
   background: pink;
-  background-image: url("background.png");
-  padding: 0px;
-  margin: 0px;
+  background-image: url("../img/background.jpg");
+  padding: auto;
+  margin: auto;
   font-family: "Nunito", sans-serif;
   font-size: 16px;
   width: auto;
@@ -15,15 +15,25 @@ input,
 button {
   font-family: "Nunito", sans-serif;
   font-weight: 700;
+  color: grey;
 }
 
-.main-div,
+.main-div {
+  width: 21%;
+  margin-left: 40.5%;
+  margin-top: 10%;
+  padding: 1%;
+  display: none;
+  color: white;
+}
+
 .loggedin-div {
   width: 20%;
-  margin: 0px auto;
-  margin-top: 150px;
-  padding: 10px;
+  margin-left: 40%;
+  margin-top: 2%;
+  padding: 1%;
   display: none;
+  color: white;
 }
 
 .main-div input {
@@ -50,7 +60,8 @@ button {
   background: #fff;
   color: mediumvioletred;
   border: 1px solid mediumvioletred;
-  border-radius: 5px;
+  border-radius: 45%;
+  width: 200px;
   padding: 15px;
   display: block;
   width: 100%;

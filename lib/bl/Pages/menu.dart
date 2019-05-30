@@ -23,7 +23,7 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
   FirebaseUser user2;
   String profileUrlImg="";
   final double expandedSize = 120.0;
-  final double hiddenSize = 20.0;
+  final double hiddenSize = 14.0;
 
   @override
   void initState() {
@@ -74,7 +74,7 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
 
   Widget _menuImage(){
     return Padding(
-      padding: EdgeInsets.only(left: 80.0,top: 25.0),
+      padding: EdgeInsets.only(left: 80.0,top: 5.0),
       child: new InkWell(
         child: Container(
           width: 40.0,
