@@ -13,9 +13,10 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 class UserInfoList extends StatelessWidget{
   DocumentSnapshot userInfo;
   DocumentSnapshot itemInfo;
+  FirebaseUser currentUser;
   double _imageHeight = 500.0;
 
-  UserInfoList({@required this.userInfo, this.itemInfo});
+  UserInfoList({@required this.userInfo, this.itemInfo, this.currentUser});
 
 // ten list, ktory sa zobrazi ked si vyberiem borrow item
   @override
@@ -173,38 +174,104 @@ class UserInfoList extends StatelessWidget{
                         Expanded(
                           child: Container(
                             height: 200.0,
-                            child: ListView(
-                                children:
-                                snapshot.data.documents.map((DocumentSnapshot document){
-                                  return Slidable(
-                                    delegate: SlidableDrawerDelegate(),
-                                    actionExtentRatio: 0.25,
-                                    child: ExpansionTile(
-                                      leading: Container(
-                                          width: 46.0,
-                                          height: 46.0,
-                                          child: document['photo_url'] == null || document['photo_url'] == ""
-                                              ? Icon(Icons.broken_image)
-                                              : TransitionToImage(
-                                            image: AdvancedNetworkImage(
-                                              document['photo_url'],
-                                              useDiskCache: true,
-                                              cacheRule:
-                                              CacheRule(maxAge: const Duration(days: 7)),
+                              child: GridView.count(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 16.0, horizontal: 8.0),
+                                crossAxisCount: 3,
+                                crossAxisSpacing: 12.0,
+                                mainAxisSpacing: 12.0,
+                                shrinkWrap: true,
+                                children: snapshot.data.documents.map((DocumentSnapshot document) {
+                                  Item item = Item(
+                                    name: document['name'],
+                                    color: document['color'],
+                                    size: document['size'],
+                                    length: document['length'],
+                                    photoUrl: document['photo_url'],
+                                    id: document.documentID,
+                                    borrowName: document['borrowName'],
+                                    description: document['description'],
+                                  );
+                                  return GestureDetector(
+                                    child: Material(
+                                      color: Colors.white,
+                                      shadowColor: Colors.grey,
+                                      elevation: 14.0,
+                                      borderRadius: BorderRadius.circular(24.0),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10.0),
+                                        child: Stack(
+                                          fit: StackFit.expand,
+                                          children: <Widget>[
+                                            item.photoUrl == null ||
+                                                item.photoUrl == ""
+                                                ? Icon(Icons.broken_image)
+                                                : CachedNetworkImage(
+                                              imageUrl: item.photoUrl,
+                                              fit: BoxFit.cover,
+                                              alignment: Alignment.topLeft,
+                                              placeholder: (context,
+                                                  imageUrl) =>
+                                                  CircularProgressIndicator(),
                                             ),
-                                          )
+                                            Align(
+                                              alignment: Alignment.bottomCenter,
+                                              child: Container(
+                                                width: double.maxFinite,
+                                                height: 26.0,
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 4.0, horizontal: 16.0),
+                                                color: Color(0x66000000),
+                                                alignment: Alignment.bottomCenter,
+                                                child: Text(
+                                                  document['name'],
+                                                  style:
+                                                  TextStyle(color: Colors.white),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                      title: Text(document['name'], style:Theme.of(context).textTheme.subhead),
-                                      children: <Widget>[
-                                        Text('Name: ${document['name']}',style:Theme.of(context).textTheme.subhead),
-                                        Text('Color: ${document['color']}',style:Theme.of(context).textTheme.subhead),
-                                        Text('Size: ${document['size']}', style:Theme.of(context).textTheme.subhead),
-                                        Text('Length: ${document['length']}', style:Theme.of(context).textTheme.subhead),
-                                      ],
                                     ),
                                   );
-                                }).toList()
-                            ),
+//                        }
+//                      else
+//                        return Container();
+                                }).toList(),
+                              )
+//                            child: ListView(
+//                                children:
+//                                snapshot.data.documents.map((DocumentSnapshot document){
+//                                  return Slidable(
+//                                    delegate: SlidableDrawerDelegate(),
+//                                    actionExtentRatio: 0.25,
+//                                    child: ExpansionTile(
+//                                      leading: Container(
+//                                          width: 46.0,
+//                                          height: 46.0,
+//                                          child: document['photo_url'] == null || document['photo_url'] == ""
+//                                              ? Icon(Icons.broken_image)
+//                                              : TransitionToImage(
+//                                            image: AdvancedNetworkImage(
+//                                              document['photo_url'],
+//                                              useDiskCache: true,
+//                                              cacheRule:
+//                                              CacheRule(maxAge: const Duration(days: 7)),
+//                                            ),
+//                                          )
+//                                      ),
+//                                      title: Text(document['name'], style:Theme.of(context).textTheme.subhead),
+//                                      children: <Widget>[
+//                                        Text('Name: ${document['name']}',style:Theme.of(context).textTheme.subhead),
+//                                        Text('Color: ${document['color']}',style:Theme.of(context).textTheme.subhead),
+//                                        Text('Size: ${document['size']}', style:Theme.of(context).textTheme.subhead),
+//                                        Text('Length: ${document['length']}', style:Theme.of(context).textTheme.subhead),
+//                                      ],
+//                                    ),
+//                                  );
+//                                }).toList()
+//                            ),
                           ),
                         ),
                           ],
@@ -431,16 +498,40 @@ class _UserInfoList2 extends State<UserInfoList2>{
                                        borderRadius: BorderRadius.circular(24.0),
                                        child: Container(
                                            child: ClipRRect(
-                                             borderRadius: BorderRadius.circular(10.0),
-                                             child: document["photo_url"] == null || document["photo_url"] == ""
-                                                 ? Icon(Icons.broken_image)
-                                                 : CachedNetworkImage(
-                                               imageUrl: document["photo_url"],
-                                               fit: BoxFit.cover,
-                                               alignment: Alignment.topLeft,
-                                               placeholder: (context, imageUrl) =>
-                                                   CircularProgressIndicator(),
+                                               borderRadius: BorderRadius.circular(10.0),
+                                             child: Stack(
+                                               fit: StackFit.expand,
+                                               children: <Widget>[
+                                                 document["photo_url"] == null || document["photo_url"] == ""
+                                                     ? Icon(Icons.broken_image)
+                                                     : CachedNetworkImage(
+                                                   imageUrl: document["photo_url"],
+                                                   fit: BoxFit.cover,
+                                                   alignment: Alignment.topLeft,
+                                                   placeholder: (context, imageUrl) =>
+                                                       CircularProgressIndicator(),
+                                                 ),
+                                                 Align(
+                                                   alignment: Alignment.bottomCenter,
+                                                   child: Container(
+                                                     width: double.maxFinite,
+                                                     height: 26.0,
+                                                     padding: EdgeInsets.symmetric(
+                                                         vertical: 4.0, horizontal: 16.0),
+                                                     color: Color(0x66000000),
+                                                     alignment: Alignment.bottomCenter,
+                                                     child: Text(
+                                                       document['name'],
+                                                       style: TextStyle(color: Colors.white),
+                                                     ),
+                                                   ),
+                                                 )
+
+                                               ],
                                              ),
+
+
+
                                            )
                                        )
                                    ),
