@@ -1,6 +1,15 @@
+function preview_image(event) {
+    var reader = new FileReader();
+    reader.onload = function() {
+        var output = document.getElementById('output_image');
+        output.src = reader.result;
+    }
+   reader.readAsDataURL(event.target.files[0]);
+}
+
 if (document.readyState == 'loading') {
     document.addEventListener('DOMContentLoaded', ready)
-} else {
+  } else {
     ready()
 }
 
@@ -10,24 +19,21 @@ function ready() {
         var button = removeCartItemButtons[i]
         button.addEventListener('click', removeCartItem)
     }
-
     var quantityInputs = document.getElementsByClassName('cart-quantity-input')
     for (var i = 0; i < quantityInputs.length; i++) {
         var input = quantityInputs[i]
         input.addEventListener('change', quantityChanged)
     }
-
     var addToCartButtons = document.getElementsByClassName('shop-item-button')
     for (var i = 0; i < addToCartButtons.length; i++) {
         var button = addToCartButtons[i]
         button.addEventListener('click', addToCartClicked)
     }
-
     document.getElementsByClassName('btn-purchase')[0].addEventListener('click', purchaseClicked)
 }
 
 function purchaseClicked() {
-    alert('The items were successfully borrowed.')
+    alert('The items were successfully reserved.')
     var cartItems = document.getElementsByClassName('cart-items')[0]
     while (cartItems.hasChildNodes()) {
         cartItems.removeChild(cartItems.firstChild)
@@ -99,10 +105,9 @@ function updateCartTotal() {
         total = total + (price * quantity)
     }
     total = Math.round(total * 100) / 100
-    document.getElementsByClassName('cart-total-price')[0].innerText =  total + '€'
+    document.getElementsByClassName('cart-total-price')[0].innerText =  total + ' €'
 }
 
-/*
 function getDownloadURL() {
     var storage = firebase.storage();
     var pathReference = storage.ref('8e77425d-f82c-498d-b7f2-df22a20c644a.jpg');
@@ -118,7 +123,6 @@ function getDownloadURL() {
     xhr.send();
     var img = document.getElementById('myimg');
     img.src = url;
-}).catch(function(error) {
-});
+  }).catch(function(error) {
+  });
 }
-*/
