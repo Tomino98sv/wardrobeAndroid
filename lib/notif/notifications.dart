@@ -204,8 +204,8 @@ class _NotificationsPage extends State<NotificationsPage> {
                               "Want to chat with that person?", targetEmail);
                         },
                         child: Container(
-                          width: 40.0,
-                          height: 40.0,
+                          width: 45.0,
+                          height: 45.0,
                           decoration: BoxDecoration(
                             color: Theme.of(context).buttonColor,
                             image: DecorationImage(
@@ -230,24 +230,42 @@ class _NotificationsPage extends State<NotificationsPage> {
                       ),
                     ),
                   ]),
-                  new RawMaterialButton(
-                    onPressed: () {
-                      confirm(context, "Continue to Chat",
-                          "Want to chat with that person?", targetEmail);
-                    },
-                    child: Text(
-                      "${unseenCount}",
-                      style: TextStyle(
-                        fontSize: 15.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
+                  Stack(
+                    children:<Widget>[
+                      new RawMaterialButton(
+                        onPressed: () {
+                          debugPrint("Pressed ${targetEmail}");
+                          confirm(context, "Continue to Chat",
+                              "Want to chat with that person?", targetEmail);
+                        },
+                        child: Icon(
+                            Icons.message,
+                            size: 36.0,
+                            color: Colors.black
+                        ),
                       ),
-                    ),
-                    shape: new CircleBorder(),
-                    elevation: 2.0,
-                    fillColor: Colors.red,
-                    padding: const EdgeInsets.all(10.0),
-                  ),
+                      Positioned(
+                        left: 45,
+                        height: 30.0,
+                        width: 30.0,
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: Colors.red,
+                              shape: BoxShape.circle
+                          ),
+                          child: Text(
+                            "${unseenCount}",
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
                 ],
               ),
             ),
