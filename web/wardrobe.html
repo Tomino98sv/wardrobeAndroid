@@ -2,112 +2,90 @@
 <html>
     <head>
         <title>Wardrobe</title>
-        <meta name="description" content="This is the description">
-        <link rel="stylesheet" href="styles.css" />
+        <meta name="description" content="Wardrobe and clothes">
+        <link rel="stylesheet" href="src/styles.css"/>
         <script src="src/wardrobe.js" async></script>
-        <script type='text/javascript'>
-        function preview_image(event)
-        {
-         var reader = new FileReader();
-         reader.onload = function()
-         {
-          var output = document.getElementById('output_image');
-          output.src = reader.result;
-         }
-         reader.readAsDataURL(event.target.files[0]);
-        }
-        </script>
-        <style>
-        body
-        {
-         width:100%;
-         margin:0 auto;
-         padding:0px;
-         font-family:helvetica;
-         background-color: #fff4e6;
-        }
-        #wrapper
-        {
-         text-align:center;
-         margin:0 auto;
-         padding:0px;
-         width:995px;
-        }
-        #output_image
-        {
-         max-width:300px;
-        }
-        </style>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
         <header class="main-header">
             <nav class="main-nav nav">
                 <ul>
                     <li><a href="index.html">HOME</a></li>
-                    <li><a href="store.html">WARDROBE</a></li>
+                    <li><a href="wardrobe.html">WARDROBE</a></li>
                 </ul>
             </nav>
-            <h1 class="band-name band-name-large">Wardrobe</h1>
+            <h2 class="page-name page-name-large">Wardrobe</h2>
         </header>
-              <section class="container content-section">
-                <h2 class="section-header">My items</h2>
+        <section class="container content-section">
+          <div class="dropdown">
+            <button onclick="myFunction()" class="dropbtn">SEARCH</button>
+              <div id="myDropdown" class="dropdown-content">
+                <input type="text" placeholder="Search here..." id="myInput" onkeyup="filterFunction()"/>
+                  <a href="https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/saskaokres%40gmail.com%2Fsaskaokres%40gmail.com_profilePicture.jpg?alt=media&token=99d04f6c-c8b6-4a42-ba1c-1daa606a283c">blouse</a>
+                  <a href="https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/c397a5ce-f79c-4621-b18f-20bdbc80d784.jpg?alt=media&token=da123e00-17a9-4ad0-b800-05709eeab6d7">coat for man</a>
+                  <a href="https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/8e77425d-f82c-498d-b7f2-df22a20c644a.jpg?alt=media&token=22b37c83-1d70-4e07-9022-c737ed6c3fd4">coat for woman</a>
+                  <a href="https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/cafdf3b5-e927-4a89-be14-f5cd9765c75a.jpg?alt=media&token=ea1a840a-6afc-44b6-ac3f-2908503c0f8f">windcheater jacket for man</a>
+              </div>
+          </div>
+              <h2 class="section-header">MY CLOTHES</h2>
                 <div id="wrapper">
-                 <input type="file" accept="image/*" onchange="preview_image(event)">
-                 <img id="output_image"/>
+                  <input type="file" accept="image/*" onchange="preview_image(event)"/>
+                  <img id="output_image"/>
                 </div>
-            <h2 class="section-header">Women</h2>
+              <h2 class="section-header">WOMEN'S SECTION</h2>
+                <div class="shop-items">
+                  <div class="shop-item">
+                    <span class="shop-item-title">Clothes 1</span>
+                     <img class="shop-item-image" onclick="getDownloadURL()" id="myimg" src="https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/8e77425d-f82c-498d-b7f2-df22a20c644a.jpg?alt=media&token=22b37c83-1d70-4e07-9022-c737ed6c3fd4"/>
+                   <div class="shop-item-details">
+                      <span class="shop-item-price">0.00 €</span>
+                      <button class="btn btn-primary shop-item-button" type="button">BORROW</button>
+                   </div>
+                  </div>
+                  <div class="shop-item">
+                    <span class="shop-item-title">Clothes 2</span>
+                     <img class="shop-item-image" onclick="getDownloadURL()" id="myimg" src="https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/saskaokres%40gmail.com%2Fsaskaokres%40gmail.com_profilePicture.jpg?alt=media&token=99d04f6c-c8b6-4a42-ba1c-1daa606a283c"/>
+                    <div class="shop-item-details">
+                      <span class="shop-item-price">0.00 €</span>
+                      <button class="btn btn-primary shop-item-button" type="button">BORROW</button>
+                    </div>
+                  </div>
+            </div>
+        </section>
+        <section class="container content-section">
+          <h2 class="section-header">MEN'S SECTION</h2>
             <div class="shop-items">
                 <div class="shop-item">
-                    <span class="shop-item-title">Item 1</span>
-                    <img class="shop-item-image" onclick="getDownloadURL()" name="myimg" src="8e77425d-f82c-498d-b7f2-df22a20c644a.jpg">
+                  <span class="shop-item-title">Clothes 01</span>
+                   <img class="shop-item-image" onclick="getDownloadURL()" id="myimg" src="https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/c397a5ce-f79c-4621-b18f-20bdbc80d784.jpg?alt=media&token=da123e00-17a9-4ad0-b800-05709eeab6d7"/>
                     <div class="shop-item-details">
-                        <span class="shop-item-price">0.00€</span>
+                        <span class="shop-item-price">0.00 €</span>
                         <button class="btn btn-primary shop-item-button" type="button">BORROW</button>
                     </div>
                 </div>
                 <div class="shop-item">
-                    <span class="shop-item-title">Item 2</span>
-                    <img class="shop-item-image" src="saskaokres@gmail.com_profilePicture.jpg">
+                  <span class="shop-item-title">Clothes 02</span>
+                   <img class="shop-item-image" onclick="getDownloadURL()" id="myimg" src="https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/cafdf3b5-e927-4a89-be14-f5cd9765c75a.jpg?alt=media&token=ea1a840a-6afc-44b6-ac3f-2908503c0f8f"/>
                     <div class="shop-item-details">
-                        <span class="shop-item-price">0.00€</span>
-                        <button class="btn btn-primary shop-item-button"type="button">BORROW</button>
+                        <span class="shop-item-price">0.00 €</span>
+                        <button class="btn btn-primary shop-item-button" type="button">BORROW</button>
                     </div>
                 </div>
             </div>
         </section>
         <section class="container content-section">
-            <h2 class="section-header">Men</h2>
-            <div class="shop-items">
-                <div class="shop-item">
-                    <span class="shop-item-title">Item 01</span>
-                    <img class="shop-item-image" src="c397a5ce-f79c-4621-b18f-20bdbc80d784.jpg">
-                    <div class="shop-item-details">
-                        <span class="shop-item-price">0.00€</span>
-                        <button class="btn btn-primary shop-item-button" type="button">BORROW</button>
-                    </div>
-                </div>
-                <div class="shop-item">
-                    <span class="shop-item-title">Item 02</span>
-                    <img class="shop-item-image" src="cafdf3b5-e927-4a89-be14-f5cd9765c75a.jpg">
-                    <div class="shop-item-details">
-                        <span class="shop-item-price">0.00€</span>
-                        <button class="btn btn-primary shop-item-button" type="button">BORROW</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="container content-section">
-            <h2 class="section-header">LIST OF ITEMS</h2>
+          <h2 class="section-header">LIST OF CLOTHES</h2>
             <div class="cart-row">
-                <span class="cart-item cart-header cart-column">ITEM</span>
+                <span class="cart-item cart-header cart-column">CLOTHES</span>
                 <span class="cart-price cart-header cart-column">PRICE</span>
                 <span class="cart-quantity cart-header cart-column">QUANTITY</span>
             </div>
             <div class="cart-items">
             </div>
             <div class="cart-total">
-                <strong class="cart-total-title">Total</strong>
-                <span class="cart-total-price">0€</span>
+                <strong class="cart-total-title">Sum:</strong>
+                <span class="cart-total-price">0 €</span>
             </div>
             <button class="btn btn-primary btn-purchase" type="button">RESERVE</button>
         </section>
