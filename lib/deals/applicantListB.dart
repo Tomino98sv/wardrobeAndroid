@@ -63,6 +63,7 @@ class _BorrowApplicants extends State<BorrowApplicants> {
                                         FlatButton(
                                           child: Text('Yes',style:Theme.of(context).textTheme.subhead),
                                           onPressed: (){
+                                            if(requestedItem.data['borrowName']==null || requestedItem.data['borrowName']==""){
                                             showDialog(context: context,
                                             builder: (BuildContext context){
                                               return AlertDialog(
@@ -94,11 +95,27 @@ class _BorrowApplicants extends State<BorrowApplicants> {
                                                   )
                                                 ],
                                               );
-                                            });
+                                            });}
+                                            else{
+                                              showDialog(context: context,
+                                                  builder: (BuildContext context){
+                                                    return AlertDialog(
+                                                      title: Text("Request canceled",style:Theme.of(context).textTheme.subhead),
+                                                      content: Text("Item cannot be lent to user ${document['applicantName']} as the item is already lent to ${requestedItem.data['borrowName']}",style:Theme.of(context).textTheme.subhead),
+                                                      actions: <Widget>[
+                                                        FlatButton(
+                                                          child: Text("OK",style:Theme.of(context).textTheme.subhead),
+                                                          onPressed: (){
+                                                            Navigator.pop(context);
+                                                            Navigator.pop(context);
+                                                          },
+                                                        )
+                                                      ],
+                                                    );
+                                                  });
 
 
-                                            //kod do firebase
-
+                                            }
                                           },
                                         ),
                                         FlatButton(
