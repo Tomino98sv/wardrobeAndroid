@@ -213,7 +213,7 @@ class _WelcomePageState extends State<WelcomePage>
                                                           Navigator.push(context,
                                                               MaterialPageRoute(
                                                                   builder: (context) {
-                                                                    return UserList(item: document);
+                                                                    return UserList(item: document, user: user2);
                                                                   }));
                                                         },
                                                         child: Text("Borrow"),
@@ -566,6 +566,7 @@ class _WelcomePageState extends State<WelcomePage>
                     ],
                   );
               }
+
             })
     );
   }
