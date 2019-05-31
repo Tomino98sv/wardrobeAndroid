@@ -15,36 +15,47 @@ class _WardrobeTabBarState extends State<WardrobeTabBar> {
 
   _WardrobeTabBarState(this._tabController);
 
+
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Row(
       children: <WardrobeTab>[
         WardrobeTab(
-          textW: Row(
-            children: <Widget>[
-              Text("My ", style: TextStyle(color: Colors.white),),
-              Icon(Icons.style, color: Colors.white)
-            ],
+          textW: Container(
+            width: width/4.5,
+            child: Row(
+              children: <Widget>[
+                Text("My ", style: TextStyle(color: Colors.white, ),),
+                Icon(Icons.style, color: Colors.white)
+              ],
+            ),
           ),
           position: 0,
           controller: _tabController,
         ),
         WardrobeTab(
-          textW: Row(
-            children: <Widget>[
-              Text("Lent ", style: TextStyle(color: Colors.white),),
-              Icon(Icons.style,color: Colors.white)
-            ],
+          textW: Container(
+            width: width/4.5,
+            child: Row(
+              children: <Widget>[
+                Text("Lent ", style: TextStyle(color: Colors.white),),
+                Icon(Icons.style,color: Colors.white)
+              ],
+            ),
           ),
           position: 1,
           controller: _tabController,
         ),
         WardrobeTab(
-          textW: Row(
-            children: <Widget>[
-              Text("Borrowed ", style: TextStyle(color: Colors.white)),
-              Icon(Icons.style, color: Colors.white,)
-            ],
+          textW: Container(
+            width: width/4.5,
+            child: Row(
+              children: <Widget>[
+                Text("Borrowed ", style: TextStyle(color: Colors.white)),
+                Icon(Icons.style, color: Colors.white,)
+              ],
+            ),
           ),
           position: 2,
           controller: _tabController,

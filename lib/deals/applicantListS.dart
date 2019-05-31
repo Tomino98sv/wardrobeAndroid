@@ -63,6 +63,7 @@ class _SellApplicants extends State<SellApplicants> {
                                           FlatButton(
                                             child: Text('Yes',style:Theme.of(context).textTheme.subhead),
                                             onPressed: (){
+                                              if(requestedItem.data['borrowName']==null || requestedItem.data['borrowName']==""){
                                               showDialog(context: context,
                                                   builder: (BuildContext context){
                                                     return AlertDialog(
@@ -99,6 +100,25 @@ class _SellApplicants extends State<SellApplicants> {
                                                       ],
                                                     );
                                                   });
+                                                }
+                                              else{
+                                                showDialog(context: context,
+                                                    builder: (BuildContext context){
+                                                      return AlertDialog(
+                                                        title: Text("Request canceled",style:Theme.of(context).textTheme.subhead),
+                                                        content: Text("Item cannot be sold to user ${document['applicantName']} as the item is currently lent to ${requestedItem.data['borrowName']}",style:Theme.of(context).textTheme.subhead),
+                                                        actions: <Widget>[
+                                                          FlatButton(
+                                                            child: Text("OK",style:Theme.of(context).textTheme.subhead),
+                                                            onPressed: (){
+                                                              Navigator.pop(context);
+                                                              Navigator.pop(context);
+                                                            },
+                                                          )
+                                                        ],
+                                                      );
+                                                    });
+                                              }
 
 
                                               //kod do firebase
