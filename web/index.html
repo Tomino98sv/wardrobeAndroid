@@ -36,7 +36,8 @@
           </div>
           <div id="user_div" class="loggedin-div">
                 <h1>User</h1>
-                <img src="img/user.png" width="110%" height="110%"/>
+                <img class="img" onclick="getDownloadURL()" id="myimg" src="https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/woman.jpg?alt=media&token=3f3e2bbb-6f21-4e8e-8d02-79af6b3ea303"/>
+
                 <h3 id="user_para">You are signed in.</h3>
             		<button onclick="logout()">Sign out</button><br/>
             		<button id="verify_btn" onclick="send_verification()">Send verification</button>
