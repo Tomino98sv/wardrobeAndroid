@@ -391,7 +391,8 @@ class UserListHome extends StatelessWidget {
                                   elevation: 14.0,
                                   borderRadius: BorderRadius.circular(14.0),
                                   child: ListTile(
-                                    contentPadding: EdgeInsets.only(top: 7.0, left: 12.0, right: 12.0),                                    leading:  ClipOval(
+                                    contentPadding: EdgeInsets.only(top: 7.0, left: 12.0, right: 12.0),
+                                    leading:  ClipOval(
                                       child: CachedNetworkImage(
                                         width: 50.0,
                                         height: 50.0,
