@@ -1,29 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-class StarDisplayWidget extends StatelessWidget {
-
-
-  @override
-  Widget build(BuildContext context) {
-    int rating = 0;
-    return StatefulBuilder(
-      builder: (context, setState) {
-        return StarRating(
-          onChanged: (index) {
-            setState(() {
-              rating = index;
-            });
-          },
-          value: rating,
-        );
-      },
-    );
-  }
-}
-
-
-
 class StarRating extends StatelessWidget {
   final void Function(int index) onChanged;
   final int value;
@@ -72,7 +48,6 @@ class StarRating extends StatelessWidget {
   }
 
   String wordRate(int value){
-    debugPrint("wordRate = ${value}");
     String word="";
     word= value==0?"Horrible app":
           value==1?"Boring app":
