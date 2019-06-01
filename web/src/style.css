@@ -18,6 +18,10 @@ button {
   color: grey;
 }
 
+.img {
+  border-radius: 50%;
+}
+
 .main-div {
   width: 21%;
   margin-left: 40.5%;
@@ -29,7 +33,7 @@ button {
 
 .loggedin-div {
   width: 20%;
-  margin-left: 40%;
+  margin-left: 42.5%;
   margin-top: 2%;
   padding: 1%;
   display: none;

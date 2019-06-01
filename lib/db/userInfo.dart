@@ -104,7 +104,7 @@ class UserInfoList extends StatelessWidget{
                                       Row(
                                         children: <Widget>[
                                           Text(
-                                            "Item: ",
+                                            "Item: hhgh",
                                             textAlign: TextAlign.left,
                                             style: TextStyle(
                                               fontSize: 15.0,
@@ -126,14 +126,11 @@ class UserInfoList extends StatelessWidget{
                                       ),
                                   Container(
                                     margin: EdgeInsets.only(left: 270.0,right: 20.0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(30.0),
-                                      child: Material(
-                                        color: Theme.of(context).accentColor,
-                                        shape:  _DiamondBorder(),
-                                    child: InkWell(
-                                      onTap: (){
-                                        if (itemInfo.data['borrowedTo'] == ""  || itemInfo.data['borrowedTo'] == null) {
+                                      child: FloatingActionButton(
+                                        child: Icon(Icons.check),
+                                          shape: _DiamondBorder(),
+                                          onPressed: (){
+                                          if (itemInfo.data['borrowedTo'] == ""  || itemInfo.data['borrowedTo'] == null) {
                                           itemInfo.data['borrowedTo'] = userInfo.data['uid'];
                                           itemInfo.data['borrowName'] = userInfo.data['name'];
                                           Firestore.instance.collection('items')
@@ -155,17 +152,8 @@ class UserInfoList extends StatelessWidget{
                                             "borrowName": ""
                                           });
                                           Navigator.pop(context);
-                                        }
-                                      },
-                                      child: Container(
-                                        height: 90.0,
-                                        alignment: Alignment.center,
-                                        padding: EdgeInsets.symmetric(vertical: 30.0),
-                                        child: Text(
-                                            itemInfo.data['borrowedTo'] == ""  || itemInfo.data['borrowedTo'] == null ?
-                                            'Choose' : 'Return',style: TextStyle(color: Colors.white),),
-                                    ),
-                                  ),),),)
+                                        }}) ,
+                                  )
                                     ],
                                   ),),
                                 ],
