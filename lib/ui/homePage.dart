@@ -5,6 +5,7 @@ import 'package:flutter_app/bl/Pages/rating.dart';
 import 'package:flutter_app/bl/Pages/settingsPage.dart';
 import 'package:flutter_app/bl/Pages/welcome.dart';
 import 'package:flutter_app/bl/mainLoginPage.dart';
+import 'package:flutter_app/bl/videjko/services/usermanagment.dart';
 import 'package:flutter_app/db/FirestoreManager.dart';
 import 'package:flutter_app/db/allDressesList.dart';
 import 'package:flutter_app/deals/dealsHome.dart';
@@ -23,21 +24,36 @@ class HomePage extends StatefulWidget {
 class _HomeState extends State<HomePage> {
 
   int _page = 0;
-
+  UserManagement userManagement = new UserManagement();
   ThemeSwitcher inheritedThemeSwitcher;
   FirebaseUser user;
   bool themeChosen;
   bool themeDarkChosen;
+  var rateInit=null;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getActiveTheme();
-    Future.delayed(Duration(seconds: 5), () {
-      // deleayed code here
-      print('delayed execution');
-      rating(context,"Rating", "Rate are app please");
+    FirebaseAuth.instance.currentUser().then((fUser) {
+      user = fUser;
+      Stream<QuerySnapshot> snapshot = Firestore.instance
+          .collection('users')
+          .where('uid', isEqualTo: user.uid)
+          .snapshots();
 
+      snapshot.listen((QuerySnapshot data){
+        rateInit = data.documents[0]['rating'];
+        if(rateInit==null){
+          Future.delayed(Duration(seconds: 3), () {
+            rating(context,"Rating", "Rate are app please");
+          });
+          rateInit=-1;
+        }else{
+          rateInit=-1;
+          //to je preto aby sa nasa 200-krat prekreslovana apka nepytala dokolecka usera dokym do uklada na server
+        }
+      });
     });
   }
 
@@ -60,12 +76,6 @@ class _HomeState extends State<HomePage> {
     inheritedThemeSwitcher = ThemeSwitcher.of(context);
     return WillPopScope(
       onWillPop: () {
-        debugPrint("TUUUUUUUUUUUUUUU WILLPOPSCOPE");
-
-//          Navigator.of(context).pushAndRemoveUntil(
-//                                      MaterialPageRoute(
-//                                          builder: (context) => HomePage()),
-//                                      (Route<dynamic> route) => false);
         confirm(context, "Escape from app",
             "Are you want to logout and get out of here?");
       },
@@ -181,8 +191,6 @@ class _HomeState extends State<HomePage> {
   }
 
   confirm(BuildContext context, String title, String description) {
-    debugPrint("TUUUUUUUUUUUUUUU ALERTDIALOG");
-
     return showDialog(
         context: context,
         barrierDismissible: false,
@@ -210,7 +218,7 @@ class _HomeState extends State<HomePage> {
 
   rating(BuildContext context, String title, String description) {
 
-    StarRating starRating = StarRating();
+    int rating=0;
 
     return showDialog(
         context: context,
@@ -219,7 +227,18 @@ class _HomeState extends State<HomePage> {
           return AlertDialog(
             title: Text(title),
             content: SingleChildScrollView(
-              child: StarDisplayWidget()
+              child: StatefulBuilder(
+                builder: (context, setState) {
+                  return StarRating(
+                    onChanged: (index) {
+                      setState(() {
+                        rating = index;
+                      });
+                    },
+                    value: rating,
+                  );
+                },
+              ),
             ),
             actions: <Widget>[
               FlatButton(
@@ -227,7 +246,7 @@ class _HomeState extends State<HomePage> {
                 child: Text("Cancel"),
               ),
               FlatButton(
-                onPressed: () => rate(starRating.value),
+                onPressed: () => rate(rating,context),
                 child: Text("Submit"),
               )
             ],
@@ -235,12 +254,31 @@ class _HomeState extends State<HomePage> {
         });
   }
 
-  void rate(int value){
-    debugPrint("hodnota ratingu je ${value}");
+  rate(int value, BuildContext context){
+    userManagement.sendRating(value).then((complete){
+      Navigator.pop(context);
+
+      return showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Thank you for your rating"),
+              content: SingleChildScrollView(
+                child: Icon(Icons.adb,color: Colors.red),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text("Done"),
+                ),
+              ],
+            );
+          });
+    });
   }
 
   signOut() {
-    debugPrint("TUUUUUUUUUUUUUUU SIGN OUT");
     GoogleSignIn _googleSignIn;
     _googleSignIn?.signOut();
     FirebaseAuth.instance.signOut().then((value) {
