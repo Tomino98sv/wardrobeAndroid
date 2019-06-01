@@ -46,9 +46,12 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
                     onPressed: () {
                       setState(() {
                         selectedWidgetSize = !selectedWidgetSize;
-                        widget._valueFilter = value;
+                        selectedWidgetSize == true ?
+                          showDialog(context: context,
+                              child: _buildSizeWidget(context, widget.onFilterChosen)
+                          ) : null;
                       });
-//                      return AllDressesList(filterValue: value,); //tu toto by malo vratit vsetky aj s hodnpotoou...
+           //           return AllDressesList(filterValue: value,); //tu toto by malo vratit vsetky aj s hodnpotoou...
                     },
                   ),
                   FilterChipWidget(
@@ -56,7 +59,10 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
                       onPressed: () {
                         setState(() {
                           selectedWidgetLength = !selectedWidgetLength;
-                          widget._valueFilter = value;
+                          selectedWidgetLength == true ?
+                            showDialog(context: context,
+                                child: _buildLenghtWidget(context, widget.onFilterChosen)
+                            ): null;
                         });
                       }
                   ),
@@ -65,7 +71,10 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
                       onPressed: () {
                         setState(() {
                           selectedWidgetColor = !selectedWidgetColor;
-                          widget._valueFilter = value;
+                           selectedWidgetColor == true ?
+                    showDialog(context: context,
+                        child: _buildColorWidget(context,widget.onFilterChosen)
+                    ) : null;
                         });
                       }
                   ),
@@ -78,64 +87,6 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
           height: 1,
           color: Colors.grey,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              child: FlatButton(
-                  child:
-                  selectedWidgetSize == true ? FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: SizedBox(
-                        child: Text("Choose size")),
-                  ) : Text(""),
-                  onPressed:
-                  selectedWidgetSize == true ? (){
-                    showDialog(context: context,
-                        child: _buildSizeWidget(context, widget.onFilterChosen)
-                    ) ;
-                  } : null
-              ),
-            ),
-            Expanded(
-              child: FlatButton(
-                  child:
-                  selectedWidgetLength == true ?FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: SizedBox(
-                        child: Text("Choose length")),
-                  ) : Text(""),
-                  onPressed:
-                  selectedWidgetLength == true ? (){
-                    showDialog(context: context,
-                        child: _buildLenghtWidget(context)
-                    ) ;
-                  } : null
-              ),
-            ),
-            Expanded(
-              child: FlatButton(
-                  child:
-                  selectedWidgetColor == true ? FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: SizedBox(
-                      child: Text("Choose color")),
-                    )
-                     : Text(""),
-                  onPressed:
-                  selectedWidgetColor == true ? (){
-                    showDialog(context: context,
-                        child: _buildColorWidget(context)
-                    ) ;
-                  } : null
-              ),
-            ),
-          ],
-        ),
-
-//        Container(
-//            child:
-//                selectedWidget == true ? _buildExpandedWidget(context) : Container())
       ],
     );
   }
@@ -234,7 +185,7 @@ Widget _buildSizeWidget(BuildContext context, Function func) {
 
 List<String> lengths = ['Mini', 'Midi', 'Maxi', 'Oversize'];
 
-Widget _buildLenghtWidget(BuildContext context) {
+Widget _buildLenghtWidget(BuildContext context, Function func) {
   debugPrint("malo by vykreslit dropdown menu 2");
   return CupertinoAlertDialog(
     title: Text("Favourite lenght is", style: TextStyle(
@@ -254,6 +205,7 @@ Widget _buildLenghtWidget(BuildContext context) {
             print(_currentItemSelected);
             value = lengths[index];
             print(value);
+            func(value);
           },
           children: List<Widget>.generate(lengths.length, (index) {
             return Center(
@@ -273,7 +225,7 @@ Widget _buildLenghtWidget(BuildContext context) {
 
 List<String> colors = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Brown", "Magenta", "Tan", "Cyan", "Olive", "Maroon", "Navy", "Aquamarine", "Turquoise", "Silver", "Lime", "Teal", "Indigo", "Violet", "Pink", "Black", "White", "Gray"];
 
-Widget _buildColorWidget(BuildContext context) {
+Widget _buildColorWidget(BuildContext context, Function func) {
   debugPrint("malo by vykreslit dropdown menu 3");
   return CupertinoAlertDialog(
     title: Text("Favourite color is", style: TextStyle(
@@ -293,6 +245,7 @@ Widget _buildColorWidget(BuildContext context) {
             print(_currentItemSelected);
             value = colors[index];
             print(value);
+            func(value);
           },
           children: List<Widget>.generate(colors.length, (index) {
             return Center(
@@ -309,8 +262,3 @@ Widget _buildColorWidget(BuildContext context) {
     ),
   );
 }
-
-
-//String whatIsSelected(String value){
-//  return value;
-//}
