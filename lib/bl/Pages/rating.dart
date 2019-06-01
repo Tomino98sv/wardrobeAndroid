@@ -3,11 +3,6 @@ import 'package:flutter/material.dart';
 
 class StarDisplayWidget extends StatelessWidget {
 
-  static final StarDisplayWidget starDisplayWidget = StarDisplayWidget();
-
-  factory StarDisplayWidget(){
-    return starDisplayWidget;
-  }
 
   @override
   Widget build(BuildContext context) {

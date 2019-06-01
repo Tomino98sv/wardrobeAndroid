@@ -210,7 +210,6 @@ class _HomeState extends State<HomePage> {
 
   rating(BuildContext context, String title, String description) {
 
-    StarRating starRating = StarRating();
 
     return showDialog(
         context: context,
@@ -219,7 +218,7 @@ class _HomeState extends State<HomePage> {
           return AlertDialog(
             title: Text(title),
             content: SingleChildScrollView(
-              child: StarDisplayWidget.starDisplayWidget
+              child: StarDisplayWidget()
             ),
             actions: <Widget>[
               FlatButton(
@@ -227,7 +226,7 @@ class _HomeState extends State<HomePage> {
                 child: Text("Cancel"),
               ),
               FlatButton(
-                onPressed: () => rate(starRating.value),
+                onPressed: () => rate(StarRating().value),
                 child: Text("Submit"),
               )
             ],
