@@ -125,19 +125,6 @@ class _HomeState extends State<HomePage> {
 //                  }
 //                ));
                     }),
-//          _page!=0? Container() :
-//          PopupMenuButton<String>(
-//            onSelected: choiceAction,
-//            offset: Offset(0, 100),
-//            itemBuilder: (BuildContext context){
-//              return Constants.choices.map((String choice){
-//                return PopupMenuItem<String>(
-//                  value: choice,
-//                  child: Text(choice, style: TextStyle(color: Colors.black),),
-//                );
-//              }).toList();
-//            }
-//          ),
           ],
         ),
         body: Container(
@@ -263,9 +250,9 @@ class _HomeState extends State<HomePage> {
           barrierDismissible: false,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("Thank you for your rating"),
+              title: Text("Thanks for your rating"),
               content: SingleChildScrollView(
-                child: Icon(Icons.adb,color: Colors.red),
+                child: Icon(Icons.toys,color: Theme.of(context).accentColor),
               ),
               actions: <Widget>[
                 FlatButton(
