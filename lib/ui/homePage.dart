@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/bl/Pages/rating.dart';
 import 'package:flutter_app/bl/Pages/settingsPage.dart';
 import 'package:flutter_app/bl/Pages/welcome.dart';
 import 'package:flutter_app/bl/mainLoginPage.dart';
@@ -32,6 +33,12 @@ class _HomeState extends State<HomePage> {
     // TODO: implement initState
     super.initState();
     getActiveTheme();
+    Future.delayed(Duration(seconds: 5), () {
+      // deleayed code here
+      print('delayed execution');
+      rating(context,"Rating", "Rate are app please");
+
+    });
   }
 
   final _options = [
@@ -199,6 +206,37 @@ class _HomeState extends State<HomePage> {
             ],
           );
         });
+  }
+
+  rating(BuildContext context, String title, String description) {
+
+    StarRating starRating = StarRating();
+
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(title),
+            content: SingleChildScrollView(
+              child: StarDisplayWidget()
+            ),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text("Cancel"),
+              ),
+              FlatButton(
+                onPressed: () => rate(starRating.value),
+                child: Text("Submit"),
+              )
+            ],
+          );
+        });
+  }
+
+  void rate(int value){
+    debugPrint("hodnota ratingu je ${value}");
   }
 
   signOut() {
