@@ -219,7 +219,7 @@ class _HomeState extends State<HomePage> {
           return AlertDialog(
             title: Text(title),
             content: SingleChildScrollView(
-              child: StarDisplayWidget()
+              child: StarDisplayWidget.starDisplayWidget
             ),
             actions: <Widget>[
               FlatButton(
