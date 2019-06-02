@@ -124,7 +124,8 @@ class _ChatPageState extends State<ChatPage>{
       },
       child: Scaffold(
           appBar: new AppBar(
-            title: new Text("chat page"),
+            title: new Text("chat page", style: TextStyle(color: Colors.white),),
+            iconTheme: IconThemeData(color: Colors.white),
           ),
           body: Container(
             margin: const EdgeInsets.symmetric(horizontal: 8.0),

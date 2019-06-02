@@ -82,7 +82,6 @@ class DressesListState extends State<AllDressesList> {
                       shrinkWrap: true, //must be here!!!!
                       children: snapshot.data.documents
                           .where((doc) => doc["userId"] != userCurrent.uid)
-                  //      .where((doc) => filterValue == null || doc["size"] == filterValue || doc["color"] == filterValue || doc["length"] == filterValue )
                           .map((DocumentSnapshot document) {
                         Item item = Item(
                           name: document['name'],
