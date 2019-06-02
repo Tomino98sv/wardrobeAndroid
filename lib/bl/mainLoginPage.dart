@@ -60,7 +60,7 @@ class _QuickBeeState extends State<QuickBee> {
                 children: <Widget>[
                   Padding(
                       padding: const EdgeInsets.only(top: 60.0, bottom: 80.0),
-                      child: new Text("Wardrobe",
+                      child: new Text("WarOfDresses",
                         style: new TextStyle(
                           fontSize: 50.0,
                           color: Colors.white,
@@ -81,7 +81,10 @@ class _QuickBeeState extends State<QuickBee> {
                       onPressed: navigationToSignInMail,
                       child: new Text(
                         "Continue with email",
-                        style: new TextStyle(fontSize: 15.0,color: Colors.white),
+                        style: new TextStyle(
+                            fontSize: 25.0,
+                            color: Colors.white,
+                          fontFamily: 'Dancing_Script',),
                           textAlign: TextAlign.center
                       ),
                     ),
@@ -113,11 +116,18 @@ class _QuickBeeState extends State<QuickBee> {
                         children: <Widget>[
                           new Text(
                             "Continue with  ",
-                            style: new TextStyle(fontSize: 15.0,color: Colors.white),
+                            style: new TextStyle(
+                                fontSize: 25.0,
+                                color: Colors.white,
+                              fontFamily: 'Pacifico',),
                             textAlign: TextAlign.center,
                           ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 2.0),
+                          ),
                           Image.asset("assets/images/google.png",
-                            width: 20.0, height: 20.0,),
+                            width: 20.0, height: 20.0,
+                          fit: BoxFit.scaleDown,),
                         ],
                       ),
                     ),
