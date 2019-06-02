@@ -313,6 +313,7 @@ class _HomeState extends State<HomePage> {
           fontFamily: 'Quicksand',
           indicatorColor: Colors.pink[100],
           brightness: Brightness.light,
+          iconTheme: IconThemeData(color: Colors.black),
         ));
   }
 
@@ -330,7 +331,7 @@ class _HomeState extends State<HomePage> {
             indicatorColor: Colors.blue[200],
             brightness: Brightness.light,
             textTheme: TextTheme(subhead: TextStyle(color: Colors.black)),
-          iconTheme: IconThemeData(color: Colors.white)
+          iconTheme: IconThemeData(color: Colors.black)
         ));
   }
 
@@ -347,6 +348,7 @@ class _HomeState extends State<HomePage> {
           unselectedWidgetColor: Colors.black45,
           fontFamily: 'Quicksand',
           indicatorColor: Colors.black54,
+          iconTheme: IconThemeData(color: Colors.white),
         ));
   }
 

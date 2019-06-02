@@ -133,6 +133,7 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
 //           debugPrint("$selectedWidget");
           } else {
             debugPrint("neda to proste");
+            AllDressesList(filterValue: null,);
           }
         });
       },
@@ -212,7 +213,7 @@ Widget _buildLenghtWidget(BuildContext context, Function func) {
               child: Text(lengths[index],
                 style: TextStyle(
                     fontSize: 20.0,
-                    color: Colors.pink
+                    color: Theme.of(context).indicatorColor
                 ),
               ),
             );
@@ -252,7 +253,7 @@ Widget _buildColorWidget(BuildContext context, Function func) {
               child: Text(colors[index],
                 style: TextStyle(
                     fontSize: 20.0,
-                    color: Colors.pink
+                    color: Theme.of(context).indicatorColor
                 ),
               ),
             );

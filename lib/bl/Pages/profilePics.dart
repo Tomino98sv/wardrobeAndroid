@@ -161,11 +161,12 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
                   Padding(padding: EdgeInsets.only(right: 10.0,bottom: 5.0),),
                   Text(
                     "Change your name: ",
-                    style: TextStyle(
-                      fontSize: 18.5,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w400,
-                    ),
+//                    style: TextStyle(
+//                      fontSize: 18.5,
+//                      color: Theme.of(context).textTheme.subhead,
+//                      fontWeight: FontWeight.w400,
+//                    ),
+                      style:Theme.of(context).textTheme.subhead
                   ),
                   Padding(padding: EdgeInsets.only(right: 10.0,bottom: 5.0),),
                   Container(
@@ -182,9 +183,10 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
                           ),
                         ),
                         keyboardType: TextInputType.emailAddress,
-                        style: new TextStyle(
-                          fontFamily: "Poppins",
-                        ),
+//                        style: new TextStyle(
+//                          fontFamily: "Poppins",
+//                        ),
+                          style:Theme.of(context).textTheme.subhead
                       ),
                     ),
                   )

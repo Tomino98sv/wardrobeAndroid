@@ -188,8 +188,8 @@ class _WelcomePageState extends State<WelcomePage>
                                                     Row(
                                                       mainAxisAlignment: MainAxisAlignment.center,
                                                       children: <Widget>[
-                                                        Text("About:  "),
-                                                        Text(document["description"]),
+                                                        Text("About:  ",style: TextStyle(color: Colors.black)),
+                                                        Text(document["description"], style: TextStyle(color: Colors.black),),
                                                       ],
                                                     ),
                                                   ],
@@ -206,7 +206,7 @@ class _WelcomePageState extends State<WelcomePage>
                                                                 }));
                                                         debugPrint("idem dalej");
                                                         },
-                                                        child: Text("Edit"),
+                                                        child: Text("Edit",style: TextStyle(color: Colors.black)),
                                                       ),
                                                       FlatButton(
                                                         onPressed: (){
@@ -216,13 +216,13 @@ class _WelcomePageState extends State<WelcomePage>
                                                                     return UserList(item: document, user: user2);
                                                                   }));
                                                         },
-                                                        child: Text("Borrow"),
+                                                        child: Text("Borrow",style: TextStyle(color: Colors.black)),
                                                       ),
                                                       FlatButton(
                                                         onPressed: () {
                                                           Navigator.pop(context);
                                                         },
-                                                        child: Text("Cancel"),
+                                                        child: Text("Cancel",style: TextStyle(color: Colors.black)),
                                                       )
                                                     ],
                                                   )
@@ -235,9 +235,9 @@ class _WelcomePageState extends State<WelcomePage>
                                             context: context,
                                             builder: (BuildContext context) {
                                               return AlertDialog(
-                                                title: Text('Delete Item',style:Theme.of(context).textTheme.subhead),
+                                                title: Text('Delete Item',style: TextStyle(color: Colors.black)),
                                                 content: Text(
-                                                    'Are you sure you want to delete this item?',style:Theme.of(context).textTheme.subhead),
+                                                    'Are you sure you want to delete this item?',style: TextStyle(color: Colors.black)),
                                                 actions: <Widget>[
                                                   FlatButton(
                                                     child: Text('Yes'),
@@ -253,7 +253,7 @@ class _WelcomePageState extends State<WelcomePage>
                                                     },
                                                   ),
                                                   FlatButton(
-                                                    child: Text('Cancel',style:Theme.of(context).textTheme.subhead),
+                                                    child: Text('Cancel',style: TextStyle(color: Colors.black)),
                                                     onPressed: () {
                                                       Navigator.pop(context);
                                                     },
@@ -339,7 +339,7 @@ class _WelcomePageState extends State<WelcomePage>
                                                       mainAxisAlignment: MainAxisAlignment.center,
                                                       children: <Widget>[
                                                         Text("Lent to:  "),
-                                                        Text('${document['borrowName']}',style:Theme.of(context).textTheme.subhead),
+                                                        Text('${document['borrowName']}',style: TextStyle(color: Colors.black)),
                                                       ],
                                                     ),
                                                   ],
@@ -353,13 +353,13 @@ class _WelcomePageState extends State<WelcomePage>
                                                               context: context,
                                                               builder: (BuildContext context) {
                                                                 return AlertDialog(
-                                                                  title: Text('Get item',style:Theme.of(context).textTheme.subhead),
+                                                                  title: Text('Get item',style: TextStyle(color: Colors.black)),
                                                                   content: Text(
                                                                       'Are you sure that user returned your item back to you?',
-                                                                      style:Theme.of(context).textTheme.subhead),
+                                                                      style: TextStyle(color: Colors.black)),
                                                                   actions: <Widget>[
                                                                     FlatButton(
-                                                                      child: Text('Yes',style:Theme.of(context).textTheme.subhead),
+                                                                      child: Text('Yes',style: TextStyle(color: Colors.black)),
                                                                       onPressed: () {
                                                                         Firestore.instance
                                                                             .collection('items')
@@ -376,7 +376,7 @@ class _WelcomePageState extends State<WelcomePage>
                                                                       },
                                                                     ),
                                                                     FlatButton(
-                                                                      child: Text('Cancel',style:Theme.of(context).textTheme.subhead),
+                                                                      child: Text('Cancel',style: TextStyle(color: Colors.black)),
                                                                       onPressed: () {
                                                                         Navigator.pop(context);
                                                                       },
@@ -386,13 +386,13 @@ class _WelcomePageState extends State<WelcomePage>
                                                               });
 
                                                         },
-                                                        child: Text('Recieve',style:Theme.of(context).textTheme.subhead),
+                                                        child: Text('Recieve',style: TextStyle(color: Colors.black)),
                                                       ),
                                                       FlatButton(
                                                         onPressed: () {
                                                           Navigator.pop(context);
                                                         },
-                                                        child: Text("Cancel"),
+                                                        child: Text("Cancel", style: TextStyle(color: Colors.black)),
                                                       )
                                                     ],
                                                   )
@@ -481,7 +481,7 @@ class _WelcomePageState extends State<WelcomePage>
                                                               .snapshots(),
                                                           builder: (context, snapshot) {
                                                             return Text('${snapshot.data.documents[0]['name']}',
-                                                                style:Theme.of(context).textTheme.subhead);
+                                                                style: TextStyle(color: Colors.black));
                                                           },
                                                         ),
                                                       ],
@@ -497,13 +497,13 @@ class _WelcomePageState extends State<WelcomePage>
                                                               context: context,
                                                               builder: (BuildContext context) {
                                                                 return AlertDialog(
-                                                                  title: Text('Return item',style:Theme.of(context).textTheme.subhead),
+                                                                  title: Text('Return item', style: TextStyle(color: Colors.black),),
                                                                   content: Text(
                                                                       'Are you sure that you returned your item back to the owner?',
-                                                                      style:Theme.of(context).textTheme.subhead),
+                                                                      style:TextStyle(color: Colors.black)),
                                                                   actions: <Widget>[
                                                                     FlatButton(
-                                                                      child: Text('Yes',style:Theme.of(context).textTheme.subhead),
+                                                                      child: Text('Yes',style:TextStyle(color: Colors.black)),
                                                                       onPressed: () {
                                                                         Firestore.instance
                                                                         .collection('items')
@@ -520,7 +520,7 @@ class _WelcomePageState extends State<WelcomePage>
                                                                       },
                                                                     ),
                                                                     FlatButton(
-                                                                      child: Text('Cancel',style:Theme.of(context).textTheme.subhead),
+                                                                      child: Text('Cancel',style: TextStyle(color: Colors.black)),
                                                                       onPressed: () {
                                                                         Navigator.pop(context);
                                                                       },
@@ -530,13 +530,13 @@ class _WelcomePageState extends State<WelcomePage>
                                                               });
 
                                                         },
-                                                        child: Text('Return',style:Theme.of(context).textTheme.subhead),
+                                                        child: Text('Return',style: TextStyle(color: Colors.black)),
                                                       ),
                                                       FlatButton(
                                                         onPressed: () {
                                                           Navigator.pop(context);
                                                         },
-                                                        child: Text("Cancel"),
+                                                        child: Text("Cancel", style: TextStyle(color: Colors.black)),
                                                       )
                                                     ],
                                                   )

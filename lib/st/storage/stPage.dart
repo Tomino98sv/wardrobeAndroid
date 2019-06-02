@@ -123,7 +123,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
                   onPressed: getImage,
                   tooltip: 'Add Image',
                   child: new Icon(Icons.add_photo_alternate),
-                  backgroundColor:Theme.of(context).accentColor,
+                  backgroundColor:Theme.of(context).buttonColor,
                   mini: true,
                 ),padding: EdgeInsets.all(15.0),
               ),
@@ -133,7 +133,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
                   onPressed: getImage2,
                   tooltip: 'Add Image',
                   child: new Icon(Icons.add_a_photo),
-                  backgroundColor: Theme.of(context).accentColor,
+                  backgroundColor: Theme.of(context).buttonColor,
                   mini: true,
                 ),padding: EdgeInsets.all(15.0)
               ),
