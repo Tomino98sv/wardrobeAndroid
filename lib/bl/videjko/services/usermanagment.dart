@@ -119,5 +119,27 @@ class UserManagement {
     });
   }
 
+  Future sendRating(value) async {
+
+    await FirebaseAuth.instance.currentUser().then((user) {
+      Firestore.instance
+          .collection('/users')
+          .where('uid', isEqualTo: user.uid)
+          .getDocuments()
+          .then((docs) {
+        Firestore.instance
+            .document('/users/${docs.documents[0].documentID}')
+            .updateData({'rating': value}).then((val) {
+          print("Rating of user: ${docs.documents[0].data['name']} was added");
+        }).catchError((e) {
+          print(e);
+        });
+      }).catchError((e) {
+        print(e);
+      });
+    }).catchError((e) {
+      print(e);
+    });
+  }
 
 }

@@ -68,6 +68,7 @@ class _MyNewItem extends State<MyNewItem> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         title: Text("Create New Item",style: TextStyle(color: Colors.white)),
+//        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -84,7 +85,7 @@ class _MyNewItem extends State<MyNewItem> {
                         decoration: new InputDecoration(
                             labelText: 'Name',
                             icon: new Icon(Icons.account_circle,
-                                color: Colors.black)),
+                                color: Theme.of(context).iconTheme.color)),
                         onChanged: (String userInput) {
                           setState(() {
                             name = userInput;
@@ -103,7 +104,7 @@ class _MyNewItem extends State<MyNewItem> {
                         decoration: new InputDecoration(
                             labelText: 'Description',
                             icon: new Icon(Icons.event_note,
-                                color: Colors.black)),
+                                color: Theme.of(context).iconTheme.color)),
                         onChanged: (String userInput) {
                           setState(() {
                             description = userInput;
@@ -115,7 +116,7 @@ class _MyNewItem extends State<MyNewItem> {
                 ),
                 Row(
                   children: <Widget>[
-                    Icon(Icons.color_lens, color: Colors.black),
+                    Icon(Icons.color_lens, color: Theme.of(context).iconTheme.color),
                     Padding(padding: EdgeInsets.all(10.0)),
                     Expanded(
                       child: Text('Color',style:Theme.of(context).textTheme.subhead),
@@ -126,7 +127,8 @@ class _MyNewItem extends State<MyNewItem> {
                         items: _colors.map((String dropDownStringItem) {
                           return DropdownMenuItem<String>(
                             value: dropDownStringItem,
-                            child: Text(dropDownStringItem),
+                            child: Text(dropDownStringItem,
+                            ),
                           );
                         }).toList(),
                         onChanged: (String newValueSelected) {
@@ -143,7 +145,7 @@ class _MyNewItem extends State<MyNewItem> {
 
                 Row(
                   children: <Widget>[
-                    Icon(Icons.aspect_ratio, color: Colors.black),
+                    Icon(Icons.aspect_ratio, color: Theme.of(context).iconTheme.color),
                     Padding(padding: EdgeInsets.all(10.0)),
                     Expanded(
                       child: Text('Size',style:Theme.of(context).textTheme.subhead),
@@ -170,7 +172,7 @@ class _MyNewItem extends State<MyNewItem> {
                 ),
                 Row(
                   children: <Widget>[
-                    Icon(Icons.content_cut, color: Colors.black),
+                    Icon(Icons.content_cut, color: Theme.of(context).iconTheme.color),
                     Padding(padding: EdgeInsets.all(10.0)),
                     Expanded(
                       child: Text('Length',style:Theme.of(context).textTheme.subhead),
@@ -196,7 +198,7 @@ class _MyNewItem extends State<MyNewItem> {
                 ),
                 Row(
                   children: <Widget>[
-                    Icon(Icons.business_center, color: Colors.black),
+                    Icon(Icons.business_center, color: Theme.of(context).iconTheme.color),
                     Padding(padding: EdgeInsets.all(10.0)),
                     Expanded(
                       child: Text('Sell?',style:Theme.of(context).textTheme.subhead),
@@ -228,7 +230,7 @@ class _MyNewItem extends State<MyNewItem> {
                   child: function=="sell"
                   ? Row(
                     children: <Widget>[
-                      Icon(Icons.monetization_on, color: Colors.black),
+                      Icon(Icons.monetization_on, color: Theme.of(context).iconTheme.color),
                       Padding(padding: EdgeInsets.all(10.0)),
                       Expanded(
                         child: Text('Price:',style:Theme.of(context).textTheme.subhead),

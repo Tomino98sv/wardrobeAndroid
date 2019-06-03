@@ -82,6 +82,7 @@ class _SettingsPageState extends State<SettingsPage>{
     return DemoTheme(
         'pink',
         new ThemeData(
+          iconTheme: IconThemeData(color: Colors.black),
             primaryColor: Colors.pink[400],
             scaffoldBackgroundColor: Colors.grey[50],
             accentColor: Colors.pink[400],
@@ -96,6 +97,7 @@ class _SettingsPageState extends State<SettingsPage>{
     return DemoTheme(
         'blue',
         new ThemeData(
+            iconTheme: IconThemeData(color: Colors.black),
           primaryColor: Colors.blue[400],
           scaffoldBackgroundColor: Colors.grey[50],
           accentColor: Colors.blueAccent[400],
@@ -114,9 +116,10 @@ class _SettingsPageState extends State<SettingsPage>{
     return DemoTheme(
         'dark',
         new ThemeData(
+          iconTheme: IconThemeData(color: Colors.white),
             textTheme: TextTheme(subhead: TextStyle(color: Colors.white),),
             primaryColor: Colors.black,
-            scaffoldBackgroundColor: Colors.black,
+            scaffoldBackgroundColor: Colors.black54,
             accentColor: Colors.black45,
             buttonColor: Colors.white12,
             toggleableActiveColor: Colors.black54,

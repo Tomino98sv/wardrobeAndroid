@@ -24,6 +24,7 @@ dependencies:
   cached_network_image: ^0.7.0
   flutter_speed_dial: ^1.0.9
 
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
@@ -37,6 +38,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.7.0"
 
 
 
@@ -67,6 +69,8 @@ flutter:
     - assets/images/biela2.jpg
 
 
+
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
 
@@ -79,28 +83,26 @@ flutter:
   # list giving the asset and other descriptors for the font. For
 #   example:
   fonts:
-    - family: Roboto
-      fonts:
-        - asset: assets/font/Roboto-Black.ttf
-        - asset: assets/font/Roboto-BlackItalic.ttf
-        - asset: assets/font/Roboto-Bold.ttf
-        - asset: assets/font/Roboto-BoldItalic.ttf
-        - asset: assets/font/Roboto-Italic.ttf
-        - asset: assets/font/Roboto-Light.ttf
-        - asset: assets/font/Roboto-LightItalic.ttf
-        - asset: assets/font/Roboto-Medium.ttf
-        - asset: assets/font/Roboto-MediumItalic.ttf
-        - asset: assets/font/Roboto-Regular.ttf
-        - asset: assets/font/Roboto-Thin.ttf
-        - asset: assets/font/Roboto-ThinItalic.ttf
     - family: Alyfe_Demo
       fonts:
         - asset: assets/font/Alyfe_Demo.ttf
-    - family: Dancing Script
+    - family: Dancing_Script
       fonts:
         - asset: assets/font/DancingScript-Bold.ttf
         - asset: assets/font/DancingScript-Regular.ttf
+    - family: Amagh Demo
+      fonts:
+        - asset: assets/font/Amagh Demo.ttf
+    - family: Pacifico
+      fonts:
+        - asset: assets/font/Pacifico-Regular.ttf
 
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages
+
+flutter_icons:
+  ios: true
+  android: true
+  image_path_ios: "assets/launcher/untitled.png"
+  image_path_android: "assets/launcher/untitled.png"

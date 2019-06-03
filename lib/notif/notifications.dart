@@ -360,7 +360,7 @@ class _NotificationsPage extends State<NotificationsPage> {
             title: Text(title),
             content: SingleChildScrollView(
               child: ListBody(
-                children: <Widget>[Text(description)],
+                children: <Widget>[Text(description, style: TextStyle(color: Colors.black))],
               ),
             ),
             actions: <Widget>[
