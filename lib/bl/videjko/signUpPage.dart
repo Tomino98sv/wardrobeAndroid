@@ -20,7 +20,8 @@ class _SignupPageState extends State<SignupPage> {
     // TODO: implement build
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text("Sign Up"),
+          iconTheme: IconThemeData(color: Colors.white),
+          title: new Text("Sign Up", style: TextStyle(color: Colors.white),),
         ),
       key: _scaffoldKey,
       body: Form(
@@ -32,7 +33,9 @@ class _SignupPageState extends State<SignupPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               TextFormField(
-                decoration: InputDecoration(hintText: 'Username',icon: new Icon(Icons.person, color: Colors.black)),
+                decoration: InputDecoration(
+                    hintText: 'Username',
+                    icon: new Icon(Icons.person, color: Colors.black)),
                 validator: (input){
                   if(input.isEmpty){
                     return 'Please type an username';
@@ -43,7 +46,9 @@ class _SignupPageState extends State<SignupPage> {
                 onSaved: (input) => _name = input,
               ),SizedBox(height: 15.0),
               TextFormField(
-                decoration: InputDecoration(hintText: 'Email', icon: new Icon(Icons.email, color: Colors.black)),
+                decoration: InputDecoration(
+                    hintText: 'Email',
+                    icon: new Icon(Icons.email, color: Colors.black)),
                 validator: (input){
                 if(input.isEmpty){
                   return 'Please type an email';
@@ -54,7 +59,9 @@ class _SignupPageState extends State<SignupPage> {
                 onSaved: (input) => _email = input,
               ),SizedBox(height: 15.0),
               TextFormField(
-                decoration: InputDecoration(hintText: 'Password', icon: new Icon(Icons.text_fields, color: Colors.black)),
+                decoration: InputDecoration(
+                    hintText: 'Password',
+                    icon: new Icon(Icons.text_fields, color: Colors.black)),
                 validator: (input){
                 if(input.length < 6){
                   return 'Your password needs to be at least 6 characters';
@@ -91,10 +98,10 @@ class _SignupPageState extends State<SignupPage> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(30.0),
                   child: Material(
-                    color: Colors.pink,
+                    color: Theme.of(context).buttonColor,
                     borderRadius: BorderRadius.circular(30.0),
                     child: InkWell(
-                      splashColor: Colors.pink[400],
+                      splashColor:Theme.of(context).accentColor,
                       onTap: () {
                         signUpMethod(context) ;
                       },
@@ -127,7 +134,7 @@ class _SignupPageState extends State<SignupPage> {
           child: Container(
             width: 48.0,
             height: 48.0,
-            child: CircularProgressIndicator(backgroundColor: Colors.pink,),
+            child: CircularProgressIndicator(backgroundColor: Theme.of(context).accentColor,),
           ),
         );
       });
@@ -161,7 +168,7 @@ class _SignupPageState extends State<SignupPage> {
     final snackBar = new SnackBar(
       content: new Text(st),
       duration: new Duration(seconds: 3),
-      backgroundColor: Colors.black54,
+      backgroundColor: Colors.black26,
       action: new SnackBarAction(label: 'OUKEY', onPressed: (){
         print("pressed snackbar");
       }),

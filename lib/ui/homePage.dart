@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/bl/Pages/rating.dart';
 import 'package:flutter_app/bl/Pages/settingsPage.dart';
 import 'package:flutter_app/bl/Pages/welcome.dart';
 import 'package:flutter_app/bl/mainLoginPage.dart';
+import 'package:flutter_app/bl/videjko/services/usermanagment.dart';
 import 'package:flutter_app/db/FirestoreManager.dart';
 import 'package:flutter_app/db/allDressesList.dart';
 import 'package:flutter_app/deals/dealsHome.dart';
@@ -22,16 +24,37 @@ class HomePage extends StatefulWidget {
 class _HomeState extends State<HomePage> {
 
   int _page = 0;
-
+  UserManagement userManagement = new UserManagement();
   ThemeSwitcher inheritedThemeSwitcher;
   FirebaseUser user;
   bool themeChosen;
   bool themeDarkChosen;
+  var rateInit=null;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getActiveTheme();
+    FirebaseAuth.instance.currentUser().then((fUser) {
+      user = fUser;
+      Stream<QuerySnapshot> snapshot = Firestore.instance
+          .collection('users')
+          .where('uid', isEqualTo: user.uid)
+          .snapshots();
+
+      snapshot.listen((QuerySnapshot data){
+        rateInit = data.documents[0]['rating'];
+        if(rateInit==null){
+          Future.delayed(Duration(seconds: 3), () {
+            rating(context,"Rating", "Rate are app please");
+          });
+          rateInit=-1;
+        }else{
+          rateInit=-1;
+          //to je preto aby sa nasa 200-krat prekreslovana apka nepytala dokolecka usera dokym do uklada na server
+        }
+      });
+    });
   }
 
   final _options = [
@@ -53,12 +76,6 @@ class _HomeState extends State<HomePage> {
     inheritedThemeSwitcher = ThemeSwitcher.of(context);
     return WillPopScope(
       onWillPop: () {
-        debugPrint("TUUUUUUUUUUUUUUU WILLPOPSCOPE");
-
-//          Navigator.of(context).pushAndRemoveUntil(
-//                                      MaterialPageRoute(
-//                                          builder: (context) => HomePage()),
-//                                      (Route<dynamic> route) => false);
         confirm(context, "Escape from app",
             "Are you want to logout and get out of here?");
       },
@@ -108,19 +125,6 @@ class _HomeState extends State<HomePage> {
 //                  }
 //                ));
                     }),
-//          _page!=0? Container() :
-//          PopupMenuButton<String>(
-//            onSelected: choiceAction,
-//            offset: Offset(0, 100),
-//            itemBuilder: (BuildContext context){
-//              return Constants.choices.map((String choice){
-//                return PopupMenuItem<String>(
-//                  value: choice,
-//                  child: Text(choice, style: TextStyle(color: Colors.black),),
-//                );
-//              }).toList();
-//            }
-//          ),
           ],
         ),
         body: Container(
@@ -174,8 +178,6 @@ class _HomeState extends State<HomePage> {
   }
 
   confirm(BuildContext context, String title, String description) {
-    debugPrint("TUUUUUUUUUUUUUUU ALERTDIALOG");
-
     return showDialog(
         context: context,
         barrierDismissible: false,
@@ -201,8 +203,69 @@ class _HomeState extends State<HomePage> {
         });
   }
 
+  rating(BuildContext context, String title, String description) {
+
+    int rating=0;
+
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(title),
+            content: SingleChildScrollView(
+              child: StatefulBuilder(
+                builder: (context, setState) {
+                  return StarRating(
+                    onChanged: (index) {
+                      setState(() {
+                        rating = index;
+                      });
+                    },
+                    value: rating,
+                  );
+                },
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text("Cancel"),
+              ),
+              FlatButton(
+                onPressed: () => rate(rating,context),
+                child: Text("Submit"),
+              )
+            ],
+          );
+        });
+  }
+
+  rate(int value, BuildContext context){
+    userManagement.sendRating(value).then((complete){
+      Navigator.pop(context);
+
+      return showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Thanks for your rating"),
+              content: SingleChildScrollView(
+                child: Icon(Icons.toys,color: Theme.of(context).accentColor),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text("Done"),
+                ),
+              ],
+            );
+          });
+    });
+  }
+
   signOut() {
-    debugPrint("TUUUUUUUUUUUUUUU SIGN OUT");
     GoogleSignIn _googleSignIn;
     _googleSignIn?.signOut();
     FirebaseAuth.instance.signOut().then((value) {
@@ -250,6 +313,7 @@ class _HomeState extends State<HomePage> {
           fontFamily: 'Quicksand',
           indicatorColor: Colors.pink[100],
           brightness: Brightness.light,
+          iconTheme: IconThemeData(color: Colors.black),
         ));
   }
 
@@ -267,7 +331,7 @@ class _HomeState extends State<HomePage> {
             indicatorColor: Colors.blue[200],
             brightness: Brightness.light,
             textTheme: TextTheme(subhead: TextStyle(color: Colors.black)),
-          iconTheme: IconThemeData(color: Colors.white)
+          iconTheme: IconThemeData(color: Colors.black)
         ));
   }
 
@@ -284,6 +348,7 @@ class _HomeState extends State<HomePage> {
           unselectedWidgetColor: Colors.black45,
           fontFamily: 'Quicksand',
           indicatorColor: Colors.black54,
+          iconTheme: IconThemeData(color: Colors.white),
         ));
   }
 

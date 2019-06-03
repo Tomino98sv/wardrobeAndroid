@@ -128,10 +128,11 @@ class _ShowDetails extends State<ShowDetails> {
                                 Row(
                                   children: <Widget>[
                                     Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
-                                    Icon(Icons.event_note),
+                                    Icon(Icons.event_note,
+                                        color: Theme.of(context).iconTheme.color),
                                     Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
                                     Expanded(
-                                      child: Text('Description: ',
+                                      child: Text('Description: ', textAlign: TextAlign.left,
                                           style:Theme.of(context).textTheme.subhead),),
                                     Expanded(
                                       child: Container(),
@@ -144,7 +145,7 @@ class _ShowDetails extends State<ShowDetails> {
                                     Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
                                     Container(padding: EdgeInsets.only(right: 55.0),),
                                     Expanded(
-                                      child: Text(snapshot.data['description'],
+                                      child: Text(snapshot.data['description'], textAlign: TextAlign.left,
                                           style:Theme.of(context).textTheme.subhead),
                                     ),
                                     Container(padding: EdgeInsets.only(left: 45.0),),
@@ -154,7 +155,8 @@ class _ShowDetails extends State<ShowDetails> {
                                 Row(
                                   children: <Widget>[
                                     Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
-                                    Icon(Icons.aspect_ratio),
+                                    Icon(Icons.aspect_ratio,
+                                        color: Theme.of(context).iconTheme.color),
                                     Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
                                     Expanded(
                                       child: Text('Size:',
@@ -169,7 +171,8 @@ class _ShowDetails extends State<ShowDetails> {
                                 Row(
                                   children: <Widget>[
                                     Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
-                                    Icon(Icons.content_cut),
+                                    Icon(Icons.content_cut,
+                                        color: Theme.of(context).iconTheme.color),
                                     Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
                                     Expanded(
                                       child: Text('Length:',
@@ -185,7 +188,8 @@ class _ShowDetails extends State<ShowDetails> {
                                 Row(
                                   children: <Widget>[
                                     Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
-                                    Icon(Icons.card_giftcard),
+                                    Icon(Icons.card_giftcard,
+                                        color: Theme.of(context).iconTheme.color),
                                     Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
                                     Expanded(
                                       child: Text(snapshot.data['borrowName'] != ""?
@@ -207,7 +211,8 @@ class _ShowDetails extends State<ShowDetails> {
                                       ? Row(
                                     children: <Widget>[
                                       Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
-                                      Icon(Icons.monetization_on),
+                                      Icon(Icons.monetization_on,
+                                          color: Theme.of(context).iconTheme.color),
                                       Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
                                       Expanded(
                                         child: Text("Price:", style:Theme.of(context).textTheme.subhead),
