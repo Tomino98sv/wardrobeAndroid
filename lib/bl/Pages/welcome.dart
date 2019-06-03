@@ -186,10 +186,12 @@ class _WelcomePageState extends State<WelcomePage>
                                                           CircularProgressIndicator(),
                                                     ),
                                                     Row(
-                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      mainAxisAlignment: MainAxisAlignment.start,
                                                       children: <Widget>[
                                                         Text("About:  ",style: TextStyle(color: Colors.black)),
-                                                        Text(document["description"], style: TextStyle(color: Colors.black),),
+                                                        Expanded(
+                                                            child: Text(document["description"], style: TextStyle(color: Colors.black,), textAlign: TextAlign.left,)
+                                                        ),
                                                       ],
                                                     ),
                                                   ],

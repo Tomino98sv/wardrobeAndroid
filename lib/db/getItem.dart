@@ -132,7 +132,7 @@ class _ShowDetails extends State<ShowDetails> {
                                         color: Theme.of(context).iconTheme.color),
                                     Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
                                     Expanded(
-                                      child: Text('Description: ',
+                                      child: Text('Description: ', textAlign: TextAlign.left,
                                           style:Theme.of(context).textTheme.subhead),),
                                     Expanded(
                                       child: Container(),
@@ -145,7 +145,7 @@ class _ShowDetails extends State<ShowDetails> {
                                     Padding(padding: EdgeInsets.only(right: 15.0, left: 15.0, top: 10.0, bottom: 10.0)),
                                     Container(padding: EdgeInsets.only(right: 55.0),),
                                     Expanded(
-                                      child: Text(snapshot.data['description'],
+                                      child: Text(snapshot.data['description'], textAlign: TextAlign.left,
                                           style:Theme.of(context).textTheme.subhead),
                                     ),
                                     Container(padding: EdgeInsets.only(left: 45.0),),

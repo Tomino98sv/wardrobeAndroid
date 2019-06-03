@@ -23,8 +23,10 @@ class _WardrobeTabBarState extends State<WardrobeTabBar> {
       children: <WardrobeTab>[
         WardrobeTab(
           textW: Container(
-            width: width/4.5,
+            width: width/5,
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text("My ", style: TextStyle(color: Colors.white, ),),
                 Icon(Icons.style, color: Colors.white)
@@ -36,8 +38,10 @@ class _WardrobeTabBarState extends State<WardrobeTabBar> {
         ),
         WardrobeTab(
           textW: Container(
-            width: width/4.5,
+            width: width/5,
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text("Lent ", style: TextStyle(color: Colors.white),),
                 Icon(Icons.style,color: Colors.white)
@@ -49,8 +53,10 @@ class _WardrobeTabBarState extends State<WardrobeTabBar> {
         ),
         WardrobeTab(
           textW: Container(
-            width: width/4.5,
+            width: width/3,
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text("Borrowed ", style: TextStyle(color: Colors.white)),
                 Icon(Icons.style, color: Colors.white,)
