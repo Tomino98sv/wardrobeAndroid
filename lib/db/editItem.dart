@@ -424,7 +424,9 @@ class _State extends State<EditItem> {
                             .document(item.documentID)
                             .updateData({'price' : FieldValue.delete()});
                       }
-                      Navigator.pop(context);},
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      },
                     child: Container(
                       decoration: new BoxDecoration(
                         color: Theme.of(context).buttonColor,

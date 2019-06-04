@@ -265,10 +265,10 @@ class UserList extends StatelessWidget {
                             ),
                           ),
                           trailing: Icon(Icons.info_outline,
-                              color: Theme.of(context).buttonColor),
+                              color: Theme.of(context).accentColor),
                           title: Text(
                             document['name'],
-                            style: Theme.of(context).textTheme.subhead,
+                            style: TextStyle(color: Colors.black),
                           ),
                           onTap: () {
                             //kod ktory urci usra, ktoremu bolo pozicane
@@ -336,6 +336,7 @@ class ItemsListSearch extends SearchDelegate<ItemsList> {
   @override
   Widget buildResults(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: StreamBuilder<QuerySnapshot>(
           stream: items,
           builder:
@@ -363,6 +364,7 @@ class ItemsListSearch extends SearchDelegate<ItemsList> {
   @override
   Widget buildSuggestions(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: StreamBuilder<QuerySnapshot>(
         stream: items,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -472,10 +474,10 @@ class UserListHome extends StatelessWidget {
 //                              height: 42.0,
 //                                  width: 42.0,),
                           trailing: Icon(Icons.info_outline,
-                              color: Theme.of(context).buttonColor),
+                              color: Theme.of(context).accentColor),
                           title: Text(
                             document['name'],
-                            style: Theme.of(context).textTheme.subhead,
+                            style: TextStyle(color: Colors.black),
                           ),
                           onTap: () {
                             //kod ktory urci usra, ktoremu bolo pozicane

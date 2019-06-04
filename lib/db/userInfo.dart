@@ -130,29 +130,54 @@ class UserInfoList extends StatelessWidget{
                                         child: Icon(Icons.check),
                                           shape: _DiamondBorder(),
                                           onPressed: (){
-                                          if (itemInfo.data['borrowedTo'] == ""  || itemInfo.data['borrowedTo'] == null) {
-                                          itemInfo.data['borrowedTo'] = userInfo.data['uid'];
-                                          itemInfo.data['borrowName'] = userInfo.data['name'];
-                                          Firestore.instance.collection('items')
-                                              .document(itemInfo.documentID)
-                                              .updateData({
-                                            "borrowedTo": itemInfo.data['borrowedTo'],
-                                            "borrowName": itemInfo.data['borrowName']
-                                          });
-                                          debugPrint(itemInfo.data['borrowedTo']);
-                                          debugPrint(itemInfo.data['borrowName']);
-                                          Navigator.pop(context);
-                                          Navigator.pop(context);
-                                        }
-                                        else {
-                                          Firestore.instance.collection('items')
-                                              .document(itemInfo.documentID)
-                                              .updateData({
-                                            "borrowedTo": "",
-                                            "borrowName": ""
-                                          });
-                                          Navigator.pop(context);
-                                        }}) ,
+                                          showDialog(
+                                            context: context,
+                                            child: CupertinoAlertDialog(
+                                              title: (itemInfo.data['borrowedTo'] == ""  || itemInfo.data['borrowedTo'] == null)? Text('Lend ${itemInfo.data['name']}')
+                                                  : Text('Return ${itemInfo.data['name']}'),
+                                              content: (itemInfo.data['borrowedTo'] == ""  || itemInfo.data['borrowedTo'] == null)? Text('Do you still wish to lend ${itemInfo.data['name']} to ${userInfo.data['name']}?')
+                                              : Text('Do you still wish to return ${itemInfo.data['name']} to ${userInfo.data['name']}?'),
+                                              actions: <Widget>[
+                                                FlatButton(
+                                                  child: Text('Yes'),
+                                                  onPressed: () {
+                                                    if (itemInfo.data['borrowedTo'] == ""  || itemInfo.data['borrowedTo'] == null) {
+                                                      itemInfo.data['borrowedTo'] = userInfo.data['uid'];
+                                                      itemInfo.data['borrowName'] = userInfo.data['name'];
+                                                      Firestore.instance.collection('items')
+                                                          .document(itemInfo.documentID)
+                                                          .updateData({
+                                                        "borrowedTo": itemInfo.data['borrowedTo'],
+                                                        "borrowName": itemInfo.data['borrowName']
+                                                      });
+                                                      debugPrint(itemInfo.data['borrowedTo']);
+                                                      debugPrint(itemInfo.data['borrowName']);
+                                                      Navigator.pop(context);
+                                                      Navigator.pop(context);
+                                                    }
+                                                    else {
+                                                      Firestore.instance.collection('items')
+                                                          .document(itemInfo.documentID)
+                                                          .updateData({
+                                                        "borrowedTo": "",
+                                                        "borrowName": ""
+                                                      });
+                                                      Navigator.pop(context);
+                                                    }
+                                                    Navigator.pop(context);
+
+                                                  },
+                                                ),
+                                                FlatButton(
+                                                  child: Text('Cancel',style: TextStyle(color: Colors.black)),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                )
+                                              ],
+                                            )
+                                          );
+                                          }) ,
                                   )
                                     ],
                                   ),),
@@ -541,7 +566,7 @@ class _UserInfoList2 extends State<UserInfoList2>{
                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                  children: <Widget>[
                                                    Text("About:  "),
-                                                   Text(document['description']),
+                                                   Expanded(child: Text(document['description'], textAlign: TextAlign.left)),
                                                  ],
                                                ),
                                              ],

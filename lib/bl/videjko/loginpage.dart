@@ -30,7 +30,8 @@ class _LoginPageState extends State<LoginPage> {
     // TODO: implement build
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text("Login"),
+          iconTheme: IconThemeData(color: Colors.white),
+          title: new Text("Login",style: TextStyle(color: Colors.white),),
         ),
         key: _scaffoldKey,
         body: Form(
@@ -72,10 +73,10 @@ class _LoginPageState extends State<LoginPage> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(30.0),
                     child: Material(
-                      color: Colors.pink,
+                      color: Theme.of(context).buttonColor,
                       borderRadius: BorderRadius.circular(30.0),
                       child: InkWell(
-                        splashColor: Colors.pink[400],
+                        splashColor: Theme.of(context).accentColor,
                         onTap: () {
                           signInMethod(context);
                         },
@@ -93,16 +94,16 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 SizedBox(height: 15.0),
-                Text('Don\'t have an account?'),
+                Text('Don\'t have an account?', style:Theme.of(context).textTheme.subhead),
                 Container(
                   margin: EdgeInsets.only(top: 8.0),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(30.0),
                     child: Material(
-                      color: Colors.pink,
+                      color: Theme.of(context).buttonColor,
                       borderRadius: BorderRadius.circular(30.0),
                       child: InkWell(
-                        splashColor: Colors.pink[400],
+                        splashColor: Theme.of(context).accentColor,
                         onTap: () {
                           Navigator.of(context).pushNamed('/signup');
                         },
@@ -134,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Container(
               width: 48.0,
               height: 48.0,
-              child: CircularProgressIndicator(backgroundColor: Colors.pink,),
+              child: CircularProgressIndicator(backgroundColor: Theme.of(context).accentColor),
             ),
           );
         });
@@ -164,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
     final snackBar = new SnackBar(
       content: new Text(str),
       duration: new Duration(seconds: 3),
-      backgroundColor: Colors.black54,
+      backgroundColor: Colors.black26,
       action: new SnackBarAction(
           label: 'OUKEY',
           onPressed: () {
