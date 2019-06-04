@@ -188,9 +188,12 @@ class _WelcomePageState extends State<WelcomePage>
                                                     Row(
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: <Widget>[
-                                                        Text("About:  ",style: TextStyle(color: Colors.black)),
+//                                                        Text("About:  ",style: TextStyle(color: Colors.black)),
+                                                        Padding(
+                                                          padding: EdgeInsets.only(top: 15.0),
+                                                        ),
                                                         Expanded(
-                                                            child: Text(document["description"], style: TextStyle(color: Colors.black,), textAlign: TextAlign.left,)
+                                                            child: Text(document["description"], style: TextStyle(color: Colors.black,), textAlign: TextAlign.center,)
                                                         ),
                                                       ],
                                                     ),
@@ -218,7 +221,7 @@ class _WelcomePageState extends State<WelcomePage>
                                                                     return UserList(item: document, user: user2);
                                                                   }));
                                                         },
-                                                        child: Text("Borrow",style: TextStyle(color: Colors.black)),
+                                                        child: Text("Lend",style: TextStyle(color: Colors.black)),
                                                       ),
                                                       FlatButton(
                                                         onPressed: () {

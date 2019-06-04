@@ -565,8 +565,7 @@ class _UserInfoList2 extends State<UserInfoList2>{
                                                Row(
                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                  children: <Widget>[
-                                                   Text("About:  "),
-                                                   Expanded(child: Text(document['description'], textAlign: TextAlign.left)),
+                                                   Expanded(child: Text(document['description'], textAlign: TextAlign.center)),
                                                  ],
                                                ),
                                              ],
