@@ -157,8 +157,7 @@ class DressesListState extends State<AllDressesList> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: <Widget>[
-                                          Text("About:  "),
-                                          Expanded(child: Text(item.description, textAlign: TextAlign.left),),
+                                          Expanded(child: Text(item.description, textAlign: TextAlign.center),),
                                         ],
                                       ),
                                     ],
