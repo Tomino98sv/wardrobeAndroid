@@ -118,6 +118,9 @@ class _HomeState extends State<HomePage> {
                           key.currentState as DressesListState;
                       state.setState(() {
                         state.showFilters = !state.showFilters;
+                        if(!state.showFilters) {
+                          state.filterValue = null;
+                        }
                       });
 //                Navigator.push(context, MaterialPageRoute (
 //                  builder: (context){
@@ -186,7 +189,7 @@ class _HomeState extends State<HomePage> {
             title: Text(title),
             content: SingleChildScrollView(
               child: ListBody(
-                children: <Widget>[Text(description)],
+                children: <Widget>[Text(description, style: TextStyle(color: Colors.black),)],
               ),
             ),
             actions: <Widget>[
@@ -341,13 +344,15 @@ class _HomeState extends State<HomePage> {
         new ThemeData(
           textTheme: TextTheme(subhead: TextStyle(color: Colors.white),),
           primaryColor: Colors.black,
-          scaffoldBackgroundColor: Colors.black54,
+          scaffoldBackgroundColor: Colors.grey[900],
           accentColor: Colors.black45,
           buttonColor: Colors.white12,
           toggleableActiveColor: Colors.black54,
           unselectedWidgetColor: Colors.black45,
           fontFamily: 'Quicksand',
+          canvasColor: Colors.black54,
           indicatorColor: Colors.black54,
+          dialogBackgroundColor: Colors.black54,
           iconTheme: IconThemeData(color: Colors.white),
         ));
   }
