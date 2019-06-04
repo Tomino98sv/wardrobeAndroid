@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/Pages/chatPage/chat.dart';
 
@@ -200,8 +201,8 @@ class _NotificationsPage extends State<NotificationsPage> {
                       child: RawMaterialButton(
                         onPressed: () {
                           debugPrint("Pressed ${targetEmail}");
-                          confirm(context, "Continue to Chat",
-                              "Want to chat with that person?", targetEmail);
+                          confirm(context, "See all messages",
+                              "", targetEmail);
                         },
                         child: Container(
                           width: 45.0,
@@ -235,8 +236,8 @@ class _NotificationsPage extends State<NotificationsPage> {
                       new RawMaterialButton(
                         onPressed: () {
                           debugPrint("Pressed ${targetEmail}");
-                          confirm(context, "Continue to Chat",
-                              "Want to chat with that person?", targetEmail);
+                          confirm(context, "See all messages",
+                              "", targetEmail);
                         },
                         child: Icon(
                             Icons.message,
@@ -355,26 +356,25 @@ class _NotificationsPage extends State<NotificationsPage> {
     return showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(title),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[Text(description, style: TextStyle(color: Colors.black))],
-              ),
+        child: CupertinoAlertDialog(
+          title: Text(title),
+//          content: SingleChildScrollView(
+//            child: ListBody(
+//              children: <Widget>[Text(description, style: TextStyle(color: Colors.black))],
+//            ),
+//          ),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () => Navigations(targetEmail),
+              child: Text("Continue"),
             ),
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () => Navigations(targetEmail),
-                child: Text("Continue"),
-              ),
-              FlatButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text("Cancel"),
-              )
-            ],
-          );
-        });
+            FlatButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("Cancel"),
+            )
+          ],
+        ),
+        );
   }
 
   Navigations(String targetEmail) {
