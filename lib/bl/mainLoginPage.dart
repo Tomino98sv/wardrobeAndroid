@@ -60,7 +60,7 @@ class _QuickBeeState extends State<QuickBee> {
                 children: <Widget>[
                   Padding(
                       padding: const EdgeInsets.only(top: 60.0, bottom: 80.0),
-                      child: new Text("WarOfDresses",
+                      child: new Text("eDresses",
                         style: new TextStyle(
                           fontSize: 50.0,
                           color: Colors.white,
@@ -119,7 +119,7 @@ class _QuickBeeState extends State<QuickBee> {
                             style: new TextStyle(
                                 fontSize: 25.0,
                                 color: Colors.white,
-                              fontFamily: 'Pacifico',),
+                              fontFamily: 'Dancing_Script',),
                             textAlign: TextAlign.center,
                           ),
                           Padding(

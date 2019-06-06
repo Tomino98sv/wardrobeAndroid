@@ -61,7 +61,7 @@ class _WelcomePageState extends State<WelcomePage>
                           _buildIamge(),
                           new Padding(
                             padding: new EdgeInsets.only(
-                                left: 30.0,top: 2.0),
+                                left: 25.0,top: 2.0),
                             child: StreamBuilder<QuerySnapshot>(
                               stream: Firestore.instance
                                   .collection('users')
@@ -71,34 +71,41 @@ class _WelcomePageState extends State<WelcomePage>
                                 if (!snapshot.hasData)
                                   return Text("Loading data ... wait please",style:Theme.of(context).textTheme.subhead);
                                 return Row(
+                                  mainAxisSize: MainAxisSize.max,
                                   children: <Widget>[
-                                    Column(
-                                      children: <Widget>[
-                                        Text(
-                                          snapshot.data.documents[0]['name'],
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w400,
+                                    Flexible(
+                                      fit: FlexFit.tight,
+                                      child: SizedBox(
+                                        child: Column(
+                                            children: <Widget>[
+                                              Text(
+                                                snapshot.data.documents[0]['name'],
+                                                style: TextStyle(
+                                                  fontSize: 20.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(bottom: 5.0),
+                                              ),
+                                              Text(
+                                                snapshot.data.documents[0]['email'],
+                                                style: TextStyle(
+                                                  fontSize: 15.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(bottom: 5.0),
-                                        ),
-                                        Text(
-                                          snapshot.data.documents[0]['email'],
-                                          style: TextStyle(
-                                            fontSize: 15.0,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 55.0),
+                                      ),
                                     ),
                                     AnimatedFab(),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 10.0),
+                                    ),
                                   ],
                                 );
                               },
@@ -115,7 +122,6 @@ class _WelcomePageState extends State<WelcomePage>
                       Expanded(
                           child: Stack(
                             children: <Widget> [
-
                               TabBarView(
                                 controller: _tabController, children: <Widget>[
                               GridView.count(
@@ -553,18 +559,21 @@ class _WelcomePageState extends State<WelcomePage>
                                   }).toList()),
 
                             ]),
-                              Container(
-                                margin: EdgeInsets.only(left: 320.0, right: 5.0,top: 250.0,),
-                                child: FloatingActionButton(
-                                    heroTag: "btnWelcome",
-                                    child: Icon(Icons.add),
-                                    shape: _DiamondBorder(),
-                                    onPressed: () {
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) {
-                                            return MyNewItem();
-                                          }));
-                                    }),
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: Container(
+                                  margin: EdgeInsets.only(right: 10.0,bottom: 10.0),
+                                  child: FloatingActionButton(
+                                      heroTag: "btnWelcome",
+                                      child: Icon(Icons.add),
+                                      shape: _DiamondBorder(),
+                                      onPressed: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(builder: (context) {
+                                              return MyNewItem();
+                                            }));
+                                      }),
+                                ),
                               ),
                           ])),
 
