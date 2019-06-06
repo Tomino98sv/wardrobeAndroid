@@ -137,6 +137,7 @@ class _State extends State<EditItem> {
                   ),),
                 changeImageItem(item: item),
                 new TextField(
+                  maxLength: 18,
                   style:Theme.of(context).textTheme.subhead,
                   decoration: new InputDecoration(
                       labelText: item['name'],
@@ -145,6 +146,7 @@ class _State extends State<EditItem> {
                   onChanged: _onChangedName,
                 ),
                 TextField(
+                  maxLength: 140,
                   style:Theme.of(context).textTheme.subhead,
                   decoration: new InputDecoration(
 
@@ -315,8 +317,20 @@ class _State extends State<EditItem> {
                             .collection('items')
                             .document(item.documentID)
                             .updateData({"name": docName});
+                        //update mena pri borrow requestoch
+                        Firestore.instance.collection('requestBorrow')
+                            .where('respondent', isEqualTo: item['userId']).where('itemID', isEqualTo: item.documentID).getDocuments().then((foundDoc){
+                        for (DocumentSnapshot ds in foundDoc.documents){
+                          Firestore.instance
+                              .collection('requestBorrow')
+                              .document(ds.documentID)
+                              .updateData({"name": docName});
+                        }
                         debugPrint("zmenil som meno");
+                        }
+                        );
                       }
+
                       if (docColor != '') {
                         Firestore.instance
                             .collection('items')
