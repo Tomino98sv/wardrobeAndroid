@@ -239,7 +239,7 @@ class _WelcomePageState extends State<WelcomePage>
                                           return showDialog(
                                             context: context,
                                             builder: (BuildContext context) {
-                                              return AlertDialog(
+                                              return CupertinoAlertDialog(
                                                 title: Text('Delete Item',style: TextStyle(color: Colors.black)),
                                                 content: Text(
                                                     'Are you sure you want to delete this item?',style: TextStyle(color: Colors.black)),
@@ -357,7 +357,7 @@ class _WelcomePageState extends State<WelcomePage>
                                                           return showDialog(
                                                               context: context,
                                                               builder: (BuildContext context) {
-                                                                return AlertDialog(
+                                                                return CupertinoAlertDialog(
                                                                   title: Text('Get item',style: TextStyle(color: Colors.black)),
                                                                   content: Text(
                                                                       'Are you sure that user returned your item back to you?',
@@ -501,10 +501,10 @@ class _WelcomePageState extends State<WelcomePage>
                                                           return showDialog(
                                                               context: context,
                                                               builder: (BuildContext context) {
-                                                                return AlertDialog(
+                                                                return CupertinoAlertDialog(
                                                                   title: Text('Return item', style: TextStyle(color: Colors.black),),
                                                                   content: Text(
-                                                                      'Are you sure that you returned your item back to the owner?',
+                                                                      'Are you sure that you returned the item back to the owner?',
                                                                       style:TextStyle(color: Colors.black)),
                                                                   actions: <Widget>[
                                                                     FlatButton(

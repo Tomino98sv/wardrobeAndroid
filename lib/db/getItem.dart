@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
@@ -328,7 +329,7 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
     return showDialog(
       context: context,
       builder: (context){
-        return AlertDialog(
+        return CupertinoAlertDialog(
           title: Text("Borrow Request",style:Theme.of(context).textTheme.subhead),
           content: Text("I would like to borrow this dress",style:Theme.of(context).textTheme.subhead),
           actions: <Widget>[
@@ -337,7 +338,7 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
               onPressed: (){
                 showDialog(context: context,
                 builder: (BuildContext context){
-                  return AlertDialog(
+                  return CupertinoAlertDialog(
                     title: Text("Request sent",style:Theme.of(context).textTheme.subhead),
                     content: Text("The request has been sent!",style:Theme.of(context).textTheme.subhead),
                     actions: <Widget>[
@@ -384,7 +385,7 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
     return showDialog(
       context: context,
       builder: (context){
-        return AlertDialog(
+        return CupertinoAlertDialog(
           title: Text("Borrow Request",style:Theme.of(context).textTheme.subhead),
           content: Text("There is at least 1 other user who requested to borrow this dress. Would you like to send your request anyway?",
               style:Theme.of(context).textTheme.subhead),
@@ -402,7 +403,7 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                   if (count ==0){
                     showDialog(context: context,
                         builder: (BuildContext context){
-                          return AlertDialog(
+                          return CupertinoAlertDialog(
                             title: Text("Request sent", style:Theme.of(context).textTheme.subhead),
                             content: Text("The request has been sent!", style:Theme.of(context).textTheme.subhead),
                             actions: <Widget>[
@@ -453,7 +454,7 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
     return showDialog(
       context: context,
       builder: (context){
-        return AlertDialog(
+        return CupertinoAlertDialog(
           title: Text("Get for free",style:Theme.of(context).textTheme.subhead),
           content: Text("I would like to get this dress for free",style:Theme.of(context).textTheme.subhead),
           actions: <Widget>[
@@ -471,7 +472,7 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                   if (count2 ==0){
                     showDialog(context: context,
                         builder: (BuildContext context){
-                          return AlertDialog(
+                          return CupertinoAlertDialog(
                             title: Text("Request sent",style:Theme.of(context).textTheme.subhead),
                             content: Text("The request has been sent!",style:Theme.of(context).textTheme.subhead),
                             actions: <Widget>[
@@ -522,7 +523,7 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
     return showDialog(
       context: context,
       builder: (context){
-        return AlertDialog(
+        return CupertinoAlertDialog(
           title: Text("Buy item",style:Theme.of(context).textTheme.subhead),
           content: Text("I would like to buy this dress \nfor ${item.data['price']} eur",style:Theme.of(context).textTheme.subhead),
           actions: <Widget>[
@@ -540,7 +541,7 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                   if(count1 ==0){
                     showDialog(context: context,
                         builder: (BuildContext context){
-                          return AlertDialog(
+                          return CupertinoAlertDialog(
                             title: Text("Request sent",style:Theme.of(context).textTheme.subhead),
                             content: Text("The request has been sent!",style:Theme.of(context).textTheme.subhead),
                             actions: <Widget>[
@@ -595,7 +596,7 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
 Widget requestAlreadySent(BuildContext context){
   showDialog(context: context,
       builder: (BuildContext context){
-        return AlertDialog(
+        return CupertinoAlertDialog(
           title: Text("Request not sent",style:Theme.of(context).textTheme.subhead),
           content: Text("You have already asked for this item", style:Theme.of(context).textTheme.subhead),
           actions: <Widget>[
