@@ -83,7 +83,11 @@ class _HomeState extends State<HomePage> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text('Wardrobe', style: TextStyle(color: Colors.white),),
+          title: Text('eDresses',
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Pacifico'),
+          ),
           actions: <Widget>[
             _page != 4
                 ? Container()
@@ -139,23 +143,42 @@ class _HomeState extends State<HomePage> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: new Icon(Icons.face, color: Colors.grey[900]),
-              title: new Text('Me', style: TextStyle(color: Colors.black),),
+              title: new Text('Me',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Pacifico',
+                ),),
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.style, color: Colors.grey[900]),
-              title: new Text('Dresses',style: TextStyle(color: Colors.black),),
+              title: new Text('Dresses',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Pacifico',
+                ),),
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.notifications, color: Colors.grey[900]),
-              title: new Text('Alerts',style: TextStyle(color: Colors.black),),
+              title: new Text('Alerts',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Pacifico',
+                ),),
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.shopping_cart, color: Colors.grey[900]),
-              title: new Text('Deals', style: TextStyle(color: Colors.black),),
+              title: new Text('Deals',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Pacifico'),),
             ),
             BottomNavigationBarItem(
                 icon: new Icon(Icons.account_circle, color:Colors.grey[900]),
-                title: new Text('Users', style: TextStyle(color: Colors.black),))
+                title: new Text('Users',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Pacifico',
+                  ),))
           ],
           currentIndex: _page,
           onTap: onPageChanged,
