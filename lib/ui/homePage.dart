@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/Pages/rating.dart';
 import 'package:flutter_app/bl/Pages/settingsPage.dart';
@@ -76,8 +77,8 @@ class _HomeState extends State<HomePage> {
     inheritedThemeSwitcher = ThemeSwitcher.of(context);
     return WillPopScope(
       onWillPop: () {
-        confirm(context, "Escape from app",
-            "Are you want to logout and get out of here?");
+        confirm(context, "Leave the app",
+            "Log out and leave the app!");
       },
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -208,7 +209,7 @@ class _HomeState extends State<HomePage> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return AlertDialog(
+          return CupertinoAlertDialog(
             title: Text(title),
             content: SingleChildScrollView(
               child: ListBody(
@@ -218,11 +219,11 @@ class _HomeState extends State<HomePage> {
             actions: <Widget>[
               FlatButton(
                 onPressed: signOut,
-                child: Text("LogOut"),
+                child: Text("Log Out"),
               ),
               FlatButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text("Stay on app"),
+                child: Text("Stay Here"),
               )
             ],
           );

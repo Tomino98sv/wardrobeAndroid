@@ -81,6 +81,7 @@ class _MyNewItem extends State<MyNewItem> {
                   children: <Widget>[
                     Expanded(
                       child: TextField(
+                        maxLength: 18,
                         style:Theme.of(context).textTheme.subhead,
                         decoration: new InputDecoration(
                             labelText: 'Name',

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class GiveawayApplicants extends StatefulWidget {
@@ -56,7 +57,7 @@ class _GiveawayApplicants extends State<GiveawayApplicants> {
                                 return showDialog(
                                     context: context,
                                     builder: (BuildContext context){
-                                      return AlertDialog(
+                                      return CupertinoAlertDialog(
                                         title: Text('Lend dress',style:Theme.of(context).textTheme.subhead),
                                         content: Text('Are you sure you wish to give ${requestedItem.data['name']} to ${document['applicantName']} for free?',
                                             style:Theme.of(context).textTheme.subhead),
@@ -67,7 +68,7 @@ class _GiveawayApplicants extends State<GiveawayApplicants> {
                                               if(requestedItem.data['borrowName']==null || requestedItem.data['borrowName']==""){
                                               showDialog(context: context,
                                                   builder: (BuildContext context){
-                                                    return AlertDialog(
+                                                    return CupertinoAlertDialog(
                                                       title: Text("Request sent",style:Theme.of(context).textTheme.subhead),
                                                       content: Text("Item was given to user ${document['applicantName']}",style:Theme.of(context).textTheme.subhead),
                                                       actions: <Widget>[
@@ -99,7 +100,7 @@ class _GiveawayApplicants extends State<GiveawayApplicants> {
                                               else{
                                                 showDialog(context: context,
                                                     builder: (BuildContext context){
-                                                      return AlertDialog(
+                                                      return CupertinoAlertDialog(
                                                         title: Text("Request canceled",style:Theme.of(context).textTheme.subhead),
                                                         content: Text("Item cannot be given to user ${document['applicantName']} as the item is currently lent to ${requestedItem.data['borrowName']}",style:Theme.of(context).textTheme.subhead),
                                                         actions: <Widget>[
