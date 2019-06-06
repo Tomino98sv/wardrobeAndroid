@@ -104,7 +104,7 @@ class UserInfoList extends StatelessWidget{
                                       Row(
                                         children: <Widget>[
                                           Text(
-                                            "Item: hhgh",
+                                            "Item: ",
                                             textAlign: TextAlign.left,
                                             style: TextStyle(
                                               fontSize: 15.0,
@@ -164,6 +164,7 @@ class UserInfoList extends StatelessWidget{
                                                       });
                                                       Navigator.pop(context);
                                                     }
+                                                    Navigator.pop(context);
                                                     Navigator.pop(context);
 
                                                   },
