@@ -83,7 +83,11 @@ class _HomeState extends State<HomePage> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text('Wardrobe', style: TextStyle(color: Colors.white),),
+          title: Text('eDresses',
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Pacifico'),
+          ),
           actions: <Widget>[
             _page != 4
                 ? Container()
@@ -139,23 +143,42 @@ class _HomeState extends State<HomePage> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: new Icon(Icons.face, color: Colors.grey[900]),
-              title: new Text('Me', style: TextStyle(color: Colors.black),),
+              title: new Text('Me',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Pacifico',
+                ),),
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.style, color: Colors.grey[900]),
-              title: new Text('Dresses',style: TextStyle(color: Colors.black),),
+              title: new Text('Dresses',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Pacifico',
+                ),),
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.notifications, color: Colors.grey[900]),
-              title: new Text('Alerts',style: TextStyle(color: Colors.black),),
+              title: new Text('Alerts',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Pacifico',
+                ),),
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.shopping_cart, color: Colors.grey[900]),
-              title: new Text('Deals', style: TextStyle(color: Colors.black),),
+              title: new Text('Deals',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Pacifico'),),
             ),
             BottomNavigationBarItem(
                 icon: new Icon(Icons.account_circle, color:Colors.grey[900]),
-                title: new Text('Users', style: TextStyle(color: Colors.black),))
+                title: new Text('Users',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Pacifico',
+                  ),))
           ],
           currentIndex: _page,
           onTap: onPageChanged,
@@ -314,7 +337,7 @@ class _HomeState extends State<HomePage> {
           scaffoldBackgroundColor: Colors.grey[50],
           accentColor: Colors.pink[400],
           buttonColor: Colors.pink,
-          fontFamily: 'Quicksand',
+          fontFamily: 'Pacifico',
           indicatorColor: Colors.pink[100],
           brightness: Brightness.light,
           iconTheme: IconThemeData(color: Colors.black),
@@ -331,7 +354,7 @@ class _HomeState extends State<HomePage> {
             buttonColor: Colors.blue,
             toggleableActiveColor: Colors.lightBlue,
             unselectedWidgetColor: Colors.blueAccent,
-            fontFamily: 'Quicksand',
+            fontFamily: 'Pacifico',
             indicatorColor: Colors.blue[200],
             brightness: Brightness.light,
             textTheme: TextTheme(subhead: TextStyle(color: Colors.black)),
@@ -350,7 +373,7 @@ class _HomeState extends State<HomePage> {
           buttonColor: Colors.white12,
           toggleableActiveColor: Colors.black54,
           unselectedWidgetColor: Colors.black45,
-          fontFamily: 'Quicksand',
+          fontFamily: 'Pacifico',
           canvasColor: Colors.black54,
           indicatorColor: Colors.black54,
           dialogBackgroundColor: Colors.black54,
