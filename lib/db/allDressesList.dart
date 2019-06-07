@@ -147,7 +147,7 @@ class DressesListState extends State<AllDressesList>
                                     context: context,
                                     barrierDismissible: false,
                                     child: CupertinoAlertDialog(
-                                      title: Text(item.name),
+                                      title: Text(item.name,style: TextStyle(fontFamily: 'Pacifico')),
                                       content: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -161,7 +161,9 @@ class DressesListState extends State<AllDressesList>
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: <Widget>[
-                                              Expanded(child: Text(item.description, textAlign: TextAlign.center),),
+                                              Expanded(child: Text(item.description,
+                                                  style: TextStyle(fontFamily: 'Pacifico'),
+                                                  textAlign: TextAlign.center),),
                                             ],
                                           ),
                                         ],
