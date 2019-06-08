@@ -48,98 +48,109 @@ class _SellApplicants extends State<SellApplicants> {
                     snapshot.data.documents.map((DocumentSnapshot document) {
                       if(document['itemID'] == requestedItem.documentID){
                         counter++;
-                        return ListTile(
-                          leading: Text("$counter.",style:Theme.of(context).textTheme.subhead),
-                          title: Text(document['applicantName'],style:Theme.of(context).textTheme.subhead),
-                          trailing: FlatButton(
-                              onPressed: (){
-                                return showDialog(
-                                    context: context,
-                                    builder: (BuildContext context){
-                                      return CupertinoAlertDialog(
-                                        title: Text('Sell dress',style:Theme.of(context).textTheme.subhead),
-                                        content: Text('Are you sure you wish to sell ${requestedItem.data['name']} to ${document['applicantName']} for ${requestedItem.data['price']} eur?',
-                                            style:Theme.of(context).textTheme.subhead),
-                                        actions: <Widget>[
-                                          FlatButton(
-                                            child: Text('Yes',style:Theme.of(context).textTheme.subhead),
-                                            onPressed: (){
-                                              if(requestedItem.data['borrowName']==null || requestedItem.data['borrowName']==""){
-                                              showDialog(context: context,
-                                                  builder: (BuildContext context){
-                                                    return CupertinoAlertDialog(
-                                                      title: Text("Request sent",style:Theme.of(context).textTheme.subhead),
-                                                      content: Text("Item was sold to user ${document['applicantName']}",style:Theme.of(context).textTheme.subhead),
-                                                      actions: <Widget>[
-                                                        FlatButton(
-                                                          child: Text("OK",style:Theme.of(context).textTheme.subhead),
-                                                          onPressed: (){
-                                                            Firestore.instance
-                                                                .collection('items')
-                                                                .document(requestedItem
-                                                                .documentID)
-                                                                .updateData({
-                                                              "request": "",
-                                                              "userId": document['applicant'] //id of applicant
-                                                            });
+                        return Container(
+                          height: 65.0,
+                          padding:
+                          EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                          child: Material(
+                            color: Colors.white,
+                            shadowColor: Colors.grey,
+                            elevation: 14.0,
+                            borderRadius: BorderRadius.circular(14.0),
+                            child: ListTile(
+                              leading: Text("$counter.",style:Theme.of(context).textTheme.subhead),
+                              title: Text(document['applicantName'],style:Theme.of(context).textTheme.subhead),
+                              trailing: FlatButton(
+                                  onPressed: (){
+                                    return showDialog(
+                                        context: context,
+                                        builder: (BuildContext context){
+                                          return CupertinoAlertDialog(
+                                            title: Text('Sell dress',style:Theme.of(context).textTheme.subhead),
+                                            content: Text('Are you sure you wish to sell ${requestedItem.data['name']} to ${document['applicantName']} for ${requestedItem.data['price']} eur?',
+                                                style:Theme.of(context).textTheme.subhead),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                child: Text('Yes',style:Theme.of(context).textTheme.subhead),
+                                                onPressed: (){
+                                                  if(requestedItem.data['borrowName']==null || requestedItem.data['borrowName']==""){
+                                                  showDialog(context: context,
+                                                      builder: (BuildContext context){
+                                                        return CupertinoAlertDialog(
+                                                          title: Text("Request sent",style:Theme.of(context).textTheme.subhead),
+                                                          content: Text("Item was sold to user ${document['applicantName']}",style:Theme.of(context).textTheme.subhead),
+                                                          actions: <Widget>[
+                                                            FlatButton(
+                                                              child: Text("OK",style:Theme.of(context).textTheme.subhead),
+                                                              onPressed: (){
+                                                                Firestore.instance
+                                                                    .collection('items')
+                                                                    .document(requestedItem
+                                                                    .documentID)
+                                                                    .updateData({
+                                                                  "request": "",
+                                                                  "userId": document['applicant'] //id of applicant
+                                                                });
 
-                                                            Firestore.instance
-                                                                .collection('items')
-                                                                .document(requestedItem.documentID)
-                                                                .updateData({'price' : FieldValue.delete()});
+                                                                Firestore.instance
+                                                                    .collection('items')
+                                                                    .document(requestedItem.documentID)
+                                                                    .updateData({'price' : FieldValue.delete()});
 
-                                                            Firestore.instance.collection('requestBuy').where('itemID', isEqualTo: requestedItem.documentID).getDocuments().then((som){
-                                                              for (DocumentSnapshot ds in som.documents){
-                                                                ds.reference.delete();
-                                                              }
-                                                            });
-                                                            Navigator.pop(context);
-                                                            Navigator.pop(context);
-                                                            Navigator.pop(context);
-                                                          },
-                                                        )
-                                                      ],
-                                                    );
-                                                  });
-                                                }
-                                              else{
-                                                showDialog(context: context,
-                                                    builder: (BuildContext context){
-                                                      return CupertinoAlertDialog(
-                                                        title: Text("Request canceled",style:Theme.of(context).textTheme.subhead),
-                                                        content: Text("Item cannot be sold to user ${document['applicantName']} as the item is currently lent to ${requestedItem.data['borrowName']}",style:Theme.of(context).textTheme.subhead),
-                                                        actions: <Widget>[
-                                                          FlatButton(
-                                                            child: Text("OK",style:Theme.of(context).textTheme.subhead),
-                                                            onPressed: (){
-                                                              Navigator.pop(context);
-                                                              Navigator.pop(context);
-                                                            },
-                                                          )
-                                                        ],
-                                                      );
-                                                    });
-                                              }
+                                                                Firestore.instance.collection('requestBuy').where('itemID', isEqualTo: requestedItem.documentID).getDocuments().then((som){
+                                                                  for (DocumentSnapshot ds in som.documents){
+                                                                    ds.reference.delete();
+                                                                  }
+                                                                });
+                                                                Navigator.pop(context);
+                                                                Navigator.pop(context);
+                                                                Navigator.pop(context);
+                                                              },
+                                                            )
+                                                          ],
+                                                        );
+                                                      });
+                                                    }
+                                                  else{
+                                                    showDialog(context: context,
+                                                        builder: (BuildContext context){
+                                                          return CupertinoAlertDialog(
+                                                            title: Text("Request canceled",style:Theme.of(context).textTheme.subhead),
+                                                            content: Text("Item cannot be sold to user ${document['applicantName']} as the item is currently lent to ${requestedItem.data['borrowName']}",style:Theme.of(context).textTheme.subhead),
+                                                            actions: <Widget>[
+                                                              FlatButton(
+                                                                child: Text("OK",style:Theme.of(context).textTheme.subhead),
+                                                                onPressed: (){
+                                                                  Navigator.pop(context);
+                                                                  Navigator.pop(context);
+                                                                },
+                                                              )
+                                                            ],
+                                                          );
+                                                        });
+                                                  }
 
 
-                                              //kod do firebase
+                                                  //kod do firebase
 
-                                            },
-                                          ),
-                                          FlatButton(
-                                            child: Text('Cancel',style:Theme.of(context).textTheme.subhead),
-                                            onPressed: (){
-                                              Navigator.pop(context);
-                                            },
-                                          )
-                                        ],
+                                                },
+                                              ),
+                                              FlatButton(
+                                                child: Text('Cancel',style:Theme.of(context).textTheme.subhead),
+                                                onPressed: (){
+                                                  Navigator.pop(context);
+                                                },
+                                              )
+                                            ],
 
-                                      );
-                                    }
-                                );
-                              },
-                              child: Text('Choose',style:Theme.of(context).textTheme.subhead )),
+                                          );
+                                        }
+                                    );
+                                  },
+                                  child: Icon(Icons.check, color: Theme.of(context).accentColor),),
 
+                            ),
+                          ),
                         );
                       }
                       else
