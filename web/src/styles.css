@@ -131,15 +131,17 @@ body {
 }
 
 .btn-primary {
-    color: white;
-    background-color: lightpink;
+    color: mediumvioletred;
+    background-color: white;
     border: none;
     border-radius: .3em;
     font-weight: bold;
+    opacity: 0.8;
 }
 
 .btn-primary:hover {
-    background-color: deeppink;
+    background-color: mediumvioletred;
+    color: white;
 }
 
 .shop-item {
