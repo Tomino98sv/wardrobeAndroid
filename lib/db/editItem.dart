@@ -256,11 +256,12 @@ class _State extends State<EditItem> {
                     Padding(padding: EdgeInsets.all(10.0)),
                     Expanded(
                       child: Text(
-                          'Sell?:', style:Theme.of(context).textTheme.subhead
+                          'Sell?', style:Theme.of(context).textTheme.subhead
                       ),
                     ),
                     Expanded(
                       child: DropdownButton(
+                        isExpanded: true,
                           items: _functions.map((String dropDownStringItem) {
                             return DropdownMenuItem<String>(
                               value: dropDownStringItem,

@@ -91,13 +91,15 @@ class UserInfoList extends StatelessWidget{
                                         ),
                                       ),
                                       Padding(padding: EdgeInsets.only(right: 10.0),),
-                                      Text(
-                                        userInfo.data['email'],
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                          fontSize: 17.0,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w400,
+                                      Expanded(
+                                        child: Text(
+                                          userInfo.data['email'],
+                                          textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            fontSize: 17.0,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w400,
+                                          ),
                                         ),
                                       ),]
                                   ),
@@ -453,15 +455,17 @@ class _UserInfoList2 extends State<UserInfoList2>{
                                           ),
                                          ),
                                         Padding(padding: EdgeInsets.only(right: 10.0,bottom: 5.0),),
-                                        Text(
-                                           userInfo.data['email'],
-                                           textAlign: TextAlign.left,
-                                          style: TextStyle(
-                                            fontSize: 17.0,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                         ),
+                                        Flexible(
+                                          child: Text(
+                                             userInfo.data['email'],
+                                             textAlign: TextAlign.left,
+                                            style: TextStyle(
+                                              fontSize: 17.0,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                           ),
+                                        ),
                                      ],
                                    ),
                                    Padding(padding: EdgeInsets.only(top: 10.0),),
