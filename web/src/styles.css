@@ -16,7 +16,7 @@
 
 html {
     background-color: #fff4e6;
-    background-image: url("../img/background2.jpg");
+    background-image: url("../img/white.jpg");
     margin: auto;
     padding: auto;
     width: auto;
@@ -31,7 +31,7 @@ body {
     padding: auto;
     font-family: helvetica;
     background-color: #fff4e6;
-    background-image: url("../img/background2.jpg");
+    background-image: url("../img/white.jpg");
     background-size: cover;
 }
 
@@ -110,7 +110,7 @@ body {
 .section-header {
     font-family: "Metal Mania";
     font-weight: normal;
-    color: white;
+    color: mediumvioletred;
     text-align: center;
     font-size: 3em;
 }
@@ -131,16 +131,15 @@ body {
 }
 
 .btn-primary {
-    color: mediumvioletred;
-    background-color: white;
+    color: white;
+    background-color: mediumvioletred;
     border: none;
     border-radius: .3em;
     font-weight: bold;
-    opacity: 0.8;
 }
 
 .btn-primary:hover {
-    background-color: mediumvioletred;
+    background-color: deeppink;
     color: white;
 }
 
