@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -106,7 +107,8 @@ class _NotificationsPage extends State<NotificationsPage> {
           CircularProgressIndicator(),
           Text(
             content,
-            style: TextStyle(fontSize: 20.0),
+            style: TextStyle(fontSize: 20.0,
+                fontFamily: 'Pacifico'),
           )
         ],
       ),
@@ -207,13 +209,15 @@ class _NotificationsPage extends State<NotificationsPage> {
                         child: Container(
                           width: 45.0,
                           height: 45.0,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).buttonColor,
-                            image: DecorationImage(
-                                image: NetworkImage(urlProfiles[targetEmail]),
-                                fit: BoxFit.cover),
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(75.0)),
+                          child: ClipOval(
+                            child: CachedNetworkImage(
+                              width: 50.0,
+                              height: 50.0,
+                              fit: BoxFit.cover,
+                              imageUrl: urlProfiles[targetEmail],
+                              placeholder: (context, imageUrl) =>
+                                  CircularProgressIndicator(),
+                            ),
                           ),
                         ),
                       ),
@@ -357,12 +361,7 @@ class _NotificationsPage extends State<NotificationsPage> {
         context: context,
         barrierDismissible: false,
         child: CupertinoAlertDialog(
-          title: Text(title),
-//          content: SingleChildScrollView(
-//            child: ListBody(
-//              children: <Widget>[Text(description, style: TextStyle(color: Colors.black))],
-//            ),
-//          ),
+          title: Text(title,style: TextStyle(fontFamily: 'Pacifico')),
           actions: <Widget>[
             FlatButton(
               onPressed: () => Navigations(targetEmail),

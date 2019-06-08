@@ -31,7 +31,7 @@ class StarRating extends StatelessWidget {
                   onChanged(value == index + 1 ? index : index + 1);
                 }
                     : null,
-                color: index < value ? color : null,
+                color: index < value ? color : Colors.black,
                 iconSize: size,
                 icon: Icon(
                   index < value ? filledStar ?? Icons.star : unfilledStar ?? Icons.star_border,
@@ -42,7 +42,7 @@ class StarRating extends StatelessWidget {
             );
           }),
         ),
-        Text(wordRate(value))
+        Text(wordRate(value), style: TextStyle(color: Colors.black),)
       ],
     );
   }

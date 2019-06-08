@@ -46,38 +46,42 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
                     onPressed: () {
                       setState(() {
                         selectedWidgetSize = !selectedWidgetSize;
-                        selectedWidgetSize == true ?
-                          showDialog(context: context,
-                              child: _buildSizeWidget(context, widget.onFilterChosen)
-                          ) : null;
+                        selectedWidgetSize == true
+                            ? showDialog(
+                                context: context,
+                                child: _buildSizeWidget(
+                                    context, widget.onFilterChosen))
+                            : widget.onFilterChosen(null);
                       });
-           //           return AllDressesList(filterValue: value,); //tu toto by malo vratit vsetky aj s hodnpotoou...
+                      //           return AllDressesList(filterValue: value,); //tu toto by malo vratit vsetky aj s hodnpotoou...
                     },
                   ),
                   FilterChipWidget(
-                    chipName: 'Length',
+                      chipName: 'Length',
                       onPressed: () {
                         setState(() {
                           selectedWidgetLength = !selectedWidgetLength;
-                          selectedWidgetLength == true ?
-                            showDialog(context: context,
-                                child: _buildLenghtWidget(context, widget.onFilterChosen)
-                            ): null;
+                          selectedWidgetLength == true
+                              ? showDialog(
+                                  context: context,
+                                  child: _buildLenghtWidget(
+                                      context, widget.onFilterChosen))
+                              : null;
                         });
-                      }
-                  ),
+                      }),
                   FilterChipWidget(
-                    chipName: 'Color',
+                      chipName: 'Color',
                       onPressed: () {
                         setState(() {
                           selectedWidgetColor = !selectedWidgetColor;
-                           selectedWidgetColor == true ?
-                    showDialog(context: context,
-                        child: _buildColorWidget(context,widget.onFilterChosen)
-                    ) : null;
+                          selectedWidgetColor == true
+                              ? showDialog(
+                                  context: context,
+                                  child: _buildColorWidget(
+                                      context, widget.onFilterChosen))
+                              : null;
                         });
-                      }
-                  ),
+                      }),
                 ],
               ),
             ),
@@ -91,15 +95,14 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
     );
   }
 }
+
 String value;
 
 class FilterChipWidget extends StatefulWidget {
   final String chipName;
   final Function onPressed;
 
-  FilterChipWidget({Key key, this.chipName, this.onPressed})
-      : super(key: key);
-
+  FilterChipWidget({Key key, this.chipName, this.onPressed}) : super(key: key);
 
   @override
   _FilterChipWidgetState createState() => _FilterChipWidgetState();
@@ -111,7 +114,7 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
   @override
   Widget build(BuildContext context) {
     return FilterChip(
-      label: Text(widget.chipName),
+      label: Text(widget.chipName, style: TextStyle(fontFamily: 'Pacifico')),
       labelStyle: TextStyle(
           color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w400),
       selected: _isSelected,
@@ -133,7 +136,9 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
 //           debugPrint("$selectedWidget");
           } else {
             debugPrint("neda to proste");
-            AllDressesList(filterValue: null,);
+            AllDressesList(
+              filterValue: null,
+            );
           }
         });
       },
@@ -141,46 +146,49 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
     );
   }
 }
+
 List<String> sizes = ['34', '36', '38', '40', '42', '44', '46', '48'];
 int _currentItemSelected = 0;
 
 Widget _buildSizeWidget(BuildContext context, Function func) {
   debugPrint("malo by vykreslit dropdown menu");
   return CupertinoAlertDialog(
-    title: Text("Your size is", style: TextStyle(
-        color: Colors.black,
-        fontSize: 15.0,
-      decorationStyle: TextDecorationStyle.dashed
-    ) ,),
-         content: SizedBox(
-           width: 200,
-           height: 200,
-           child: CupertinoPicker(
-               itemExtent: 30,
-               diameterRatio: 1.0,
-               backgroundColor: CupertinoColors.white,
-               onSelectedItemChanged: (index){
-
-                 _currentItemSelected = index;
-                 print(_currentItemSelected);
+    title: Text(
+      "Your size is",
+      style: TextStyle(
+          color: Colors.black,
+          fontSize: 15.0,
+          fontFamily: 'Pacifico',
+          decorationStyle: TextDecorationStyle.dashed),
+    ),
+    content: SizedBox(
+      width: 200,
+      height: 200,
+      child: CupertinoPicker(
+          itemExtent: 30,
+          diameterRatio: 1.0,
+          backgroundColor: CupertinoColors.white,
+          onSelectedItemChanged: (index) {
+            _currentItemSelected = index;
+            print(_currentItemSelected);
 //                 String size = sizes[index];
-                 value = sizes[index];
-                 print(value);
-                 func(value);
-               },
-               children: List<Widget>.generate(sizes.length, (index) {
-                 return Center(
-                   child: Text(sizes[index],
-                     style: TextStyle(
-                         fontSize: 20.0,
-                       color: Theme.of(context).indicatorColor
-                     ),
-                   ),
-                 );
-               },
-               )
-           ),
-         ),
+            value = sizes[index];
+            print(value);
+            func(value);
+          },
+          children: List<Widget>.generate(
+            sizes.length,
+            (index) {
+              return Center(
+                child: Text(
+                  sizes[index],
+                  style: TextStyle(
+                      fontSize: 20.0, color: Theme.of(context).indicatorColor),
+                ),
+              );
+            },
+          )),
+    ),
   );
 }
 
@@ -189,11 +197,14 @@ List<String> lengths = ['Mini', 'Midi', 'Maxi', 'Oversize'];
 Widget _buildLenghtWidget(BuildContext context, Function func) {
   debugPrint("malo by vykreslit dropdown menu 2");
   return CupertinoAlertDialog(
-    title: Text("Favourite lenght is", style: TextStyle(
-        color: Colors.black,
-        fontSize: 15.0,
-        decorationStyle: TextDecorationStyle.dashed
-    ),),
+    title: Text(
+      "Favourite lenght is",
+      style: TextStyle(
+          color: Colors.black,
+          fontSize: 15.0,
+          fontFamily: 'Pacifico',
+          decorationStyle: TextDecorationStyle.dashed),
+    ),
     content: SizedBox(
       width: 200,
       height: 200,
@@ -208,32 +219,61 @@ Widget _buildLenghtWidget(BuildContext context, Function func) {
             print(value);
             func(value);
           },
-          children: List<Widget>.generate(lengths.length, (index) {
-            return Center(
-              child: Text(lengths[index],
-                style: TextStyle(
-                    fontSize: 20.0,
-                    color: Theme.of(context).indicatorColor
+          children: List<Widget>.generate(
+            lengths.length,
+            (index) {
+              return Center(
+                child: Text(
+                  lengths[index],
+                  style: TextStyle(
+                    fontFamily: 'Pacifico',
+                      fontSize: 20.0, color: Theme.of(context).indicatorColor),
                 ),
-              ),
-            );
-          },
-          )
-      ),
+              );
+            },
+          )),
     ),
   );
 }
 
-List<String> colors = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Brown", "Magenta", "Tan", "Cyan", "Olive", "Maroon", "Navy", "Aquamarine", "Turquoise", "Silver", "Lime", "Teal", "Indigo", "Violet", "Pink", "Black", "White", "Gray"];
+List<String> colors = [
+  "Red",
+  "Orange",
+  "Yellow",
+  "Green",
+  "Blue",
+  "Purple",
+  "Brown",
+  "Magenta",
+  "Tan",
+  "Cyan",
+  "Olive",
+  "Maroon",
+  "Navy",
+  "Aquamarine",
+  "Turquoise",
+  "Silver",
+  "Lime",
+  "Teal",
+  "Indigo",
+  "Violet",
+  "Pink",
+  "Black",
+  "White",
+  "Gray"
+];
 
 Widget _buildColorWidget(BuildContext context, Function func) {
   debugPrint("malo by vykreslit dropdown menu 3");
   return CupertinoAlertDialog(
-    title: Text("Favourite color is", style: TextStyle(
-        color: Colors.black,
-        fontSize: 15.0,
-        decorationStyle: TextDecorationStyle.dashed
-    ),),
+    title: Text(
+      "Favourite color is",
+      style: TextStyle(
+        fontFamily: 'Pacifico',
+          color: Colors.black,
+          fontSize: 15.0,
+          decorationStyle: TextDecorationStyle.dashed),
+    ),
     content: SizedBox(
       width: 200,
       height: 200,
@@ -248,18 +288,19 @@ Widget _buildColorWidget(BuildContext context, Function func) {
             print(value);
             func(value);
           },
-          children: List<Widget>.generate(colors.length, (index) {
-            return Center(
-              child: Text(colors[index],
-                style: TextStyle(
-                    fontSize: 20.0,
-                    color: Theme.of(context).indicatorColor
+          children: List<Widget>.generate(
+            colors.length,
+            (index) {
+              return Center(
+                child: Text(
+                  colors[index],
+                  style: TextStyle(
+                    fontFamily: 'Pacifico',
+                      fontSize: 20.0, color: Theme.of(context).indicatorColor),
                 ),
-              ),
-            );
-          },
-          )
-      ),
+              );
+            },
+          )),
     ),
   );
 }

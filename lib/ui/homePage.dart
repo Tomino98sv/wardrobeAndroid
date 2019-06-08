@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/bl/Pages/rating.dart';
 import 'package:flutter_app/bl/Pages/settingsPage.dart';
@@ -76,13 +77,17 @@ class _HomeState extends State<HomePage> {
     inheritedThemeSwitcher = ThemeSwitcher.of(context);
     return WillPopScope(
       onWillPop: () {
-        confirm(context, "Escape from app",
-            "Are you want to logout and get out of here?");
+        confirm(context, "Leave the app",
+            "Log out and leave the app!");
       },
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text('Wardrobe', style: TextStyle(color: Colors.white),),
+          title: Text('eDresses',
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'Pacifico'),
+          ),
           actions: <Widget>[
             _page != 4
                 ? Container()
@@ -118,6 +123,9 @@ class _HomeState extends State<HomePage> {
                           key.currentState as DressesListState;
                       state.setState(() {
                         state.showFilters = !state.showFilters;
+                        if(!state.showFilters) {
+                          state.filterValue = null;
+                        }
                       });
 //                Navigator.push(context, MaterialPageRoute (
 //                  builder: (context){
@@ -135,23 +143,42 @@ class _HomeState extends State<HomePage> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: new Icon(Icons.face, color: Colors.grey[900]),
-              title: new Text('Me', style: TextStyle(color: Colors.black),),
+              title: new Text('Me',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Pacifico',
+                ),),
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.style, color: Colors.grey[900]),
-              title: new Text('Dresses',style: TextStyle(color: Colors.black),),
+              title: new Text('Dresses',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Pacifico',
+                ),),
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.notifications, color: Colors.grey[900]),
-              title: new Text('Alerts',style: TextStyle(color: Colors.black),),
+              title: new Text('Alerts',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Pacifico',
+                ),),
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.shopping_cart, color: Colors.grey[900]),
-              title: new Text('Deals', style: TextStyle(color: Colors.black),),
+              title: new Text('Deals',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Pacifico'),),
             ),
             BottomNavigationBarItem(
                 icon: new Icon(Icons.account_circle, color:Colors.grey[900]),
-                title: new Text('Users', style: TextStyle(color: Colors.black),))
+                title: new Text('Users',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Pacifico',
+                  ),))
           ],
           currentIndex: _page,
           onTap: onPageChanged,
@@ -182,21 +209,21 @@ class _HomeState extends State<HomePage> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return AlertDialog(
+          return CupertinoAlertDialog(
             title: Text(title),
             content: SingleChildScrollView(
               child: ListBody(
-                children: <Widget>[Text(description)],
+                children: <Widget>[Text(description, style: TextStyle(color: Colors.black),)],
               ),
             ),
             actions: <Widget>[
               FlatButton(
                 onPressed: signOut,
-                child: Text("LogOut"),
+                child: Text("Log Out"),
               ),
               FlatButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text("Stay on app"),
+                child: Text("Stay Here"),
               )
             ],
           );
@@ -310,7 +337,7 @@ class _HomeState extends State<HomePage> {
           scaffoldBackgroundColor: Colors.grey[50],
           accentColor: Colors.pink[400],
           buttonColor: Colors.pink,
-          fontFamily: 'Quicksand',
+          fontFamily: 'Pacifico',
           indicatorColor: Colors.pink[100],
           brightness: Brightness.light,
           iconTheme: IconThemeData(color: Colors.black),
@@ -327,7 +354,7 @@ class _HomeState extends State<HomePage> {
             buttonColor: Colors.blue,
             toggleableActiveColor: Colors.lightBlue,
             unselectedWidgetColor: Colors.blueAccent,
-            fontFamily: 'Quicksand',
+            fontFamily: 'Pacifico',
             indicatorColor: Colors.blue[200],
             brightness: Brightness.light,
             textTheme: TextTheme(subhead: TextStyle(color: Colors.black)),
@@ -341,13 +368,15 @@ class _HomeState extends State<HomePage> {
         new ThemeData(
           textTheme: TextTheme(subhead: TextStyle(color: Colors.white),),
           primaryColor: Colors.black,
-          scaffoldBackgroundColor: Colors.black54,
+          scaffoldBackgroundColor: Colors.grey[900],
           accentColor: Colors.black45,
           buttonColor: Colors.white12,
           toggleableActiveColor: Colors.black54,
           unselectedWidgetColor: Colors.black45,
-          fontFamily: 'Quicksand',
+          fontFamily: 'Pacifico',
+          canvasColor: Colors.black54,
           indicatorColor: Colors.black54,
+          dialogBackgroundColor: Colors.black54,
           iconTheme: IconThemeData(color: Colors.white),
         ));
   }
