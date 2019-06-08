@@ -182,7 +182,11 @@ class _WelcomePageState extends State<WelcomePage>
                                               context: context,
                                               barrierDismissible: false,
                                               child: CupertinoAlertDialog(
-                                                title: Text(document['name']),
+                                                title: Text(
+                                                  document['name'],
+                                                  style: TextStyle(
+                                                    fontFamily: 'Pacifico',
+                                                  ), ),
                                                 content: Column(
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: <Widget>[
@@ -194,12 +198,14 @@ class _WelcomePageState extends State<WelcomePage>
                                                     Row(
                                                       mainAxisAlignment: MainAxisAlignment.start,
                                                       children: <Widget>[
-//                                                        Text("About:  ",style: TextStyle(color: Colors.black)),
                                                         Padding(
                                                           padding: EdgeInsets.only(top: 15.0),
                                                         ),
                                                         Expanded(
-                                                            child: Text(document["description"], style: TextStyle(color: Colors.black,), textAlign: TextAlign.center,)
+                                                            child: Text(document["description"],
+                                                              style: TextStyle(color: Colors.black,
+                                                              fontFamily: 'Pacifico'),
+                                                              textAlign: TextAlign.center,)
                                                         ),
                                                       ],
                                                     ),
@@ -246,9 +252,13 @@ class _WelcomePageState extends State<WelcomePage>
                                             context: context,
                                             builder: (BuildContext context) {
                                               return CupertinoAlertDialog(
-                                                title: Text('Delete Item',style: TextStyle(color: Colors.black)),
+                                                title: Text('Delete Item',style:
+                                                TextStyle(color: Colors.black,
+                                                fontFamily: 'Pacifico')),
                                                 content: Text(
-                                                    'Are you sure you want to delete this item?',style: TextStyle(color: Colors.black)),
+                                                    'Are you sure you want to delete this item?',
+                                                    style: TextStyle(color: Colors.black,
+                                                    fontFamily: 'Pacifico')),
                                                 actions: <Widget>[
                                                   FlatButton(
                                                     child: Text('Yes'),
@@ -337,7 +347,10 @@ class _WelcomePageState extends State<WelcomePage>
                                               context: context,
                                               barrierDismissible: false,
                                               child: CupertinoAlertDialog(
-                                                title: Text(document['name']),
+                                                title: Text(document['name'],
+                                                  style: TextStyle(
+                                                    fontFamily: 'Pacifico',
+                                                  ),),
                                                 content: Column(
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: <Widget>[
@@ -349,8 +362,10 @@ class _WelcomePageState extends State<WelcomePage>
                                                     Row(
                                                       mainAxisAlignment: MainAxisAlignment.center,
                                                       children: <Widget>[
-                                                        Text("Lent to:  "),
-                                                        Text('${document['borrowName']}',style: TextStyle(color: Colors.black)),
+                                                        Text("Lent to:  ",style: TextStyle(
+                                                          fontFamily: 'Pacifico',
+                                                        ),),
+                                                        Text('${document['borrowName']}',style: TextStyle(color: Colors.black, fontFamily: 'Pacifico')),
                                                       ],
                                                     ),
                                                   ],
@@ -364,10 +379,11 @@ class _WelcomePageState extends State<WelcomePage>
                                                               context: context,
                                                               builder: (BuildContext context) {
                                                                 return CupertinoAlertDialog(
-                                                                  title: Text('Get item',style: TextStyle(color: Colors.black)),
+                                                                  title: Text('Get item',style: TextStyle(color: Colors.black, fontFamily: 'Pacifico')),
                                                                   content: Text(
                                                                       'Are you sure that user returned your item back to you?',
-                                                                      style: TextStyle(color: Colors.black)),
+                                                                      style: TextStyle(color: Colors.black,
+                                                                      fontFamily: 'Pacifico')),
                                                                   actions: <Widget>[
                                                                     FlatButton(
                                                                       child: Text('Yes',style: TextStyle(color: Colors.black)),
@@ -472,7 +488,8 @@ class _WelcomePageState extends State<WelcomePage>
                                               context: context,
                                               barrierDismissible: false,
                                               child: CupertinoAlertDialog(
-                                                title: Text(document['name']),
+                                                title: Text(document['name'],
+                                                style: TextStyle(fontFamily: 'Pacifico'),),
                                                 content: Column(
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: <Widget>[
@@ -484,7 +501,7 @@ class _WelcomePageState extends State<WelcomePage>
                                                     Row(
                                                       mainAxisAlignment: MainAxisAlignment.center,
                                                       children: <Widget>[
-                                                        Text("Borrowed from:  "),
+                                                        Text("Borrowed from:  ", style: TextStyle(fontFamily: 'Pacifico'),),
                                                         StreamBuilder<QuerySnapshot>(
                                                           stream:  Firestore.instance
                                                               .collection('users')
@@ -492,7 +509,7 @@ class _WelcomePageState extends State<WelcomePage>
                                                               .snapshots(),
                                                           builder: (context, snapshot) {
                                                             return Text('${snapshot.data.documents[0]['name']}',
-                                                                style: TextStyle(color: Colors.black));
+                                                                style: TextStyle(color: Colors.black,fontFamily: 'Pacifico'));
                                                           },
                                                         ),
                                                       ],
@@ -508,10 +525,10 @@ class _WelcomePageState extends State<WelcomePage>
                                                               context: context,
                                                               builder: (BuildContext context) {
                                                                 return CupertinoAlertDialog(
-                                                                  title: Text('Return item', style: TextStyle(color: Colors.black),),
+                                                                  title: Text('Return item', style: TextStyle(color: Colors.black,fontFamily: 'Pacifico'),),
                                                                   content: Text(
                                                                       'Are you sure that you returned the item back to the owner?',
-                                                                      style:TextStyle(color: Colors.black)),
+                                                                      style:TextStyle(color: Colors.black,fontFamily: 'Pacifico')),
                                                                   actions: <Widget>[
                                                                     FlatButton(
                                                                       child: Text('Yes',style:TextStyle(color: Colors.black)),

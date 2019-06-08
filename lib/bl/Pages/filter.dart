@@ -114,7 +114,7 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
   @override
   Widget build(BuildContext context) {
     return FilterChip(
-      label: Text(widget.chipName),
+      label: Text(widget.chipName, style: TextStyle(fontFamily: 'Pacifico')),
       labelStyle: TextStyle(
           color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w400),
       selected: _isSelected,
@@ -158,6 +158,7 @@ Widget _buildSizeWidget(BuildContext context, Function func) {
       style: TextStyle(
           color: Colors.black,
           fontSize: 15.0,
+          fontFamily: 'Pacifico',
           decorationStyle: TextDecorationStyle.dashed),
     ),
     content: SizedBox(
@@ -201,6 +202,7 @@ Widget _buildLenghtWidget(BuildContext context, Function func) {
       style: TextStyle(
           color: Colors.black,
           fontSize: 15.0,
+          fontFamily: 'Pacifico',
           decorationStyle: TextDecorationStyle.dashed),
     ),
     content: SizedBox(
@@ -224,6 +226,7 @@ Widget _buildLenghtWidget(BuildContext context, Function func) {
                 child: Text(
                   lengths[index],
                   style: TextStyle(
+                    fontFamily: 'Pacifico',
                       fontSize: 20.0, color: Theme.of(context).indicatorColor),
                 ),
               );
@@ -266,6 +269,7 @@ Widget _buildColorWidget(BuildContext context, Function func) {
     title: Text(
       "Favourite color is",
       style: TextStyle(
+        fontFamily: 'Pacifico',
           color: Colors.black,
           fontSize: 15.0,
           decorationStyle: TextDecorationStyle.dashed),
@@ -291,6 +295,7 @@ Widget _buildColorWidget(BuildContext context, Function func) {
                 child: Text(
                   colors[index],
                   style: TextStyle(
+                    fontFamily: 'Pacifico',
                       fontSize: 20.0, color: Theme.of(context).indicatorColor),
                 ),
               );
