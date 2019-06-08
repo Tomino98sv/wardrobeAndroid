@@ -107,7 +107,8 @@ class _NotificationsPage extends State<NotificationsPage> {
           CircularProgressIndicator(),
           Text(
             content,
-            style: TextStyle(fontSize: 20.0),
+            style: TextStyle(fontSize: 20.0,
+                fontFamily: 'Pacifico'),
           )
         ],
       ),
@@ -360,12 +361,7 @@ class _NotificationsPage extends State<NotificationsPage> {
         context: context,
         barrierDismissible: false,
         child: CupertinoAlertDialog(
-          title: Text(title),
-//          content: SingleChildScrollView(
-//            child: ListBody(
-//              children: <Widget>[Text(description, style: TextStyle(color: Colors.black))],
-//            ),
-//          ),
+          title: Text(title,style: TextStyle(fontFamily: 'Pacifico')),
           actions: <Widget>[
             FlatButton(
               onPressed: () => Navigations(targetEmail),
