@@ -36,91 +36,94 @@ class _LoginPageState extends State<LoginPage> {
         key: _scaffoldKey,
         body: Form(
           key: _formKey,
-          child: Container(
-            padding: EdgeInsets.all(25.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                TextFormField(
-                  decoration: InputDecoration(
-                      hintText: 'Email',
-                      icon: new Icon(Icons.email, color: Colors.black)),
-                  validator: (input) {
-                    if (input.isEmpty) {
-                      return 'Please type an email';
-                    } else if (validateEmail(input)) {
-                      return 'Mail must be in mail format (%@%.%)';
-                    }
-                  },
-                  onSaved: (input) => _email = input,
-                ),
-                SizedBox(height: 15.0),
-                TextFormField(
-                  decoration: InputDecoration(
-                      hintText: 'Password',
-                      icon: new Icon(Icons.text_fields, color: Colors.black)),
-                  validator: (input) {
-                    if (input.length < 6) {
-                      return 'Your password needs to be at least 6 characters';
-                    }
-                  },
-                  onSaved: (input) => _password = input,
-                  obscureText: true,
-                ),
-                SizedBox(height: 20.0),
-                Container(
-                  margin: EdgeInsets.only(top: 8.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(30.0),
-                    child: Material(
-                      color: Theme.of(context).buttonColor,
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(top: 100.0, left:25.0, right:25.0, bottom:25.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  TextFormField(
+                    decoration: InputDecoration(
+                        hintText: 'Email',
+                        icon: new Icon(Icons.email, color: Colors.black)),
+                    validator: (input) {
+                      if (input.isEmpty) {
+                        return 'Please type an email';
+                      } else if (validateEmail(input)) {
+                        return 'Mail must be in mail format (%@%.%)';
+                      }
+                    },
+                    onSaved: (input) => _email = input,
+
+                  ),
+                  SizedBox(height: 15.0),
+                  TextFormField(
+                    decoration: InputDecoration(
+                        hintText: 'Password',
+                        icon: new Icon(Icons.text_fields, color: Colors.black)),
+                    validator: (input) {
+                      if (input.length < 6) {
+                        return 'Your password needs to be at least 6 characters';
+                      }
+                    },
+                    onSaved: (input) => _password = input,
+                    obscureText: true,
+                  ),
+                  SizedBox(height: 20.0),
+                  Container(
+                    margin: EdgeInsets.only(top: 8.0),
+                    child: ClipRRect(
                       borderRadius: BorderRadius.circular(30.0),
-                      child: InkWell(
-                        splashColor: Theme.of(context).accentColor,
-                        onTap: () {
-                          signInMethod(context);
-                        },
-                        child: Container(
-                          width: 100.0,
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
-                          child: Text(
-                            'Log In',
-                            style: TextStyle(color: Colors.white),
+                      child: Material(
+                        color: Theme.of(context).buttonColor,
+                        borderRadius: BorderRadius.circular(30.0),
+                        child: InkWell(
+                          splashColor: Theme.of(context).accentColor,
+                          onTap: () {
+                            signInMethod(context);
+                          },
+                          child: Container(
+                            width: 100.0,
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              'Log In',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(height: 15.0),
-                Text('Don\'t have an account?', style:Theme.of(context).textTheme.subhead),
-                Container(
-                  margin: EdgeInsets.only(top: 8.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(30.0),
-                    child: Material(
-                      color: Theme.of(context).buttonColor,
+                  SizedBox(height: 15.0),
+                  Text('Don\'t have an account?', style:Theme.of(context).textTheme.subhead),
+                  Container(
+                    margin: EdgeInsets.only(top: 8.0),
+                    child: ClipRRect(
                       borderRadius: BorderRadius.circular(30.0),
-                      child: InkWell(
-                        splashColor: Theme.of(context).accentColor,
-                        onTap: () {
-                          Navigator.of(context).pushNamed('/signup');
-                        },
-                        child: Container(
-                          width: 100.0,
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
-                          child: Text(
-                            'Sign up',
-                            style: TextStyle(color: Colors.white),
+                      child: Material(
+                        color: Theme.of(context).buttonColor,
+                        borderRadius: BorderRadius.circular(30.0),
+                        child: InkWell(
+                          splashColor: Theme.of(context).accentColor,
+                          onTap: () {
+                            Navigator.of(context).pushNamed('/signup');
+                          },
+                          child: Container(
+                            width: 100.0,
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              'Sign up',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ));
