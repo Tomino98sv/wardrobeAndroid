@@ -85,6 +85,7 @@ class _MyNewItem extends State<MyNewItem> {
                         style:Theme.of(context).textTheme.subhead,
                         decoration: new InputDecoration(
                             labelText: 'Name',
+                            labelStyle: Theme.of(context).textTheme.subhead,
                             icon: new Icon(Icons.account_circle,
                                 color: Theme.of(context).iconTheme.color)),
                         onChanged: (String userInput) {
@@ -104,6 +105,7 @@ class _MyNewItem extends State<MyNewItem> {
                         style:Theme.of(context).textTheme.subhead,
                         decoration: new InputDecoration(
                             labelText: 'Description',
+                            labelStyle: Theme.of(context).textTheme.subhead,
                             icon: new Icon(Icons.event_note,
                                 color: Theme.of(context).iconTheme.color)),
                         onChanged: (String userInput) {

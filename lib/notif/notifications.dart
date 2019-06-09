@@ -251,7 +251,7 @@ class _NotificationsPage extends State<NotificationsPage> {
                       ),
                       Positioned(
                         left: 45,
-                        height: 30.0,
+                        height: 35.0,
                         width: 30.0,
                         child: Container(
                           alignment: Alignment.center,

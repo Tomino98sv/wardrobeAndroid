@@ -137,7 +137,7 @@ class _ChatPageState extends State<ChatPage>{
                 new Divider(height: 1.0),
                 Container(
                   child: _getInputAndSend(),
-                  decoration: BoxDecoration(color: Theme.of(context).cardColor), //accent color
+                  decoration: BoxDecoration(color: Theme.of(context).scaffoldBackgroundColor), //accent color
                 ),
               ],
             ),
@@ -351,7 +351,7 @@ class _ChatPageState extends State<ChatPage>{
         children: <Widget>[
           Text(
             "Start Conversation with first Message",
-            style: TextStyle(fontSize: 20.0),
+            style: Theme.of(context).textTheme.subhead,
           ),
         ],
       ),
@@ -391,7 +391,7 @@ class _ChatPageState extends State<ChatPage>{
                 },
                 onSubmitted: _handleSubmit,
                 decoration:
-                new InputDecoration.collapsed(hintText: "Enter some text to send a message"),
+                new InputDecoration.collapsed(hintText: "Enter some text to send a message", hintStyle: Theme.of(context).textTheme.subhead),
               ),
             ),
             new Container(
