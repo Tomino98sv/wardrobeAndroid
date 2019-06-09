@@ -238,7 +238,7 @@ class _HomeState extends State<HomePage> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return AlertDialog(
+          return CupertinoAlertDialog(
             title: Text(title),
             content: SingleChildScrollView(
               child: StatefulBuilder(
@@ -276,7 +276,7 @@ class _HomeState extends State<HomePage> {
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
-            return AlertDialog(
+            return CupertinoAlertDialog(
               title: Text("Thanks for your rating"),
               content: SingleChildScrollView(
                 child: Icon(Icons.toys,color: Theme.of(context).accentColor),
