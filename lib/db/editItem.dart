@@ -141,6 +141,7 @@ class _State extends State<EditItem> {
                   style:Theme.of(context).textTheme.subhead,
                   decoration: new InputDecoration(
                       labelText: item['name'],
+                      labelStyle: Theme.of(context).textTheme.subhead,
                       icon: new Icon(Icons.account_circle,
                           color: Theme.of(context).buttonColor)),
                   onChanged: _onChangedName,
@@ -149,10 +150,9 @@ class _State extends State<EditItem> {
                   maxLength: 140,
                   style:Theme.of(context).textTheme.subhead,
                   decoration: new InputDecoration(
-
                       labelText: item['description'],
-                      icon:
-                      new Icon(Icons.event_note, color: Theme.of(context).buttonColor)),
+                      labelStyle: Theme.of(context).textTheme.subhead,
+                      icon: new Icon(Icons.event_note, color: Theme.of(context).buttonColor)),
                   onChanged: _onChangedDescription,
                 ),
                 Row(

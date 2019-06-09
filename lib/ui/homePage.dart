@@ -127,11 +127,6 @@ class _HomeState extends State<HomePage> {
                           state.filterValue = null;
                         }
                       });
-//                Navigator.push(context, MaterialPageRoute (
-//                  builder: (context){
-//                    return FilterChipDisplay();
-//                  }
-//                ));
                     }),
           ],
         ),
