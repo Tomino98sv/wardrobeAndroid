@@ -18,7 +18,7 @@ class UserInfoList extends StatelessWidget{
 
   UserInfoList({@required this.userInfo, this.itemInfo, this.currentUser});
 
-// ten list, ktory sa zobrazi ked si vyberiem borrow item
+// ten list, ktory sa zobrazi ked si vyberiem borrow, lend item
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -135,10 +135,10 @@ class UserInfoList extends StatelessWidget{
                                           showDialog(
                                             context: context,
                                             child: CupertinoAlertDialog(
-                                              title: (itemInfo.data['borrowedTo'] == ""  || itemInfo.data['borrowedTo'] == null)? Text('Lend ${itemInfo.data['name']}')
-                                                  : Text('Return ${itemInfo.data['name']}'),
-                                              content: (itemInfo.data['borrowedTo'] == ""  || itemInfo.data['borrowedTo'] == null)? Text('Do you still wish to lend ${itemInfo.data['name']} to ${userInfo.data['name']}?')
-                                              : Text('Do you still wish to return ${itemInfo.data['name']} to ${userInfo.data['name']}?'),
+                                              title: (itemInfo.data['borrowedTo'] == ""  || itemInfo.data['borrowedTo'] == null)? Text('Lend ${itemInfo.data['name']}', style: TextStyle(fontFamily: 'Pacifico'),)
+                                                  : Text('Return ${itemInfo.data['name']}', style: TextStyle(fontFamily: 'Pacifico')),
+                                              content: (itemInfo.data['borrowedTo'] == ""  || itemInfo.data['borrowedTo'] == null)? Text('Do you still wish to lend ${itemInfo.data['name']} to ${userInfo.data['name']}?',  style: TextStyle(fontFamily: 'Pacifico'))
+                                              : Text('Do you still wish to return ${itemInfo.data['name']} to ${userInfo.data['name']}?',  style: TextStyle(fontFamily: 'Pacifico')),
                                               actions: <Widget>[
                                                 FlatButton(
                                                   child: Text('Yes'),
@@ -186,7 +186,7 @@ class UserInfoList extends StatelessWidget{
                                   ),),
                                 ],
                               ),
-                        Text('User\'s items: '),
+                        Text('User\'s items: ', style: Theme.of(context).textTheme.subhead,),
                         Expanded(
                           child: Container(
                             height: 200.0,
@@ -236,7 +236,7 @@ class UserInfoList extends StatelessWidget{
                                                 width: double.maxFinite,
                                                 height: 26.0,
                                                 padding: EdgeInsets.symmetric(
-                                                    vertical: 4.0, horizontal: 16.0),
+                                                    vertical: 2.0, horizontal: 16.0),
                                                 color: Color(0x66000000),
                                                 alignment: Alignment.bottomCenter,
                                                 child: Text(
@@ -469,36 +469,27 @@ class _UserInfoList2 extends State<UserInfoList2>{
                                      ],
                                    ),
                                    Padding(padding: EdgeInsets.only(top: 10.0),),
-                                   Container(
-                                     margin: EdgeInsets.only(left: 290.0, right: 5.0,bottom: 15.0),
-                                     child: FloatingActionButton(
-                                         child: Icon(Icons.message),
-                                         shape: _DiamondBorder(),
-                                         onPressed: () {
-                                           Navigator.push(
-                                               context,
-                                               MaterialPageRoute(builder: (context) => ChatPage(userInfo.data["email"])
-                                               ));
-                                         }),
+                                   Align(
+                                     alignment: Alignment.centerRight,
+                                     child: Container(
+                                       margin: EdgeInsets.only( right: 10.0,bottom: 15.0),
+                                       child: FloatingActionButton(
+                                           child: Icon(Icons.message),
+                                           shape: _DiamondBorder(),
+                                           onPressed: () {
+                                             Navigator.push(
+                                                 context,
+                                                 MaterialPageRoute(builder: (context) => ChatPage(userInfo.data["email"])
+                                                 ));
+                                           }),
+                                     ),
                                    ),
                                  ],
                                ),
                            ),
                        ],
                      ),
-//                   Container(
-//                     margin: EdgeInsets.only(left: 290.0, right: 5.0,bottom: 15.0),
-//                     child: FloatingActionButton(
-//                         child: Icon(Icons.message),
-//                         shape: _DiamondBorder(),
-//                         onPressed: () {
-//                           Navigator.push(
-//                               context,
-//                               MaterialPageRoute(builder: (context) => ChatPage(userInfo.data["email"])
-//                               ));
-//                         }),
-//                   ),
-                     Text('User\'s items: ',),
+                     Text('User\'s items: ', style: Theme.of(context).textTheme.subhead,),
                      Container(
                        child: Expanded(
                            child: GridView.count(
@@ -535,7 +526,7 @@ class _UserInfoList2 extends State<UserInfoList2>{
                                                      width: double.maxFinite,
                                                      height: 26.0,
                                                      padding: EdgeInsets.symmetric(
-                                                         vertical: 4.0, horizontal: 16.0),
+                                                         vertical: 2.0, horizontal: 16.0),
                                                      color: Color(0x66000000),
                                                      alignment: Alignment.bottomCenter,
                                                      child: Text(
@@ -558,7 +549,7 @@ class _UserInfoList2 extends State<UserInfoList2>{
                                          context: context,
                                          barrierDismissible: false,
                                          child: CupertinoAlertDialog(
-                                           title: Text(document['name']),
+                                           title: Text(document['name'], style: TextStyle(fontFamily: 'Pacifico'),),
                                            content: Column(
                                              mainAxisAlignment: MainAxisAlignment.center,
                                              children: <Widget>[
@@ -570,7 +561,7 @@ class _UserInfoList2 extends State<UserInfoList2>{
                                                Row(
                                                  mainAxisAlignment: MainAxisAlignment.center,
                                                  children: <Widget>[
-                                                   Expanded(child: Text(document['description'], textAlign: TextAlign.center)),
+                                                   Expanded(child: Text(document['description'], textAlign: TextAlign.center, style: TextStyle(fontFamily: 'Pacifico'),),),
                                                  ],
                                                ),
                                              ],

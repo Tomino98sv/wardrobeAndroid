@@ -128,7 +128,7 @@ class DressesListState extends State<AllDressesList>
                                           width: double.maxFinite,
                                           height: 26.0,
                                           padding: EdgeInsets.symmetric(
-                                              vertical: 4.0, horizontal: 16.0),
+                                              vertical: 2.0, horizontal: 16.0),
                                           color: Color(0x66000000),
                                           alignment: Alignment.bottomCenter,
                                           child: Text(
