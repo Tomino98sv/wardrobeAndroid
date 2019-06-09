@@ -13,6 +13,7 @@ import 'package:flutter_app/deals/dealsHome.dart';
 import 'package:flutter_app/notif/notifications.dart';
 import 'package:flutter_app/ui/themes.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:badges/badges.dart';
 
 import '../main.dart';
 
@@ -134,50 +135,74 @@ class _HomeState extends State<HomePage> {
           child: _options.elementAt(_page),
           //sirka, vyska, child do childu podmienku - uz netreba pravdepodobne
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: new Icon(Icons.face, color: Colors.grey[900]),
-              title: new Text('Me',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Pacifico',
-                ),),
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.blueGrey,
+          child: Container(
+            height: 95,
+            child: Column(
+              children: <Widget>[
+                Flexible(
+                child: Text("Tu by mohla byt aktualna sprava prichadzajuca"),
             ),
-            BottomNavigationBarItem(
-              icon: new Icon(Icons.style, color: Colors.grey[900]),
-              title: new Text('Dresses',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Pacifico',
-                ),),
-            ),
-            BottomNavigationBarItem(
-              icon: new Icon(Icons.notifications, color: Colors.grey[900]),
-              title: new Text('Alerts',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Pacifico',
-                ),),
-            ),
-            BottomNavigationBarItem(
-              icon: new Icon(Icons.shopping_cart, color: Colors.grey[900]),
-              title: new Text('Deals',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Pacifico'),),
-            ),
-            BottomNavigationBarItem(
-                icon: new Icon(Icons.account_circle, color:Colors.grey[900]),
-                title: new Text('Users',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'Pacifico',
-                  ),))
-          ],
-          currentIndex: _page,
-          onTap: onPageChanged,
-        ),
+                BottomNavigationBar(
+                  type: BottomNavigationBarType.shifting,
+                  items: <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                      icon: new Icon(Icons.face, color: Colors.grey[900]),
+                      title: new Text('Me',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Pacifico',
+                        ),),
+                      activeIcon: new Icon(Icons.face, color: Colors.deepOrange[900])
+                      ),
+                    BottomNavigationBarItem(
+                      icon: new Icon(Icons.style, color: Colors.grey[900]),
+                      title: new Text('Dresses',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Pacifico',
+                        ),),
+                        activeIcon: new Icon(Icons.style, color: Colors.deepOrange[900])
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Badge(
+                        badgeContent: Text('3'),
+                        child: new Icon(Icons.notifications, color: Colors.grey[900]),
+                      ),
+                      title: new Text('Alerts',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontFamily: 'Pacifico',
+                        ),),
+                        activeIcon: new Icon(Icons.notifications, color: Colors.deepOrange[900])
+                    ),
+                    BottomNavigationBarItem(
+                      icon: new Icon(Icons.shopping_cart, color: Colors.grey[900]),
+                      title: new Text('Deals',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Pacifico'),),
+                        activeIcon: new Icon(Icons.shopping_cart, color: Colors.deepOrange[900])
+                    ),
+                    BottomNavigationBarItem(
+                        icon: new Icon(Icons.account_circle, color:Colors.grey[900]),
+                        title: new Text('Users',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Pacifico',
+                          ),),
+                        activeIcon: new Icon(Icons.account_circle, color: Colors.deepOrange[900])
+                    )
+
+                  ],
+                  currentIndex: _page,
+                  onTap: onPageChanged,
+                ),
+              ],
+            )
+          ),
+        )
       ),
     );
   }
@@ -233,7 +258,10 @@ class _HomeState extends State<HomePage> {
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return CupertinoAlertDialog(
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(25.0))
+            ),
             title: Text(title),
             content: SingleChildScrollView(
               child: StatefulBuilder(
@@ -250,6 +278,7 @@ class _HomeState extends State<HomePage> {
               ),
             ),
             actions: <Widget>[
+
               FlatButton(
                 onPressed: () => Navigator.pop(context),
                 child: Text("Cancel"),
@@ -271,7 +300,7 @@ class _HomeState extends State<HomePage> {
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
-            return CupertinoAlertDialog(
+            return AlertDialog(
               title: Text("Thanks for your rating"),
               content: SingleChildScrollView(
                 child: Icon(Icons.toys,color: Theme.of(context).accentColor),
