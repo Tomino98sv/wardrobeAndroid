@@ -46,8 +46,8 @@ class _MyNewItem extends State<MyNewItem> {
   var _currenttColorSelected = 'Black';
   var _length = ['Mini', 'Midi', 'Maxi', 'Oversize'];
   var _currentLengthSelected = 'Midi';
-  var _functions = ['-not selected-', 'giveaway', 'sell'];
-  var _currentFunctionSelected = '-not selected-';
+  var _functions = ['none', 'giveaway', 'sell'];
+  var _currentFunctionSelected = 'none';
   String _imgUrl = "";
 
   void _setImgUrl(String url) {
@@ -217,7 +217,7 @@ class _MyNewItem extends State<MyNewItem> {
                           setState(() {
                             this._currentFunctionSelected = newValueSelected;
                             function = newValueSelected;
-                            if (_currentFunctionSelected == '-not selected-'){
+                            if (_currentFunctionSelected == 'none'){
                               function = "";
                             }
                           });
