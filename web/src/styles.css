@@ -16,7 +16,6 @@
 
 html {
     background-color: #fff4e6;
-    background-image: url("../img/white.jpg");
     margin: auto;
     padding: auto;
     width: auto;
@@ -31,8 +30,8 @@ body {
     padding: auto;
     font-family: helvetica;
     background-color: #fff4e6;
-    background-image: url("../img/white.jpg");
     background-size: cover;
+    color: black;
 }
 
 #wrapper {
