@@ -65,7 +65,7 @@ class _State extends State<EditItem> {
 
   void _onChangedFunction(String value) {
     setState(() {
-      if (value == '-not selected-')
+      if (value == 'none')
         docFunction = "";
       else
         docFunction = '$value';
@@ -90,8 +90,8 @@ class _State extends State<EditItem> {
   var _length = ['Mini', 'Midi', 'Maxi', 'Oversize'];
   var _currentLengthSelected = 'Midi';
   var _currentColorSelected = "Black";
-  var _functions = ['-not selected-', 'giveaway', 'sell'];
-  var _currentFunctionSelected = '-not selected-';
+  var _functions = ['none', 'giveaway', 'sell'];
+  var _currentFunctionSelected = 'none';
 
 
 
@@ -271,7 +271,7 @@ class _State extends State<EditItem> {
                           onChanged: (String newValueSelected) {
                             setState(() {
                               this._currentFunctionSelected = newValueSelected;
-                              if (newValueSelected == '-not selected-')
+                              if (newValueSelected == 'none')
                                 docFunction = "";
                               else
                                 docFunction = newValueSelected;
@@ -281,7 +281,7 @@ class _State extends State<EditItem> {
                           value: _currentFunctionSelected == item['request'].toString()
                               ? item['request'].toString()
                               : docFunction == ""
-                              ? '-not selected-' : docFunction
+                              ? 'none' : docFunction
 //                        value: item['length'].toString(),
 //                      value: _currentLengthSelected,
                       ),

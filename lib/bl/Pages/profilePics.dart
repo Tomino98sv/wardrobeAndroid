@@ -160,7 +160,7 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
                 children: <Widget>[
                   Padding(padding: EdgeInsets.only(right: 10.0,bottom: 5.0),),
                   Text(
-                    "Change your name: ",
+                    "Edit name: ",
 //                    style: TextStyle(
 //                      fontSize: 18.5,
 //                      color: Theme.of(context).textTheme.subhead,
@@ -169,27 +169,32 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
                       style:Theme.of(context).textTheme.subhead
                   ),
                   Padding(padding: EdgeInsets.only(right: 10.0,bottom: 5.0),),
-                  Container(
-                    width: 200,
-                    child: Form(
-                      key: _formKey,
-                      child: TextFormField(
-                        onSaved: (input) => _nameNew = input,
-                        decoration: new InputDecoration(
-                          labelText: "Enter Name",
-                          fillColor: Colors.white,
-                          border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(25.0),
+                  Expanded(
+                    child: Container(
+//                      width: 200,
+                      child: Form(
+                        key: _formKey,
+                        child: TextFormField(
+                          maxLength: 15,
+                          onSaved: (input) => _nameNew = input,
+                          decoration: new InputDecoration(
+//                            labelText: "Enter Name",
+                          hintText: "Enter name",
+                            fillColor: Colors.white,
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(25.0),
+                            ),
                           ),
-                        ),
-                        keyboardType: TextInputType.emailAddress,
+                          keyboardType: TextInputType.emailAddress,
 //                        style: new TextStyle(
 //                          fontFamily: "Poppins",
 //                        ),
-                          style:Theme.of(context).textTheme.subhead
+                            style:Theme.of(context).textTheme.subhead
+                        ),
                       ),
                     ),
-                  )
+                  ),
+                  Padding(padding: EdgeInsets.only(right: 10.0,bottom: 5.0),),
 //                Text(
 //                  "${nameUser}",
 //                  style: TextStyle(
@@ -204,7 +209,7 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
             ]
         ),
         SizedBox(height: 30.0),
-        Row(
+        Column(
           children: <Widget>[
             Padding(padding: EdgeInsets.only(right: 130.0,bottom: 5.0),),
             Container(
