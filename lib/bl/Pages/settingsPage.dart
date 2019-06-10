@@ -90,6 +90,9 @@ class _SettingsPageState extends State<SettingsPage>{
           indicatorColor: Colors.pink[100],
           brightness: Brightness.light,
           iconTheme: IconThemeData(color: Colors.black),
+          textTheme: TextTheme(
+              subhead: TextStyle(color: Colors.black,),
+              subtitle: TextStyle(color: Colors.white)),
     ));
   }
 
@@ -106,7 +109,9 @@ class _SettingsPageState extends State<SettingsPage>{
             fontFamily: 'Pacifico',
             indicatorColor: Colors.blue[200],
             brightness: Brightness.light,
-            textTheme: TextTheme(subhead: TextStyle(color: Colors.black)),
+            textTheme: TextTheme(
+                subhead: TextStyle(color: Colors.black,),
+                subtitle: TextStyle(color: Colors.white)),
             iconTheme: IconThemeData(color: Colors.black)
         ));
   }
@@ -116,7 +121,10 @@ class _SettingsPageState extends State<SettingsPage>{
     return DemoTheme(
         'dark',
         new ThemeData(
-          textTheme: TextTheme(subhead: TextStyle(color: Colors.white),),
+          textTheme: TextTheme(
+              subhead: TextStyle(color: Colors.black),
+              subtitle: TextStyle(color: Colors.black)
+          ),
           primaryColor: Colors.black,
           scaffoldBackgroundColor: Colors.grey[900],
           accentColor: Colors.black45,
