@@ -45,8 +45,8 @@ class _LoginPageState extends State<LoginPage> {
                   TextFormField(
                     decoration: InputDecoration(
                         hintText: 'Email',
-                      icon: new Icon(Icons.email, color: Colors.black)),
-                      hintStyle: Theme.of(context).textTheme.subhead,
+                      icon: new Icon(Icons.email, color: Colors.black),
+                      hintStyle: Theme.of(context).textTheme.subhead,),
                     validator: (input) {
                       if (input.isEmpty) {
                         return 'Please type an email';
@@ -64,14 +64,12 @@ class _LoginPageState extends State<LoginPage> {
                         hintText: 'Password',
                         icon: new Icon(Icons.text_fields, color: Colors.black)),
                     validator: (input) {
-                      }
                       if (input.length < 6) {
                         return 'Your password needs to be at least 6 characters';
-                    },
+                    }},
                     onSaved: (input) => _password = input,
+                    obscureText: true,),
                   SizedBox(height: 20.0),
-                    obscureText: true,
-                  ),
                   Container(
                     margin: EdgeInsets.only(top: 8.0),
                     child: ClipRRect(
