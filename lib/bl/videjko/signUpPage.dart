@@ -35,6 +35,7 @@ class _SignupPageState extends State<SignupPage> {
               TextFormField(
                 decoration: InputDecoration(
                     hintText: 'Username',
+                    hintStyle: Theme.of(context).textTheme.subhead,
                     icon: new Icon(Icons.person, color: Colors.black)),
                 validator: (input){
                   if(input.isEmpty){
@@ -48,6 +49,7 @@ class _SignupPageState extends State<SignupPage> {
               TextFormField(
                 decoration: InputDecoration(
                     hintText: 'Email',
+                    hintStyle: Theme.of(context).textTheme.subhead,
                     icon: new Icon(Icons.email, color: Colors.black)),
                 validator: (input){
                 if(input.isEmpty){
@@ -61,6 +63,7 @@ class _SignupPageState extends State<SignupPage> {
               TextFormField(
                 decoration: InputDecoration(
                     hintText: 'Password',
+                    hintStyle: Theme.of(context).textTheme.subhead,
                     icon: new Icon(Icons.text_fields, color: Colors.black)),
                 validator: (input){
                 if(input.length < 6){

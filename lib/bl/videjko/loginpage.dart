@@ -45,7 +45,8 @@ class _LoginPageState extends State<LoginPage> {
                   TextFormField(
                     decoration: InputDecoration(
                         hintText: 'Email',
-                        icon: new Icon(Icons.email, color: Colors.black)),
+                      icon: new Icon(Icons.email, color: Colors.black)),
+                      hintStyle: Theme.of(context).textTheme.subhead,
                     validator: (input) {
                       if (input.isEmpty) {
                         return 'Please type an email';
@@ -53,23 +54,24 @@ class _LoginPageState extends State<LoginPage> {
                         return 'Mail must be in mail format (%@%.%)';
                       }
                     },
-                    onSaved: (input) => _email = input,
 
+                    onSaved: (input) => _email = input,
                   ),
                   SizedBox(height: 15.0),
                   TextFormField(
                     decoration: InputDecoration(
+                      hintStyle: Theme.of(context).textTheme.subhead,
                         hintText: 'Password',
                         icon: new Icon(Icons.text_fields, color: Colors.black)),
                     validator: (input) {
+                      }
                       if (input.length < 6) {
                         return 'Your password needs to be at least 6 characters';
-                      }
                     },
                     onSaved: (input) => _password = input,
+                  SizedBox(height: 20.0),
                     obscureText: true,
                   ),
-                  SizedBox(height: 20.0),
                   Container(
                     margin: EdgeInsets.only(top: 8.0),
                     child: ClipRRect(

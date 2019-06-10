@@ -58,8 +58,8 @@ class _BorrowApplicants extends State<BorrowApplicants> {
                             elevation: 14.0,
                             borderRadius: BorderRadius.circular(14.0),
                             child: ListTile(
-                              leading: Text("$counter.",style:Theme.of(context).textTheme.subhead),
-                              title: Text(document['applicantName'],style:Theme.of(context).textTheme.subhead),
+                              leading: Text("$counter.",style:TextStyle(color: Colors.black)),
+                              title: Text(document['applicantName'],style: TextStyle(color: Colors.black)),
                               trailing: FlatButton(
                                   onPressed: (){
                                     return showDialog(

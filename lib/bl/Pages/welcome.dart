@@ -140,9 +140,7 @@ class _WelcomePageState extends State<WelcomePage>
                                           shadowColor: Colors.grey,
                                           elevation:14.0,
                                           borderRadius: BorderRadius.circular(24.0),
-
                                           child: Container(
-
                                             child: ClipRRect(
                                               borderRadius: BorderRadius.circular(10.0),
                                               child: Stack(
@@ -163,7 +161,7 @@ class _WelcomePageState extends State<WelcomePage>
                                                       width: double.maxFinite,
                                                       height: 26.0,
                                                       padding: EdgeInsets.symmetric(
-                                                          vertical: 4.0, horizontal: 16.0),
+                                                          vertical: 2.0, horizontal: 16.0),
                                                       color: Color(0x66000000),
                                                       alignment: Alignment.bottomCenter,
                                                       child: Text(
@@ -185,8 +183,9 @@ class _WelcomePageState extends State<WelcomePage>
                                                 title: Text(
                                                   document['name'],
                                                   style: TextStyle(
-                                                    fontFamily: 'Pacifico',
-                                                  ), ),
+                                                      fontFamily: 'Pacifico',
+                                                  ),
+                                                ),
                                                 content: Column(
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: <Widget>[
@@ -325,7 +324,7 @@ class _WelcomePageState extends State<WelcomePage>
                                                           width: double.maxFinite,
                                                           height: 26.0,
                                                           padding: EdgeInsets.symmetric(
-                                                              vertical: 4.0, horizontal: 16.0),
+                                                              vertical: 2.0, horizontal: 16.0),
                                                           color: Color(0x66000000),
                                                           alignment: Alignment.bottomCenter,
                                                           child: Text(
@@ -466,7 +465,7 @@ class _WelcomePageState extends State<WelcomePage>
                                                           width: double.maxFinite,
                                                           height: 26.0,
                                                           padding: EdgeInsets.symmetric(
-                                                              vertical: 4.0, horizontal: 16.0),
+                                                              vertical: 2.0, horizontal: 16.0),
                                                           color: Color(0x66000000),
                                                           alignment: Alignment.bottomCenter,
                                                           child: Text(
@@ -489,7 +488,8 @@ class _WelcomePageState extends State<WelcomePage>
                                               barrierDismissible: false,
                                               child: CupertinoAlertDialog(
                                                 title: Text(document['name'],
-                                                style: TextStyle(fontFamily: 'Pacifico'),),
+                                                style: TextStyle(fontFamily: 'Pacifico', ),
+                                                ),
                                                 content: Column(
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: <Widget>[
@@ -584,6 +584,7 @@ class _WelcomePageState extends State<WelcomePage>
                                       heroTag: "btnWelcome",
                                       child: Icon(Icons.add),
                                       shape: _DiamondBorder(),
+                                      elevation: 0.0,
                                       onPressed: () {
                                         Navigator.push(context,
                                             MaterialPageRoute(builder: (context) {
