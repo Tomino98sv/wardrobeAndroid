@@ -104,7 +104,7 @@ function addItemToCart(title, price, imageSrc) {
         <span class="cart-price cart-column">${price}</span>
         <div class="cart-quantity cart-column">
             <input class="cart-quantity-input" type="number" value="1">
-            <button class="btn btn-danger" type="button">REMOVE</button>
+            <button class="btn btn-danger" type="button">Remove</button>
         </div>`
     cartRow.innerHTML = cartRowContents
     cartItems.append(cartRow)
@@ -125,7 +125,7 @@ function updateCartTotal() {
         total = total + (price * quantity)
     }
     total = Math.round(total * 100) / 100
-    document.getElementsByClassName('cart-total-price')[0].innerText = total + ' EUR'
+    document.getElementsByClassName('cart-total-price')[0].innerText = '0 eur'
 }
 
 function getDownloadURL() {
