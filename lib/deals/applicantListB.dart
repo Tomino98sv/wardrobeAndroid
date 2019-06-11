@@ -54,7 +54,6 @@ class _BorrowApplicants extends State<BorrowApplicants> {
                           padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 10.0),
                           child: Material(
                             color: Colors.white,
-                            shadowColor: Colors.grey,
                             elevation: 14.0,
                             borderRadius: BorderRadius.circular(14.0),
                             child: ListTile(

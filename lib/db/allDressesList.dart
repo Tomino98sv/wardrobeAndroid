@@ -106,7 +106,6 @@ class DressesListState extends State<AllDressesList>
                             return GestureDetector(
                               child: Material(
                                 color: Colors.white,
-                                shadowColor: Colors.grey,
                                 elevation: 14.0,
                                 borderRadius: BorderRadius.circular(24.0),
                                 child: ClipRRect(
