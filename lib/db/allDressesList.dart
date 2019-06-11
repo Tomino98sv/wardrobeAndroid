@@ -204,7 +204,7 @@ class DressesListState extends State<AllDressesList>
                                                   }));
                                                 });
                                               },
-                                              child: Text("Seller"),
+                                              child: Text("Owner"),
                                             ),
                                             FlatButton(
                                               onPressed: () {

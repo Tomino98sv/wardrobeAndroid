@@ -101,7 +101,7 @@ class _State extends State<EditItem> {
     return Scaffold(
       appBar: new AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        title: new Text('Edit Item',
+        title: new Text('Edit',
           style: TextStyle(
               color: Colors.white
           ),),
