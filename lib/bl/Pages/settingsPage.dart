@@ -64,16 +64,6 @@ class _SettingsPageState extends State<SettingsPage>{
                   onChanged: (bool valueOfMode) => darkMode(valueOfMode),
                 ),
               ],),
-             Row(
-               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                new Text("Turn on the notifications",style:Theme.of(context).textTheme.subhead),
-                new Switch(
-                    value: note,
-                    onChanged: (bool valueOfNote) => setNotifications(valueOfNote),
-                ),
-              ],
-          ),
           ],
         ),
       )
@@ -89,6 +79,7 @@ class _SettingsPageState extends State<SettingsPage>{
           scaffoldBackgroundColor: Colors.grey[50],
           accentColor: Colors.pink[400],
           buttonColor: Colors.pink,
+          primaryIconTheme: IconThemeData(color: Colors.pink[500]),
           fontFamily: 'Pacifico',
           indicatorColor: Colors.pink[100],
           brightness: Brightness.light,
@@ -109,6 +100,7 @@ class _SettingsPageState extends State<SettingsPage>{
             buttonColor: Colors.blue,
             toggleableActiveColor: Colors.lightBlue,
             unselectedWidgetColor: Colors.blueAccent,
+            primaryIconTheme: IconThemeData(color: Colors.blue),
             fontFamily: 'Pacifico',
             indicatorColor: Colors.blue[200],
             brightness: Brightness.light,
@@ -125,13 +117,14 @@ class _SettingsPageState extends State<SettingsPage>{
         'dark',
         new ThemeData(
           textTheme: TextTheme(
-              subhead: TextStyle(color: Colors.black),
+              subhead: TextStyle(color: Colors.white),
               subtitle: TextStyle(color: Colors.black)
           ),
           primaryColor: Colors.black,
           scaffoldBackgroundColor: Colors.grey[900],
           accentColor: Colors.black45,
           buttonColor: Colors.white12,
+          primaryIconTheme: IconThemeData(color: Colors.white),
           toggleableActiveColor: Colors.black54,
           unselectedWidgetColor: Colors.black45,
           fontFamily: 'Pacifico',
@@ -170,18 +163,6 @@ class _SettingsPageState extends State<SettingsPage>{
         valueOfMode =false;
         mode = false;
         userManagement.updateUsingThemeDark(valueOfMode);
-      }
-    });
-  }
-
-  void setNotifications(bool valueOfNote){
-    setState(() {
-      if(valueOfNote){
-        note = false;
-        valueOfNote = false;
-      } else {
-        note = true;
-        valueOfNote = true;
       }
     });
   }
