@@ -99,7 +99,6 @@ flutter:
       fonts:
         - asset: assets/font/Pacifico-Regular.ttf
 
-  #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages
 
