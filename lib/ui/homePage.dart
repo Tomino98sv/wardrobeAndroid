@@ -253,7 +253,7 @@ class _HomeState extends State<HomePage> {
 
   rating(BuildContext context, String title, String description) {
 
-    int rating=0;
+    int rating=5;
 
     return showDialog(
         context: context,
