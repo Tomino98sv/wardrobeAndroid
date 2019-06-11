@@ -136,63 +136,64 @@ class _HomeState extends State<HomePage> {
           //sirka, vyska, child do childu podmienku - uz netreba pravdepodobne
         ),
         bottomNavigationBar: BottomAppBar(
-          color: Colors.blueGrey,
+          color: Theme.of(context).buttonColor,
           child: Container(
-            height: 95,
+            height: 88.2,
             child: Column(
               children: <Widget>[
                 Flexible(
-                child: Text("Tu by mohla byt aktualna sprava prichadzajuca"),
+                child: Text("Tu by mohla byt aktualna sprava prichadzajuca",
+                style: Theme.of(context).textTheme.subtitle),
             ),
                 BottomNavigationBar(
                   type: BottomNavigationBarType.shifting,
                   items: <BottomNavigationBarItem>[
                     BottomNavigationBarItem(
-                      icon: new Icon(Icons.face, color: Colors.grey[900]),
+                      icon: new Icon(Icons.face, color: Colors.black),
                       title: new Text('Me',
                         style: TextStyle(
                           color: Colors.black,
                           fontFamily: 'Pacifico',
                         ),),
-                      activeIcon: new Icon(Icons.face, color: Colors.deepOrange[900])
+                      activeIcon: new Icon(Icons.face, color: Theme.of(context).buttonColor)
                       ),
                     BottomNavigationBarItem(
-                      icon: new Icon(Icons.style, color: Colors.grey[900]),
+                      icon: new Icon(Icons.style, color: Colors.black),
                       title: new Text('Dresses',
                         style: TextStyle(
                           color: Colors.black,
                           fontFamily: 'Pacifico',
                         ),),
-                        activeIcon: new Icon(Icons.style, color: Colors.deepOrange[900])
+                        activeIcon: new Icon(Icons.style, color:Theme.of(context).buttonColor)
                     ),
                     BottomNavigationBarItem(
                       icon: Badge(
                         badgeContent: Text('3'),
-                        child: new Icon(Icons.notifications, color: Colors.grey[900]),
+                        child: new Icon(Icons.notifications, color: Colors.black),
                       ),
                       title: new Text('Alerts',
                         style: TextStyle(
                           color: Colors.black,
                           fontFamily: 'Pacifico',
                         ),),
-                        activeIcon: new Icon(Icons.notifications, color: Colors.deepOrange[900])
+                        activeIcon: new Icon(Icons.notifications, color: Theme.of(context).buttonColor)
                     ),
                     BottomNavigationBarItem(
-                      icon: new Icon(Icons.shopping_cart, color: Colors.grey[900]),
+                      icon: new Icon(Icons.shopping_cart, color: Colors.black),
                       title: new Text('Deals',
                         style: TextStyle(
                             color: Colors.black,
                             fontFamily: 'Pacifico'),),
-                        activeIcon: new Icon(Icons.shopping_cart, color: Colors.deepOrange[900])
+                        activeIcon: new Icon(Icons.shopping_cart, color: Theme.of(context).buttonColor)
                     ),
                     BottomNavigationBarItem(
-                        icon: new Icon(Icons.account_circle, color:Colors.grey[900]),
+                        icon: new Icon(Icons.account_circle, color:Colors.black),
                         title: new Text('Users',
                           style: TextStyle(
                             color: Colors.black,
                             fontFamily: 'Pacifico',
                           ),),
-                        activeIcon: new Icon(Icons.account_circle, color: Colors.deepOrange[900])
+                        activeIcon: new Icon(Icons.account_circle, color: Theme.of(context).buttonColor)
                     )
 
                   ],
@@ -259,6 +260,7 @@ class _HomeState extends State<HomePage> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
+            backgroundColor: Colors.white,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(25.0))
             ),
@@ -281,12 +283,19 @@ class _HomeState extends State<HomePage> {
 
               FlatButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text("Cancel"),
+                child: Text("Cancel", style: TextStyle(color: Colors.black),),
               ),
+              Padding(
+                  padding: EdgeInsets.only(right: 55.0)
+              ),
+
               FlatButton(
                 onPressed: () => rate(rating,context),
-                child: Text("Submit"),
-              )
+                child: Text("Submit", style: TextStyle(color: Colors.black)),
+              ),
+              Padding(
+                  padding: EdgeInsets.only(right: 35.0)
+              ),
             ],
           );
         });
@@ -295,13 +304,16 @@ class _HomeState extends State<HomePage> {
   rate(int value, BuildContext context){
     userManagement.sendRating(value).then((complete){
       Navigator.pop(context);
-
       return showDialog(
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
             return AlertDialog(
+              backgroundColor: Colors.white,
               title: Text("Thanks for your rating"),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(25.0))
+              ),
               content: SingleChildScrollView(
                 child: Icon(Icons.toys,color: Theme.of(context).accentColor),
               ),
@@ -309,6 +321,7 @@ class _HomeState extends State<HomePage> {
                 FlatButton(
                   onPressed: () => Navigator.pop(context),
                   child: Text("Done"),
+                  padding: EdgeInsets.only(right: 50.0),
                 ),
               ],
             );
@@ -365,6 +378,9 @@ class _HomeState extends State<HomePage> {
           indicatorColor: Colors.pink[100],
           brightness: Brightness.light,
           iconTheme: IconThemeData(color: Colors.black),
+          textTheme: TextTheme(
+              subhead: TextStyle(color: Colors.black,),
+              subtitle: TextStyle(color: Colors.white)),
         ));
   }
 
@@ -381,7 +397,9 @@ class _HomeState extends State<HomePage> {
             fontFamily: 'Pacifico',
             indicatorColor: Colors.blue[200],
             brightness: Brightness.light,
-            textTheme: TextTheme(subhead: TextStyle(color: Colors.black)),
+            textTheme: TextTheme(
+                subhead: TextStyle(color: Colors.black,),
+                subtitle: TextStyle(color: Colors.white)),
           iconTheme: IconThemeData(color: Colors.black)
         ));
   }
@@ -390,7 +408,10 @@ class _HomeState extends State<HomePage> {
     return DemoTheme(
         'dark',
         new ThemeData(
-          textTheme: TextTheme(subhead: TextStyle(color: Colors.white),),
+          textTheme: TextTheme(
+            subhead: TextStyle(color: Colors.white),
+              subtitle: TextStyle(color: Colors.black)
+          ),
           primaryColor: Colors.black,
           scaffoldBackgroundColor: Colors.grey[900],
           accentColor: Colors.black45,
