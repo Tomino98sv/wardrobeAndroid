@@ -54,6 +54,8 @@ class DressesListState extends State<AllDressesList>
     });
   }
 
+  var addItem = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,6 +102,7 @@ class DressesListState extends State<AllDressesList>
                             debugPrint("Filter value je $filterValue");
 //                      if (docSize != ""){
                           if (filterValue == null || item.size == filterValue || item.color == filterValue || item.length == filterValue){
+                            addItem=true;
                             return GestureDetector(
                               child: Material(
                                 color: Colors.white,
@@ -219,9 +222,11 @@ class DressesListState extends State<AllDressesList>
                               },
                             );
                             }
-                          else
+                          else{
+                            addItem=false;
                             return Container();
-                          }).toList(),
+                          }
+                          }).where((item) => addItem == true).toList(),
                         ),
                       ]
                     ),
