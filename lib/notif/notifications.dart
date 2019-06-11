@@ -19,6 +19,7 @@ class _NotificationsPage extends State<NotificationsPage> {
   String uid;
   Stream<QuerySnapshot> stream;
   var unseenCount = 0;
+  var allUnseenCount=0;
   List<DocumentSnapshot> listOfUnreadMess = new List<DocumentSnapshot>();
   Map<String, String> urlProfiles = Map();
 
@@ -158,6 +159,7 @@ class _NotificationsPage extends State<NotificationsPage> {
                 } else {
                   listOfUnreadMess.add(snapshot.data.documents[a]);
                   unseenCount++;
+                  allUnseenCount++;
                 }
               }
               if (unseenCount != 0) {
@@ -251,7 +253,7 @@ class _NotificationsPage extends State<NotificationsPage> {
                       ),
                       Positioned(
                         left: 45,
-                        height: 35.0,
+                        height: 30.0,
                         width: 30.0,
                         child: Container(
                           alignment: Alignment.center,
@@ -261,8 +263,9 @@ class _NotificationsPage extends State<NotificationsPage> {
                           ),
                           child: Text(
                             "${unseenCount}",
+                            textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 20.0,
+                              fontSize: 15.0,
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),

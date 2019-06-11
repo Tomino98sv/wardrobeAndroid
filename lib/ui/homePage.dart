@@ -137,72 +137,59 @@ class _HomeState extends State<HomePage> {
         ),
         bottomNavigationBar: BottomAppBar(
           color: Theme.of(context).buttonColor,
-          child: Container(
-            height: 88.2,
-            child: Column(
-              children: <Widget>[
-                Flexible(
-                child: Text("Tu by mohla byt aktualna sprava prichadzajuca",
-                style: Theme.of(context).textTheme.subtitle),
-            ),
-                BottomNavigationBar(
-                  type: BottomNavigationBarType.shifting,
-                  items: <BottomNavigationBarItem>[
-                    BottomNavigationBarItem(
-                      icon: new Icon(Icons.face, color: Colors.black),
-                      title: new Text('Me',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Pacifico',
-                        ),),
-                      activeIcon: new Icon(Icons.face, color: Theme.of(context).buttonColor)
-                      ),
-                    BottomNavigationBarItem(
-                      icon: new Icon(Icons.style, color: Colors.black),
-                      title: new Text('Dresses',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Pacifico',
-                        ),),
-                        activeIcon: new Icon(Icons.style, color:Theme.of(context).buttonColor)
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Badge(
-                        badgeContent: Text('3'),
-                        child: new Icon(Icons.notifications, color: Colors.black),
-                      ),
-                      title: new Text('Alerts',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Pacifico',
-                        ),),
-                        activeIcon: new Icon(Icons.notifications, color: Theme.of(context).buttonColor)
-                    ),
-                    BottomNavigationBarItem(
-                      icon: new Icon(Icons.shopping_cart, color: Colors.black),
-                      title: new Text('Deals',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Pacifico'),),
-                        activeIcon: new Icon(Icons.shopping_cart, color: Theme.of(context).buttonColor)
-                    ),
-                    BottomNavigationBarItem(
-                        icon: new Icon(Icons.account_circle, color:Colors.black),
-                        title: new Text('Users',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'Pacifico',
-                          ),),
-                        activeIcon: new Icon(Icons.account_circle, color: Theme.of(context).buttonColor)
-                    )
+          child:   BottomNavigationBar(
+            type: BottomNavigationBarType.shifting,
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                  icon: new Icon(Icons.face, color: Colors.black),
+                  title: new Text('Me',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Pacifico',
+                    ),),
+                  activeIcon: new Icon(Icons.face, color: Theme.of(context).buttonColor)
+              ),
+              BottomNavigationBarItem(
+                  icon: new Icon(Icons.style, color: Colors.black),
+                  title: new Text('Dresses',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Pacifico',
+                    ),),
+                  activeIcon: new Icon(Icons.style, color:Theme.of(context).buttonColor)
+              ),
+              BottomNavigationBarItem(
+                  icon: new Icon(Icons.notifications, color: Colors.black),
+                  title: new Text('Alerts',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Pacifico',
+                    ),),
+                  activeIcon: new Icon(Icons.notifications, color: Theme.of(context).buttonColor)
+              ),
+              BottomNavigationBarItem(
+                  icon: new Icon(Icons.shopping_cart, color: Colors.black),
+                  title: new Text('Deals',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Pacifico'),),
+                  activeIcon: new Icon(Icons.shopping_cart, color: Theme.of(context).buttonColor)
+              ),
+              BottomNavigationBarItem(
+                  icon: new Icon(Icons.account_circle, color:Colors.black),
+                  title: new Text('Users',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Pacifico',
+                    ),),
+                  activeIcon: new Icon(Icons.account_circle, color: Theme.of(context).buttonColor)
+              )
 
-                  ],
-                  currentIndex: _page,
-                  onTap: onPageChanged,
-                ),
-              ],
-            )
+            ],
+            currentIndex: _page,
+            onTap: onPageChanged,
           ),
+
         )
       ),
     );
