@@ -34,7 +34,7 @@ button {
 
 .main-div {
   width: 21%;
-  margin-left: 40.5%;
+  margin-left: 41.7%;
   margin-top: 10%;
   padding: 1%;
   display: none;
@@ -43,9 +43,9 @@ button {
 
 .loggedin-div {
   width: 20%;
-  margin-left: 42.5%;
-  margin-top: 2%;
-  padding: 1%;
+  margin-left: 43.9%;
+  margin-top: 0%;
+  padding: 0%;
   display: none;
   color: white;
 }
@@ -68,14 +68,26 @@ button {
   border: 1px solid #777;
 }
 
-.main-div button,
 .loggedin-div button {
   opacity: 0.9;
   background: #fff;
   color: mediumvioletred;
   border: 1px solid mediumvioletred;
   border-radius: 45%;
-  width: 200px;
+  padding: 15px;
+  display: block;
+  width: 80%;
+  transition: 0.3s;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+}
+
+.main-div button {
+  opacity: 0.9;
+  background: #fff;
+  color: mediumvioletred;
+  border: 1px solid mediumvioletred;
+  border-radius: 45%;
   padding: 15px;
   display: block;
   width: 100%;
