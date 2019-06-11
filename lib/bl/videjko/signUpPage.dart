@@ -39,9 +39,9 @@ class _SignupPageState extends State<SignupPage> {
                     icon: new Icon(Icons.person, color: Colors.black)),
                 validator: (input){
                   if(input.isEmpty){
-                    return 'Please type an username';
+                    return 'Please enter a username';
                   }else if(input.length < 2  && input.length > 10){
-                    return 'Username must have at least 2 chars';
+                    return 'Username must contain at least 2 chars';
                   }
                 },
                 onSaved: (input) => _name = input,
@@ -53,9 +53,10 @@ class _SignupPageState extends State<SignupPage> {
                     icon: new Icon(Icons.email, color: Colors.black)),
                 validator: (input){
                 if(input.isEmpty){
-                  return 'Please type an email';
+                  return 'Please enter an email';
                 }else if(validateEmail(input)){
-                  return 'Mail must be in mail format (%@%.%)';
+//                  return 'Mail must be in mail format (%@%.%)';
+                  return 'Please, enter valid email address';
                 }
               },
                 onSaved: (input) => _email = input,
@@ -67,7 +68,7 @@ class _SignupPageState extends State<SignupPage> {
                     icon: new Icon(Icons.text_fields, color: Colors.black)),
                 validator: (input){
                 if(input.length < 6){
-                  return 'Your password needs to be at least 6 characters';
+                  return 'Your password must contain at least 6 characters';
                 }
               },
                 onSaved: (input) => _password = input,
@@ -159,7 +160,7 @@ class _SignupPageState extends State<SignupPage> {
         _showSnackBar("Email already used or problem with internet connection");
       });
     }else if(_groupGender == null){
-      _showSnackBar("You must pick up your gender");
+      _showSnackBar("Please, select gender");
     }else{
       debugPrint("validation not pass");
       _showSnackBar("Data not passed throught form validation");

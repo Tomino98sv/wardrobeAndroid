@@ -48,7 +48,7 @@ class _HomeState extends State<HomePage> {
         rateInit = data.documents[0]['rating'];
         if(rateInit==null){
           Future.delayed(Duration(seconds: 3), () {
-            rating(context,"Rating", "Rate are app please");
+            rating(context,"Rating", "Rate the app, please");
           });
           rateInit=-1;
         }else{
@@ -253,7 +253,7 @@ class _HomeState extends State<HomePage> {
 
   rating(BuildContext context, String title, String description) {
 
-    int rating=0;
+    int rating=5;
 
     return showDialog(
         context: context,
