@@ -22,7 +22,7 @@ class BorrowApplicants extends StatefulWidget {
 class _BorrowApplicants extends State<BorrowApplicants> {
   DocumentSnapshot requestedItem;
   FirebaseUser currentUser;
-  BuildContext context;
+  BuildContext contextMain;
   int counter=0;
 
   _BorrowApplicants(
@@ -148,13 +148,12 @@ class _BorrowApplicants extends State<BorrowApplicants> {
                                     ),
                                     IconButton(
                                       icon: Icon(Icons.message,),
-                                        onPressed: (){},
-//                                            onPressed: () {
-//                                              Navigator.push(
-//                                                  context,
-//                                                  MaterialPageRoute(builder: (context) => ChatPage(userInfo.data["email"])
-//                                                  ));
-//                                            }
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) => ChatPage(document['applicant_email'])
+                                              ));
+                                        },
                                     ),
                                   ],
                                 ),
@@ -174,4 +173,5 @@ class _BorrowApplicants extends State<BorrowApplicants> {
       ),
     );
   }
+
 }

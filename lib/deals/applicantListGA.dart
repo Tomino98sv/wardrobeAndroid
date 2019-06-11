@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/bl/Pages/chatPage/chat.dart';
 
 class GiveawayApplicants extends StatefulWidget {
   DocumentSnapshot requestedItem;
@@ -150,13 +151,12 @@ class _GiveawayApplicants extends State<GiveawayApplicants> {
                                     ),
                                     IconButton(
                                       icon: Icon(Icons.message,),
-                                      onPressed: (){},
-//                                            onPressed: () {
-//                                              Navigator.push(
-//                                                  context,
-//                                                  MaterialPageRoute(builder: (context) => ChatPage(userInfo.data["email"])
-//                                                  ));
-//                                            }
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => ChatPage(document['applicant_email'])
+                                            ));
+                                      },
                                     ),
                                   ],
                                 ),
