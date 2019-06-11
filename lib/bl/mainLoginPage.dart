@@ -98,7 +98,7 @@ class _QuickBeeState extends State<QuickBee> {
                   ),
                   new Container(
                     padding: const EdgeInsets.only(left:1.0,right: 1.0,top: 2.0,bottom: 2.0),
-                    margin: EdgeInsets.only(bottom: 10.0,top: 30.0, left: 60.0, right: 60.0),
+                    margin: EdgeInsets.only(bottom: 10.0,top: 30.0, left: 80.0, right: 80.0),
                     alignment: Alignment.center,
                     decoration: new BoxDecoration(
                         color: Colors.white12,

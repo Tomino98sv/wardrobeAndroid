@@ -47,6 +47,7 @@ class _SettingsPageState extends State<SettingsPage>{
         child: Column(
           children: <Widget>[
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Text("Changing color of app",style:Theme.of(context).textTheme.subhead,),
                 new Switch(
@@ -55,6 +56,7 @@ class _SettingsPageState extends State<SettingsPage>{
                 ),
              ],),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Text("Dark mode",style:Theme.of(context).textTheme.subhead),
                 new Switch(
@@ -63,6 +65,7 @@ class _SettingsPageState extends State<SettingsPage>{
                 ),
               ],),
              Row(
+               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Text("Turn on the notifications",style:Theme.of(context).textTheme.subhead),
                 new Switch(
