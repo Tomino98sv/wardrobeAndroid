@@ -330,7 +330,7 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
       context: context,
       builder: (context){
         return CupertinoAlertDialog(
-          title: Text("Borrow Request",style:Theme.of(context).textTheme.subhead),
+          title: Text("Borrow",style:Theme.of(context).textTheme.subhead),
           content: Text("I would like to borrow this dress",style:Theme.of(context).textTheme.subhead),
           actions: <Widget>[
             FlatButton(
@@ -339,8 +339,8 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                 showDialog(context: context,
                 builder: (BuildContext context){
                   return CupertinoAlertDialog(
-                    title: Text("Request sent",style:Theme.of(context).textTheme.subhead),
-                    content: Text("The request has been sent!",style:Theme.of(context).textTheme.subhead),
+                    title: Text("Request sent!",style:Theme.of(context).textTheme.subhead),
+//                    content: Text("The request has been sent!",style:Theme.of(context).textTheme.subhead),
                     actions: <Widget>[
                       FlatButton(
                         child: Text("OK",style:Theme.of(context).textTheme.subhead),
@@ -387,7 +387,7 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
       builder: (context){
         return CupertinoAlertDialog(
           title: Text("Borrow Request",style:Theme.of(context).textTheme.subhead),
-          content: Text("There is at least 1 other user who requested to borrow this dress. Would you like to send your request anyway?",
+          content: Text("There is at least 1 other user who requested to borrow this dress. Would you like to proceed anyway?",
               style:Theme.of(context).textTheme.subhead),
           actions: <Widget>[
             FlatButton(
@@ -404,8 +404,8 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                     showDialog(context: context,
                         builder: (BuildContext context){
                           return CupertinoAlertDialog(
-                            title: Text("Request sent", style:Theme.of(context).textTheme.subhead),
-                            content: Text("The request has been sent!", style:Theme.of(context).textTheme.subhead),
+                            title: Text("Request sent!", style:Theme.of(context).textTheme.subhead),
+//                            content: Text("The request has been sent!", style:Theme.of(context).textTheme.subhead),
                             actions: <Widget>[
                               FlatButton(
                                 child: Text("OK",style:Theme.of(context).textTheme.subhead),
@@ -473,8 +473,8 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                     showDialog(context: context,
                         builder: (BuildContext context){
                           return CupertinoAlertDialog(
-                            title: Text("Request sent",style:Theme.of(context).textTheme.subhead),
-                            content: Text("The request has been sent!",style:Theme.of(context).textTheme.subhead),
+                            title: Text("Request sent!",style:Theme.of(context).textTheme.subhead),
+//                            content: Text("The request has been sent!",style:Theme.of(context).textTheme.subhead),
                             actions: <Widget>[
                               FlatButton(
                                 child: Text("OK",style:Theme.of(context).textTheme.subhead),
@@ -542,8 +542,8 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                     showDialog(context: context,
                         builder: (BuildContext context){
                           return CupertinoAlertDialog(
-                            title: Text("Request sent",style:Theme.of(context).textTheme.subhead),
-                            content: Text("The request has been sent!",style:Theme.of(context).textTheme.subhead),
+                            title: Text("Request sent!",style:Theme.of(context).textTheme.subhead),
+//                            content: Text("The request has been sent!",style:Theme.of(context).textTheme.subhead),
                             actions: <Widget>[
                               FlatButton(
                                 child: Text("OK",style:Theme.of(context).textTheme.subhead),

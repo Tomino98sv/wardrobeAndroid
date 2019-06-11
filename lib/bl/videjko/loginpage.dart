@@ -49,9 +49,10 @@ class _LoginPageState extends State<LoginPage> {
                       hintStyle: Theme.of(context).textTheme.subhead,),
                     validator: (input) {
                       if (input.isEmpty) {
-                        return 'Please type an email';
+                        return 'Please enter your email';
                       } else if (validateEmail(input)) {
-                        return 'Mail must be in mail format (%@%.%)';
+//                        return 'Mail must be in mail format (%@%.%)';
+                        return 'Please, enter valid email address';
                       }
                     },
 
@@ -65,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                         icon: new Icon(Icons.text_fields, color: Colors.black)),
                     validator: (input) {
                       if (input.length < 6) {
-                        return 'Your password needs to be at least 6 characters';
+                        return 'Your password must contain at least 6 characters';
                     }},
                     onSaved: (input) => _password = input,
                     obscureText: true,),

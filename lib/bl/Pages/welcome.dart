@@ -251,11 +251,11 @@ class _WelcomePageState extends State<WelcomePage>
                                             context: context,
                                             builder: (BuildContext context) {
                                               return CupertinoAlertDialog(
-                                                title: Text('Delete Item',style:
+                                                title: Text('Delete ${document['name']}',style:
                                                 TextStyle(color: Colors.black,
                                                 fontFamily: 'Pacifico')),
                                                 content: Text(
-                                                    'Are you sure you want to delete this item?',
+                                                    'Are you sure?',
                                                     style: TextStyle(color: Colors.black,
                                                     fontFamily: 'Pacifico')),
                                                 actions: <Widget>[
@@ -378,9 +378,9 @@ class _WelcomePageState extends State<WelcomePage>
                                                               context: context,
                                                               builder: (BuildContext context) {
                                                                 return CupertinoAlertDialog(
-                                                                  title: Text('Get item',style: TextStyle(color: Colors.black, fontFamily: 'Pacifico')),
+                                                                  title: Text('Receive item',style: TextStyle(color: Colors.black, fontFamily: 'Pacifico')),
                                                                   content: Text(
-                                                                      'Are you sure that user returned your item back to you?',
+                                                                      'Are you sure that user returned dress back to you?',
                                                                       style: TextStyle(color: Colors.black,
                                                                       fontFamily: 'Pacifico')),
                                                                   actions: <Widget>[
@@ -527,7 +527,7 @@ class _WelcomePageState extends State<WelcomePage>
                                                                 return CupertinoAlertDialog(
                                                                   title: Text('Return item', style: TextStyle(color: Colors.black,fontFamily: 'Pacifico'),),
                                                                   content: Text(
-                                                                      'Are you sure that you returned the item back to the owner?',
+                                                                      'Are you sure that you returned dress back to the owner?',
                                                                       style:TextStyle(color: Colors.black,fontFamily: 'Pacifico')),
                                                                   actions: <Widget>[
                                                                     FlatButton(

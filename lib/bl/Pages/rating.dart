@@ -51,10 +51,10 @@ class StarRating extends StatelessWidget {
     String word="";
     word= value==0?"Horrible app":
           value==1?"Boring app":
-          value==2?"I have seen better":
+          value==2?"I have seen better apps":
           value==3?"I am good with it":
-          value==4?"Woow":
-          value==5?"Awesome app":"nuuula";
+          value==4?"Woow! Great app!":
+          value==5?"Awesome app!":"nuuula";
     return word;
   }
 }
