@@ -147,7 +147,7 @@ class _HomeState extends State<HomePage> {
                       color: Colors.black,
                       fontFamily: 'Pacifico',
                     ),),
-                  activeIcon: new Icon(Icons.face, color: Theme.of(context).buttonColor)
+                  activeIcon: new Icon(Icons.face, color: Theme.of(context).primaryIconTheme.color)
               ),
               BottomNavigationBarItem(
                   icon: new Icon(Icons.style, color: Colors.black),
@@ -156,7 +156,7 @@ class _HomeState extends State<HomePage> {
                       color: Colors.black,
                       fontFamily: 'Pacifico',
                     ),),
-                  activeIcon: new Icon(Icons.style, color:Theme.of(context).buttonColor)
+                  activeIcon: new Icon(Icons.style, color:Theme.of(context).primaryIconTheme.color)
               ),
               BottomNavigationBarItem(
                   icon: new Icon(Icons.notifications, color: Colors.black),
@@ -165,15 +165,15 @@ class _HomeState extends State<HomePage> {
                       color: Colors.black,
                       fontFamily: 'Pacifico',
                     ),),
-                  activeIcon: new Icon(Icons.notifications, color: Theme.of(context).buttonColor)
+                  activeIcon: new Icon(Icons.notifications, color: Theme.of(context).primaryIconTheme.color)
               ),
               BottomNavigationBarItem(
-                  icon: new Icon(Icons.shopping_cart, color: Colors.black),
+                  icon: new Icon(Icons.compare_arrows, color: Colors.black),
                   title: new Text('Deals',
                     style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Pacifico'),),
-                  activeIcon: new Icon(Icons.shopping_cart, color: Theme.of(context).buttonColor)
+                  activeIcon: new Icon(Icons.compare_arrows, color: Theme.of(context).primaryIconTheme.color)
               ),
               BottomNavigationBarItem(
                   icon: new Icon(Icons.account_circle, color:Colors.black),
@@ -182,7 +182,7 @@ class _HomeState extends State<HomePage> {
                       color: Colors.black,
                       fontFamily: 'Pacifico',
                     ),),
-                  activeIcon: new Icon(Icons.account_circle, color: Theme.of(context).buttonColor)
+                  activeIcon: new Icon(Icons.account_circle, color: Theme.of(context).primaryIconTheme.color)
               )
 
             ],
@@ -218,10 +218,10 @@ class _HomeState extends State<HomePage> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
-            title: Text(title),
+            title: Text(title, style: TextStyle(fontFamily: 'Pacifico') ),
             content: SingleChildScrollView(
               child: ListBody(
-                children: <Widget>[Text(description, style: TextStyle(color: Colors.black),)],
+                children: <Widget>[Text(description, style: TextStyle(color: Colors.black, fontFamily: 'Pacifico'),)],
               ),
             ),
             actions: <Widget>[
@@ -361,6 +361,7 @@ class _HomeState extends State<HomePage> {
           scaffoldBackgroundColor: Colors.grey[50],
           accentColor: Colors.pink[400],
           buttonColor: Colors.pink,
+          primaryIconTheme: IconThemeData(color: Colors.pink[500]),
           fontFamily: 'Pacifico',
           indicatorColor: Colors.pink[100],
           brightness: Brightness.light,
@@ -381,6 +382,7 @@ class _HomeState extends State<HomePage> {
             buttonColor: Colors.blue,
             toggleableActiveColor: Colors.lightBlue,
             unselectedWidgetColor: Colors.blueAccent,
+            primaryIconTheme: IconThemeData(color: Colors.blue),
             fontFamily: 'Pacifico',
             indicatorColor: Colors.blue[200],
             brightness: Brightness.light,
@@ -403,6 +405,7 @@ class _HomeState extends State<HomePage> {
           scaffoldBackgroundColor: Colors.grey[900],
           accentColor: Colors.black45,
           buttonColor: Colors.white12,
+          primaryIconTheme: IconThemeData(color: Colors.white),
           toggleableActiveColor: Colors.black54,
           unselectedWidgetColor: Colors.black45,
           fontFamily: 'Pacifico',

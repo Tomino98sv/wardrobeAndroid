@@ -352,7 +352,8 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                               'itemID': item.documentID,
                               'itemName': item.data['name'],
                               'applicantName': userName,
-                              'photo_Url': item.data['photo_url']
+                              'photo_Url': item.data['photo_url'],
+                              'applicant_email': user.email
                             });
                           });
                           debugPrint(user.uid);
@@ -417,7 +418,8 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                                       'itemID': item.documentID,
                                       'itemName': item.data['name'],
                                       'applicantName': userName,
-                                      'photo_Url': item.data['photo_url']
+                                      'photo_Url': item.data['photo_url'],
+                                      'applicant_email': user.email
                                     });
                                   });
                                   debugPrint(user.uid);
@@ -486,7 +488,8 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                                       'itemID': item.documentID,
                                       'itemName': item.data['name'],
                                       'applicantName': userName,
-                                      'photo_Url': item.data['photo_url']
+                                      'photo_Url': item.data['photo_url'],
+                                      'applicant_email': user.email
                                     });
                                   });
                                   Firestore.instance.collection('items').document(item.documentID)
@@ -556,7 +559,8 @@ Future<Widget> giveBuySellBorrow(BuildContext context, DocumentSnapshot item, Fi
                                       'itemName': item.data['name'],
                                       'applicantName': userName,
                                       'price': item.data['price'],
-                                      'photo_Url': item.data['photo_url']
+                                      'photo_Url': item.data['photo_url'],
+                                      'applicant_email': user.email
                                     });
                                   });
 

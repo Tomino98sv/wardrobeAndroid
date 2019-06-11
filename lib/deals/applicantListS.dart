@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/bl/Pages/chatPage/chat.dart';
 
 class SellApplicants extends StatefulWidget {
   DocumentSnapshot requestedItem;
@@ -54,7 +55,6 @@ class _SellApplicants extends State<SellApplicants> {
                           EdgeInsets.symmetric(vertical: 4.0, horizontal: 10.0),
                           child: Material(
                             color: Colors.white,
-                            shadowColor: Colors.grey,
                             elevation: 14.0,
                             borderRadius: BorderRadius.circular(14.0),
                             child: ListTile(
@@ -155,13 +155,12 @@ class _SellApplicants extends State<SellApplicants> {
                                     ),
                                     IconButton(
                                       icon: Icon(Icons.message,),
-                                      onPressed: (){},
-//                                            onPressed: () {
-//                                              Navigator.push(
-//                                                  context,
-//                                                  MaterialPageRoute(builder: (context) => ChatPage(userInfo.data["email"])
-//                                                  ));
-//                                            }
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => ChatPage(document['applicant_email'])
+                                            ));
+                                      },
                                     ),
                                   ],
                                 ),
@@ -181,4 +180,5 @@ class _SellApplicants extends State<SellApplicants> {
       ),
     );
   }
+
 }
