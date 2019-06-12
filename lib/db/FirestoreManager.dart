@@ -233,6 +233,7 @@ class UserList extends StatelessWidget {
             default:
               return Scaffold(
                 appBar: AppBar(
+                  iconTheme: IconThemeData(color: Colors.white),
                   title: Text(
                     "Fashionistas",
                     style: TextStyle(color: Colors.white),
