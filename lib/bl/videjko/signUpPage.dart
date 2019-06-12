@@ -66,6 +66,7 @@ class _SignupPageState extends State<SignupPage> {
                     hintText: 'Password',
                     hintStyle: Theme.of(context).textTheme.subhead,
                     icon: new Icon(Icons.text_fields, color: Colors.black)),
+                  obscureText: true,
                 validator: (input){
                 if(input.length < 6){
                   return 'Your password must contain at least 6 characters';

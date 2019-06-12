@@ -32,7 +32,7 @@ class ThemeBloc {
   scaffoldBackgroundColor: Colors.grey[50],
   accentColor: Colors.pink[400],
   buttonColor: Colors.pink,
-  fontFamily: 'Quicksand',
+  fontFamily: 'Pacifico',
   indicatorColor: Colors.pink[100],
         ));
   }
