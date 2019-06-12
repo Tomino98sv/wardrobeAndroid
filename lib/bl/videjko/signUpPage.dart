@@ -149,10 +149,10 @@ class _SignupPageState extends State<SignupPage> {
           password: _password)
           .then((signedInUser){
         if(_groupGender == 0){
-          UserManagement().storeNewUser(signedInUser,context,_name,"https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/woman.jpg?alt=media&token=3f3e2bbb-6f21-4e8e-8d02-79af6b3ea303");
+          UserManagement().storeNewUser(signedInUser,context,_name,"https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/woman.jpg?alt=media&token=37f7d934-094c-43f4-b335-6462980d3c98");
         }
         if(_groupGender == 1){
-          UserManagement().storeNewUser(signedInUser,context,_name,"https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/man.jpg?alt=media&token=a3be6224-a659-4551-977f-1511faa3d34e");
+          UserManagement().storeNewUser(signedInUser,context,_name,"https://firebasestorage.googleapis.com/v0/b/wardrobe-26e92.appspot.com/o/man.jpg?alt=media&token=8343f8a3-9b01-4bcf-9f4a-89724cf2d607");
         }
       })
           .catchError((e){
