@@ -1,16 +1,15 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
-import 'package:flutter_advanced_networkimage/transition.dart';
+import 'package:flutter_app/bl/Pages/menu.dart';
 import 'package:flutter_app/bl/Pages/wardrobeTabbar.dart';
-import 'package:flutter_app/bl/mainLoginPage.dart';
 import 'package:flutter_app/db/FirestoreManager.dart';
+import 'package:flutter_app/db/editItem.dart';
 import 'package:flutter_app/db/model/Item.dart';
-import 'package:flutter_app/db/userInfo.dart';
-import 'package:flutter_app/ui/homePage.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -22,12 +21,10 @@ class WelcomePage extends StatefulWidget {
 
 class _WelcomePageState extends State<WelcomePage>
     with TickerProviderStateMixin {
+
   FirebaseUser user2;
-  GoogleSignInAccount googleUser;
   double _imageHeight = 248.0;
   TabController _tabController;
-
-//  Firestore.instance.collection("items")
 
   @override
   void initState() {
@@ -35,496 +32,586 @@ class _WelcomePageState extends State<WelcomePage>
     FirebaseAuth.instance.currentUser().then((fUser) {
       setState(() {
         user2 = fUser;
+        Stream<QuerySnapshot> snapshot = Firestore.instance
+            .collection('users')
+            .where('uid', isEqualTo: user2.uid)
+            .snapshots();
       });
     });
     _tabController = new TabController(length: 3, vsync: this);
   }
 
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
+    return Scaffold(
+        body: StreamBuilder<QuerySnapshot>(
 //     stream: Firestore.instance.collection('items').where("userId", isEqualTo: user2.uid).snapshots(),
-        stream: Firestore.instance.collection('items').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return new Text('Loading...');
-            default:
-              return new Column(
-                children: <Widget>[
-                  new Stack(
+            stream: Firestore.instance.collection('items').snapshots(),
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return new Text('Loading...',style:Theme.of(context).textTheme.subhead);
+                default:
+                  return new Column(
                     children: <Widget>[
-                      _buildIamge(),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: Container(
-                          margin: EdgeInsets.only(top: 24.0, right: 24.0),
-                          child: Material(
-                            color: Colors.pink,
-                            shape: _DiamondBorder(),
-                            //    borderRadius: BorderRadius.circular(30.0),
-                            child: InkWell(
-                              splashColor: Colors.pink[400],
-                              customBorder: _DiamondBorder(),
-                              onTap: () {
-                                FirebaseAuth.instance.signOut().then((value) {
-                                  Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                          builder: (context) => QuickBee()),
-                                      (Route<dynamic> route) => false);
-                                }).catchError((e) {
-                                  print(e);
-                                });
-                              },
-                              child: Container(
-                                width: 90.0,
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.symmetric(vertical: 30.0),
-                                child: Icon(Icons.power_settings_new,
-                                    color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      new Padding(
-                        padding: new EdgeInsets.only(
-                            left: 16.0, top: _imageHeight / 2.5),
-                        child: StreamBuilder<QuerySnapshot>(
-                          stream: Firestore.instance
-                              .collection('users')
-                              .where('uid', isEqualTo: user2.uid)
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData)
-                              return Text("Loading data ... wait please");
-                            return Column(
-                              children: <Widget>[
-                                Text(
-                                  snapshot.data.documents[0]['name'],
-                                  style: new TextStyle(
-                                      fontSize: 30.0,
-                                      color: Colors.black,
-                                      fontFamily: 'DancingScript-Bold',
-                                      //neberie
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                Text(
-                                  snapshot.data.documents[0]['email'],
-                                  style: new TextStyle(
-                                      fontSize: 15.0,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w300),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 313.0, top: 180.0),
-                        child: FloatingActionButton(
-                            heroTag: "btnWelcome",
-                            child: Icon(Icons.add),
-                            shape: _DiamondBorder(),
-                            onPressed: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return MyNewItem();
-                              }));
-                            }),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    width: double.maxFinite,
-                    child: WardrobeTabBar(
-                      tabController: _tabController,
-                    ),
-                  ),
-                  Expanded(
-                      child: TabBarView(controller: _tabController, children: <
-                          Widget>[
-                    ListView(
-                        children: snapshot.data.documents
-                            .map((DocumentSnapshot document) {
-                      if (document["userId"] == user2.uid &&
-                          document['borrowedTo'] == "") {
-                        return Slidable(
-                          delegate: SlidableDrawerDelegate(),
-                          actionExtentRatio: 0.25,
-                          child: ExpansionTile(
-                            leading: Container(
-                                width: 46.0,
-                                height: 46.0,
-                                child: document['photo_url'] == null ||
-                                        document['photo_url'] == ""
-                                    ? Icon(Icons.broken_image)
-                                    : TransitionToImage(
-                                        image: AdvancedNetworkImage(
-                                          document['photo_url'],
-                                          useDiskCache: true,
-                                          timeoutDuration: Duration(seconds: 7),
-                                          cacheRule: CacheRule(
-                                              maxAge: const Duration(days: 7)),
-                                          fallbackAssetImage: 'assets/images/image_error.png',
-                                          retryLimit: 0
-                                        ),
-                                      )),
-                            title: Text(document['name']),
-                            children: <Widget>[
-                              Text('Name: ${document['name']}'),
-                              Text('Color: ${document['color']}'),
-                              Text('Size: ${document['size']}'),
-                              Text('Length: ${document['length']}'),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Flexible(
-                                    fit: FlexFit.tight,
-                                    child: Container(
-                                      child: InkWell(
-                                        onTap: () {
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                            return EditItem(item: document);
-//                            return SecondRoute(item: document); //tu je predchadzajuci kod
-                                          }));
-                                          debugPrint("idem dalej");
-                                        },
-                                        child: Container(
-                                          decoration: new BoxDecoration(
-                                            color: Colors.pink,
-                                            borderRadius:
-                                                new BorderRadius.circular(30.0),
+                      new Stack(
+                        children: <Widget>[
+                          _buildIamge(),
+                          new Padding(
+                            padding: new EdgeInsets.only(
+                                left: 25.0,top: 2.0),
+                            child: StreamBuilder<QuerySnapshot>(
+                              stream: Firestore.instance
+                                  .collection('users')
+                                  .where('uid', isEqualTo: user2.uid)
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData)
+                                  return Text("Loading data ... wait please",style:Theme.of(context).textTheme.subhead);
+                                return Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: <Widget>[
+                                    Flexible(
+                                      fit: FlexFit.tight,
+                                      child: SizedBox(
+                                        child: Column(
+                                            children: <Widget>[
+                                              Text(
+                                                snapshot.data.documents[0]['name'],
+                                                style: TextStyle(
+                                                  fontSize: 20.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(bottom: 5.0),
+                                              ),
+                                              Text(
+                                                snapshot.data.documents[0]['email'],
+                                                style: TextStyle(
+                                                  fontSize: 15.0,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ],
                                           ),
-                                          margin: EdgeInsets.all(10.0),
-                                          height: 40.0,
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            'Edit',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ),
                                       ),
                                     ),
-                                  ),
-                                  Flexible(
-                                    fit: FlexFit.tight,
-                                    child: Container(
-                                      child: InkWell(
-                                        onTap: () {
-                                          Navigator.push(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                            return UserList(item: document);
-                                          }));
-                                        },
-                                        child: Container(
-                                          decoration: new BoxDecoration(
-                                            color: Colors.pink,
-                                            borderRadius:
-                                                new BorderRadius.circular(30.0),
-                                          ),
-                                          margin: EdgeInsets.all(10.0),
-                                          height: 40.0,
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            'Borrow to...',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ),
-                                      ),
+                                    AnimatedFab(),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 10.0),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          secondaryActions: <Widget>[
-                            new IconSlideAction(
-                              icon: Icons.transfer_within_a_station,
-                              caption: 'Delete',
-                              color: Colors.red,
-                              onTap: () {
-                                debugPrint('klikol som');
-                                return showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: Text('Delete Item'),
-                                      content: Text(
-                                          'Are you sure you want to delete this item?'),
-                                      actions: <Widget>[
-                                        FlatButton(
-                                          child: Text('Yes'),
-                                          onPressed: () {
-                                            Firestore.instance
-                                                .collection('items')
-                                                .document(document.documentID)
-                                                .delete();
-//                                    StorageReference obr = FirebaseStorage.instance.getReferenceFromUrl(item.photoUrl);
-//                                    obr.delete();
-                                            Navigator.pop(context);
-                                            deleteFireBaseStorageItem(
-                                                document['photoUrl']);
-
-                                            debugPrint("vymazanee");
-                                          },
-                                        ),
-                                        FlatButton(
-                                          child: Text('Cancel'),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                        )
-                                      ],
-                                    );
-                                  },
+                                  ],
                                 );
                               },
                             ),
-                          ],
-                        );
-                      } else {
-                        return Container();
-                      }
-                    }).toList()),
-                    ListView(
-                        children: snapshot.data.documents
-                            .map((DocumentSnapshot document) {
-                      if (document["userId"] == user2.uid &&
-                          document['borrowedTo'] != "") {
-                        return Slidable(
-                          delegate: SlidableDrawerDelegate(),
-                          actionExtentRatio: 0.25,
-                          child: ExpansionTile(
-                            leading: Container(
-                                width: 46.0,
-                                height: 46.0,
-                                child: document['photo_url'] == null ||
-                                        document['photo_url'] == ""
-                                    ? Icon(Icons.broken_image)
-                                    : TransitionToImage(
-                                        image: AdvancedNetworkImage(
-                                          document['photo_url'],
-                                          useDiskCache: true,
-                                          timeoutDuration: Duration(seconds: 7),
-                                          cacheRule: CacheRule(
-                                              maxAge: const Duration(days: 7)),
-                                            fallbackAssetImage: 'assets/images/image_error.png',
-                                            retryLimit: 0
+                          ),
+                        ],
+                      ),
+                      Container(
+                        width: double.maxFinite,
+                        child: WardrobeTabBar(
+                          tabController: _tabController,
+                        ),
+                      ),
+                      Expanded(
+                          child: Stack(
+                            children: <Widget> [
+                              TabBarView(
+                                controller: _tabController, children: <Widget>[
+                              GridView.count(
+                                crossAxisCount: 3,
+                                  crossAxisSpacing: 12.0,
+                                  mainAxisSpacing: 12.0,
+                                  padding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
+                                  shrinkWrap: true,
+                                  children: snapshot.data.documents
+                                      .where((doc) => doc['borrowedTo'] == "")
+                                      .where((doc) => doc['userId'] == user2.uid)
+                                      .map((DocumentSnapshot document) {
+                                      return GestureDetector(
+                                        child: Material(
+                                          color: Colors.white,
+                                          elevation:14.0,
+                                          borderRadius: BorderRadius.circular(24.0),
+                                          child: Container(
+                                            child: ClipRRect(
+                                              borderRadius: BorderRadius.circular(10.0),
+                                              child: Stack(
+                                                fit: StackFit.expand,
+                                                children: <Widget>[
+                                                  document["photo_url"] == null || document["photo_url"] == ""
+                                                      ? Icon(Icons.broken_image)
+                                                      : CachedNetworkImage(
+                                                    imageUrl: document["photo_url"],
+                                                    fit: BoxFit.cover,
+                                                    alignment: Alignment.topLeft,
+                                                    placeholder: (context, imageUrl) =>
+                                                        CircularProgressIndicator(),
+                                                  ),
+                                                  Align(
+                                                    alignment: Alignment.bottomCenter,
+                                                    child: Container(
+                                                      width: double.maxFinite,
+                                                      height: 26.0,
+                                                      padding: EdgeInsets.symmetric(
+                                                          vertical: 2.0, horizontal: 16.0),
+                                                      color: Color(0x66000000),
+                                                      alignment: Alignment.bottomCenter,
+                                                      child: Text(
+                                                        document['name'],
+                                                        style: TextStyle(color: Colors.white),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          )
                                         ),
-                                      )),
-                            title: Text(document['name']),
-                            children: <Widget>[
-                              Text('Name: ${document['name']}'),
-                              Text('Color: ${document['color']}'),
-                              Text('Size: ${document['size']}'),
-                              Text('Length: ${document['length']}'),
-                              new Text(
-                                  'Borrowed to : ${document['borrowName']}'),
-                              new Container(
-                                margin:
-                                    EdgeInsets.only(top: 10.0, bottom: 10.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  child: Material(
-                                    color: Colors.pink,
-                                    borderRadius: BorderRadius.circular(30.0),
-                                    child: InkWell(
-                                      splashColor: Colors.pink[400],
-                                      onTap: () {
-                                        return showDialog(
+                                        onTap: (){
+                                          showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              child: CupertinoAlertDialog(
+                                                title: Text(
+                                                  document['name'],
+                                                  style: TextStyle(
+                                                      fontFamily: 'Pacifico',
+                                                  ),
+                                                ),
+                                                content: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    CachedNetworkImage(
+                                                      imageUrl: document['photo_url'],
+                                                      placeholder: (context, imageUrl) =>
+                                                          CircularProgressIndicator(),
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      children: <Widget>[
+                                                        Padding(
+                                                          padding: EdgeInsets.only(top: 15.0),
+                                                        ),
+                                                        Expanded(
+                                                            child: Text(document["description"],
+                                                              style: TextStyle(color: Colors.black,
+                                                              fontFamily: 'Pacifico'),
+                                                              textAlign: TextAlign.center,)
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                actions: <Widget>[
+                                                  Row(
+                                                    children: <Widget>[
+                                                      FlatButton(
+                                                        onPressed: (){
+                                                          Navigator.push(context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) {
+                                                                  return EditItem(item: document);
+                                                                }));
+                                                        debugPrint("idem dalej");
+                                                        },
+                                                        child: Text("Edit",style: TextStyle(color: Colors.black)),
+                                                      ),
+                                                      FlatButton(
+                                                        onPressed: (){
+                                                          Navigator.push(context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) {
+                                                                    return UserList(item: document, user: user2);
+                                                                  }));
+                                                        },
+                                                        child: Text("Lend",style: TextStyle(color: Colors.black)),
+                                                      ),
+                                                      FlatButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(context);
+                                                        },
+                                                        child: Text("Cancel",style: TextStyle(color: Colors.black)),
+                                                      )
+                                                    ],
+                                                  )
+                                                ],
+                                              )
+                                          );
+                                        },
+                                        onLongPress: (){
+                                          return showDialog(
                                             context: context,
                                             builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                title: Text('Get item'),
+                                              return CupertinoAlertDialog(
+                                                title: Text('Delete ${document['name']}',style:
+                                                TextStyle(color: Colors.black,
+                                                fontFamily: 'Pacifico')),
                                                 content: Text(
-                                                    'Are you sure that user returned your item back to you?'),
+                                                    'Are you sure?',
+                                                    style: TextStyle(color: Colors.black,
+                                                    fontFamily: 'Pacifico')),
                                                 actions: <Widget>[
                                                   FlatButton(
                                                     child: Text('Yes'),
                                                     onPressed: () {
                                                       Firestore.instance
                                                           .collection('items')
-                                                          .document(document
-                                                              .documentID)
-                                                          .updateData({
-                                                        "borrowedTo": "",
-                                                        "borrowName": ""
-                                                      });
-                                                      debugPrint(
-                                                          "vratil sa mi item");
+                                                          .document(document.documentID)
+                                                          .delete();
                                                       Navigator.pop(context);
+                                                      deleteFireBaseStorageItem(
+                                                          document['photoUrl']);
+                                                      debugPrint("vymazanee");
                                                     },
                                                   ),
                                                   FlatButton(
-                                                    child: Text('Cancel'),
+                                                    child: Text('Cancel',style: TextStyle(color: Colors.black)),
                                                     onPressed: () {
                                                       Navigator.pop(context);
                                                     },
                                                   )
                                                 ],
                                               );
-                                            }); // kod s vyberom userov Navigator.push
-                                      },
-                                      child: Container(
-                                        width: 200.0,
-                                        height: 40.0,
-                                        alignment: Alignment.center,
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 8.0),
-                                        child: Text(
-                                          'I got my dress back',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        );
-                      } else {
-                        return Container();
-                      }
-                    }).toList()),
-                    ListView(
-                        children: snapshot.data.documents
-                            .map((DocumentSnapshot document) {
-                      if (document['borrowedTo'] == user2.uid) {
-                 return Slidable(
-                          delegate: SlidableDrawerDelegate(),
-                          actionExtentRatio: 0.25,
-                          child: ExpansionTile(
-                            leading: Container(
-                                width: 46.0,
-                                height: 46.0,
-                                child: document['photo_url'] == null ||
-                                        document['photo_url'] == ""
-                                    ? Icon(Icons.broken_image)
-                                    : TransitionToImage(
-                                        image: AdvancedNetworkImage(
-                                          document['photo_url'],
-                                          useDiskCache: true,
-                                          timeoutDuration: Duration(seconds: 7),
-                                          cacheRule: CacheRule(
-                                              maxAge: const Duration(days: 7)),
-                                            fallbackAssetImage: 'assets/images/image_error.png',
-                                            retryLimit: 0
-                                        ),
-                                      )),
-                            title: Text(document['name']),
-                            children: <Widget>[
-                              Text('Name: ${document['name']}'),
-                              Text('Color: ${document['color']}'),
-                              Text('Size: ${document['size']}'),
-                              Text('Length: ${document['length']}'),
+                                            },
+                                          );
+                                        },
+                                      );
 
-                              StreamBuilder<QuerySnapshot>(
-                                stream:  Firestore.instance
-                                    .collection('users')
-                                    .where('uid', isEqualTo: document['userId'])
-                                    .snapshots(),
-                                builder: (context, snapshot) {
-                                  return Text('Borrowed from: ${snapshot.data.documents[0]['name']}',);
-                                },
-                              ),
-                              new Container(
-                                margin:
-                                    EdgeInsets.only(top: 10.0, bottom: 10.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  child: Material(
-                                    color: Colors.pink,
-                                    borderRadius: BorderRadius.circular(30.0),
-                                    child: InkWell(
-                                      splashColor: Colors.pink[400],
-                                      onTap: () {
-                                        return showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                title: Text('Return back'),
-                                                content: Text(
-                                                    'Are you sure that you returned your item back to the owner?'),
-                                                actions: <Widget>[
-                                                  FlatButton(
-                                                    child: Text('Yes'),
-                                                    onPressed: () {
-                                                      Firestore.instance
-                                                          .collection('items')
-                                                          .document(document
-                                                              .documentID)
-                                                          .updateData({
-                                                        "borrowedTo": "",
-                                                        "borrowName": ""
-                                                      });
-                                                      debugPrint(
-                                                          "vratil sa mi item");
-                                                      Navigator.pop(context);
-                                                    },
+                                  }).toList()),
+                              //second tab
+                              GridView.count(
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing: 12.0,
+                                  mainAxisSpacing: 12.0,
+                                  padding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
+                                  shrinkWrap: true,
+                                  children: snapshot.data.documents
+                                    .where((doc) => doc["userId"] == user2.uid)
+                                    .where((doc) => doc["borrowedTo"] != "")
+                                      .map((DocumentSnapshot document)  {
+                                      return GestureDetector(
+                                        child: Material(
+                                            color: Colors.white,
+                                            elevation:14.0,
+                                            borderRadius: BorderRadius.circular(24.0),
+                                            child: Container(
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.circular(10.0),
+                                                  child: Stack(
+                                                    fit: StackFit.expand,
+                                                    children: <Widget>[
+                                                      document["photo_url"] == null || document["photo_url"] == ""
+                                                          ? Icon(Icons.broken_image)
+                                                          : CachedNetworkImage(
+                                                        imageUrl: document["photo_url"],
+                                                        fit: BoxFit.cover,
+                                                        alignment: Alignment.topLeft,
+                                                        placeholder: (context, imageUrl) =>
+                                                            CircularProgressIndicator(),
+                                                      ),
+                                                      Align(
+                                                        alignment: Alignment.bottomCenter,
+                                                        child: Container(
+                                                          width: double.maxFinite,
+                                                          height: 26.0,
+                                                          padding: EdgeInsets.symmetric(
+                                                              vertical: 2.0, horizontal: 16.0),
+                                                          color: Color(0x66000000),
+                                                          alignment: Alignment.bottomCenter,
+                                                          child: Text(
+                                                            document['name'],
+                                                            style: TextStyle(color: Colors.white),
+                                                          ),
+                                                        ),
+                                                      )
+
+                                                    ],
                                                   ),
-                                                  FlatButton(
-                                                    child: Text('Cancel'),
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
+
+//
+                                                )
+                                            )
+                                        ),
+                                        onTap: (){
+                                          showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              child: CupertinoAlertDialog(
+                                                title: Text(document['name'],
+                                                  style: TextStyle(
+                                                    fontFamily: 'Pacifico',
+                                                  ),),
+                                                content: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    CachedNetworkImage(
+                                                      imageUrl: document['photo_url'],
+                                                      placeholder: (context, imageUrl) =>
+                                                          CircularProgressIndicator(),
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: <Widget>[
+                                                        Text("Lent to:  ",style: TextStyle(
+                                                          fontFamily: 'Pacifico',
+                                                        ),),
+                                                        Text('${document['borrowName']}',style: TextStyle(color: Colors.black, fontFamily: 'Pacifico')),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                actions: <Widget>[
+                                                  Row(
+                                                    children: <Widget>[
+                                                      FlatButton(
+                                                        onPressed: (){
+                                                          return showDialog(
+                                                              context: context,
+                                                              builder: (BuildContext context) {
+                                                                return CupertinoAlertDialog(
+                                                                  title: Text('Receive item',style: TextStyle(color: Colors.black, fontFamily: 'Pacifico')),
+                                                                  content: Text(
+                                                                      'Are you sure that user returned dress back to you?',
+                                                                      style: TextStyle(color: Colors.black,
+                                                                      fontFamily: 'Pacifico')),
+                                                                  actions: <Widget>[
+                                                                    FlatButton(
+                                                                      child: Text('Yes',style: TextStyle(color: Colors.black)),
+                                                                      onPressed: () {
+                                                                        Firestore.instance
+                                                                            .collection('items')
+                                                                            .document(document
+                                                                            .documentID)
+                                                                            .updateData({
+                                                                          "borrowedTo": "",
+                                                                          "borrowName": ""
+                                                                        });
+                                                                        debugPrint(
+                                                                            "vratil sa mi item");
+                                                                        Navigator.pop(context);
+                                                                        Navigator.pop(context);
+                                                                      },
+                                                                    ),
+                                                                    FlatButton(
+                                                                      child: Text('Cancel',style: TextStyle(color: Colors.black)),
+                                                                      onPressed: () {
+                                                                        Navigator.pop(context);
+                                                                      },
+                                                                    )
+                                                                  ],
+                                                                );
+                                                              });
+
+                                                        },
+                                                        child: Text('Recieve',style: TextStyle(color: Colors.black)),
+                                                      ),
+                                                      FlatButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(context);
+                                                        },
+                                                        child: Text("Cancel", style: TextStyle(color: Colors.black)),
+                                                      )
+                                                    ],
                                                   )
                                                 ],
-                                              );
-                                            });
-                                        // kod s vyberom userov Navigator.push
-                                      },
-                                      child: Container(
-                                        width: 170.0,
-                                        height: 40.0,
-                                        alignment: Alignment.center,
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 8.0),
-                                        child: Text(
-                                          'Return to user',
-                                          style: TextStyle(
+                                              )
+                                          );
+                                        },
+                                      );
+                                  }).toList()),
+                              //third tab
+                              GridView.count(
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing: 12.0,
+                                  mainAxisSpacing: 12.0,
+                                  padding: EdgeInsets.symmetric(vertical: 16.0,horizontal: 8.0),
+                                  shrinkWrap: true,
+                                  children: snapshot.data.documents
+                                    .where((doc) => doc["borrowedTo"] == user2.uid)
+                                      .map((DocumentSnapshot document) {
+                                      return GestureDetector(
+                                        child: Material(
                                             color: Colors.white,
-                                          ),
+                                            elevation:14.0,
+                                            borderRadius: BorderRadius.circular(24.0),
+                                            child: Container(
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.circular(10.0),
+                                                  child: Stack(
+                                                    fit: StackFit.expand,
+                                                    children: <Widget>[
+                                                      document["photo_url"] == null || document["photo_url"] == ""
+                                                          ? Icon(Icons.broken_image)
+                                                          : CachedNetworkImage(
+                                                        imageUrl: document["photo_url"],
+                                                        fit: BoxFit.cover,
+                                                        alignment: Alignment.topLeft,
+                                                        placeholder: (context, imageUrl) =>
+                                                            CircularProgressIndicator(),
+                                                      ),
+                                                      Align(
+                                                        alignment: Alignment.bottomCenter,
+                                                        child: Container(
+                                                          width: double.maxFinite,
+                                                          height: 26.0,
+                                                          padding: EdgeInsets.symmetric(
+                                                              vertical: 2.0, horizontal: 16.0),
+                                                          color: Color(0x66000000),
+                                                          alignment: Alignment.bottomCenter,
+                                                          child: Text(
+                                                            document['name'],
+                                                            style: TextStyle(color: Colors.white),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+
+
+
+                                                )
+                                            )
                                         ),
-                                      ),
-                                    ),
-                                  ),
+                                        onTap: (){
+                                          showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              child: CupertinoAlertDialog(
+                                                title: Text(document['name'],
+                                                style: TextStyle(fontFamily: 'Pacifico', ),
+                                                ),
+                                                content: Column(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    CachedNetworkImage(
+                                                      imageUrl: document['photo_url'],
+                                                      placeholder: (context, imageUrl) =>
+                                                          CircularProgressIndicator(),
+                                                    ),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: <Widget>[
+                                                        Text("Borrowed from:  ", style: TextStyle(fontFamily: 'Pacifico'),),
+                                                        StreamBuilder<QuerySnapshot>(
+                                                          stream:  Firestore.instance
+                                                              .collection('users')
+                                                              .where('uid', isEqualTo: document['userId'])
+                                                              .snapshots(),
+                                                          builder: (context, snapshot) {
+                                                            return Text('${snapshot.data.documents[0]['name']}',
+                                                                style: TextStyle(color: Colors.black,fontFamily: 'Pacifico'));
+                                                          },
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                actions: <Widget>[
+                                                  Row(
+                                                    children: <Widget>[
+                                                      FlatButton(
+                                                        onPressed: (){
+                                                          return showDialog(
+                                                              context: context,
+                                                              builder: (BuildContext context) {
+                                                                return CupertinoAlertDialog(
+                                                                  title: Text('Return item', style: TextStyle(color: Colors.black,fontFamily: 'Pacifico'),),
+                                                                  content: Text(
+                                                                      'Are you sure that you returned dress back to the owner?',
+                                                                      style:TextStyle(color: Colors.black,fontFamily: 'Pacifico')),
+                                                                  actions: <Widget>[
+                                                                    FlatButton(
+                                                                      child: Text('Yes',style:TextStyle(color: Colors.black)),
+                                                                      onPressed: () {
+                                                                        Firestore.instance
+                                                                        .collection('items')
+                                                                        .document(document
+                                                                        .documentID)
+                                                                        .updateData({
+                                                                      "borrowedTo": "",
+                                                                      "borrowName": ""
+                                                                    });
+                                                                    debugPrint(
+                                                                        "vratil sa mi item");
+                                                                    Navigator.pop(context);
+                                                                    Navigator.pop(context);
+                                                                      },
+                                                                    ),
+                                                                    FlatButton(
+                                                                      child: Text('Cancel',style: TextStyle(color: Colors.black)),
+                                                                      onPressed: () {
+                                                                        Navigator.pop(context);
+                                                                      },
+                                                                    )
+                                                                  ],
+                                                                );
+                                                              });
+
+                                                        },
+                                                        child: Text('Return',style: TextStyle(color: Colors.black)),
+                                                      ),
+                                                      FlatButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(context);
+                                                        },
+                                                        child: Text("Cancel", style: TextStyle(color: Colors.black)),
+                                                      )
+                                                    ],
+                                                  )
+                                                ],
+                                              )
+                                          );
+                                        },
+                                      );
+                                  }).toList()),
+
+                            ]),
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: Container(
+                                  margin: EdgeInsets.only(right: 10.0,bottom: 10.0),
+                                  child: FloatingActionButton(
+                                      heroTag: "btnWelcome",
+                                      child: Icon(Icons.add),
+                                      shape: _DiamondBorder(),
+                                      elevation: 0.0,
+                                      onPressed: () {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(builder: (context) {
+                                              return MyNewItem();
+                                            }));
+                                      }),
                                 ),
-                              )
-                            ],
-                          ),
-                        );
-                      } else {
-                        return Container();
-                      }
-                    }).toList()),
-                  ])),
-                ],
-              );
-          }
-        });
+                              ),
+                          ])),
+
+                    ],
+                  );
+              }
+
+            })
+    );
   }
 
   Widget _buildIamge() {
-    return new ClipPath(
-      clipper: new DialogonalClipper(),
-      child: new Image.asset(
-        'assets/images/pinkB.jpg',
-        fit: BoxFit.fitWidth,
-   //     height: _imageHeight,
+    return Container(
+      width: double.maxFinite,
+      height: 180.0,
+      child: new ClipPath(
+        clipper: new DialogonalClipper(),
+        child: new Image.asset(
+          'assets/images/biela.jpg',
+          fit: BoxFit.fitWidth,
+          //     height: _imageHeight,
 
+        ),
       ),
     );
   }
@@ -543,6 +630,8 @@ class _WelcomePageState extends State<WelcomePage>
         .then((_) => print('Successfully deleted $filePath storage item'));
   }
 }
+
+
 
 class DialogonalClipper extends CustomClipper<Path> {
   @override
@@ -590,4 +679,20 @@ class _DiamondBorder extends ShapeBorder {
   ShapeBorder scale(double t) {
     return null;
   }
+
 }
+
+class Constants {
+  static const String Settings = "Settings";
+  static const String LogOut = "Logout";
+
+  static const List<String> choices = <String>[
+    Settings,
+    LogOut
+  ];
+}
+
+
+
+
+

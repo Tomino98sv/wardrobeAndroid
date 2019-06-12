@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_app/bl/Pages/welcome.dart';
 import 'package:flutter_app/bl/mainLoginPage.dart';
+import 'package:flutter_app/ui/homePage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginPage extends StatefulWidget {
@@ -29,102 +30,101 @@ class _LoginPageState extends State<LoginPage> {
     // TODO: implement build
     return new Scaffold(
         appBar: new AppBar(
-          actions: <Widget>[
-            IconButton(
-                icon: new Icon(Icons.arrow_back),
-                onPressed: () => Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => QuickBee()))),
-          ],
-          title: new Text("Login"),
+          iconTheme: IconThemeData(color: Colors.white),
+          title: new Text("Login",style: TextStyle(color: Colors.white),),
         ),
         key: _scaffoldKey,
         body: Form(
           key: _formKey,
-          child: Container(
-            padding: EdgeInsets.all(25.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                TextFormField(
-                  decoration: InputDecoration(
-                      hintText: 'Email',
-                      icon: new Icon(Icons.email, color: Colors.black)),
-                  validator: (input) {
-                    if (input.isEmpty) {
-                      return 'Please type an email';
-                    } else if (validateEmail(input)) {
-                      return 'Mail must be in mail format (%@%.%)';
-                    }
-                  },
-                  onSaved: (input) => _email = input,
-                ),
-                SizedBox(height: 15.0),
-                TextFormField(
-                  decoration: InputDecoration(
-                      hintText: 'Password',
-                      icon: new Icon(Icons.text_fields, color: Colors.black)),
-                  validator: (input) {
-                    if (input.length < 6) {
-                      return 'Your password needs to be at least 6 characters';
-                    }
-                  },
-                  onSaved: (input) => _password = input,
-                  obscureText: true,
-                ),
-                SizedBox(height: 20.0),
-                Container(
-                  margin: EdgeInsets.only(top: 8.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(30.0),
-                    child: Material(
-                      color: Colors.pink,
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(top: 100.0, left:25.0, right:25.0, bottom:25.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  TextFormField(
+                    decoration: InputDecoration(
+                        hintText: 'Email',
+                      icon: new Icon(Icons.email, color: Colors.black),
+                      hintStyle: Theme.of(context).textTheme.subhead,),
+                    validator: (input) {
+                      if (input.isEmpty) {
+                        return 'Please enter your email';
+                      } else if (validateEmail(input)) {
+//                        return 'Mail must be in mail format (%@%.%)';
+                        return 'Please, enter valid email address';
+                      }
+                    },
+
+                    onSaved: (input) => _email = input,
+                  ),
+                  SizedBox(height: 15.0),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintStyle: Theme.of(context).textTheme.subhead,
+                        hintText: 'Password',
+                        icon: new Icon(Icons.text_fields, color: Colors.black)),
+                    validator: (input) {
+                      if (input.length < 6) {
+                        return 'Your password must contain at least 6 characters';
+                    }},
+                    onSaved: (input) => _password = input,
+                    obscureText: true,),
+                  SizedBox(height: 20.0),
+                  Container(
+                    margin: EdgeInsets.only(top: 8.0),
+                    child: ClipRRect(
                       borderRadius: BorderRadius.circular(30.0),
-                      child: InkWell(
-                        splashColor: Colors.pink[400],
-                        onTap: () {
-                          signInMethod(context);
-                        },
-                        child: Container(
-                          width: 100.0,
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
-                          child: Text(
-                            'Log In',
-                            style: TextStyle(color: Colors.white),
+                      child: Material(
+                        color: Theme.of(context).buttonColor,
+                        borderRadius: BorderRadius.circular(30.0),
+                        child: InkWell(
+                          splashColor: Theme.of(context).accentColor,
+                          onTap: () {
+                            signInMethod(context);
+                          },
+                          child: Container(
+                            width: 100.0,
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              'Log In',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(height: 15.0),
-                Text('Don\'t have an account?'),
-                Container(
-                  margin: EdgeInsets.only(top: 8.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(30.0),
-                    child: Material(
-                      color: Colors.pink,
+                  SizedBox(height: 15.0),
+                  Text('Don\'t have an account?', style:Theme.of(context).textTheme.subhead),
+                  Container(
+                    margin: EdgeInsets.only(top: 8.0),
+                    child: ClipRRect(
                       borderRadius: BorderRadius.circular(30.0),
-                      child: InkWell(
-                        splashColor: Colors.pink[400],
-                        onTap: () {
-                          Navigator.of(context).pushNamed('/signup');
-                        },
-                        child: Container(
-                          width: 100.0,
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
-                          child: Text(
-                            'Sign up',
-                            style: TextStyle(color: Colors.white),
+                      child: Material(
+                        color: Theme.of(context).buttonColor,
+                        borderRadius: BorderRadius.circular(30.0),
+                        child: InkWell(
+                          splashColor: Theme.of(context).accentColor,
+                          onTap: () {
+                            Navigator.of(context).pushNamed('/signup');
+                          },
+                          child: Container(
+                            width: 100.0,
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              'Sign up',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ));
@@ -139,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Container(
               width: 48.0,
               height: 48.0,
-              child: CircularProgressIndicator(backgroundColor: Colors.pink,),
+              child: CircularProgressIndicator(backgroundColor: Theme.of(context).accentColor),
             ),
           );
         });
@@ -147,7 +147,10 @@ class _LoginPageState extends State<LoginPage> {
             .signInWithEmailAndPassword(email: _email, password: _password)
             .then((FirebaseUser user) {
           Navigator.of(context, rootNavigator: true).pop('dialog');
-          Navigator.of(context).pushReplacementNamed('/homepage');
+          Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                          builder: (context) => HomePage()),
+                                      (Route<dynamic> route) => false);
         }).catchError((e) {
           print(
               "NO LOGGING validation was passed but not loggin to firebaseAuth");
@@ -166,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
     final snackBar = new SnackBar(
       content: new Text(str),
       duration: new Duration(seconds: 3),
-      backgroundColor: Colors.black54,
+      backgroundColor: Colors.black26,
       action: new SnackBarAction(
           label: 'OUKEY',
           onPressed: () {

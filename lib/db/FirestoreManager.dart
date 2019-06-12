@@ -4,16 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:flutter_advanced_networkimage/transition.dart';
 import 'package:flutter_advanced_networkimage/zoomable.dart';
+import 'package:flutter_app/db/getItem.dart';
+import 'package:flutter_app/db/model/changeImageItem.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_app/db/userInfo.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'userInfo.dart';
 
 void main() => runApp(ItemsList());
 
-
 class ItemsList extends StatefulWidget {
-
   @override
   _ItemsListState createState() {
     return _ItemsListState();
@@ -21,9 +22,8 @@ class ItemsList extends StatefulWidget {
 }
 
 class _ItemsListState extends State<ItemsList> {
-  
-  
   FirebaseUser userCurrent;
+  var userName;
 
   @override
   void initState() {
@@ -31,144 +31,194 @@ class _ItemsListState extends State<ItemsList> {
     FirebaseAuth.instance.currentUser().then((fUser) {
       setState(() {
         userCurrent = fUser;
+        Stream<QuerySnapshot> snapshot = Firestore.instance
+            .collection('users')
+            .where('uid', isEqualTo: userCurrent.uid)
+            .snapshots();
+        snapshot.listen((QuerySnapshot data) {
+          userName = data.documents[0]['name'];
+        });
       });
     });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return StreamBuilder<QuerySnapshot>(
       stream: Firestore.instance.collection('items').snapshots(),
       //shows items from Firebase
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+        if (snapshot.hasError)
+          return new Text('Error: ${snapshot.error}',
+              style: Theme.of(context).textTheme.subhead);
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return new Text('Loading...');
+            return new Text('Loading...',
+                style: Theme.of(context).textTheme.subhead);
           default:
-            return new ListView(
-              children:
-              snapshot.data.documents.map((DocumentSnapshot document) {
-                Item item = Item(
-                    name: document['name'],
-                    color: document['color'],
-                    size: document['size'],
-                    length: document['length'],
-                    photoUrl: document['photo_url'],
-                    id: document.documentID,
-                    borrowName: document['borrowName']
-                );
-                if(document['userId']!=userCurrent.uid){
-                  return Slidable(
-                    delegate: new SlidableDrawerDelegate(),
-                    actionExtentRatio: 0.25,
-                    child: new ExpansionTile(
-                      leading: Container(
-                        width: 46.0,
-                        height: 46.0,
-                        child: item.photoUrl == null || item.photoUrl == ""
-                            ? Icon(Icons.broken_image)
-                            : TransitionToImage(
-                          image: AdvancedNetworkImage(
-                            item.photoUrl,
-                            useDiskCache: true,
-                            timeoutDuration: Duration(seconds: 60),
-                            cacheRule:
-                            CacheRule(maxAge: const Duration(days: 7)),
-                            fallbackAssetImage: 'assets/images/image_error.png',
-                            retryLimit: 0
-                          ),
-                          placeholder: CircularProgressIndicator(),
-                          duration: Duration(milliseconds: 300),),
-                      ),
-                      title: new Text(item.name),
-//                  subtitle: new Text(document['color']),
-                      children: <Widget>[
-                        new Text("Name: ${item.name}"),
-                        new Text("Color: ${item.color}"),
-                        new Text("Size: ${item.size}"),
-                        new Text("Length: ${item.length}"),
-                        new Text(document['borrowedTo'] == ""  || document['borrowedTo'] == null ?
-                        '' :
-                        'Borrowed to : ${item.borrowName}'),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Flexible(
-                              fit: FlexFit.tight,
-                              child: Container(
-                                child: InkWell(
-                                  onTap: (){ Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                        return ShowDetails(item: document);
-//                            return SecondRoute(item: document); //tu je predchadzajuci kod
-                                      }));
-                                  debugPrint("idem dalej");},
-                                  child: Container(
-                                    decoration: new BoxDecoration(
-                                      color: Colors.pink,
-                                      borderRadius: new BorderRadius.circular(30.0),
-                                    ),
-                                    margin: EdgeInsets.all(10.0),
-                                    height: 40.0,
-                                    alignment: Alignment.center,
-                                    child: Text('Show Details',style: TextStyle(color: Colors.white),),
+            return Scaffold(
+              body: new ListView(
+                children:
+                    snapshot.data.documents.map((DocumentSnapshot document) {
+                  Item item = Item(
+                      name: document['name'],
+                      color: document['color'],
+                      size: document['size'],
+                      length: document['length'],
+                      photoUrl: document['photo_url'],
+                      id: document.documentID,
+                      borrowName: document['borrowName']);
+                  if (document['userId'] != userCurrent.uid) {
+                    return Slidable(
+                      delegate: new SlidableDrawerDelegate(),
+                      actionExtentRatio: 0.25,
+                      child: new ExpansionTile(
+                        leading: Container(
+                          width: 46.0,
+                          height: 46.0,
+                          child: item.photoUrl == null || item.photoUrl == ""
+                              ? Icon(Icons.broken_image)
+                              : ZoomableWidget(
+                                  minScale: 1.0,
+                                  maxScale: 2.0,
+                                  // default factor is 1.0, use 0.0 to disable boundary
+                                  panLimit: 0.0,
+                                  bounceBackBoundary: true,
+                                  child: CachedNetworkImage(
+                                    imageUrl: item.photoUrl,
+                                    placeholder: (context, imageUrl) =>
+                                        CircularProgressIndicator(),
                                   ),
+//                              image: AdvancedNetworkImage(
+//                                  item.photoUrl,
+//                                  useDiskCache: true,
+//                                  timeoutDuration: Duration(seconds: 60),
+//                                  cacheRule:
+//                                  CacheRule(maxAge: const Duration(days: 7)),
+//                                  fallbackAssetImage: 'assets/images/image_error.png',
+//                                  retryLimit: 0
+//                              ),
+//                              placeholder: CircularProgressIndicator(),
+//                              duration: Duration(milliseconds: 300),)
                                 ),
-                              ),
-                            ),
-                            Flexible(
-                              fit: FlexFit.tight,
-                              child: Container(
-                                child: InkWell(
-                                  onTap: (){
-                                    Firestore.instance.collection('users').where("uid", isEqualTo: document['userId']).snapshots().listen((user){
-                                      debugPrint(document['userId']);
+                        ),
+                        title: new Text(item.name,
+                            style: Theme.of(context).textTheme.subhead),
+//                  subtitle: new Text(document['color']),
+                        children: <Widget>[
+                          new Text("Name: ${item.name}",
+                              style: Theme.of(context).textTheme.subhead),
+                          new Text("Color: ${item.color}",
+                              style: Theme.of(context).textTheme.subhead),
+                          new Text("Size: ${item.size}",
+                              style: Theme.of(context).textTheme.subhead),
+                          new Text("Length: ${item.length}",
+                              style: Theme.of(context).textTheme.subhead),
+                          new Text(
+                              document['borrowedTo'] == "" ||
+                                      document['borrowedTo'] == null
+                                  ? ''
+                                  : 'Borrowed to : ${item.borrowName}',
+                              style: Theme.of(context).textTheme.subhead),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Flexible(
+                                fit: FlexFit.tight,
+                                child: Container(
+                                  child: InkWell(
+                                    onTap: () {
                                       Navigator.push(context,
                                           MaterialPageRoute(builder: (context) {
-                                            return UserInfoList2(userInfo: user.documents?.first);
-                                          }));
-                                    });// kod s vyberom userov Navigator.push},
-                                  },
-                                  child: Container(
-                                    decoration: new BoxDecoration(
-                                      color: Colors.pink,
-                                      borderRadius: new BorderRadius.circular(30.0),
+                                        return ShowDetails(
+                                            item: document,
+                                            user: userCurrent,
+                                            userName: userName);
+//                            return SecondRoute(item: document); //tu je predchadzajuci kod
+                                      }));
+                                      debugPrint("idem dalej");
+                                    },
+                                    child: Container(
+                                      decoration: new BoxDecoration(
+                                        color: Theme.of(context).buttonColor,
+                                        borderRadius:
+                                            new BorderRadius.circular(30.0),
+                                      ),
+                                      margin: EdgeInsets.all(10.0),
+                                      height: 40.0,
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        'GET dress',
+                                        style:
+                                            Theme.of(context).textTheme.subhead,
+                                      ),
                                     ),
-                                    margin: EdgeInsets.all(10.0),
-                                    height: 40.0,
-                                    alignment: Alignment.center,
-                                    child: Text('Owner Details', style: TextStyle(color: Colors.white),),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                }else{
-                  return Container();
-                }
-              }).toList(),
+                              Flexible(
+                                fit: FlexFit.tight,
+                                child: Container(
+                                  child: InkWell(
+                                    onTap: () {
+                                      Firestore.instance
+                                          .collection('users')
+                                          .where("uid",
+                                              isEqualTo: document['userId'])
+                                          .snapshots()
+                                          .listen((user) {
+                                        debugPrint(document['userId']);
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return UserInfoList2(
+                                              userInfo: user.documents?.first);
+                                        }));
+                                      }); // kod s vyberom userov Navigator.push},
+                                    },
+                                    child: Container(
+                                      decoration: new BoxDecoration(
+                                        color: Theme.of(context).buttonColor,
+                                        borderRadius:
+                                            new BorderRadius.circular(30.0),
+                                      ),
+                                      margin: EdgeInsets.all(10.0),
+                                      height: 40.0,
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        'Owner Details',
+                                        style:
+                                            Theme.of(context).textTheme.subhead,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return Container();
+                  }
+                }).toList(),
+              ),
             );
         }
       },
-    );;
+    );
+    ;
   }
-  
 }
 
-
+//ked chces vybrat user pre borrow
 class UserList extends StatelessWidget {
   DocumentSnapshot item;
+  FirebaseUser user;
 
-  UserList({@required this.item});
+  UserList({@required this.item, @required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -178,324 +228,67 @@ class UserList extends StatelessWidget {
           if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
-              return new Text('Loading...');
+              return new Text('Loading...',
+                  style: Theme.of(context).textTheme.subhead);
             default:
               return Scaffold(
-                  appBar: AppBar(
-                  title: Text("Fashonistats"),),
+                appBar: AppBar(
+                  title: Text(
+                    "Fashionistas",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
                 body: new ListView(
                     children: snapshot.data.documents
                         .map((DocumentSnapshot document) {
-                  return ListTile(
-                    trailing: Icon(Icons.send, color: Colors.pink,),
-                    title: Text(document['name']),
-                    onTap: () {
-                      //kod ktory urci usra, ktoremu bolo pozicane
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return UserInfoList(userInfo: document, itemInfo: item);
-                      }));
-                    },
-                  );
+                  if (document['uid'] != user.uid){
+                    return Container(
+                      height: 80.0,
+                      padding:
+                      EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                      child: Material(
+                        color: Colors.white,
+                        shadowColor: Colors.grey,
+                        elevation: 14.0,
+                        borderRadius: BorderRadius.circular(14.0),
+                        child: ListTile(
+                          contentPadding: EdgeInsets.only(
+                              top: 7.0, left: 12.0, right: 12.0),
+                          leading: ClipOval(
+                            child: CachedNetworkImage(
+                              width: 50.0,
+                              height: 50.0,
+                              fit: BoxFit.cover,
+                              imageUrl: document['photoUrl'],
+                              placeholder: (context, imageUrl) =>
+                                  CircularProgressIndicator(),
+                            ),
+                          ),
+                          trailing: Icon(Icons.info_outline,
+                              color: Theme.of(context).accentColor),
+                          title: Text(
+                            document['name'],
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          onTap: () {
+                            //kod ktory urci usra, ktoremu bolo pozicane
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return UserInfoList(
+                                  userInfo: document, itemInfo: item, currentUser: user,);
+                            }));
+                          },
+                        ),
+                      ),
+                    );}
+                  else
+                    return Container();
                 }).toList()),
               );
           }
         });
   }
 }
-
-class ShowDetails extends StatefulWidget {
-  DocumentSnapshot item;
-
-  ShowDetails({@required this.item});
-
-  _ShowDetails createState() => new _ShowDetails(item: item);
-}
-
-//show details about item with option to edit
-class _ShowDetails extends State<ShowDetails> {
-  DocumentSnapshot item;
-  double _imageHeight = 248.0;
-
-  _ShowDetails({@required this.item});
-
-  @override
-  void initState() {
-    super.initState();
-    debugPrint("XXX ini starte");
-    Firestore.instance
-        .collection('items')
-        .document(item.documentID)
-        .get()
-        .then((onValue) {
-      setState(() {
-        debugPrint("XXX firestore");
-        item = onValue;
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    debugPrint("XXX build");
-    return StreamBuilder<DocumentSnapshot>(
-        stream: Firestore.instance
-            .collection('items')
-            .document(item.documentID)
-            .get()
-            .asStream(),
-        //shows items from Firebase
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Scaffold(body: new Text('Loading...'));
-            default:
-              return new Scaffold(
-                appBar: new AppBar(
-                  title: new Text(snapshot.data['name']),
-                ),
-                body: SingleChildScrollView(
-                  child: new Container(
-//                    padding: new EdgeInsets.all(20.0),
-                    child: new Center(
-                      child: new Column(
-                        children: <Widget>[
-                          Stack(
-                            children: <Widget>[
-                              _buildIamge(),
-                              Padding(
-                                padding: new EdgeInsets.only(
-                                    left: 16.0, top: _imageHeight / 7.5),
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: <Widget>[
-//                                        Icon(Icons.account_circle),
-//                                        Padding(padding: EdgeInsets.only(right: 10.0),),
-//                                        Text('Name: ',
-//                                          style: new TextStyle(
-//                                            color: Colors.black,
-//                                            fontFamily: 'DancingScript-Bold', //neberie
-//                                            fontWeight: FontWeight.w400
-//                                        ),),
-//                                        Padding(padding: EdgeInsets.only(right: 10.0),),
-//                                        Text(snapshot.data['name'],
-//                                          style: new TextStyle(
-//                                            fontSize: 20.0,
-//                                            color: Colors.black,
-//                                            fontFamily: 'DancingScript-Bold', //neberie
-//                                            fontWeight: FontWeight.w400
-//                                        ),),
-//                                        Padding(padding: EdgeInsets.only(right: 10.0),),
-                                        Container(
-                                          width: 200.0,
-                                          height: 200.0,
-                                          child: TransitionToImage(
-                                            image: AdvancedNetworkImage(
-                                              snapshot.data['photo_url'],
-                                              useDiskCache: true,
-                                              timeoutDuration: Duration(seconds: 7),
-                                              cacheRule: CacheRule(
-                                                  maxAge: const Duration(days: 7)),
-//                                              fallbackAssetImage: 'assets/images/error_image.png',
-                                            fallbackAssetImage: 'assets/images/image_error.png',
-                                              retryLimit: 0
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-//                          Row(
-//                            children: <Widget>[
-//                              Padding(padding: EdgeInsets.only(top: 20.0),),
-//                            Expanded(child: Icon(Icons.account_circle)),
-//                            Expanded(
-//                              child: Text('Name: ',
-//                                style: new TextStyle(
-//                                    color: Colors.black,
-//                                    fontFamily: 'DancingScript-Bold', //neberie
-//                                    fontWeight: FontWeight.w400
-//                                ),),
-//                            ),
-//                            Expanded(
-//                                child: Text(snapshot.data['name'],
-//                              style: new TextStyle(
-//                                  fontSize: 20.0,
-//                                  color: Colors.black,
-//                                  fontFamily: 'DancingScript-Bold', //neberie
-//                                  fontWeight: FontWeight.w400
-//                              ),),)
-//                            ]
-//                          ),
-                          Padding(padding: EdgeInsets.only(top: 50.0),),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Icon(Icons.color_lens),
-                              ),
-                              Expanded(
-                                child: Text('Color: ',
-                                  style: new TextStyle(
-                                  fontSize: 20.0,
-                                  color: Colors.black,
-                                  fontFamily: 'DancingScript-Bold', //neberie
-                                  fontWeight: FontWeight.w400
-                              ),),),
-                              Expanded(
-                                child: Text(snapshot.data['color'],
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )),
-                              )
-                            ],
-                          ),
-                          Padding(padding: EdgeInsets.only(bottom: 10.0),),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Icon(Icons.aspect_ratio),
-                              ),
-                              Expanded(
-                                child: Text('Size:',
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )),),
-                              Expanded(
-                                child: Text(snapshot.data['size'],
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )),
-                              )
-                            ],
-                          ),
-                          Padding(padding: EdgeInsets.only(bottom: 10.0),),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Icon(Icons.content_cut),
-                              ),
-                              Expanded(
-                                child: Text('Length:',
-                                    style: new TextStyle(
-                                    fontSize: 20.0,
-                                    color: Colors.black,
-                                    fontFamily: 'DancingScript-Bold', //neberie
-                                    fontWeight: FontWeight.w400
-                                )),),
-                              Expanded(
-                                child: Text(
-                                    snapshot.data['length'],
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )),
-                              )
-                            ],
-                          ),
-                          Padding(padding: EdgeInsets.only(bottom: 10.0),),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Icon(Icons.card_giftcard),
-                              ),
-                              Expanded(
-                                child: Text('Borrowed To?',
-                                    style: new TextStyle(
-                                    fontSize: 20.0,
-                                    color: Colors.black,
-                                    fontFamily: 'DancingScript-Bold', //neberie
-                                    fontWeight: FontWeight.w400
-                                )),),
-                              Expanded(
-                                child: Text(snapshot.data['borrowName'] != "" ?
-                                snapshot.data['borrowName'] :
-                                    '-',
-                                    style: new TextStyle(
-                                        fontSize: 20.0,
-                                        color: Colors.black,
-                                        fontFamily: 'DancingScript-Bold', //neberie
-                                        fontWeight: FontWeight.w400
-                                    )
-                                ),
-                              )
-                            ],
-                          ),
-//                          Row(
-//                            children: <Widget>[
-//                              Expanded(
-//                                child: Icon(Icons.person_pin_circle),
-//                              ),
-//                              Expanded(
-//                                child: Text(snapshot.data['']), //ak sa zisti userove meno
-//                              )
-//                            ],
-//                          )
-
-
-
-
-
-//kod na upravopovanie itemu, ktory asi netreba
-//                          Container(
-//                            child: InkWell(
-//                              onTap: (){ Navigator.push(context,
-//                                  MaterialPageRoute(builder: (context) {
-//                                    return EditItem(
-//                                      item: snapshot.data,
-//                                    );
-//                                  }));},
-//                              child: Container(
-//                                decoration: new BoxDecoration(
-//                                  color: Colors.pink,
-//                                  borderRadius: new BorderRadius.circular(30.0),
-//                                ),
-//                                alignment: Alignment.center,
-//                                padding: EdgeInsets.symmetric(vertical: 8.0),
-//                                child: Text('Edit',style: TextStyle(color: Colors.white),),
-//                              ),
-//                            ),
-//                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              );
-          }
-        });
-  }
-
-  Widget _buildIamge() {
-    return new ClipPath(
-      clipper: new DialogonalClipper(),
-      child: new Image.asset(
-        'assets/images/pinkB.jpg',
-        fit: BoxFit.fitWidth,
-//        height: _imageHeight,
-      ),
-    );
-  }
-}
-
 
 class DialogonalClipper extends CustomClipper<Path> {
   @override
@@ -510,220 +303,6 @@ class DialogonalClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => true;
-}
-
-//editing item screen
-class EditItem extends StatefulWidget {
-  DocumentSnapshot item;
-
-  EditItem({@required this.item});
-
-  _State createState() => new _State(item: item);
-}
-
-class _State extends State<EditItem> {
-  DocumentSnapshot item;
-
-  _State({@required this.item}) {
-    docName = item['name'];
-    docColor = item['color'];
-    docSize = item['size'];
-    docLength = item['length'];
-  }
-
-  String docName = '';
-  String docColor = '';
-  String docSize = '';
-  String docLength = '';
-
-  void _onChangedName(String value) {
-    setState(() => docName = '$value');
-  }
-
-  void _onChangedColor(String value) {
-    setState(() => docColor = '$value');
-  }
-
-  void _onChangedSize(String value) {
-    setState(() => docSize = '$value');
-  }
-
-  void _onChangedLength(String value) {
-    setState(() => docLength = '$value');
-  }
-
-//
-//  void _onSubmit(String value) {
-//    setState(() => docName = 'Submit: $value');
-//  }
-
-  var _sizes = ['34', '36', '38', '40', '42', '44', '46', '48'];
-  var _currentItemSelected = '38';
-  var _length = ['Mini', 'Midi', 'Maxi', 'Oversize'];
-  var _currentLengthSelected = 'Midi';
-
-
-
-
-
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Edit Item'),
-      ),
-      body: SingleChildScrollView(
-        child: new Container(
-          padding: new EdgeInsets.all(32.0),
-          child: new Center(
-            child: new Column(
-              children: <Widget>[
-                Container(
-                  width: 200.0,
-                  height: 200.0,
-                  child: new ZoomableWidget(
-                      minScale: 1.0,
-                      maxScale: 2.0,
-                      // default factor is 1.0, use 0.0 to disable boundary
-                      panLimit: 0.0,
-                      bounceBackBoundary: true,
-                      child: TransitionToImage(
-                        image: AdvancedNetworkImage(
-                          item['photo_url'],
-                          useDiskCache: true,
-                          cacheRule: CacheRule(maxAge: const Duration(days: 7)),
-                        ),
-                        placeholder: CircularProgressIndicator(),
-                        duration: Duration(milliseconds: 300),
-                      )),
-                ),
-                new TextField(
-                  decoration: new InputDecoration(
-                      labelText: item['name'],
-                      icon: new Icon(Icons.account_circle,
-                          color: Colors.brown[800])),
-                  onChanged: _onChangedName,
-                ),
-                new TextField(
-                  decoration: new InputDecoration(
-                      labelText: item['color'],
-                      icon:
-                          new Icon(Icons.color_lens, color: Colors.brown[800])),
-                  onChanged: _onChangedColor,
-                ),
-
-
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Icon(Icons.aspect_ratio,
-                    color: Colors.brown[800]),
-                    ),
-                    Expanded(
-                      child: Text(
-                        'Size:'
-                      ),
-                    ),
-                    Expanded(
-                      child: DropdownButton(
-                          items: _sizes.map((String dropDownStringItem){
-                            return DropdownMenuItem<String>(
-                              value: dropDownStringItem,
-                              child: Text(dropDownStringItem),
-                            );
-                          }).toList(),
-                          onChanged: (String newValueSelected) {
-                            setState(() {
-                              this._currentItemSelected = newValueSelected;
-                              docSize = newValueSelected;
-                            });
-                            _onChangedSize(docSize);
-                          },
-                        //value: _currentItemSelected,
-                       value: _currentItemSelected == item['size'].toString() ? item['size'].toString() : docSize
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Icon(Icons.content_cut,
-                          color: Colors.brown[800]),
-                    ),
-                    Expanded(
-                      child: Text(
-                          'Length:'
-                      ),
-                    ),
-                    Expanded(
-                      child: DropdownButton(
-                        items: _length.map((String dropDownStringItem) {
-                          return DropdownMenuItem<String>(
-                            value: dropDownStringItem,
-                            child: Text(dropDownStringItem),
-                          );
-                        }).toList(),
-                        onChanged: (String newValueSelected) {
-                          setState(() {
-                            this._currentLengthSelected = newValueSelected;
-                            docLength = newValueSelected;
-                          });
-                          _onChangedLength(docLength);
-                        },
-                        value: _currentLengthSelected == item['length'].toString() ? item['length'].toString() : docLength
-//                        value: item['length'].toString(),
-//                      value: _currentLengthSelected,
-                      ),
-                    ),
-                  ],
-                ),
-                  Container(
-                    child: InkWell(
-                      onTap:() {  if (docName != '') {
-                  Firestore.instance
-                      .collection('items')
-                      .document(item.documentID)
-                      .updateData({"name": docName});
-                  debugPrint("zmenil som meno");
-                  }
-                      if (docColor != '') {
-          Firestore.instance
-              .collection('items')
-              .document(item.documentID)
-              .updateData({"color": docColor});
-          debugPrint("zmenil som farbu");
-          }
-              if (docSize != '') {
-        Firestore.instance
-            .collection('items')
-            .document(item.documentID)
-            .updateData({"size": docSize});
-        debugPrint("zmenil som velkost");
-        }
-            if (docLength != '') {
-      Firestore.instance
-          .collection('items')
-          .document(item.documentID)
-          .updateData({"length": docLength});
-      debugPrint("zmenil som dlzku");
-      }
-          Navigator.pop(context);},
-                      child: Container(
-                          decoration: new BoxDecoration(
-                            color: Colors.pink,
-                            borderRadius: new BorderRadius.circular(30.0),
-                          ),
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(vertical: 8.0),
-                          child: Text('Send',style: TextStyle(color: Colors.white),),
-                ),),),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 //searching bar
@@ -756,7 +335,37 @@ class ItemsListSearch extends SearchDelegate<ItemsList> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: StreamBuilder<QuerySnapshot>(
+          stream: items,
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: Text("No  data",
+                    style: Theme.of(context).textTheme.subhead),
+              );
+            }
+            final results = snapshot.data.documents
+                .where((a) => a['name'].toLowerCase().contains(query));
+
+            return ListView(
+              children: results
+                  .map(
+                    (DocumentSnapshot document) {},
+                  )
+                  .toList(),
+            );
+          }),
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: StreamBuilder<QuerySnapshot>(
         stream: items,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
@@ -765,66 +374,30 @@ class ItemsListSearch extends SearchDelegate<ItemsList> {
             );
           }
           final results = snapshot.data.documents
-              .where((a) => a['name'].toLowerCase().contains(query));
-
+              .where((a) => a['name'].startsWith(query))
+              .toList();
+          //a.documentID.toLowerCase().contains(query));
           return ListView(
-            children: results.map(
-              (DocumentSnapshot document) {
-                Item item = Item(
-                    name: document['name'],
-                    color: document['color'],
-                    size: document['size'],
-                    length: document['length'],
-                    photoUrl: document['photo_url'],
-                    id: document.documentID);
-              },
-            ).toList(),
+            children: results
+                .map<ListTile>((a) => ListTile(
+                      title: Text(a['name'],
+                          style: Theme.of(context).textTheme.subhead.copyWith(
+                                fontSize: 16.0,
+                                color: Colors.black,
+                              )),
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return ShowDetails(
+                            item: a,
+                          );
+                        }));
+                      },
+                    ))
+                .toList(),
           );
-        });
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: items,
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (!snapshot.hasData) {
-          return Center(
-            child: Text("No  data"),
-          );
-        }
-        final results = snapshot.data.documents
-            .where((a) => a['name'].startsWith(query))
-            .toList();
-        //a.documentID.toLowerCase().contains(query));
-        return ListView(
-          children: results
-              .map<ListTile>((a) => ListTile(
-                    title: Text(a['name'],
-                        style: Theme.of(context).textTheme.subhead.copyWith(
-                              fontSize: 16.0,
-                              color: Colors.black,
-                            )),
-                    onTap: () {
-//                 close(context, a);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-//                 return ShowDetails(item: Item(name: a['name'],
-//                   color: a['color'],
-//                   size: a['size'],
-//                   length: a['length'],
-//                   photoUrl: a['photo_url'],
-//                   id: a.documentID
-//                 ));
-                        return ShowDetails(
-                          item: a,
-                        );
-                      }));
-                    },
-                  ))
-              .toList(),
-        );
-      },
+        },
+      ),
     );
   }
 }
@@ -839,41 +412,179 @@ class Item {
   var userid;
   var borrowedTo = "";
   var borrowName = "";
+  var request = "";
+  var description = "";
 
-  Item({this.name, this.color, this.size, this.length, this.photoUrl, this.id, this.userid, this.borrowedTo, this.borrowName});
-
+  Item(
+      {this.name,
+      this.color,
+      this.size,
+      this.length,
+      this.photoUrl,
+      this.id,
+      this.userid,
+      this.borrowedTo,
+      this.borrowName,
+      this.request,
+      this.description});
 }
 
+// 5. screen
 class UserListHome extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-        stream: Firestore.instance.collection('users').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return new Text('Loading...');
-            default:
-              return Scaffold(
-                body: new ListView(
-                    children: snapshot.data.documents
-                        .map((DocumentSnapshot document) {
-                      return ListTile(
-                        trailing: Icon(Icons.send, color: Colors.pink,),
-                        title: Text(document['name']),
-                        onTap: () {
-                          //kod ktory urci usra, ktoremu bolo pozicane
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                                return UserInfoList2(userInfo: document);
-                              }));
-                        },
-                      );
-                    }).toList()),
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
+          stream: Firestore.instance.collection('users').snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return new Text('Loading...');
+              default:
+                return Scaffold(
+                  body: ListView(
+                      children: snapshot.data.documents
+                          .map((DocumentSnapshot document) {
+                    return Container(
+                      height: 80.0,
+                      padding:
+                          EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                      child: Material(
+                        color: Colors.white,
+                        shadowColor: Colors.grey,
+                        elevation: 14.0,
+                        borderRadius: BorderRadius.circular(14.0),
+                        child: ListTile(
+                          contentPadding: EdgeInsets.only(
+                              top: 7.0, left: 12.0, right: 12.0),
+                          leading: ClipOval(
+                            child: CachedNetworkImage(
+                              width: 50.0,
+                              height: 50.0,
+                              fit: BoxFit.cover,
+                              imageUrl: document['photoUrl'],
+                              placeholder: (context, imageUrl) =>
+                                  CircularProgressIndicator(),
+                            ),
+                          ),
+//                              leading: Image.network(
+//                                  document['photoUrl'],
+//                              height: 42.0,
+//                                  width: 42.0,),
+                          trailing: Icon(Icons.info_outline,
+                              color: Theme.of(context).accentColor),
+                          title: Text(
+                            document['name'],
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          onTap: () {
+                            //kod ktory urci usra, ktoremu bolo pozicane
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              //firebaseuser where zo streambuilderu user.uid je userinfo['userid']
+                              return UserInfoList2(userInfo: document);
+                            }));
+                          },
+                        ),
+                      ),
+                    );
+                  }).toList()),
+                );
+            }
+          }),
+    );
+  }
+}
+
+//searching bar
+class UserListSearch extends SearchDelegate<UserList> {
+  var users = Firestore.instance.collection('users').snapshots();
+
+  UserListSearch(this.users);
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
+          stream: users,
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: Text("No  data",
+                    style: Theme.of(context).textTheme.subhead),
               );
+            }
+            final results = snapshot.data.documents
+                .where((a) => a['name'].toUpperCase().contains(query));
+
+            return ListView(
+              children: results.map((DocumentSnapshot document) {}).toList(),
+            );
+          }),
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder<QuerySnapshot>(
+        stream: users,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: Text("No  data"),
+            );
           }
-        });
+          final results = snapshot.data.documents
+              .where((a) => a['name'].startsWith(query))
+              .toList();
+          //a.documentID.toLowerCase().contains(query));
+          return ListView(
+            children: results
+                .map<ListTile>((a) => ListTile(
+                      title: Text(a['name'],
+                          style: Theme.of(context).textTheme.subhead.copyWith(
+                                fontSize: 16.0,
+                                color: Colors.black,
+                              )),
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return UserInfoList2(
+                            userInfo: a,
+                          );
+                        }));
+                      },
+                    ))
+                .toList(),
+          );
+        },
+      ),
+    );
   }
 }

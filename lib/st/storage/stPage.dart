@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:async';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -35,7 +36,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
         child: Container(
           width: 48.0,
           height: 48.0,
-          child: CircularProgressIndicator(backgroundColor: Colors.pink,),
+          child: CircularProgressIndicator(backgroundColor: Theme.of(context).accentColor,),
         ),
       );
     });
@@ -50,6 +51,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
     imageFile.writeAsBytes(bytes.buffer.asInt8List(), mode: FileMode.write); //ci dobry access
 
     //pridanie obrazka
+    new Image(image: new CachedNetworkImageProvider(filePath));
     final StorageReference ref = FirebaseStorage.instance.ref().child(fileName);
     final StorageUploadTask task = ref.putFile(imageFile);
     task.events.listen((event){
@@ -73,7 +75,9 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
   File sampleImage;
   Future getImage() async{
     var tempImage = await ImagePicker.pickImage(
-        source: ImageSource.gallery
+        source: ImageSource.gallery,
+        maxHeight: 500,
+        maxWidth: 500
     );
     setState(() {
       sampleImage = tempImage;
@@ -86,7 +90,9 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
   File sampleImage2;
   Future getImage2() async{
     var tempImage2 = await ImagePicker.pickImage(
-        source: ImageSource.camera
+        source: ImageSource.camera,
+        maxHeight: 500,
+        maxWidth: 500
     );
     setState(() {
       sampleImage2 = tempImage2;
@@ -104,7 +110,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
         children: <Widget>[
          new Center(
             child: sampleImage == null && sampleImage2 == null
-                ? Text('Select an Image')
+                ? Text('Select an Image',style:Theme.of(context).textTheme.subhead)
                 : sampleImage != null ? enableUpload() : enableUpload2(),
          ),
           new Row(
@@ -117,7 +123,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
                   onPressed: getImage,
                   tooltip: 'Add Image',
                   child: new Icon(Icons.add_photo_alternate),
-                  backgroundColor: Colors.pink,
+                  backgroundColor:Theme.of(context).buttonColor,
                   mini: true,
                 ),padding: EdgeInsets.all(15.0),
               ),
@@ -127,7 +133,7 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
                   onPressed: getImage2,
                   tooltip: 'Add Image',
                   child: new Icon(Icons.add_a_photo),
-                  backgroundColor: Colors.pink,
+                  backgroundColor: Theme.of(context).buttonColor,
                   mini: true,
                 ),padding: EdgeInsets.all(15.0)
               ),
@@ -150,23 +156,20 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
           Image.file(sampleImage, height: 300.0, width: 300.0,),
           Container(
             margin: EdgeInsets.only(top: 8.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(30.0),
-              child: Material(
-                color: Colors.pink,
-                borderRadius: BorderRadius.circular(30.0),
-                child: InkWell(
-                  splashColor: Colors.pink[400],
+            child:InkWell(
+                  splashColor:Theme.of(context).accentColor,
                   onTap:  () {uploadFile(filePath, context);},
                   child: Container(
+                    decoration: new BoxDecoration(
+                      color: Theme.of(context).buttonColor,
+                      borderRadius: new BorderRadius.circular(30.0),
+                    ),
                     width: 100.0,
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: 8.0),
                     child: Text('Confirm',style: TextStyle(color: Colors.white),),
                   ),
                 ),
-              ),
-            ),
           ),
         ],
       ),
@@ -183,23 +186,20 @@ class _MyStoragePageState2 extends State<MyStoragePage2>{
           Image.file(sampleImage2, height: 300.0, width: 300.0,),
           Container(
             margin: EdgeInsets.only(top: 8.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(30.0),
-              child: Material(
-                color: Colors.pink,
-                borderRadius: BorderRadius.circular(30.0),
-                child: InkWell(
-                  splashColor: Colors.pink[400],
+            child: InkWell(
+                  splashColor: Theme.of(context).accentColor,
                   onTap:  () {uploadFile(filePath, context);},
                   child: Container(
+                    decoration: new BoxDecoration(
+                      color: Theme.of(context).buttonColor,
+                      borderRadius: new BorderRadius.circular(30.0),
+                    ),
                     width: 100.0,
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: 8.0),
                     child: Text('Confirm',style: TextStyle(color: Colors.white),),
                   ),
-                ),
               ),
-            ),
           ),
         ],
       ),

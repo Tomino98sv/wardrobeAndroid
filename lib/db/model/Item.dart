@@ -21,8 +21,11 @@ class _MyNewItem extends State<MyNewItem> {
   String color = "";
   String borrowedTo = "";
   String borrowName = "";
+  String function = "";
+  String description = "";
   FirebaseUser userLend;
   FirebaseUser user;
+  String price = "";
 
   var stPage;
 
@@ -39,8 +42,12 @@ class _MyNewItem extends State<MyNewItem> {
 
   var _sizes = ['34', '36', '38', '40', '42', '44', '46', '48'];
   var _currentItemSelected = '38';
+  var _colors = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Brown", "Magenta", "Tan", "Cyan", "Olive", "Maroon", "Navy", "Aquamarine", "Turquoise", "Silver", "Lime", "Teal", "Indigo", "Violet", "Pink", "Black", "White", "Gray"];
+  var _currenttColorSelected = 'Black';
   var _length = ['Mini', 'Midi', 'Maxi', 'Oversize'];
   var _currentLengthSelected = 'Midi';
+  var _functions = ['none', 'giveaway', 'sell'];
+  var _currentFunctionSelected = 'none';
   String _imgUrl = "";
 
   void _setImgUrl(String url) {
@@ -56,11 +63,12 @@ class _MyNewItem extends State<MyNewItem> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text("Create New Item"),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text("Add New Dress",style: TextStyle(color: Colors.white)),
+//        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -73,10 +81,13 @@ class _MyNewItem extends State<MyNewItem> {
                   children: <Widget>[
                     Expanded(
                       child: TextField(
+                        maxLength: 18,
+                        style:Theme.of(context).textTheme.subhead,
                         decoration: new InputDecoration(
                             labelText: 'Name',
+                            labelStyle: Theme.of(context).textTheme.subhead,
                             icon: new Icon(Icons.account_circle,
-                                color: Colors.brown[800])),
+                                color: Theme.of(context).iconTheme.color)),
                         onChanged: (String userInput) {
                           setState(() {
                             name = userInput;
@@ -90,13 +101,16 @@ class _MyNewItem extends State<MyNewItem> {
                   children: <Widget>[
                     Expanded(
                       child: TextField(
+                        maxLength: 140,
+                        style:Theme.of(context).textTheme.subhead,
                         decoration: new InputDecoration(
-                            labelText: 'Color',
-                            icon: new Icon(Icons.color_lens,
-                                color: Colors.brown[800])),
+                            labelText: 'Description',
+                            labelStyle: Theme.of(context).textTheme.subhead,
+                            icon: new Icon(Icons.event_note,
+                                color: Theme.of(context).iconTheme.color)),
                         onChanged: (String userInput) {
                           setState(() {
-                            color = userInput;
+                            description = userInput;
                           });
                         },
                       ),
@@ -105,12 +119,41 @@ class _MyNewItem extends State<MyNewItem> {
                 ),
                 Row(
                   children: <Widget>[
+                    Icon(Icons.color_lens, color: Theme.of(context).iconTheme.color),
+                    Padding(padding: EdgeInsets.all(10.0)),
                     Expanded(
-                      child: Icon(Icons.aspect_ratio, color: Colors.brown[800]),
+                      child: Text('Color',style:Theme.of(context).textTheme.subhead),
                     ),
+
                     Expanded(
-                      child: Text('Size'),
+                      child: DropdownButton<String>(
+                        items: _colors.map((String dropDownStringItem) {
+                          return DropdownMenuItem<String>(
+                            value: dropDownStringItem,
+                            child: Text(dropDownStringItem,
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (String newValueSelected) {
+                          setState(() {
+                            this._currenttColorSelected = newValueSelected;
+                            size = newValueSelected;
+                          });
+                        },
+                        value: _currenttColorSelected,
+                      ),
+                    )
+                  ],
+                ),
+
+                Row(
+                  children: <Widget>[
+                    Icon(Icons.aspect_ratio, color: Theme.of(context).iconTheme.color),
+                    Padding(padding: EdgeInsets.all(10.0)),
+                    Expanded(
+                      child: Text('Size',style:Theme.of(context).textTheme.subhead),
                     ),
+
                     Expanded(
                       child: DropdownButton<String>(
                         items: _sizes.map((String dropDownStringItem) {
@@ -132,11 +175,10 @@ class _MyNewItem extends State<MyNewItem> {
                 ),
                 Row(
                   children: <Widget>[
+                    Icon(Icons.content_cut, color: Theme.of(context).iconTheme.color),
+                    Padding(padding: EdgeInsets.all(10.0)),
                     Expanded(
-                      child: Icon(Icons.content_cut, color: Colors.brown[800]),
-                    ),
-                    Expanded(
-                      child: Text('Length'),
+                      child: Text('Length',style:Theme.of(context).textTheme.subhead),
                     ),
                     Expanded(
                       child: DropdownButton<String>(
@@ -157,14 +199,64 @@ class _MyNewItem extends State<MyNewItem> {
                     )
                   ],
                 ),
+                Row(
+                  children: <Widget>[
+                    Icon(Icons.business_center, color: Theme.of(context).iconTheme.color),
+                    Padding(padding: EdgeInsets.all(10.0)),
+                    Expanded(
+                      child: Text('Sell?',style:Theme.of(context).textTheme.subhead),
+                    ),
+                    Expanded(
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        items: _functions.map((String dropDownStringItem) {
+                          return DropdownMenuItem<String>(
+                            value: dropDownStringItem,
+                            child: Text(dropDownStringItem),
+                          );
+                        }).toList(),
+                        onChanged: (String newValueSelected) {
+                          setState(() {
+                            this._currentFunctionSelected = newValueSelected;
+                            function = newValueSelected;
+                            if (_currentFunctionSelected == 'none'){
+                              function = "";
+                            }
+                          });
+                        },
+                        value: _currentFunctionSelected,
+                      ),
+                    )
+                  ],
+                ),
+                Container(
+                  child: function=="sell"
+                  ? Row(
+                    children: <Widget>[
+                      Icon(Icons.monetization_on, color: Theme.of(context).iconTheme.color),
+                      Padding(padding: EdgeInsets.all(10.0)),
+                      Expanded(
+                        child: Text('Price:',style:Theme.of(context).textTheme.subhead),
+                      ),
+                      Expanded(
+                        child: TextField(
+                          keyboardType: TextInputType.number,
+                          style:Theme.of(context).textTheme.subhead,
+                          decoration: new InputDecoration(
+                              labelText: 'Euros'),
+                          onChanged: (String userInput) {
+                            setState(() {
+                              price = userInput;
+                            });
+                          },
+                        ),
+                      )
+                    ],
+                  ) : Container()
+                ),
                 ListTile(
-                    title: ClipRRect(
-                  borderRadius: BorderRadius.circular(30.0),
-                  child: Material(
-                    color: Colors.pink,
-                    borderRadius: BorderRadius.circular(30.0),
-                    child: InkWell(
-                      splashColor: Colors.pink[400],
+                    title:InkWell(
+                      splashColor:Theme.of(context).accentColor,
                       onTap: () {
                         if (_imgUrl != "" && stPage.uploadLoad) {
                           print("tapped");
@@ -177,14 +269,17 @@ class _MyNewItem extends State<MyNewItem> {
                                       .document(),
                                   {
                                     'name': name,
-                                    'color': color,
+                                    'color': _currenttColorSelected,
                                     'size': _currentItemSelected,
                                     'length': _currentLengthSelected,
                                     'photo_url': _imgUrl,
                                     'id': "",
                                     'userId': user.uid,
+                                    'description': description,
                                     'borrowedTo': borrowedTo,
-                                    'borrowName': borrowName
+                                    'borrowName': borrowName,
+                                    'request': function,
+                                    'price': price
                                   });
                             });
                             Navigator.pop(context);
@@ -198,7 +293,7 @@ class _MyNewItem extends State<MyNewItem> {
                                       .document(),
                                   {
                                     'name': name,
-                                    'color': color,
+                                    'color': _currenttColorSelected,
                                     'size': _currentItemSelected,
                                     'length': _currentLengthSelected,
                                     'photo_url': _imgUrl,
@@ -211,23 +306,33 @@ class _MyNewItem extends State<MyNewItem> {
                           }
                         }
                         if (_imgUrl == "" && stPage.uploadLoad) {
-                          _showSnackBar("First confirme picture");
+                          _showSnackBar("Please, confirm the picture above");
                         }
                         if (stPage.uploadLoad == false) {
                           _showSnackBar(
                               "Choose picture source between camera and galery");
                         }
                       },
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(
-                          'Send',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(padding: EdgeInsets.only(right: 110.0,bottom: 5.0),),
+                          Container(
+                            decoration: new BoxDecoration(
+                              color: Theme.of(context).buttonColor,
+                              borderRadius: new BorderRadius.circular(30.0),
+                            ),
+                            width: 100,
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
+                              'Send',
+                              style: TextStyle(
+                                color: Colors.white
+                              ),
+                            ),
                   ),
+                        ],
+                      ),
                 ))
               ],
             ),
@@ -239,11 +344,11 @@ class _MyNewItem extends State<MyNewItem> {
 
   _showSnackBar(String str) {
     final snackBar = new SnackBar(
-      content: new Text(str),
+      content: new Text(str, style:Theme.of(context).textTheme.subhead),
       duration: new Duration(seconds: 3),
-      backgroundColor: Colors.black54,
+      backgroundColor: Colors.pinkAccent,
       action: new SnackBarAction(
-          label: 'OUKEY',
+          label: 'OK',
           onPressed: () {
             print("pressed snackbar");
           }),

@@ -15,22 +15,54 @@ class _WardrobeTabBarState extends State<WardrobeTabBar> {
 
   _WardrobeTabBarState(this._tabController);
 
+
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Row(
       children: <WardrobeTab>[
         WardrobeTab(
-          text: 'My Items',
+          textW: Container(
+            width: width/5,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("My ", style: TextStyle(color: Colors.white, ),),
+                Icon(Icons.style, color: Colors.white)
+              ],
+            ),
+          ),
           position: 0,
           controller: _tabController,
         ),
         WardrobeTab(
-          text: 'Borrowed To',
+          textW: Container(
+            width: width/5,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("Lent ", style: TextStyle(color: Colors.white),),
+                Icon(Icons.style,color: Colors.white)
+              ],
+            ),
+          ),
           position: 1,
           controller: _tabController,
         ),
         WardrobeTab(
-          text: 'Lend From',
+          textW: Container(
+            width: width/3,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("Borrowed ", style: TextStyle(color: Colors.white)),
+                Icon(Icons.style, color: Colors.white,)
+              ],
+            ),
+          ),
           position: 2,
           controller: _tabController,
         ),
@@ -42,19 +74,20 @@ class _WardrobeTabBarState extends State<WardrobeTabBar> {
 }
 
 class WardrobeTab extends StatefulWidget {
-  final String text;
+//  final String text;
   final int position;
   final TabController controller;
+  final Widget textW;
 
-  WardrobeTab({this.text, this.position, this.controller});
+  WardrobeTab({this.textW, this.position, this.controller});
 
   @override
   State<StatefulWidget> createState() =>
-      _WardrobeTabState(text,  controller, position);
+      _WardrobeTabState(textW,  controller, position);
 }
 
 class _WardrobeTabState extends State<WardrobeTab> {
-  String text;
+  Widget text;
   bool _selected = false;
   TabController _controller;
   int _position;
@@ -66,25 +99,30 @@ class _WardrobeTabState extends State<WardrobeTab> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(32.0)),
-      child: Material(
-        color: _selected ? Colors.pinkAccent : Colors.white,
+    return Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(32.0)),
-        child: InkWell(
-          onTap: () {
-            setState(() {
-              _controller.animateTo(_position);
-            });
-          },
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-            child: Text(
-              text,
-              style: TextStyle(
-                fontSize: 20.0,
-                color: _selected ? Colors.white : Colors.grey,
-              ),
+        child: Material(
+          color: _selected ? Theme.of(context).indicatorColor: Theme.of(context).accentColor,
+          borderRadius: BorderRadius.all(Radius.circular(32.0)),
+          child: InkWell(
+            onTap: () {
+              setState(() {
+                _controller.animateTo(_position);
+              });
+            },
+            child: Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+              child: text
+//              Text(
+//                text,
+//                style: TextStyle(
+//                  fontSize: 16.0,
+//                  color: _selected ? Colors.white : Colors.white,
+//                ),
+//              ),
             ),
           ),
         ),
@@ -93,6 +131,7 @@ class _WardrobeTabState extends State<WardrobeTab> {
   }
 
   void _handleScroll() {
+    if (!mounted) return;
     setState(() {
       _selected = _position == _controller.index;
     });

@@ -1,0 +1,105 @@
+@import url ("https://fonts.googleapis.com/css?family=Pacifico");
+
+@font-face {
+  font-family: 'Pacifico';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Pacifico Regular'), local('Pacifico-Regular'), url(https://fonts.gstatic.com/s/pacifico/v13/FwZY7-Qmy14u9lezJ-6H6Mk.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+body {
+  background: pink;
+  background-image: url("../img/background.jpg");
+  padding: auto;
+  margin: auto;
+  font-family: "Pacifico";
+  font-size: 16px;
+  width: auto;
+  height: auto;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+input,
+button {
+  font-family: "Pacifico";
+  font-weight: 700;
+  color: grey;
+}
+
+.img {
+  border-radius: 50%;
+}
+
+.main-div {
+  width: 21%;
+  margin-left: 41.7%;
+  margin-top: 10%;
+  padding: 1%;
+  display: none;
+  color: white;
+}
+
+.loggedin-div {
+  width: 20%;
+  margin-left: 43%;
+  margin-top: 0.1%;
+  padding: 1%;
+  display: none;
+  color: white;
+}
+
+.main-div input {
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+  padding: 15px;
+  outline: none;
+  width: 100%;
+  margin-bottom: 20px;
+  transition: 0.3s;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+}
+
+.main-div input:focus {
+  border: 1px solid #777;
+}
+
+.loggedin-div button {
+  opacity: 0.9;
+  background: #fff;
+  color: mediumvioletred;
+  border: 1px solid mediumvioletred;
+  border-radius: 45%;
+  padding: 15px;
+  display: block;
+  width: 80%;
+  transition: 0.3s;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+}
+
+.main-div button {
+  opacity: 0.9;
+  background: #fff;
+  color: mediumvioletred;
+  border: 1px solid mediumvioletred;
+  border-radius: 45%;
+  padding: 15px;
+  display: block;
+  width: 100%;
+  transition: 0.3s;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+}
+
+.main-div button:hover,
+.loggedin-div button:hover {
+  background: mediumvioletred;
+  color: #fff;
+  border: 1px solid mediumvioletred;
+  cursor: pointer;
+}
