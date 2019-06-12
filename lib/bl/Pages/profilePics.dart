@@ -161,24 +161,17 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
                   Padding(padding: EdgeInsets.only(right: 10.0,bottom: 5.0),),
                   Text(
                     "Edit name: ",
-//                    style: TextStyle(
-//                      fontSize: 18.5,
-//                      color: Theme.of(context).textTheme.subhead,
-//                      fontWeight: FontWeight.w400,
-//                    ),
                       style:Theme.of(context).textTheme.subhead
                   ),
                   Padding(padding: EdgeInsets.only(right: 10.0,bottom: 5.0),),
                   Expanded(
                     child: Container(
-//                      width: 200,
                       child: Form(
                         key: _formKey,
                         child: TextFormField(
                           maxLength: 15,
                           onSaved: (input) => _nameNew = input,
                           decoration: new InputDecoration(
-//                            labelText: "Enter Name",
                           hintText: "Enter name",
                             fillColor: Colors.white,
                             border: new OutlineInputBorder(
@@ -186,23 +179,12 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
                             ),
                           ),
                           keyboardType: TextInputType.emailAddress,
-//                        style: new TextStyle(
-//                          fontFamily: "Poppins",
-//                        ),
                             style:Theme.of(context).textTheme.subhead
                         ),
                       ),
                     ),
                   ),
                   Padding(padding: EdgeInsets.only(right: 10.0,bottom: 5.0),),
-//                Text(
-//                  "${nameUser}",
-//                  style: TextStyle(
-//                    fontSize: 25.0,
-//                    color: Colors.black,
-//                    fontWeight: FontWeight.w400,
-//                  ),
-//                ),
                 ],
               ),
               SizedBox(height: 5.0),
@@ -241,7 +223,9 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
     _formKey.currentState.save();
     if(_nameNew!= ""){
       if(_nameNew.length<2 || _nameNew.length>20){
-        _showSnackBar2("Name must be at least 20 chars");
+        if(_nameNew.length<2){
+          _showSnackBar("Name must be at least 2 chars");
+        }
       }else{
         userManagement.updateProfileName(_nameNew);
         _showSnackBar("Name changed");
@@ -269,7 +253,8 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
       duration: new Duration(seconds: 3),
       backgroundColor: Theme.of(context).buttonColor,
       action: new SnackBarAction(
-          label: 'Get Out',
+          label: 'Cancel',
+          textColor: Colors.white,
           onPressed: () {
             Navigator.pop(context);
           },
@@ -286,6 +271,7 @@ class _SelectProfilePicPageState extends State<SelectProfilePicPage> {
       backgroundColor: Theme.of(context).buttonColor,
       action: new SnackBarAction(
           label: 'Notice',
+          textColor: Colors.white,
           onPressed: () {
       }),
     );

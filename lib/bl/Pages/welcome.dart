@@ -137,7 +137,6 @@ class _WelcomePageState extends State<WelcomePage>
                                       return GestureDetector(
                                         child: Material(
                                           color: Colors.white,
-                                          elevation:14.0,
                                           borderRadius: BorderRadius.circular(24.0),
                                           child: Container(
                                             child: ClipRRect(
@@ -299,7 +298,6 @@ class _WelcomePageState extends State<WelcomePage>
                                       return GestureDetector(
                                         child: Material(
                                             color: Colors.white,
-                                            elevation:14.0,
                                             borderRadius: BorderRadius.circular(24.0),
                                             child: Container(
                                                 child: ClipRRect(
@@ -439,7 +437,6 @@ class _WelcomePageState extends State<WelcomePage>
                                       return GestureDetector(
                                         child: Material(
                                             color: Colors.white,
-                                            elevation:14.0,
                                             borderRadius: BorderRadius.circular(24.0),
                                             child: Container(
                                                 child: ClipRRect(

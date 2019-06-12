@@ -42,6 +42,7 @@ class _BorrowApplicants extends State<BorrowApplicants> {
             default:
               return Scaffold(
                 appBar: AppBar(
+                  iconTheme: IconThemeData(color: Colors.white),
                   title: Text('Applicants'),
                 ),
                 body: ListView(
@@ -54,7 +55,6 @@ class _BorrowApplicants extends State<BorrowApplicants> {
                           padding: EdgeInsets.symmetric(vertical: 2.0, horizontal: 10.0),
                           child: Material(
                             color: Colors.white,
-                            elevation: 14.0,
                             borderRadius: BorderRadius.circular(14.0),
                             child: ListTile(
                               leading: Text("$counter.",style:TextStyle(color: Colors.black)),
