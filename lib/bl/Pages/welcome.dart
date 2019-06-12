@@ -137,12 +137,9 @@ class _WelcomePageState extends State<WelcomePage>
                                       return GestureDetector(
                                         child: Material(
                                           color: Colors.white,
-                                          shadowColor: Colors.grey,
                                           elevation:14.0,
                                           borderRadius: BorderRadius.circular(24.0),
-
                                           child: Container(
-
                                             child: ClipRRect(
                                               borderRadius: BorderRadius.circular(10.0),
                                               child: Stack(
@@ -163,7 +160,7 @@ class _WelcomePageState extends State<WelcomePage>
                                                       width: double.maxFinite,
                                                       height: 26.0,
                                                       padding: EdgeInsets.symmetric(
-                                                          vertical: 4.0, horizontal: 16.0),
+                                                          vertical: 2.0, horizontal: 16.0),
                                                       color: Color(0x66000000),
                                                       alignment: Alignment.bottomCenter,
                                                       child: Text(
@@ -185,8 +182,9 @@ class _WelcomePageState extends State<WelcomePage>
                                                 title: Text(
                                                   document['name'],
                                                   style: TextStyle(
-                                                    fontFamily: 'Pacifico',
-                                                  ), ),
+                                                      fontFamily: 'Pacifico',
+                                                  ),
+                                                ),
                                                 content: Column(
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: <Widget>[
@@ -252,11 +250,11 @@ class _WelcomePageState extends State<WelcomePage>
                                             context: context,
                                             builder: (BuildContext context) {
                                               return CupertinoAlertDialog(
-                                                title: Text('Delete Item',style:
+                                                title: Text('Delete ${document['name']}',style:
                                                 TextStyle(color: Colors.black,
                                                 fontFamily: 'Pacifico')),
                                                 content: Text(
-                                                    'Are you sure you want to delete this item?',
+                                                    'Are you sure?',
                                                     style: TextStyle(color: Colors.black,
                                                     fontFamily: 'Pacifico')),
                                                 actions: <Widget>[
@@ -301,7 +299,6 @@ class _WelcomePageState extends State<WelcomePage>
                                       return GestureDetector(
                                         child: Material(
                                             color: Colors.white,
-                                            shadowColor: Colors.grey,
                                             elevation:14.0,
                                             borderRadius: BorderRadius.circular(24.0),
                                             child: Container(
@@ -325,7 +322,7 @@ class _WelcomePageState extends State<WelcomePage>
                                                           width: double.maxFinite,
                                                           height: 26.0,
                                                           padding: EdgeInsets.symmetric(
-                                                              vertical: 4.0, horizontal: 16.0),
+                                                              vertical: 2.0, horizontal: 16.0),
                                                           color: Color(0x66000000),
                                                           alignment: Alignment.bottomCenter,
                                                           child: Text(
@@ -379,9 +376,9 @@ class _WelcomePageState extends State<WelcomePage>
                                                               context: context,
                                                               builder: (BuildContext context) {
                                                                 return CupertinoAlertDialog(
-                                                                  title: Text('Get item',style: TextStyle(color: Colors.black, fontFamily: 'Pacifico')),
+                                                                  title: Text('Receive item',style: TextStyle(color: Colors.black, fontFamily: 'Pacifico')),
                                                                   content: Text(
-                                                                      'Are you sure that user returned your item back to you?',
+                                                                      'Are you sure that user returned dress back to you?',
                                                                       style: TextStyle(color: Colors.black,
                                                                       fontFamily: 'Pacifico')),
                                                                   actions: <Widget>[
@@ -442,7 +439,6 @@ class _WelcomePageState extends State<WelcomePage>
                                       return GestureDetector(
                                         child: Material(
                                             color: Colors.white,
-                                            shadowColor: Colors.grey,
                                             elevation:14.0,
                                             borderRadius: BorderRadius.circular(24.0),
                                             child: Container(
@@ -466,7 +462,7 @@ class _WelcomePageState extends State<WelcomePage>
                                                           width: double.maxFinite,
                                                           height: 26.0,
                                                           padding: EdgeInsets.symmetric(
-                                                              vertical: 4.0, horizontal: 16.0),
+                                                              vertical: 2.0, horizontal: 16.0),
                                                           color: Color(0x66000000),
                                                           alignment: Alignment.bottomCenter,
                                                           child: Text(
@@ -489,7 +485,8 @@ class _WelcomePageState extends State<WelcomePage>
                                               barrierDismissible: false,
                                               child: CupertinoAlertDialog(
                                                 title: Text(document['name'],
-                                                style: TextStyle(fontFamily: 'Pacifico'),),
+                                                style: TextStyle(fontFamily: 'Pacifico', ),
+                                                ),
                                                 content: Column(
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: <Widget>[
@@ -527,7 +524,7 @@ class _WelcomePageState extends State<WelcomePage>
                                                                 return CupertinoAlertDialog(
                                                                   title: Text('Return item', style: TextStyle(color: Colors.black,fontFamily: 'Pacifico'),),
                                                                   content: Text(
-                                                                      'Are you sure that you returned the item back to the owner?',
+                                                                      'Are you sure that you returned dress back to the owner?',
                                                                       style:TextStyle(color: Colors.black,fontFamily: 'Pacifico')),
                                                                   actions: <Widget>[
                                                                     FlatButton(
@@ -584,6 +581,7 @@ class _WelcomePageState extends State<WelcomePage>
                                       heroTag: "btnWelcome",
                                       child: Icon(Icons.add),
                                       shape: _DiamondBorder(),
+                                      elevation: 0.0,
                                       onPressed: () {
                                         Navigator.push(context,
                                             MaterialPageRoute(builder: (context) {

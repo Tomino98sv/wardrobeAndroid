@@ -40,21 +40,23 @@ class _SettingsPageState extends State<SettingsPage>{
       appBar: new AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
-            "Settings",style: TextStyle(color: Colors.white)
+            "Settings",style: TextStyle(color: Colors.white, fontFamily: 'Pacifico')
         ),
       ),
       body: Container(
         child: Column(
           children: <Widget>[
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                new Text("Changing color of app",style:Theme.of(context).textTheme.subhead),
+                new Text("Changing color of app",style:Theme.of(context).textTheme.subhead,),
                 new Switch(
                   value: click ,
                   onChanged: (bool valueOfClick) => changingColor(valueOfClick),
                 ),
              ],),
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Text("Dark mode",style:Theme.of(context).textTheme.subhead),
                 new Switch(
@@ -62,15 +64,6 @@ class _SettingsPageState extends State<SettingsPage>{
                   onChanged: (bool valueOfMode) => darkMode(valueOfMode),
                 ),
               ],),
-             Row(
-              children: <Widget>[
-                new Text("Turn on the notifications",style:Theme.of(context).textTheme.subhead),
-                new Switch(
-                    value: note,
-                    onChanged: (bool valueOfNote) => setNotifications(valueOfNote),
-                ),
-              ],
-          ),
           ],
         ),
       )
@@ -82,14 +75,18 @@ class _SettingsPageState extends State<SettingsPage>{
     return DemoTheme(
         'pink',
         new ThemeData(
+          primaryColor: Colors.pink[400],
+          scaffoldBackgroundColor: Colors.grey[50],
+          accentColor: Colors.pink[400],
+          buttonColor: Colors.pink,
+          primaryIconTheme: IconThemeData(color: Colors.pink[500]),
+          fontFamily: 'Pacifico',
+          indicatorColor: Colors.pink[100],
+          brightness: Brightness.light,
           iconTheme: IconThemeData(color: Colors.black),
-            primaryColor: Colors.pink[400],
-            scaffoldBackgroundColor: Colors.grey[50],
-            accentColor: Colors.pink[400],
-            buttonColor: Colors.pink,
-            fontFamily: 'Quicksand',
-            indicatorColor: Colors.pink[100],
-            brightness: Brightness.light,
+          textTheme: TextTheme(
+              subhead: TextStyle(color: Colors.black,),
+              subtitle: TextStyle(color: Colors.white)),
     ));
   }
 
@@ -97,17 +94,20 @@ class _SettingsPageState extends State<SettingsPage>{
     return DemoTheme(
         'blue',
         new ThemeData(
-            iconTheme: IconThemeData(color: Colors.black),
-          primaryColor: Colors.blue[400],
-          scaffoldBackgroundColor: Colors.grey[50],
-          accentColor: Colors.blueAccent[400],
-          buttonColor: Colors.blue,
-          toggleableActiveColor: Colors.lightBlue,
-          unselectedWidgetColor: Colors.blueAccent,
-          fontFamily: 'Quicksand',
-          indicatorColor: Colors.blueGrey,
-          brightness: Brightness.light,
-          textTheme: TextTheme(button: TextStyle(color: Colors.white))
+            primaryColor: Colors.blue[400],
+            scaffoldBackgroundColor: Colors.grey[50],
+            accentColor: Colors.blueAccent[400],
+            buttonColor: Colors.blue,
+            toggleableActiveColor: Colors.lightBlue,
+            unselectedWidgetColor: Colors.blueAccent,
+            primaryIconTheme: IconThemeData(color: Colors.blue),
+            fontFamily: 'Pacifico',
+            indicatorColor: Colors.blue[200],
+            brightness: Brightness.light,
+            textTheme: TextTheme(
+                subhead: TextStyle(color: Colors.black,),
+                subtitle: TextStyle(color: Colors.white)),
+            iconTheme: IconThemeData(color: Colors.black)
         ));
   }
 
@@ -116,16 +116,22 @@ class _SettingsPageState extends State<SettingsPage>{
     return DemoTheme(
         'dark',
         new ThemeData(
+          textTheme: TextTheme(
+              subhead: TextStyle(color: Colors.white),
+              subtitle: TextStyle(color: Colors.black)
+          ),
+          primaryColor: Colors.black,
+          scaffoldBackgroundColor: Colors.grey[900],
+          accentColor: Colors.black45,
+          buttonColor: Colors.white12,
+          primaryIconTheme: IconThemeData(color: Colors.white),
+          toggleableActiveColor: Colors.black54,
+          unselectedWidgetColor: Colors.black45,
+          fontFamily: 'Pacifico',
+          canvasColor: Colors.black54,
+          indicatorColor: Colors.black54,
+          dialogBackgroundColor: Colors.black54,
           iconTheme: IconThemeData(color: Colors.white),
-            textTheme: TextTheme(subhead: TextStyle(color: Colors.white),),
-            primaryColor: Colors.black,
-            scaffoldBackgroundColor: Colors.black54,
-            accentColor: Colors.black45,
-            buttonColor: Colors.white12,
-            toggleableActiveColor: Colors.black54,
-            unselectedWidgetColor: Colors.black45,
-            fontFamily: 'Quicksand',
-            indicatorColor: Colors.black54,
         ));
   }
 
@@ -157,18 +163,6 @@ class _SettingsPageState extends State<SettingsPage>{
         valueOfMode =false;
         mode = false;
         userManagement.updateUsingThemeDark(valueOfMode);
-      }
-    });
-  }
-
-  void setNotifications(bool valueOfNote){
-    setState(() {
-      if(valueOfNote){
-        note = false;
-        valueOfNote = false;
-      } else {
-        note = true;
-        valueOfNote = true;
       }
     });
   }

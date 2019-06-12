@@ -54,6 +54,8 @@ class DressesListState extends State<AllDressesList>
     });
   }
 
+  var addItem = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,10 +102,10 @@ class DressesListState extends State<AllDressesList>
                             debugPrint("Filter value je $filterValue");
 //                      if (docSize != ""){
                           if (filterValue == null || item.size == filterValue || item.color == filterValue || item.length == filterValue){
+                            addItem=true;
                             return GestureDetector(
                               child: Material(
                                 color: Colors.white,
-                                shadowColor: Colors.grey,
                                 elevation: 14.0,
                                 borderRadius: BorderRadius.circular(24.0),
                                 child: ClipRRect(
@@ -128,7 +130,7 @@ class DressesListState extends State<AllDressesList>
                                           width: double.maxFinite,
                                           height: 26.0,
                                           padding: EdgeInsets.symmetric(
-                                              vertical: 4.0, horizontal: 16.0),
+                                              vertical: 2.0, horizontal: 16.0),
                                           color: Color(0x66000000),
                                           alignment: Alignment.bottomCenter,
                                           child: Text(
@@ -204,7 +206,7 @@ class DressesListState extends State<AllDressesList>
                                                   }));
                                                 });
                                               },
-                                              child: Text("Seller"),
+                                              child: Text("Owner"),
                                             ),
                                             FlatButton(
                                               onPressed: () {
@@ -219,9 +221,11 @@ class DressesListState extends State<AllDressesList>
                               },
                             );
                             }
-                          else
+                          else{
+                            addItem=false;
                             return Container();
-                          }).toList(),
+                          }
+                          }).where((item) => addItem == true).toList(),
                         ),
                       ]
                     ),

@@ -46,7 +46,7 @@ class _QuickBeeState extends State<QuickBee> {
               image: AssetImage("assets/images/pinkBG.jpg")),
         ),
         child: Container(
-          margin: EdgeInsets.only(left:30.0, right: 30.0, top: 100.0,bottom: 100.0),
+          margin: EdgeInsets.only(left:30.0, right: 30.0, top: 100.0,bottom: 50.0),
           decoration: BoxDecoration(
             color:Colors.white24,
             borderRadius: BorderRadius.circular(30.0)
@@ -59,7 +59,7 @@ class _QuickBeeState extends State<QuickBee> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Padding(
-                      padding: const EdgeInsets.only(top: 60.0, bottom: 80.0),
+                      padding: const EdgeInsets.only(bottom: 40.0),
                       child: new Text("eDresses",
                         style: new TextStyle(
                           fontSize: 50.0,
@@ -82,7 +82,7 @@ class _QuickBeeState extends State<QuickBee> {
                       child: new Text(
                         "Continue with email",
                         style: new TextStyle(
-                            fontSize: 25.0,
+                            fontSize: 18.0,
                             color: Colors.white,
                           fontFamily: 'Dancing_Script',),
                           textAlign: TextAlign.center
@@ -98,7 +98,7 @@ class _QuickBeeState extends State<QuickBee> {
                   ),
                   new Container(
                     padding: const EdgeInsets.only(left:1.0,right: 1.0,top: 2.0,bottom: 2.0),
-                    margin: EdgeInsets.only(bottom: 10.0,top: 30.0, left: 60.0, right: 60.0),
+                    margin: EdgeInsets.only(bottom: 10.0,top: 30.0, left: 80.0, right: 80.0),
                     alignment: Alignment.center,
                     decoration: new BoxDecoration(
                         color: Colors.white12,
@@ -114,13 +114,15 @@ class _QuickBeeState extends State<QuickBee> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          new Text(
-                            "Continue with  ",
-                            style: new TextStyle(
-                                fontSize: 25.0,
-                                color: Colors.white,
-                              fontFamily: 'Dancing_Script',),
-                            textAlign: TextAlign.center,
+                          Expanded(
+                            child: new Text(
+                              "Continue with  ",
+                              style: new TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.white,
+                                fontFamily: 'Dancing_Script',),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                           Padding(
                             padding: EdgeInsets.only(left: 2.0),

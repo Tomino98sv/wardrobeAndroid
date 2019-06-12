@@ -23,7 +23,7 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
   FirebaseUser user2;
   String profileUrlImg="";
   final double expandedSize = 120.0;
-  final double hiddenSize = 14.0;
+  final double hiddenSize = 10.0;
 
   @override
   void initState() {
@@ -60,8 +60,7 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
               children: <Widget>[
                 _buildExpandedBackground(),
                 _buildOption(Icons.perm_identity, 0.0,profile ),
-                _buildOption(Icons.notifications, -math.pi / 3,notifications),
-                _buildOption(Icons.settings, -2 * math.pi / 3, settings),
+                _buildOption(Icons.settings, -1.5 * math.pi / 3, settings),
                 _buildOption(Icons.power_settings_new, math.pi, logOut),
                 _menuImage(),
               ],
@@ -134,7 +133,7 @@ class _AnimatedFabState extends State<AnimatedFab> with SingleTickerProviderStat
       child: new Align(
         alignment: Alignment.topCenter,
         child: new Padding(
-          padding: new EdgeInsets.only(top: 5.0,right: 3.0),
+          padding: new EdgeInsets.only(top: 6.5),
           child: new IconButton(
             onPressed: (){func();},
             icon: new Transform.rotate(

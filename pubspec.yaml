@@ -23,6 +23,8 @@ dependencies:
   flutter_advanced_networkimage: 0.4.13
   cached_network_image: ^0.7.0
   flutter_speed_dial: ^1.0.9
+  badges: ^1.0.3
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -97,7 +99,6 @@ flutter:
       fonts:
         - asset: assets/font/Pacifico-Regular.ttf
 
-  #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages
 

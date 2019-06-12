@@ -13,6 +13,7 @@ import 'package:flutter_app/deals/dealsHome.dart';
 import 'package:flutter_app/notif/notifications.dart';
 import 'package:flutter_app/ui/themes.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:badges/badges.dart';
 
 import '../main.dart';
 
@@ -47,7 +48,7 @@ class _HomeState extends State<HomePage> {
         rateInit = data.documents[0]['rating'];
         if(rateInit==null){
           Future.delayed(Duration(seconds: 3), () {
-            rating(context,"Rating", "Rate are app please");
+            rating(context,"Rating", "Rate the app, please");
           });
           rateInit=-1;
         }else{
@@ -127,11 +128,6 @@ class _HomeState extends State<HomePage> {
                           state.filterValue = null;
                         }
                       });
-//                Navigator.push(context, MaterialPageRoute (
-//                  builder: (context){
-//                    return FilterChipDisplay();
-//                  }
-//                ));
                     }),
           ],
         ),
@@ -139,50 +135,62 @@ class _HomeState extends State<HomePage> {
           child: _options.elementAt(_page),
           //sirka, vyska, child do childu podmienku - uz netreba pravdepodobne
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: new Icon(Icons.face, color: Colors.grey[900]),
-              title: new Text('Me',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Pacifico',
-                ),),
-            ),
-            BottomNavigationBarItem(
-              icon: new Icon(Icons.style, color: Colors.grey[900]),
-              title: new Text('Dresses',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Pacifico',
-                ),),
-            ),
-            BottomNavigationBarItem(
-              icon: new Icon(Icons.notifications, color: Colors.grey[900]),
-              title: new Text('Alerts',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Pacifico',
-                ),),
-            ),
-            BottomNavigationBarItem(
-              icon: new Icon(Icons.shopping_cart, color: Colors.grey[900]),
-              title: new Text('Deals',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Pacifico'),),
-            ),
-            BottomNavigationBarItem(
-                icon: new Icon(Icons.account_circle, color:Colors.grey[900]),
-                title: new Text('Users',
-                  style: TextStyle(
+        bottomNavigationBar: BottomAppBar(
+          color: Theme.of(context).buttonColor,
+          child:   BottomNavigationBar(
+            type: BottomNavigationBarType.shifting,
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                  icon: new Icon(Icons.face, color: Colors.black),
+                  title: new Text('Me',
+                    style: TextStyle(
                       color: Colors.black,
                       fontFamily: 'Pacifico',
-                  ),))
-          ],
-          currentIndex: _page,
-          onTap: onPageChanged,
-        ),
+                    ),),
+                  activeIcon: new Icon(Icons.face, color: Theme.of(context).primaryIconTheme.color)
+              ),
+              BottomNavigationBarItem(
+                  icon: new Icon(Icons.style, color: Colors.black),
+                  title: new Text('Dresses',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Pacifico',
+                    ),),
+                  activeIcon: new Icon(Icons.style, color:Theme.of(context).primaryIconTheme.color)
+              ),
+              BottomNavigationBarItem(
+                  icon: new Icon(Icons.notifications, color: Colors.black),
+                  title: new Text('Alerts',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Pacifico',
+                    ),),
+                  activeIcon: new Icon(Icons.notifications, color: Theme.of(context).primaryIconTheme.color)
+              ),
+              BottomNavigationBarItem(
+                  icon: new Icon(Icons.compare_arrows, color: Colors.black),
+                  title: new Text('Deals',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Pacifico'),),
+                  activeIcon: new Icon(Icons.compare_arrows, color: Theme.of(context).primaryIconTheme.color)
+              ),
+              BottomNavigationBarItem(
+                  icon: new Icon(Icons.account_circle, color:Colors.black),
+                  title: new Text('Users',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Pacifico',
+                    ),),
+                  activeIcon: new Icon(Icons.account_circle, color: Theme.of(context).primaryIconTheme.color)
+              )
+
+            ],
+            currentIndex: _page,
+            onTap: onPageChanged,
+          ),
+
+        )
       ),
     );
   }
@@ -210,10 +218,10 @@ class _HomeState extends State<HomePage> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           return CupertinoAlertDialog(
-            title: Text(title),
+            title: Text(title, style: TextStyle(fontFamily: 'Pacifico') ),
             content: SingleChildScrollView(
               child: ListBody(
-                children: <Widget>[Text(description, style: TextStyle(color: Colors.black),)],
+                children: <Widget>[Text(description, style: TextStyle(color: Colors.black, fontFamily: 'Pacifico'),)],
               ),
             ),
             actions: <Widget>[
@@ -232,13 +240,17 @@ class _HomeState extends State<HomePage> {
 
   rating(BuildContext context, String title, String description) {
 
-    int rating=0;
+    int rating=5;
 
     return showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
-          return CupertinoAlertDialog(
+          return AlertDialog(
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(25.0))
+            ),
             title: Text(title),
             content: SingleChildScrollView(
               child: StatefulBuilder(
@@ -255,14 +267,22 @@ class _HomeState extends State<HomePage> {
               ),
             ),
             actions: <Widget>[
+
               FlatButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text("Cancel"),
+                child: Text("Cancel", style: TextStyle(color: Colors.black),),
               ),
+              Padding(
+                  padding: EdgeInsets.only(right: 55.0)
+              ),
+
               FlatButton(
                 onPressed: () => rate(rating,context),
-                child: Text("Submit"),
-              )
+                child: Text("Submit", style: TextStyle(color: Colors.black)),
+              ),
+              Padding(
+                  padding: EdgeInsets.only(right: 35.0)
+              ),
             ],
           );
         });
@@ -271,13 +291,16 @@ class _HomeState extends State<HomePage> {
   rate(int value, BuildContext context){
     userManagement.sendRating(value).then((complete){
       Navigator.pop(context);
-
       return showDialog(
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
-            return CupertinoAlertDialog(
+            return AlertDialog(
+              backgroundColor: Colors.white,
               title: Text("Thanks for your rating"),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(25.0))
+              ),
               content: SingleChildScrollView(
                 child: Icon(Icons.toys,color: Theme.of(context).accentColor),
               ),
@@ -285,6 +308,7 @@ class _HomeState extends State<HomePage> {
                 FlatButton(
                   onPressed: () => Navigator.pop(context),
                   child: Text("Done"),
+                  padding: EdgeInsets.only(right: 50.0),
                 ),
               ],
             );
@@ -337,10 +361,14 @@ class _HomeState extends State<HomePage> {
           scaffoldBackgroundColor: Colors.grey[50],
           accentColor: Colors.pink[400],
           buttonColor: Colors.pink,
+          primaryIconTheme: IconThemeData(color: Colors.pink[500]),
           fontFamily: 'Pacifico',
           indicatorColor: Colors.pink[100],
           brightness: Brightness.light,
           iconTheme: IconThemeData(color: Colors.black),
+          textTheme: TextTheme(
+              subhead: TextStyle(color: Colors.black,),
+              subtitle: TextStyle(color: Colors.white)),
         ));
   }
 
@@ -354,10 +382,13 @@ class _HomeState extends State<HomePage> {
             buttonColor: Colors.blue,
             toggleableActiveColor: Colors.lightBlue,
             unselectedWidgetColor: Colors.blueAccent,
+            primaryIconTheme: IconThemeData(color: Colors.blue),
             fontFamily: 'Pacifico',
             indicatorColor: Colors.blue[200],
             brightness: Brightness.light,
-            textTheme: TextTheme(subhead: TextStyle(color: Colors.black)),
+            textTheme: TextTheme(
+                subhead: TextStyle(color: Colors.black,),
+                subtitle: TextStyle(color: Colors.white)),
           iconTheme: IconThemeData(color: Colors.black)
         ));
   }
@@ -366,11 +397,15 @@ class _HomeState extends State<HomePage> {
     return DemoTheme(
         'dark',
         new ThemeData(
-          textTheme: TextTheme(subhead: TextStyle(color: Colors.white),),
+          textTheme: TextTheme(
+            subhead: TextStyle(color: Colors.white),
+              subtitle: TextStyle(color: Colors.black)
+          ),
           primaryColor: Colors.black,
           scaffoldBackgroundColor: Colors.grey[900],
           accentColor: Colors.black45,
           buttonColor: Colors.white12,
+          primaryIconTheme: IconThemeData(color: Colors.white),
           toggleableActiveColor: Colors.black54,
           unselectedWidgetColor: Colors.black45,
           fontFamily: 'Pacifico',

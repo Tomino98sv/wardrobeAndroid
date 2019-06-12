@@ -29,7 +29,7 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
           alignment: Alignment.centerLeft,
           child: Text(
             "Choose category",
-            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.subhead,
           ),
         ),
         Padding(
@@ -53,7 +53,6 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
                                     context, widget.onFilterChosen))
                             : widget.onFilterChosen(null);
                       });
-                      //           return AllDressesList(filterValue: value,); //tu toto by malo vratit vsetky aj s hodnpotoou...
                     },
                   ),
                   FilterChipWidget(
@@ -66,7 +65,7 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
                                   context: context,
                                   child: _buildLenghtWidget(
                                       context, widget.onFilterChosen))
-                              : null;
+                              :widget.onFilterChosen(null);
                         });
                       }),
                   FilterChipWidget(
@@ -79,7 +78,7 @@ class _FilterChipDisplayState extends State<FilterChipDisplay> {
                                   context: context,
                                   child: _buildColorWidget(
                                       context, widget.onFilterChosen))
-                              : null;
+                              :widget.onFilterChosen(null);
                         });
                       }),
                 ],
@@ -114,9 +113,9 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
   @override
   Widget build(BuildContext context) {
     return FilterChip(
-      label: Text(widget.chipName, style: TextStyle(fontFamily: 'Pacifico')),
+      label: Text(widget.chipName, style: Theme.of(context).textTheme.subhead),
       labelStyle: TextStyle(
-          color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w400),
+          fontFamily: 'Pacifico', fontSize: 16.0, fontWeight: FontWeight.w400),
       selected: _isSelected,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
@@ -142,7 +141,7 @@ class _FilterChipWidgetState extends State<FilterChipWidget> {
           }
         });
       },
-      selectedColor: Theme.of(context).accentColor,
+      selectedColor: Theme.of(context).buttonColor,
     );
   }
 }
@@ -154,7 +153,7 @@ Widget _buildSizeWidget(BuildContext context, Function func) {
   debugPrint("malo by vykreslit dropdown menu");
   return CupertinoAlertDialog(
     title: Text(
-      "Your size is",
+      "Your size: ",
       style: TextStyle(
           color: Colors.black,
           fontSize: 15.0,
@@ -171,7 +170,6 @@ Widget _buildSizeWidget(BuildContext context, Function func) {
           onSelectedItemChanged: (index) {
             _currentItemSelected = index;
             print(_currentItemSelected);
-//                 String size = sizes[index];
             value = sizes[index];
             print(value);
             func(value);
@@ -198,7 +196,7 @@ Widget _buildLenghtWidget(BuildContext context, Function func) {
   debugPrint("malo by vykreslit dropdown menu 2");
   return CupertinoAlertDialog(
     title: Text(
-      "Favourite lenght is",
+      "Preferred length: ",
       style: TextStyle(
           color: Colors.black,
           fontSize: 15.0,
@@ -267,7 +265,7 @@ Widget _buildColorWidget(BuildContext context, Function func) {
   debugPrint("malo by vykreslit dropdown menu 3");
   return CupertinoAlertDialog(
     title: Text(
-      "Favourite color is",
+      "Preferred color: ",
       style: TextStyle(
         fontFamily: 'Pacifico',
           color: Colors.black,
